@@ -1,3 +1,16 @@
 # Pinned direct M1 development dependencies.
-jsonschema==4.25.1
+attrs==26.1.0
+cfgv==3.5.0
+distlib==0.4.3
+filelock==3.32.4
+identify==2.6.19
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+nodeenv==1.10.0
+platformdirs==4.11.5
 pre-commit==4.3.0
+python-discovery==1.6.0
+pyyaml==6.0.3
+referencing==0.37.0
+rpds-py==2026.6.3
+virtualenv==21.7.7
