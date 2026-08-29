@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/run-contract/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "pipeline_version": {
+      "const": "0.1.0-dev.1"
+    },
+    "status": {
+      "const": "foundation_only"
+    },
+    "fixture": {
+      "const": "synthetic_nonhuman"
+    },
+    "input_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "caller_contract": {
+      "enum": [
+        "gatk",
+        "deepvariant",
+        "both"
+      ]
+    },
+    "nextflow_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+"
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "biological_processing": {
+      "const": false
+    },
+    "benchmark_result": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "pipeline_version",
+    "status",
+    "fixture",
+    "input_manifest_sha256",
+    "caller_contract",
+    "nextflow_version",
+    "profile",
+    "biological_processing",
+    "benchmark_result"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "_schema": "schemas/evidence/resources.schema.json",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "wall_seconds": 1,
+  "observed_cpu_core_seconds": 2,
+  "allocated_cpu_core_seconds": 2,
+  "peak_rss_bytes": 100,
+  "read_bytes": 0,
+  "write_bytes": {
+    "missing_reason": "not measured by fixture"
+  },
+  "disk_bytes": 10,
+  "task_count": 1,
+  "retry_count": 0,
+  "cache_count": 0,
+  "measurement_scope": "synthetic task",
+  "aggregation_method": "sum tasks"
+}

@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jcollins-bioinfo.github.io/giab-wes-nextflow/nextflow_schema.json",
+  "title": "GIAB WES parameters",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "input": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "outdir": {
+      "type": "string"
+    },
+    "callers": {
+      "type": "string",
+      "enum": [
+        "gatk",
+        "deepvariant",
+        "both"
+      ],
+      "default": "both"
+    },
+    "reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "targets": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "truth_vcf": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "truth_bed": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "retain_oq": {
+      "type": "boolean"
+    },
+    "call_padding": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "benchmark": {
+      "type": "boolean"
+    },
+    "max_cpus": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "provenance": {
+      "type": "boolean"
+    },
+    "private_workspace_root": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "help": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "callers"
+  ],
+  "x-groups": [
+    {
+      "name": "Input",
+      "parameters": [
+        "input"
+      ]
+    },
+    {
+      "name": "Output",
+      "parameters": [
+        "outdir"
+      ]
+    },
+    {
+      "name": "Reference",
+      "parameters": [
+        "reference"
+      ]
+    },
+    {
+      "name": "Target",
+      "parameters": [
+        "targets",
+        "call_padding"
+      ]
+    },
+    {
+      "name": "Preprocessing",
+      "parameters": [
+        "retain_oq"
+      ]
+    },
+    {
+      "name": "Callers",
+      "parameters": [
+        "callers"
+      ]
+    },
+    {
+      "name": "Benchmark",
+      "parameters": [
+        "truth_vcf",
+        "truth_bed",
+        "benchmark"
+      ]
+    },
+    {
+      "name": "Resources",
+      "parameters": [
+        "max_cpus"
+      ]
+    },
+    {
+      "name": "Provenance",
+      "parameters": [
+        "provenance"
+      ]
+    },
+    {
+      "name": "Private workspace publication",
+      "parameters": [
+        "private_workspace_root"
+      ]
+    }
+  ]
+}
