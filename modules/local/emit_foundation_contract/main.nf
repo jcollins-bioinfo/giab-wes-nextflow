@@ -7,7 +7,9 @@ process EMIT_FOUNDATION_CONTRACT {
     output:
     path 'foundation-run-contract.json', emit: contract
     script:
-    def canonical = groovy.json.JsonOutput.toJson(normalized_rows.collect { [metadata:it[0], fastq_1:it[1][0].name, fastq_2:it[1][1].name] })
+    def canonical = groovy.json.JsonOutput.toJson(normalized_rows.collect { tuple ->
+        [metadata: tuple[0], fastq_1: tuple[1][0].name, fastq_2: tuple[1][1].name]
+    })
     def hash = java.security.MessageDigest.getInstance('SHA-256').digest(canonical.bytes).encodeHex().toString()
     def nfver = nextflow.version.toString()
     """

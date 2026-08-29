@@ -8,7 +8,7 @@ workflow GIAB_WES {
     profile
     main:
     INPUT_VALIDATION(rows)
-    EMIT_FOUNDATION_CONTRACT(INPUT_VALIDATION.out.tuples, callers, profile)
+    EMIT_FOUNDATION_CONTRACT(INPUT_VALIDATION.out, callers, profile)
     emit:
-    contract = EMIT_FOUNDATION_CONTRACT.out.contract
+    EMIT_FOUNDATION_CONTRACT.out.contract
 }
