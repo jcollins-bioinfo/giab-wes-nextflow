@@ -1,3 +1,5 @@
+[![CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml/badge.svg)](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml)
+
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
 > **Milestone 1 — foundation only; no biological processing or benchmark result exists.** This repository is nonclinical research software. M1 contains executable validation, synthetic fixtures, schemas, and architecture contracts only. It has **not** processed HG001, invoked GATK or DeepVariant, or produced benchmark results.
