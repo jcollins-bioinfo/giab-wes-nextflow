@@ -6,5 +6,5 @@ version: 0.1.0-dev.1
 license: MIT
 authors:
   - family-names: Collins
-    given-names: James
+    given-names: John Patrick
 repository-code: https://github.com/jcollins-bioinfo/giab-wes-nextflow
