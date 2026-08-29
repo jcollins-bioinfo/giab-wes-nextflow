@@ -1,0 +1,23 @@
+{
+  "synthetic": true,
+  "adrs": [
+    "docs/adr/0001-project-scope.md",
+    "docs/adr/0002-nextflow-baseline.md",
+    "docs/adr/0003-shared-bam-oq.md",
+    "docs/adr/0004-evaluation-training-overlap.md",
+    "docs/adr/0005-immutable-results-boundary.md",
+    "docs/adr/0006-workflow-output-publication.md",
+    "docs/adr/0007-human-data-private-workspace.md"
+  ],
+  "schemas": [
+    "schemas/evidence/benchmark.schema.json",
+    "schemas/evidence/coverage.schema.json",
+    "schemas/evidence/error-strata.schema.json",
+    "schemas/evidence/evidence-manifest.schema.json",
+    "schemas/evidence/lineage.schema.json",
+    "schemas/evidence/resources.schema.json",
+    "schemas/evidence/run.schema.json",
+    "schemas/private-workspace-completion.schema.json",
+    "schemas/run-contract.schema.json"
+  ]
+}
