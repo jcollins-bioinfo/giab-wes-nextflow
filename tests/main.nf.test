@@ -1,0 +1,26 @@
+nextflow_pipeline {
+    name "M1 foundation"
+    script "../main.nf"
+    config "../nextflow.config"
+    test("valid foundation and stable contract") {
+        when {
+            params {
+                input = "${projectDir}/tests/fixtures/samplesheets/valid.csv"
+                callers = "both"
+                outdir = "$outputDir"
+            }
+        }
+        then {
+            assert workflow.success
+            assert process("EMIT_FOUNDATION_CONTRACT").success
+            def contract = new groovy.json.JsonSlurper().parse(process("EMIT_FOUNDATION_CONTRACT").out.contract.get(0))
+            assert contract.status == 'foundation_only'
+            assert contract.pipeline_version == '0.1.0-dev.1'
+            assert contract.fixture == 'synthetic_nonhuman'
+            assert contract.biological_processing == false
+            assert contract.benchmark_result == false
+            assert contract.caller_contract == 'both'
+        }
+    }
+    test("invalid caller rejected") { when { params { callers = "other" } } then { assert !workflow.success } }
+}

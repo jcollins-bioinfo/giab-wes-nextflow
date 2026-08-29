@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/nextflow_schema.json",
+  "title": "GIAB WES parameters",
+  "description": "Strict parameters for the nonclinical M1 foundation workflow; no biological processing is performed.",
+  "type": "object",
+  "$defs": {
+    "input_output_options": {
+      "title": "Input/output options",
+      "type": "object",
+      "fa_icon": "fas fa-file-import",
+      "description": "Input validation and stable workflow-output options for the M1 foundation contract.",
+      "properties": {
+        "input": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Lane-aware CSV samplesheet to validate.",
+          "default": null
+        },
+        "outdir": {
+          "type": "string",
+          "description": "Directory for copied stable workflow outputs.",
+          "default": "results"
+        }
+      }
+    },
+    "reference_options": {
+      "title": "Reference options",
+      "type": "object",
+      "fa_icon": "fas fa-dna",
+      "description": "Reference options for the M1 foundation contract.",
+      "properties": {
+        "reference": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Future exact reference FASTA path; unset in M1.",
+          "default": null
+        }
+      }
+    },
+    "target_options": {
+      "title": "Target options",
+      "type": "object",
+      "fa_icon": "fas fa-crosshairs",
+      "description": "Target options for the M1 foundation contract.",
+      "properties": {
+        "targets": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Future audited assay-target BED path; unset in M1.",
+          "default": null
+        },
+        "call_padding": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Future calling-region padding in bases.",
+          "default": 100
+        }
+      }
+    },
+    "preprocessing_options": {
+      "title": "Preprocessing options",
+      "type": "object",
+      "fa_icon": "fas fa-filter",
+      "description": "Preprocessing options for the M1 foundation contract.",
+      "properties": {
+        "retain_oq": {
+          "type": "boolean",
+          "description": "Future preprocessing contract requiring retained original qualities.",
+          "default": true
+        }
+      }
+    },
+    "caller_options": {
+      "title": "Caller options",
+      "type": "object",
+      "fa_icon": "fas fa-code-branch",
+      "description": "Caller options for the M1 foundation contract.",
+      "properties": {
+        "callers": {
+          "type": "string",
+          "enum": [
+            "gatk",
+            "deepvariant",
+            "both"
+          ],
+          "default": "both",
+          "description": "Planned caller-selection contract; M1 invokes no caller."
+        }
+      },
+      "required": [
+        "callers"
+      ]
+    },
+    "benchmark_options": {
+      "title": "Benchmark options",
+      "type": "object",
+      "fa_icon": "fas fa-chart-line",
+      "description": "Benchmark options for the M1 foundation contract.",
+      "properties": {
+        "truth_vcf": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Future GIAB truth VCF path; forbidden from caller inputs.",
+          "default": null
+        },
+        "truth_bed": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Future GIAB high-confidence BED path; forbidden from caller inputs.",
+          "default": null
+        },
+        "benchmark": {
+          "type": "boolean",
+          "description": "Future benchmark enablement; false in M1."
+        }
+      }
+    },
+    "resource_options": {
+      "title": "Resource options",
+      "type": "object",
+      "fa_icon": "fas fa-computer",
+      "description": "Resource options for the M1 foundation contract.",
+      "properties": {
+        "max_cpus": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum CPUs available to future processes.",
+          "default": 2
+        }
+      }
+    },
+    "provenance_options": {
+      "title": "Provenance options",
+      "type": "object",
+      "fa_icon": "fas fa-fingerprint",
+      "description": "Provenance options for the M1 foundation contract.",
+      "properties": {
+        "provenance": {
+          "type": "boolean",
+          "description": "Enable provenance contract emission.",
+          "default": true
+        }
+      }
+    },
+    "private_workspace_options": {
+      "title": "Private workspace publication options",
+      "type": "object",
+      "fa_icon": "fas fa-lock",
+      "description": "Private workspace publication options for the M1 foundation contract.",
+      "properties": {
+        "private_workspace_root": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional guarded private-workspace publication root.",
+          "default": null
+        }
+      }
+    },
+    "generic_options": {
+      "title": "Generic options",
+      "type": "object",
+      "fa_icon": "fas fa-circle-info",
+      "description": "Generic options for the M1 foundation contract.",
+      "properties": {
+        "help": {
+          "type": "boolean",
+          "description": "Display foundation command help."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/$defs/input_output_options"
+    },
+    {
+      "$ref": "#/$defs/reference_options"
+    },
+    {
+      "$ref": "#/$defs/target_options"
+    },
+    {
+      "$ref": "#/$defs/preprocessing_options"
+    },
+    {
+      "$ref": "#/$defs/caller_options"
+    },
+    {
+      "$ref": "#/$defs/benchmark_options"
+    },
+    {
+      "$ref": "#/$defs/resource_options"
+    },
+    {
+      "$ref": "#/$defs/provenance_options"
+    },
+    {
+      "$ref": "#/$defs/private_workspace_options"
+    },
+    {
+      "$ref": "#/$defs/generic_options"
+    }
+  ]
+}
