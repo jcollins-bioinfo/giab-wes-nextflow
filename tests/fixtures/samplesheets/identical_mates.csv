@@ -1,0 +1,2 @@
+sample,library,lane,read_group_id,platform_unit,fastq_1,fastq_2,platform
+SYNTH,LIB1,L001,RG1,PU1,tests/data/synthetic_nonhuman_R1.fastq.gz,tests/data/synthetic_nonhuman_R1.fastq.gz,ILLUMINA

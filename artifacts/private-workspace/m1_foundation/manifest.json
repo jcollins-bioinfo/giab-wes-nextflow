@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "milestone": "m1_foundation",
+  "run_id": "m1-foundation-0.1.0-dev.1",
+  "files": [
+    {
+      "path": "architecture-schema-inventory.json",
+      "sha256": "75e85a0cb22e8268e2de29daf63640ac129e7f3c2fdf4c5b2ab23440f3a07a02",
+      "bytes": 805,
+      "media_type": "application/json",
+      "schema_id": "https://example.org/schemas/m1-foundation-artifact/1.0.0",
+      "schema_version": "1.0.0",
+      "semantic_role": "architecture_schema_inventory"
+    },
+    {
+      "path": "architecture.md",
+      "sha256": "110d59c3be845167575a059cfe64594838e372f43cbba85cc8bf9a443707cc6f",
+      "bytes": 1186,
+      "media_type": "text/markdown",
+      "schema_id": "https://example.org/schemas/m1-foundation-artifact/1.0.0",
+      "schema_version": "1.0.0",
+      "semantic_role": "architecture"
+    },
+    {
+      "path": "claim-ledger.md",
+      "sha256": "794fd39dffa3d8140662163998e41839da3c2f20fe5c98f5ce9770444609da4c",
+      "bytes": 463,
+      "media_type": "text/markdown",
+      "schema_id": "https://example.org/schemas/m1-foundation-artifact/1.0.0",
+      "schema_version": "1.0.0",
+      "semantic_role": "claim_ledger"
+    },
+    {
+      "path": "commit.txt",
+      "sha256": "6f7104c788d317cdfaacb999e299683426fcd2ab2aa03ed5018dff6c1644c0a1",
+      "bytes": 41,
+      "media_type": "text/plain",
+      "schema_id": "https://example.org/schemas/m1-foundation-artifact/1.0.0",
+      "schema_version": "1.0.0",
+      "semantic_role": "commit"
+    },
+    {
+      "path": "environment-inventory.json",
+      "sha256": "6bbba45af04e7aeb58dd00fe1d575b690b0bb77f45a921ccc8960863b3987475",
+      "bytes": 174,
+      "media_type": "application/json",
+      "schema_id": "https://example.org/schemas/m1-foundation-artifact/1.0.0",
+      "schema_version": "1.0.0",
+      "semantic_role": "environment_inventory"
+    },
+    {
+      "path": "source-ledger.yaml",
+      "sha256": "353e6775d6fc6cb63e1f749491359d98c806e3596e20a00f5700d0a57df504fd",
+      "bytes": 1972,
+      "media_type": "application/yaml",
+      "schema_id": "https://example.org/schemas/m1-foundation-artifact/1.0.0",
+      "schema_version": "1.0.0",
+      "semantic_role": "source_ledger"
+    },
+    {
+      "path": "tests-lint-report.json",
+      "sha256": "18f2de4e22b49e2ee4400aabe359d9149aacdc8083632b41c9babb1f109dcdf4",
+      "bytes": 338,
+      "media_type": "application/json",
+      "schema_id": "https://example.org/schemas/m1-foundation-artifact/1.0.0",
+      "schema_version": "1.0.0",
+      "semantic_role": "tests_lint_report"
+    }
+  ]
+}
