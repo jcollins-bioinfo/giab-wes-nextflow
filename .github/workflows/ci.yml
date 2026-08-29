@@ -31,8 +31,14 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-java@7a445ee88d4e23b52c33cc6c5c278fd3ecb4c38e # v4.7.1
-        with: {distribution: temurin, java-version: '17'}
+      # ubuntu-24.04 exposes its preinstalled JDK 17 through JAVA_HOME_17_X64.
+      # Select and verify it directly rather than depending on an additional action.
+      - name: Select Java 17
+        run: |
+          test -x "$JAVA_HOME_17_X64/bin/java"
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          "$JAVA_HOME_17_X64/bin/java" -version
       - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3.0.1
         with: {version: "${{ matrix.nextflow }}"}
       - uses: nf-core/setup-nf-test@4069fbbaabe94c08faba4ad261bfa88225ba133f # v2.1.0
