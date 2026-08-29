@@ -1,3 +1,5 @@
+[![CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml/badge.svg)](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml)
+
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
 > **Milestone 1 — foundation only; no biological processing or benchmark result exists.** This repository is nonclinical research software. M1 contains executable validation, synthetic fixtures, schemas, and architecture contracts only. It has **not** processed HG001, invoked GATK or DeepVariant, or produced benchmark results.
@@ -53,3 +55,4 @@ Only the deterministic, explicitly synthetic nonhuman FASTQ fixture recipe is pu
 M1 foundation; M2 acquisition; M3 preprocessing; M4 callers; M5 benchmarking; M6 evidence model; M7 explorer; M8 deployment experiment; M9 publication. See [milestones](docs/milestones.md), [architecture](docs/architecture.md), [contracts](docs/data-contracts.md), and [scientific validity](docs/scientific-validity.md). This is an external, unbranded nf-core-inspired structure—not an official nf-core pipeline or Sarek replacement.
 
 Authoritative sources and access dates are recorded in [`docs/source-ledger.yaml`](docs/source-ledger.yaml).
+
