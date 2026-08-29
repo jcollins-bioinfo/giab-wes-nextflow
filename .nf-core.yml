@@ -1,0 +1,20 @@
+repository_type: pipeline
+nf_core_version: 4.1.0
+template:
+  name: giab-wes-nextflow
+  description: External unbranded foundation; not an official nf-core pipeline.
+lint:
+  # This external, unbranded repository intentionally does not carry the complete
+  # official nf-core template, branding, deployment, AWS, email, or website files.
+  files_exist: false
+  files_unchanged: false
+  # Stable workflow-output publication replaces template process publishDir behavior.
+  nextflow_config: false
+  # M1 has no biological MultiQC output; this file is intentionally only a shell.
+  multiqc_config: false
+  # M1 tests a foundation JSON contract, not the template versions.yml convention.
+  nf_test_content: false
+  # The public repository slug is intentionally unbranded and contains hyphens.
+  pipeline_name_conventions: false
+  # This is external software and does not use nf-core badges/template wording.
+  readme: false

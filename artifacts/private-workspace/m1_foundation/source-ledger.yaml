@@ -1,0 +1,31 @@
+access_date: 2026-08-29
+status: "CI directly established that nf-schema 2.8.0 requires Nextflow >=26.04.0; the supported minimum was raised to 26.04.6 by explicit project-owner decision. Other live source queries were blocked by web 401/GitHub API 403."
+sources:
+  - claim: "Nextflow stable and supported minimum 26.04.6; Java 17+"
+    url: https://www.nextflow.io/docs/latest/install.html
+    releases: [https://github.com/nextflow-io/nextflow/releases/tag/v26.04.6]
+  - claim: "nf-core/tools 4.1.0"
+    url: https://github.com/nf-core/tools/releases/tag/4.1.0
+  - claim: "nf-schema 2.8.0"
+    url: https://github.com/nextflow-io/nf-schema/releases/tag/2.8.0
+  - claim: "nf-test 0.9.5"
+    url: https://github.com/askimed/nf-test/releases/tag/v0.9.5
+  - claim: "setup-nextflow v3.0.1"
+    url: https://github.com/nf-core/setup-nextflow/commit/893c28b667aedeba26e37f296d260ccc5bc4d914
+    commit: 893c28b667aedeba26e37f296d260ccc5bc4d914
+  - claim: "setup-nf-test v2.1.0"
+    url: https://github.com/nf-core/setup-nf-test/commit/4069fbbaabe94c08faba4ad261bfa88225ba133f
+    commit: 4069fbbaabe94c08faba4ad261bfa88225ba133f
+  - claim: "DeepVariant 1.10.0 WES; training and chromosome exclusions"
+    url: https://github.com/google/deepvariant/releases/tag/v1.10.0
+    documentation: https://github.com/google/deepvariant/blob/r1.10/docs/deepvariant-details.md
+    cpu: google/deepvariant:1.10.0@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6
+    gpu: google/deepvariant:1.10.0-gpu@sha256:78fb1bb960f3b74a4308b62ba8b6232723d4c75e16a4a50f0d810d7086467dd1
+    contract: "linux/amd64; CPU requires AVX; planned, not M1 evidence"
+  - claim: "GIAB HG001 data and v4.2.1 benchmark"
+    url: https://www.nist.gov/programs-projects/genome-bottle
+  - claim: "GRCh38 no-alt analysis reference"
+    url: https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/references/
+contradictions:
+  - observed: "nf-schema 2.8.0 rejects Nextflow 25.10.4 and requires Nextflow >=26.04.0"
+    resolution: "Owner selected option 1: raise the supported minimum; 26.04.6 is now the sole M1 runtime baseline."

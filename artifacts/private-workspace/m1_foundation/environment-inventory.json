@@ -1,0 +1,9 @@
+{
+  "python": "3.14.4",
+  "java": "25.0.2",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+  "nextflow": null,
+  "nf_test": null,
+  "nf_core": null,
+  "docker": null
+}

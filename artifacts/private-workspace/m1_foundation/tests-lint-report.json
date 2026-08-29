@@ -1,0 +1,14 @@
+{
+  "status": "partial_environment_limited",
+  "passed": [
+    "python publisher unittest",
+    "samplesheet positive/negative checks",
+    "JSON parse",
+    "git diff --check"
+  ],
+  "warnings": [
+    "jsonschema dependency unavailable: network 403",
+    "pre-commit unavailable",
+    "Nextflow/nf-test/nf-core/Docker unavailable"
+  ]
+}

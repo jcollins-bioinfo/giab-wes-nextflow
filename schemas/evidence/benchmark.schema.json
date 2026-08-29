@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/evidence-benchmark/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "truth_tp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "query_tp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fn": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unk": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "precision": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "recall": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "f1": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evaluated_bases": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "synthetic",
+    "truth_tp",
+    "query_tp",
+    "fp",
+    "fn",
+    "unk",
+    "precision",
+    "recall",
+    "f1",
+    "evaluated_bases"
+  ]
+}

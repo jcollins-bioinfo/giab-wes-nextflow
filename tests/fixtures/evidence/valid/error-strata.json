@@ -1,0 +1,13 @@
+{
+  "_schema": "schemas/evidence/error-strata.schema.json",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "overlap_policy": "exclusive_priority",
+  "strata": [
+    {
+      "name": "synthetic",
+      "fp": 1,
+      "fn": 1
+    }
+  ]
+}

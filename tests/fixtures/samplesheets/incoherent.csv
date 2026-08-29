@@ -1,0 +1,2 @@
+sample,library,lane,read_group_id,platform_unit,fastq_1,fastq_2,sequencing_center,platform
+SYNTHETIC_NONHUMAN,LIB1,L001,SYNTH.RG1,SYNTH.PU1,tests/data/synthetic_nonhuman_R1.fastq.gz,tests/data/synthetic_nonhuman_R2.fastq.gz,SYNTH_CENTER,ONT

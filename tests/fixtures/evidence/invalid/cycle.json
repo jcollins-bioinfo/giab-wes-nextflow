@@ -1,0 +1,21 @@
+{
+  "_schema": "schemas/evidence/lineage.schema.json",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "nodes": [
+    "a",
+    "b"
+  ],
+  "edges": [
+    {
+      "from": "a",
+      "to": "b",
+      "relation": "x"
+    },
+    {
+      "from": "b",
+      "to": "a",
+      "relation": "x"
+    }
+  ]
+}

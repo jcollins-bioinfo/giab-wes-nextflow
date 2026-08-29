@@ -1,0 +1,19 @@
+{
+  "_schema": "schemas/evidence/coverage.schema.json",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "design_domain": {
+    "name": "design",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "calling_domain": {
+    "name": "calling",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "evaluation_domain": {
+    "name": "evaluation",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "evaluated_bases": 100,
+  "coverage_fraction": 0.5
+}
