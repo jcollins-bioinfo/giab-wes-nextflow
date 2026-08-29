@@ -1,0 +1,13 @@
+.nextflow*
+work/
+results/
+.nf-test/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+artifacts/private-workspace/**/_incomplete/
+# The deterministic synthetic FASTQs are materialized from the tracked generator.
+# Keeping generated gzip bytes out of Git makes the review diff text-only.
+tests/data/synthetic_nonhuman_R1.fastq.gz
+tests/data/synthetic_nonhuman_R2.fastq.gz

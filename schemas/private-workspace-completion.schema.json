@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/private-workspace-completion/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "milestone": {
+      "const": "m1_foundation"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "completed_path": {
+      "type": "string",
+      "pattern": "^m1_foundation/runs/completed/[A-Za-z0-9._-]+$"
+    },
+    "inventory_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "const": "completed"
+    }
+  },
+  "required": [
+    "schema_version",
+    "milestone",
+    "run_id",
+    "manifest_sha256",
+    "completed_path",
+    "inventory_count",
+    "status"
+  ]
+}

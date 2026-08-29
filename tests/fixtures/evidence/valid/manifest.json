@@ -1,0 +1,16 @@
+{
+  "_schema": "schemas/evidence/evidence-manifest.schema.json",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "files": [
+    {
+      "path": "run.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "bytes": 1,
+      "media_type": "application/json",
+      "schema_id": "https://example.org/run",
+      "schema_version": "1.0.0",
+      "semantic_role": "synthetic_run"
+    }
+  ]
+}
