@@ -3,7 +3,7 @@ from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts"))
 from acquire_m2 import acquire,destination,lock,redact
-from prepare_m2 import bed_to_interval_list,build_domains,interval_list_to_bed,read_dict
+from prepare_m2 import bed_to_interval_list,build_domains,interval_list_to_bed,materialize_reference,read_dict,verify_canonical_gate
 class Handler(BaseHTTPRequestHandler):
  data=b"synthetic-public-fixture"*100; ignore_range=False; failures=0; truncate_once=False
  def do_GET(self):
@@ -47,6 +47,20 @@ class M2DataTest(unittest.TestCase):
   dictionary=self.root/"ref.dict";dictionary.write_text("@HD\tVN:1.6\n@SQ\tSN:chr1\tLN:20\n@SQ\tSN:chr20\tLN:20\n@SQ\tSN:chr21\tLN:20\n@SQ\tSN:chr22\tLN:20\n@SQ\tSN:chrX\tLN:20\n")
   target=self.root/"target.bed";target.write_text("chr1\t0\t1\ta\nchr1\t18\t20\tb\nchr20\t5\t6\tc\n");il=self.root/"x.interval_list";rows=bed_to_interval_list(target,dictionary,il);self.assertIn("chr1\t1\t1\t+\ta",il.read_text());back=self.root/"back.bed";self.assertEqual(interval_list_to_bed(il,read_dict(dictionary),back),rows)
   truth=self.root/"truth.bed";truth.write_text("chr1\t0\t20\nchr20\t0\t20\n");out=self.root/"domains";first=build_domains(target,truth,dictionary,out,"run",100);hashes=[x["sha256"] for x in first];second=build_domains(target,truth,dictionary,out,"run",100);self.assertEqual(hashes,[x["sha256"] for x in second]);self.assertEqual((out/"R_call.bed").read_text(),"chr1\t0\t20\nchr20\t0\t20\n");self.assertEqual([x["bases"] for x in first],[4,40,4,1])
+ def test_reference_reuse_must_match_compressed_source(self):
+  import gzip
+  gz=self.root/"ref.fa.gz";fa=self.root/"ref.fa"
+  with gzip.open(gz,"wb") as stream:stream.write(b">chr1\nAC\n")
+  materialize_reference(gz,fa);materialize_reference(gz,fa)
+  fa.write_bytes(b">chr1\nGT\n")
+  with self.assertRaisesRegex(ValueError,"does not match"):materialize_reference(gz,fa)
+ def test_canonical_gate_binds_inputs_and_threshold(self):
+  bed=self.root/"target.bed";dictionary=self.root/"source.dict";bed.write_bytes(b"bed");dictionary.write_bytes(b"dict")
+  gate={"canonical_domains_allowed":True,"approved_artifacts":{"target_bed_sha256":hashlib.sha256(b"bed").hexdigest(),"source_dict_sha256":hashlib.sha256(b"dict").hexdigest()},"min_liftover_pct":.95}
+  verify_canonical_gate(gate,bed,dictionary,.95)
+  with self.assertRaisesRegex(ValueError,"threshold"):verify_canonical_gate(gate,bed,dictionary,.5)
+  bed.write_bytes(b"wrong")
+  with self.assertRaisesRegex(ValueError,"target_bed_sha256"):verify_canonical_gate(gate,bed,dictionary,.95)
  def test_unknown_contig_rejected(self):
   d=self.root/"d";d.write_text("@SQ\tSN:chr1\tLN:10\n");b=self.root/"b";b.write_text("1\t0\t1\n")
   with self.assertRaises(ValueError):bed_to_interval_list(b,d,self.root/"o")
