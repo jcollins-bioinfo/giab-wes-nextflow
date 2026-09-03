@@ -42,5 +42,6 @@ def main():
   try: validate(ROOT/load(f)['_schema'],f)
   except (ValueError,Exception): rejected+=1
   else: raise SystemExit(f'invalid fixture accepted: {f}')
- print(f'contracts valid; invalid fixtures rejected={rejected}')
+ validate(ROOT/'schemas/m2-source-manifest.schema.json',ROOT/'config/m2-resources.json')
+ print(f'contracts valid; invalid fixtures rejected={rejected}; M2 source manifest valid')
 if __name__=='__main__': main()

@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
-import argparse,hashlib,json
+import argparse,json
 from pathlib import Path
 from jsonschema import Draft202012Validator,FormatChecker
-ROOT=Path(__file__).resolve().parents[1]
-def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+from acquire_m2 import checksum
+ROOT=Path(__file__).parents[1]
+def validate(schema,data):Draft202012Validator(json.loads(Path(schema).read_text()),format_checker=FormatChecker()).validate(data)
 def main():
- p=argparse.ArgumentParser();p.add_argument('--workspace',required=True);a=p.parse_args();root=Path(a.workspace);prov=json.loads((root/'registry/m2-acquisition.json').read_text());schema=json.loads((ROOT/'schemas/m2-provenance.schema.json').read_text());Draft202012Validator(schema,format_checker=FormatChecker()).validate(prov)
- for x in prov['artifacts']:
-  f=root/x['path'];assert f.stat().st_size==x['bytes'] and sha(f)==x['sha256'] and x['expected_md5']==x['observed_md5']
- line=root/'registry/m2-lineage.json';assert line.is_file();print('M2 acquisition and lineage valid')
-if __name__=='__main__':main()
+ p=argparse.ArgumentParser();p.add_argument("--workspace");p.add_argument("--run-id");a=p.parse_args();manifest=json.loads((ROOT/"config/m2-resources.json").read_text());validate(ROOT/"schemas/m2-source-manifest.schema.json",manifest)
+ gate=json.loads((ROOT/"config/m2-target-design.json").read_text());assert gate["classification"] in {"confirmed","inferred","unresolved","contradicted"}
+ if a.workspace:
+  if not a.run_id:raise ValueError("--run-id required with --workspace")
+  root=Path(a.workspace);acq=json.loads((root/"registry/runs"/a.run_id/"acquisition.json").read_text());validate(ROOT/"schemas/m2-acquisition.schema.json",acq)
+  for item in acq["observations"]:
+   path=root/item["destination"];assert checksum(path)==item["sha256"]
+  transform=root/"registry/runs"/a.run_id/"transformation.json"
+  if transform.exists():
+   for domain in json.loads(transform.read_text()).get("domains",[]):validate(ROOT/"schemas/m2-domain.schema.json",domain)
+ print("M2 contracts valid")
+if __name__=="__main__":main()
