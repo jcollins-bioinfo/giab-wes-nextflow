@@ -11,6 +11,21 @@ def sha(path):
  with Path(path).open("rb") as f:
   for b in iter(lambda:f.read(1<<20),b""):h.update(b)
  return h.hexdigest()
+def materialize_reference(gz,fa):
+ tmp=Path(str(fa)+".tmp");tmp.unlink(missing_ok=True)
+ with gzip.open(gz,"rb") as src,tmp.open("wb") as dst:shutil.copyfileobj(src,dst)
+ if fa.exists():
+  if sha(tmp)!=sha(fa):tmp.unlink();raise ValueError("existing reference FASTA does not match the verified compressed source")
+  tmp.unlink()
+ else:os.replace(tmp,fa)
+def verify_canonical_gate(gate,target_bed,source_dict,min_liftover_pct):
+ if not gate.get("canonical_domains_allowed"):raise RuntimeError("capture-design gate blocks canonical liftover/domain publication")
+ approved=gate.get("approved_artifacts")
+ if not isinstance(approved,dict):raise ValueError("confirmed gate lacks approved artifact checksums")
+ for key,path in (("target_bed_sha256",target_bed),("source_dict_sha256",source_dict)):
+  expected=approved.get(key)
+  if not isinstance(expected,str) or len(expected)!=64 or sha(path)!=expected:raise ValueError(f"{key} does not match confirmed gate")
+ if gate.get("min_liftover_pct") is None or min_liftover_pct!=gate["min_liftover_pct"]:raise ValueError("liftover threshold does not match confirmed gate")
 def read_dict(path):
  lengths={}
  for line in Path(path).read_text().splitlines():
@@ -77,21 +92,18 @@ def build_domains(target,truth,dictionary,out,run_id,padding=100):
 def main():
  p=argparse.ArgumentParser();p.add_argument("--workspace",required=True);p.add_argument("--run-id",required=True);p.add_argument("--target-bed");p.add_argument("--source-dict");p.add_argument("--picard",default="picard");p.add_argument("--min-liftover-pct",type=float,default=.95);a=p.parse_args();root=Path(a.workspace);gate=json.loads((Path(__file__).parents[1]/"config/m2-target-design.json").read_text())
  gz=root/"references/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz";fa=gz.with_suffix("")
- if not fa.exists():
-  tmp=Path(str(fa)+".tmp")
-  with gzip.open(gz,"rb") as src,tmp.open("wb") as dst:shutil.copyfileobj(src,dst)
-  os.replace(tmp,fa)
+ materialize_reference(gz,fa)
  subprocess.run(["samtools","faidx",str(fa)],check=True);dictionary=fa.with_suffix(".dict");subprocess.run(["samtools","dict","-o",str(dictionary),str(fa)],check=True)
- evidence={"schema_version":"1.0.0","run_id":a.run_id,"reference":[{"id":"grch38_fasta","sha256":sha(fa)},{"id":"grch38_fai","sha256":sha(str(fa)+".fai")},{"id":"grch38_dict","sha256":sha(dictionary)}],"capture_design_classification":gate["classification"],"domains":[],"status":"reference_prepared_domain_blocked"}
+ evidence={"schema_version":"1.0.0","run_id":a.run_id,"reference":[{"id":"grch38_fasta","path":str(fa.relative_to(root)),"sha256":sha(fa)},{"id":"grch38_fai","path":str(Path(str(fa)+".fai").relative_to(root)),"sha256":sha(str(fa)+".fai")},{"id":"grch38_dict","path":str(dictionary.relative_to(root)),"sha256":sha(dictionary)}],"capture_design_classification":gate["classification"],"domains":[],"status":"reference_prepared_domain_blocked"}
  if a.target_bed:
-  if not gate["canonical_domains_allowed"]:raise RuntimeError("capture-design gate blocks canonical liftover/domain publication")
   if not a.source_dict:raise ValueError("--source-dict required")
+  verify_canonical_gate(gate,a.target_bed,a.source_dict,a.min_liftover_pct)
   work=root/"cache"/a.run_id;work.mkdir(parents=True,exist_ok=True);source_il=work/"targets.hg19.interval_list";bed_to_interval_list(a.target_bed,a.source_dict,source_il);lifted_il=work/"targets.GRCh38.interval_list";rejected=work/"targets.rejected.interval_list";chain=root/"references/chains/hg19ToHg38.over.chain.gz"
   version=subprocess.run([a.picard,"--version"],check=True,capture_output=True,text=True).stdout.strip()
   if "3.1.1" not in version:raise RuntimeError(f"Picard 3.1.1 required, observed {version}")
   subprocess.run([a.picard,"LiftOverIntervalList",f"I={source_il}",f"O={lifted_il}",f"SD={dictionary}",f"CHAIN={chain}",f"REJECT={rejected}",f"MIN_LIFTOVER_PCT={a.min_liftover_pct}"],check=True)
   source_rows=read_bed(a.target_bed,read_dict(a.source_dict));lifted_bed=work/"targets.GRCh38.bed";lifted=interval_list_to_bed(lifted_il,read_dict(dictionary),lifted_bed);rejected_rows=[x for x in rejected.read_text().splitlines() if x and not x.startswith("@")] ;merged_lifted=merge(lifted)
   source_by_id={x[3]:(x[2]-x[1]) for x in source_rows};altered=sum((e-s)!=source_by_id.get(name) for c,s,e,name in lifted)
-  evidence["liftover"]={"tool":"Picard LiftOverIntervalList","observed_version":version,"required_version":"3.1.1","min_liftover_pct":a.min_liftover_pct,"source_sha256":sha(a.target_bed),"chain_sha256":sha(chain),"input_intervals":len(source_rows),"input_bases":sum(e-s for _,s,e,_ in source_rows),"lifted_intervals":len(lifted),"lifted_bases":sum(e-s for _,s,e,_ in lifted),"rejected_intervals":len(rejected_rows),"rejected_sha256":sha(rejected),"split_intervals":max(0,len(lifted)+len(rejected_rows)-len(source_rows)),"merged_intervals":len(merged_lifted),"altered_length_intervals":altered};evidence["domains"]=build_domains(lifted_bed,root/"references/truth/HG001_GRCh38_1_22_v4.2.1_benchmark.bed",dictionary,root/"references/domains",a.run_id);evidence["status"]="domains_materialized"
+  evidence["liftover"]={"tool":"Picard LiftOverIntervalList","observed_version":version,"required_version":"3.1.1","min_liftover_pct":a.min_liftover_pct,"source_sha256":sha(a.target_bed),"source_dict_sha256":sha(a.source_dict),"lifted_bed_path":str(lifted_bed.relative_to(root)),"lifted_bed_sha256":sha(lifted_bed),"chain_sha256":sha(chain),"input_intervals":len(source_rows),"input_bases":sum(e-s for _,s,e,_ in source_rows),"lifted_intervals":len(lifted),"lifted_bases":sum(e-s for _,s,e,_ in lifted),"rejected_intervals":len(rejected_rows),"rejected_sha256":sha(rejected),"split_intervals":max(0,len(lifted)+len(rejected_rows)-len(source_rows)),"merged_intervals":len(merged_lifted),"altered_length_intervals":altered};evidence["domains"]=build_domains(lifted_bed,root/"references/truth/HG001_GRCh38_1_22_v4.2.1_benchmark.bed",dictionary,root/"references/domains",a.run_id);evidence["status"]="domains_materialized"
  out=root/"registry/runs"/a.run_id/"transformation.json";out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(evidence,sort_keys=True,indent=2)+"\n");print(out)
 if __name__=="__main__":main()

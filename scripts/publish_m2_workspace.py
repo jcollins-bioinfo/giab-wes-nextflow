@@ -6,17 +6,34 @@ from acquire_m2 import checksum, destination, now, safe_root
 ROOT=Path(__file__).parents[1]
 def publish(drive_root,staging,run_id,source_manifest=ROOT/"config/m2-resources.json"):
  drive=safe_root(drive_root);stage=safe_root(staging);run_id=str(run_id)
- if not re.fullmatch(r"[A-Za-z0-9._-]+",run_id):raise ValueError("invalid run id")
+ if run_id in {".",".."} or not re.fullmatch(r"[A-Za-z0-9._-]+",run_id):raise ValueError("invalid run id")
  spec=json.loads(Path(source_manifest).read_text());acq=stage/"registry/runs"/run_id/"acquisition.json"
  if not acq.is_file():raise ValueError("missing acquisition evidence")
  transform=stage/"registry/runs"/run_id/"transformation.json"
- if not transform.is_file() or json.loads(transform.read_text()).get("status")!="domains_materialized":raise ValueError("Gate B blocked: canonical domains not materialized")
- observations=json.loads(acq.read_text())["observations"];verified={x["id"]:x for x in observations};files=[]
+ transformation=json.loads(transform.read_text()) if transform.is_file() else {}
+ if transformation.get("status")!="domains_materialized":raise ValueError("Gate B blocked: canonical domains not materialized")
+ acquisition=json.loads(acq.read_text())
+ if acquisition.get("source_manifest_sha256")!=checksum(source_manifest):raise ValueError("acquisition manifest does not match publication manifest")
+ observations=acquisition.get("observations",[]);verified={x["id"]:x for x in observations};required={x["id"] for x in spec["resources"]}
+ if len(verified)!=len(observations) or set(verified)!=required:raise ValueError("incomplete or unexpected acquisition inventory")
+ files=[]
  for item in spec["resources"]:
-  if item["id"] not in verified:continue
   src=destination(stage,item["destination"])
   if not src.is_file() or checksum(src)!=verified[item["id"]]["sha256"]:raise ValueError("unverified staging artifact")
   files.append((Path(item["destination"]),src,item["id"]))
+ prepared=[]
+ prepared.extend((x["id"],x["path"],x["sha256"]) for x in transformation.get("reference",[]))
+ liftover=transformation.get("liftover",{})
+ prepared.append(("capture_targets_lifted",liftover.get("lifted_bed_path"),liftover.get("lifted_bed_sha256")))
+ domains=transformation.get("domains",[])
+ if len(domains)!=4 or {x.get("artifact_id") for x in domains}!={"T_design","R_call","R_eval_full","R_eval_holdout"}:raise ValueError("incomplete prepared domain inventory")
+ prepared.extend((x["artifact_id"],f"references/domains/{x['path']}",x["sha256"]) for x in domains)
+ if len(prepared)!=8 or {x[0] for x in prepared}!={"grch38_fasta","grch38_fai","grch38_dict","capture_targets_lifted","T_design","R_call","R_eval_full","R_eval_holdout"}:raise ValueError("incomplete prepared artifact inventory")
+ for artifact_id,relative,expected in prepared:
+  if not relative:raise ValueError("prepared artifact path missing")
+  src=destination(stage,relative)
+  if not src.is_file() or checksum(src)!=expected:raise ValueError("prepared artifact does not match transformation evidence")
+  files.append((Path("prepared")/relative,src,artifact_id))
  for name in ("acquisition.json","transformation.json"):
   src=stage/"registry/runs"/run_id/name
   if src.is_file():files.append((Path("evidence")/name,src,name.removesuffix(".json")))
