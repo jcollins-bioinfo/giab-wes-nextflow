@@ -3,6 +3,8 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts"))
 from publish_m2_workspace import publish
 from acquire_m2 import checksum
+from giab_wes_nextflow.publication import publish
+from giab_wes_nextflow.acquisition import checksum
 class PublishM2Test(unittest.TestCase):
  def setUp(self):
   self.tmp=tempfile.TemporaryDirectory();base=Path(self.tmp.name);self.drive=base/"giab-wes-nextflow-private";self.stage=base/"m2-stage";self.drive.mkdir();self.stage.mkdir();self.run="test-run"

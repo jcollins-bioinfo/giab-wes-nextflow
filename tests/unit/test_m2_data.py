@@ -1,9 +1,11 @@
-import hashlib,json,sys,tempfile,threading,unittest
+import hashlib,json,tempfile,threading,unittest
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts"))
 from acquire_m2 import acquire,destination,lock,redact
 from prepare_m2 import bed_to_interval_list,build_domains,interval_list_to_bed,materialize_reference,read_dict,verify_canonical_gate
+from giab_wes_nextflow.acquisition import acquire,destination,lock,redact
+from giab_wes_nextflow.preparation import bed_to_interval_list,build_domains,interval_list_to_bed,materialize_reference,read_dict,verify_canonical_gate
 class Handler(BaseHTTPRequestHandler):
  data=b"synthetic-public-fixture"*100; ignore_range=False; failures=0; truncate_once=False
  def do_GET(self):

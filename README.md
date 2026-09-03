@@ -58,6 +58,13 @@ Authoritative sources and access dates are recorded in [`docs/source-ledger.yaml
 
 ## M2 canonical data driver
 
-`config/m2-resources.json` locks the one HG001 lane, exact GRCh38 source, and GIAB v4.2.1 truth resources. Run `python scripts/acquire_m2.py --workspace /path/to/giab-wes-nextflow-private`; partial downloads resume and completed bytes are re-verified before reuse. Then use `prepare_m2.py` with the verified hg19 capture BED and chain. See [capture evidence](docs/capture-design.md) and the ordered [Colab notebook](notebooks/m2_colab.ipynb). Human and large reference bytes remain private and ignored by Git.
+`config/m2-resources.json` locks the one HG001 lane, exact GRCh38 source, and GIAB v4.2.1 truth resources. Run `python scripts/acquire_m2.py --preflight-only --workspace /path/to/m2-stage
+# Then choose a unique ID:
+python scripts/acquire_m2.py --workspace /path/to/m2-stage --run-id m2-YYYYMMDDTHHMMSSZ`; partial downloads resume and completed bytes are re-verified before reuse. Then use `prepare_m2.py` with the verified hg19 capture BED and chain. See [capture evidence](docs/capture-design.md) and the ordered [Colab notebook](notebooks/m2_colab.ipynb). Human and large reference bytes remain private and ignored by Git.
 
 M2 distinguishes implementation readiness from canonical data readiness. **Gate A** provides strict source contracts, synthetic downloader/domain tests, and private-workspace tooling. **Gate B has not run and is blocked:** the public metadata does not bind this library to an exact capture-design target file. See [M2 operations](docs/m2-data-provenance.md), the machine-readable [target decision](config/m2-target-design.json), and [ADR 0008](docs/adr/0008-m2-canonical-data.md). No download, Drive publication, Colab architecture, or canonical domain is claimed without immutable execution evidence.
+
+## Colab launch
+
+Use the [notebook launch center](notebooks/README.md) or open M2 directly:
+[![Open M2 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jcollins-bioinfo/giab-wes-nextflow/blob/main/notebooks/m2_colab.ipynb). The launcher records the resolved commit and keeps canonical Gate B fail-closed.
