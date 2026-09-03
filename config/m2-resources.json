@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "dataset": {"sample":"HG001","alternate_id":"NA12878","library":"NIST7035","lane":"L001","index":"TAAGGCGA","platform":"Illumina HiSeq 2500","strategy":"WES","layout":"paired-end","read_length":"approximately 2x101","lineage":{"run":"SRR3197785","experiment":"SRX1608029","study":"SRP012400","bioproject":"PRJNA162355"}},
+  "resources": [
+    {"id":"fastq_r1","role":"raw_read_1","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/NIST7035_TAAGGCGA_L001_R1_001.fastq.gz","md5":"630c611d62d995c5aeb60211add2f26e","path":"inputs/HG001/NIST7035_TAAGGCGA_L001_R1_001.fastq.gz"},
+    {"id":"fastq_r2","role":"raw_read_2","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/NIST7035_TAAGGCGA_L001_R2_001.fastq.gz","md5":"0b9c9976707eebe9a4a2d196afdbe1bd","path":"inputs/HG001/NIST7035_TAAGGCGA_L001_R2_001.fastq.gz"},
+    {"id":"reference_gz","role":"reference_source","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/references/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz","md5":"3a3347eae0893f96ecf495d1c39e2284","path":"references/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz"},
+    {"id":"reference_gz_fai","role":"upstream_reference_index","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/references/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz.fai","md5":"5fddbc109c82980f9436aa5c21a57c61","path":"references/GRCh38/source/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz.fai"},
+    {"id":"reference_gzi","role":"upstream_reference_index","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/references/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz.gzi","md5":"cfa1ee11b1ecb29f936578b27014fbe0","path":"references/GRCh38/source/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz.gzi"},
+    {"id":"truth_vcf","role":"benchmark_truth","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/NA12878_HG001/NISTv4.2.1/GRCh38/HG001_GRCh38_1_22_v4.2.1_benchmark.vcf.gz","md5":"ec61d76ad725d808e3a9e1c8acec402a","path":"references/truth/HG001_GRCh38_1_22_v4.2.1_benchmark.vcf.gz"},
+    {"id":"truth_tbi","role":"benchmark_truth_index","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/NA12878_HG001/NISTv4.2.1/GRCh38/HG001_GRCh38_1_22_v4.2.1_benchmark.vcf.gz.tbi","md5":"476166561e6a486aee67d727dbd102ef","path":"references/truth/HG001_GRCh38_1_22_v4.2.1_benchmark.vcf.gz.tbi"},
+    {"id":"truth_bed","role":"high_confidence_domain","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/NA12878_HG001/NISTv4.2.1/GRCh38/HG001_GRCh38_1_22_v4.2.1_benchmark.bed","md5":"e1ea90c830f981d29a46043eb618e7bf","path":"references/truth/HG001_GRCh38_1_22_v4.2.1_benchmark.bed"}
+  ]
+}
