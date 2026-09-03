@@ -1,4 +1,3 @@
-[![CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml/badge.svg)](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml)
 
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
