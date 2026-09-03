@@ -11,3 +11,25 @@ artifacts/private-workspace/**/_incomplete/
 # Keeping generated gzip bytes out of Git makes the review diff text-only.
 tests/data/synthetic_nonhuman_R1.fastq.gz
 tests/data/synthetic_nonhuman_R2.fastq.gz
+# M2 canonical human data, references, targets, and generated private provenance
+inputs/
+references/
+registry/m2-*.json
+*.part
+cache/
+*.fastq.gz
+*.fq.gz
+*.fasta
+*.fa
+*.fai
+*.dict
+*.gzi
+*.bam
+*.bai
+*.cram
+*.crai
+*.vcf
+*.vcf.gz
+*.tbi
+*.bcf
+m2_data_provenance/

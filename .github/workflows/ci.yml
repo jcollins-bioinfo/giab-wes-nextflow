@@ -20,6 +20,7 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: pre-commit run --all-files
       - run: python scripts/validate_contracts.py
+      - run: python scripts/validate_m2.py
       - run: python -m unittest discover -s tests/unit -v
       - run: python tests/data/generate_fixture.py
       - run: python scripts/check_samplesheets.py

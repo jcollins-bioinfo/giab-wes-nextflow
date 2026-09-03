@@ -2,7 +2,7 @@ cff-version: 1.2.0
 title: "GIAB HG001 WES: a dual-caller Nextflow benchmark and evidence explorer"
 message: "Cite this software; M1 is foundation-only and nonclinical."
 type: software
-version: 0.1.0-dev.1
+version: 0.2.0-dev.1
 license: MIT
 authors:
   - family-names: Collins
