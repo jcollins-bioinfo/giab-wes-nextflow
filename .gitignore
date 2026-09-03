@@ -33,3 +33,16 @@ cache/
 *.tbi
 *.bcf
 m2_data_provenance/
+dist/
+build/
+*.egg-info/
+.venv/
+.env
+*.bam
+*.cram
+*.bcf
+*.vcf.gz
+*.fastq.gz
+*.fq.gz
+*.part
+*.incomplete

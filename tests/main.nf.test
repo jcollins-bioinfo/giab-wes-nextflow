@@ -15,7 +15,7 @@ nextflow_pipeline {
             assert process("EMIT_FOUNDATION_CONTRACT").success
             def contract = new groovy.json.JsonSlurper().parse(process("EMIT_FOUNDATION_CONTRACT").out.contract.get(0))
             assert contract.status == 'foundation_only'
-            assert contract.pipeline_version == '0.2.0-dev.1'
+            assert contract.pipeline_version == '0.2.0-dev.2'
             assert contract.fixture == 'synthetic_nonhuman'
             assert contract.biological_processing == false
             assert contract.benchmark_result == false

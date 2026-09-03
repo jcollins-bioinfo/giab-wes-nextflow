@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "giab-wes-nextflow"
+dynamic = ["version"]
+description = "Reproducible GIAB HG001 WES acquisition and provenance tooling"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "John Patrick Collins"}]
+dependencies = ["jsonschema>=4.20"]
+
+[project.optional-dependencies]
+dev = ["build>=1.2", "pre-commit>=4", "pytest>=8"]
+
+[project.scripts]
+giab-wes-acquire-m2 = "giab_wes_nextflow.acquisition:main"
+giab-wes-prepare-m2 = "giab_wes_nextflow.preparation:main"
+giab-wes-validate-m2 = "giab_wes_nextflow.validation:main"
+giab-wes-publish-m2 = "giab_wes_nextflow.publication:main"
+giab-wes-mirror-m2 = "giab_wes_nextflow.mirror:main"
+
+[tool.hatch.version]
+path = "src/giab_wes_nextflow/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/giab_wes_nextflow"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "scripts", "config", "schemas", "tests", "notebooks", "pyproject.toml", "README.md", "LICENSE"]
