@@ -26,6 +26,24 @@ sources:
     url: https://www.nist.gov/programs-projects/genome-bottle
   - claim: "GRCh38 no-alt analysis reference"
     url: https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/references/
+  - claim: "Original NIST7035 L001 FASTQ byte identities and pairing"
+    url: https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data_indexes/NA12878/sequence.index.NA12878_Illumina_HiSeq_Exome_Garvan_fastq_09252015
+    access_date: 2026-09-03
+  - claim: "SRR3197785 belongs to SRX1608029/SRP012400/PRJNA162355; WXS hybrid selection on HiSeq 2500"
+    url: https://www.ncbi.nlm.nih.gov/sra/SRX1608029
+    access_date: 2026-09-03
+  - claim: "GIAB HG001 GRCh38 v4.2.1 benchmark resources and MD5 manifest"
+    url: https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/NA12878_HG001/NISTv4.2.1/
+    access_date: 2026-09-03
+  - claim: "Classic UCSC hg19-to-hg38 liftover chain; MD5 35887f73fe5e2231656504d1f6430900"
+    url: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/
+    access_date: 2026-09-03
+  - claim: "Relevant legacy Nextera Rapid Capture Exome vendor downloads"
+    url: https://support.illumina.com/sequencing/sequencing_kits/nextera-rapid-capture-exome-kit/downloads.html
+    access_date: 2026-09-03
+  - claim: "Picard LiftOverIntervalList 3.1.1 behavior"
+    url: https://github.com/broadinstitute/picard/releases/tag/3.1.1
+    access_date: 2026-09-03
 contradictions:
   - observed: "nf-schema 2.8.0 rejects Nextflow 25.10.4 and requires Nextflow >=26.04.0"
     resolution: "Owner selected option 1: raise the supported minimum; 26.04.6 is now the sole M1 runtime baseline."

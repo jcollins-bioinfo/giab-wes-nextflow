@@ -2,7 +2,7 @@
 
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
-> **Milestone 1 — foundation only; no biological processing or benchmark result exists.** This repository is nonclinical research software. M1 contains executable validation, synthetic fixtures, schemas, and architecture contracts only. It has **not** processed HG001, invoked GATK or DeepVariant, or produced benchmark results.
+> **Milestone 2 — data and provenance.** This repository now provides checksum-gated canonical acquisition, reference preparation, target liftover, and frozen domain construction. It performs no read processing, variant calling, or benchmarking.
 
 ## Motivation and architecture
 
@@ -17,7 +17,7 @@ Nextflow canonical run → immutable evidence → tested Python model → Dash r
 
 The biological processes and Python/Dash layers are planned, not implemented. ONT and somatic workflows are outside v1.
 
-## M1 quick start (synthetic, nonhuman fixture only)
+## Foundation quick start (synthetic, nonhuman fixture only)
 
 ```bash
 python tests/data/generate_fixture.py
@@ -52,6 +52,12 @@ Only the deterministic, explicitly synthetic nonhuman FASTQ fixture recipe is pu
 
 ## Roadmap and limitations
 
-M1 foundation; M2 acquisition; M3 preprocessing; M4 callers; M5 benchmarking; M6 evidence model; M7 explorer; M8 deployment experiment; M9 publication. See [milestones](docs/milestones.md), [architecture](docs/architecture.md), [contracts](docs/data-contracts.md), and [scientific validity](docs/scientific-validity.md). This is an external, unbranded nf-core-inspired structure—not an official nf-core pipeline or Sarek replacement.
+M1 foundation and architecture; M2 data and provenance; M3 FASTQ QC, alignment, preprocessing, and alignment/coverage QC; M4 independently selectable GATK HaplotypeCaller and DeepVariant WES callers; M5 common GIAB benchmarking and explicit caller accuracy-versus-resource comparison; M6 operational hardening, Seqera observability, and cloud/HPC profiles; M7 comprehensive QA, canonical execution, reproducibility audit, and v1.0 release; M8 Plotly Dash Pipeline Evidence Explorer and deployment; M9 website research showcase and final claim/reproducibility audit. See [milestones](docs/milestones.md), [architecture](docs/architecture.md), [contracts](docs/data-contracts.md), and [scientific validity](docs/scientific-validity.md). This is an external, unbranded nf-core-inspired structure—not an official nf-core pipeline or Sarek replacement.
 
 Authoritative sources and access dates are recorded in [`docs/source-ledger.yaml`](docs/source-ledger.yaml).
+
+## M2 canonical data driver
+
+`config/m2-resources.json` locks the one HG001 lane, exact GRCh38 source, and GIAB v4.2.1 truth resources. Run `python scripts/acquire_m2.py --workspace /path/to/giab-wes-nextflow-private`; partial downloads resume and completed bytes are re-verified before reuse. Then use `prepare_m2.py` with the verified hg19 capture BED and chain. See [capture evidence](docs/capture-design.md) and the ordered [Colab notebook](notebooks/m2_colab.ipynb). Human and large reference bytes remain private and ignored by Git.
+
+M2 distinguishes implementation readiness from canonical data readiness. **Gate A** provides strict source contracts, synthetic downloader/domain tests, and private-workspace tooling. **Gate B has not run and is blocked:** the public metadata does not bind this library to an exact capture-design target file. See [M2 operations](docs/m2-data-provenance.md), the machine-readable [target decision](config/m2-target-design.json), and [ADR 0008](docs/adr/0008-m2-canonical-data.md). No download, Drive publication, Colab architecture, or canonical domain is claimed without immutable execution evidence.

@@ -14,7 +14,7 @@ process EMIT_FOUNDATION_CONTRACT {
     def nfver = nextflow.version.toString()
     """
     cat > foundation-run-contract.json <<'JSON'
-    {"schema_version":"1.0.0","pipeline_version":"0.1.0-dev.1","status":"foundation_only","fixture":"synthetic_nonhuman","input_manifest_sha256":"${hash}","caller_contract":"${callers}","nextflow_version":"${nfver}","profile":"${profile}","biological_processing":false,"benchmark_result":false}
+    {"schema_version":"1.0.0","pipeline_version":"0.2.0-dev.1","status":"foundation_only","fixture":"synthetic_nonhuman","input_manifest_sha256":"${hash}","caller_contract":"${callers}","nextflow_version":"${nfver}","profile":"${profile}","biological_processing":false,"benchmark_result":false}
     JSON
     """
 }
