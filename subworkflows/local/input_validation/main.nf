@@ -14,7 +14,7 @@ workflow INPUT_VALIDATION {
             }
             if ((row.platform ?: 'ILLUMINA') != 'ILLUMINA') error 'platform must be ILLUMINA'
             if (row.fastq_1 == row.fastq_2) error 'R1 and R2 must differ'
-            if (!row.fastq_1.endsWith('.fastq.gz') || !row.fastq_2.endsWith('.fastq.gz')) error 'mates must end .fastq.gz'
+            if (!row.fastq_1.toString().endsWith('.fastq.gz') || !row.fastq_2.toString().endsWith('.fastq.gz')) error 'mates must end .fastq.gz'
             if (!file(row.fastq_1).exists() || !file(row.fastq_2).exists()) error 'mate is not readable'
             def key = required.collect { field -> row[field] }.join('\u001f')
             if (!seenRows.add(key)) error 'duplicate samplesheet row'

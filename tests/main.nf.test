@@ -1,7 +1,6 @@
 nextflow_pipeline {
     name "M1 foundation"
     script "../main.nf"
-    config "../nextflow.config"
     test("valid foundation and stable contract") {
         when {
             params {
@@ -12,8 +11,10 @@ nextflow_pipeline {
         }
         then {
             assert workflow.success
-            assert process("EMIT_FOUNDATION_CONTRACT").success
-            def contract = new groovy.json.JsonSlurper().parse(process("EMIT_FOUNDATION_CONTRACT").out.contract.get(0))
+            assert workflow.trace.succeeded().any { it.name.contains('EMIT_FOUNDATION_CONTRACT') }
+            def contractPath = path("$launchDir/results/foundation/foundation-run-contract.json")
+            assert contractPath.exists()
+            def contract = new groovy.json.JsonSlurper().parse(contractPath)
             assert contract.status == 'foundation_only'
             assert contract.pipeline_version == '0.2.0-dev.1'
             assert contract.fixture == 'synthetic_nonhuman'
@@ -22,5 +23,14 @@ nextflow_pipeline {
             assert contract.caller_contract == 'both'
         }
     }
-    test("invalid caller rejected") { when { params { callers = "other" } } then { assert !workflow.success } }
+    test("invalid caller rejected") {
+        when {
+            params {
+                callers = "other"
+            }
+        }
+        then {
+            assert !workflow.success
+        }
+    }
 }
