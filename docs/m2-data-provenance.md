@@ -17,6 +17,8 @@ The second command prepares only reference resources while the target gate is un
 
 Publication is deliberately unavailable until `transformation.json` says canonical domains were materialized:
 
+Before publication, the publisher requires a complete acquisition inventory tied to the current source-manifest hash and rehashes every downloaded and prepared artifact. The immutable run contains the decompressed FASTA and its generated indexes, the lifted target BED, all four canonical domain BEDs, and acquisition/transformation evidence; it does not depend on the ephemeral staging workspace after completion.
+
 ```bash
 python scripts/publish_m2_workspace.py \
   --staging /content/m2-stage \
