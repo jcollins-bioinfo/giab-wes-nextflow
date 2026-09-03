@@ -1,5 +1,8 @@
 import hashlib,json,sys,tempfile,unittest
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts"))
+from publish_m2_workspace import publish
+from acquire_m2 import checksum
 from giab_wes_nextflow.publication import publish
 from giab_wes_nextflow.acquisition import checksum
 class PublishM2Test(unittest.TestCase):
