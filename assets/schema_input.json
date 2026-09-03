@@ -1,1 +1,54 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"properties":{"sample":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},"library":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},"lane":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},"read_group_id":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},"platform_unit":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},"fastq_1":{"type":"string","pattern":"\\.fastq\\.gz$"},"fastq_2":{"type":"string","pattern":"\\.fastq\\.gz$"},"sequencing_center":{"type":"string","minLength":1},"platform":{"const":"ILLUMINA"}},"required":["sample","library","lane","read_group_id","platform_unit","fastq_1","fastq_2"]}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "sample": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+      },
+      "library": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+      },
+      "lane": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+      },
+      "read_group_id": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+      },
+      "platform_unit": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+      },
+      "fastq_1": {
+        "type": "string",
+        "pattern": "\\.fastq\\.gz$"
+      },
+      "fastq_2": {
+        "type": "string",
+        "pattern": "\\.fastq\\.gz$"
+      },
+      "sequencing_center": {
+        "type": "string",
+        "minLength": 1
+      },
+      "platform": {
+        "const": "ILLUMINA"
+      }
+    },
+    "required": [
+      "sample",
+      "library",
+      "lane",
+      "read_group_id",
+      "platform_unit",
+      "fastq_1",
+      "fastq_2"
+    ]
+  }
+}

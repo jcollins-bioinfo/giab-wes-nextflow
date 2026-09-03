@@ -8,7 +8,13 @@ workflow {
         return
     }
     validateParameters()
-    def rows = samplesheetToList(params.input, "${projectDir}/assets/schema_input.json")
+    def sampleFields = ['sample', 'library', 'lane', 'read_group_id', 'platform_unit', 'fastq_1', 'fastq_2', 'sequencing_center', 'platform']
+    def rows = samplesheetToList(params.input, "${projectDir}/assets/schema_input.json").collect { values ->
+        sampleFields.withIndex().collectEntries { field, index ->
+            def value = field in ['fastq_1', 'fastq_2'] ? projectDir.resolve(values[index].toString()) : values[index]
+            [(field): value]
+        }
+    }
     GIAB_WES(channel.of(rows), params.callers, workflow.profile ?: 'standard')
     completed_contract = GIAB_WES.out.map { contract ->
         log.info 'foundation_only contract emitted'

@@ -1,1 +1,19 @@
-{"schema_version":"1.0.0","classification":"unresolved","candidate":"Illumina Nextera Rapid Capture Expanded Exome, legacy hg19","primary_evidence":[{"url":"https://www.ncbi.nlm.nih.gov/sra/SRX1608029","finding":"Nextera Garvan Institute Exome; WXS hybrid selection; no exact product revision or target-byte identity"},{"url":"https://support.illumina.com/sequencing/sequencing_kits/nextera-rapid-capture-exome-kit/downloads.html","finding":"Relevant vendor download page, but no primary sample-to-file identity link established"}],"canonical_domains_allowed":false,"block_reason":"Exact capture design and coordinate-file byte identity are not defensibly established."}
+{
+  "approved_artifacts": null,
+  "block_reason": "Exact capture design and coordinate-file byte identity are not defensibly established.",
+  "candidate": "Illumina Nextera Rapid Capture Expanded Exome, legacy hg19",
+  "canonical_domains_allowed": false,
+  "classification": "unresolved",
+  "min_liftover_pct": 0.95,
+  "primary_evidence": [
+    {
+      "finding": "Nextera Garvan Institute Exome; WXS hybrid selection; no exact product revision or target-byte identity",
+      "url": "https://www.ncbi.nlm.nih.gov/sra/SRX1608029"
+    },
+    {
+      "finding": "Relevant vendor download page, but no primary sample-to-file identity link established",
+      "url": "https://support.illumina.com/sequencing/sequencing_kits/nextera-rapid-capture-exome-kit/downloads.html"
+    }
+  ],
+  "schema_version": "1.0.0"
+}
