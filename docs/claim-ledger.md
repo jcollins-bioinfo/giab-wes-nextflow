@@ -1,10 +1,7 @@
 # Claim ledger
 
-| Claim | M1 disposition |
-|---|---|
-| Foundation validation emits a contract | Testable M1 claim |
-| Schemas and publisher reject declared invalid cases | Testable M1 claim |
-| HG001 processed or benchmark exists | Forbidden; false in M1 |
-| GATK/DeepVariant/scientific architecture results | Planned/configured only |
-| Cloud/Drive/Colab/ARM64/AVX/Dash deployment works | Untested |
-| Clinical utility, superiority, generalization | Forbidden |
+The maintained machine-readable ledger is [claim-ledger.yaml](claim-ledger.yaml).
+It distinguishes baseline CI, current implementation, historical source-cache
+attestation, configured environments and unresolved scientific gates. See also
+the exact [project state](orchestration/project-state.json). The old M1-only table
+is retained in Git history; it must not be used as current execution evidence.

@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0.0",
+  "observed_utc": "2026-09-07T06:48:34.991607+00:00",
+  "evidence_kind": "owner_source_mirror_record_plus_current_object_metadata",
+  "latest_run_id": "m2-20260907T060256Z",
+  "record_created_utc": "2026-09-07T06:17:05.094935+00:00",
+  "record_repository_sha": "568ad18bf6745c80d9aac346e9be151d7a850877",
+  "mirror_record_sha256": "1a2302fa7f28bea57860ecd98293981f09d9b0d92913d8862bc043b5d4a633a2",
+  "recorded_runtime_architecture": "x86_64",
+  "runtime_architecture_independently_verified": false,
+  "source_manifest_sha256_at_recorded_revision": "fc880482cfae3e5eb89a40599f0d7804936ef7cfa4e0d2a53f3e2bf800d9ebda",
+  "source_manifest_hash_matches_recorded_revision": true,
+  "current_baseline_repository_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+  "current_source_manifest_sha256": "846b568ee6441d77a8fe3dc8028910875622d0555e43c4499d5a306a212f75fa",
+  "manifest_change_since_record": "Only project_version changed from 0.2.0-dev.2 to 0.2.0-dev.3; resource definitions and all other fields unchanged.",
+  "object_count": 10,
+  "total_bytes": 4900011445,
+  "current_object_metadata_size_matches": true,
+  "fresh_remote_object_content_rehash": false,
+  "objects": [
+    {
+      "logical_id": "giab_garvan_sequence_index",
+      "bytes": 1439,
+      "recorded_sha256": "c160cb67bc1e5fa68bc48daa8100d354454a91aacab79465309e67c2fa934424"
+    },
+    {
+      "logical_id": "hg001_nist7035_l001_r1",
+      "bytes": 1914722761,
+      "recorded_sha256": "e55206fdaece7f13d793c43a7728f7bfcb83279b0d0b554cd6b848e8813271d4"
+    },
+    {
+      "logical_id": "hg001_nist7035_l001_r2",
+      "bytes": 1954935121,
+      "recorded_sha256": "55a0e7068f804870ed9f19d4eb9a7a914c6ef70898160b1477323c279069900d"
+    },
+    {
+      "logical_id": "grch38_no_alt_fasta_gz",
+      "bytes": 886344618,
+      "recorded_sha256": "3c8def6d325c5d1e934b2dd530c4d1709f027677a15859467071fddf3fff2026"
+    },
+    {
+      "logical_id": "grch38_compressed_fai",
+      "bytes": 7804,
+      "recorded_sha256": "502a1b8fb73ccd53285c28a0f12df90c818b4fe3de1e862ef47c593ef1a0a4b4"
+    },
+    {
+      "logical_id": "grch38_compressed_gzi",
+      "bytes": 770664,
+      "recorded_sha256": "aea5e0202577678b72ab195aa66138a7cdcb8408b4a36a7b3740b6edc2253745"
+    },
+    {
+      "logical_id": "hg001_v421_truth_vcf",
+      "bytes": 125932193,
+      "recorded_sha256": "93bc4c2c696eaf13515ab058caecc064bfed704f85bac7482330ca91bc730daa"
+    },
+    {
+      "logical_id": "hg001_v421_truth_tbi",
+      "bytes": 1589208,
+      "recorded_sha256": "68a91b78042e66ed9a53ae4069ac7686abf02ea9a1f88da00e0054a7db06dccc"
+    },
+    {
+      "logical_id": "hg001_v421_high_confidence_bed",
+      "bytes": 15479939,
+      "recorded_sha256": "dc3485e60447a3e863c34dfc063c3710ea5ed5efae50855c5197ba62538263b9"
+    },
+    {
+      "logical_id": "ucsc_hg19_to_hg38_chain",
+      "bytes": 227698,
+      "recorded_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d"
+    }
+  ],
+  "previous_run_id": "m2-20260903T183026Z",
+  "previous_repository_sha": "4d0d3d42f29271713f34b5c8d28e36dbe8f04918",
+  "object_records_unchanged_from_previous_run": true,
+  "source_acquisition_status": "supported_by_mirror_record_attestation_and_matching_current_sizes; no acquisition log returned",
+  "durable_mirror_status": "record_observed_and_all_objects_present_by_metadata; destination rehash reported by producer contract but not repeated in this inspection",
+  "reference_preparation_status": "unverified; no prepared reference, preparation report, or completion marker observed",
+  "gate_b_status": "blocked",
+  "gate_b_reason": "Exact capture design and coordinate-file byte identity are not defensibly established.",
+  "canonical_domains_allowed": false,
+  "canonical_completion_marker_observed": false,
+  "errors_observed": [],
+  "limitations": [
+    "A saved launcher is an instruction artifact, not proof of successful execution.",
+    "The launcher publishes source mirror provenance before local reference preparation; mirror existence cannot establish preparation success.",
+    "No acquisition or preparation logs were present in the permitted durable workspace, so absent evidence does not prove preparation failed.",
+    "Only small control records were fetched; no human genomic or large acquisition bytes were downloaded.",
+    "No container, workflow, caller, or DeepVariant compatibility execution is established by a source mirror architecture field."
+  ],
+  "next_safe_action": "Reuse the existing verified source cache through a checksum-validating hydration path; obtain or regenerate only reference-preparation evidence in the owner execution environment as needed. Keep Gate B closed."
+}

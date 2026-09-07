@@ -1,0 +1,43 @@
+{
+  "observed_at": "2026-09-07T06:52:07.670Z",
+  "pipeline": {
+    "sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+    "pr18": {
+      "merged": "2026-09-07T06:32:16Z",
+      "merge_commit_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+      "head_sha": "d9e127d83498a3c55201d8c23ba9387313956ad6"
+    },
+    "ci": [
+      {
+        "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958",
+        "sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "open_prs": [],
+    "open_issues": [],
+    "jobs": [
+      {
+        "name": "nextflow",
+        "conclusion": "success",
+        "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095258"
+      },
+      {
+        "name": "python (3.13)",
+        "conclusion": "success",
+        "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095324"
+      },
+      {
+        "name": "python (3.12)",
+        "conclusion": "success",
+        "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095440"
+      },
+      {
+        "name": "required",
+        "conclusion": "success",
+        "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645350150"
+      }
+    ]
+  }
+}

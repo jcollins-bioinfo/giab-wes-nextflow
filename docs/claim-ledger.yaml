@@ -1,0 +1,50 @@
+schema_version: '1.0.0'
+author: John Patrick Collins
+observed_at: '2026-09-07'
+scope: GIAB HG001 Illumina WES; nonclinical single-sample engineering project
+claims:
+  - id: m2-baseline-ci
+    classification: CI-tested
+    statement: M2.1 baseline passed Python 3.12/3.13 and synthetic Nextflow foundation CI.
+    repository_sha: d9a9d700ab5603b693468d22b4fd66ed96348881
+    evidence: https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958
+    limitation: Baseline CI did not detect the subsequently reproduced recovery/path/provenance defects.
+  - id: source-cache-observed
+    classification: inferred
+    statement: A historical source-mirror control record and ten matching object metadata entries were observed.
+    repository_sha: 568ad18bf6745c80d9aac346e9be151d7a850877
+    evidence: docs/orchestration/evidence/source-cache-metadata.json
+    limitation: Size/name matching is not fresh byte verification; architecture is producer-reported; preparation and canonical execution are unverified.
+  - id: m2-recovery
+    classification: implemented
+    statement: M2.1.1 recovery contracts are under implementation and validation.
+    evidence: docs/orchestration/project-state.json
+    limitation: No green repair CI or completed M3 work is implied by an implementation record.
+  - id: capture-design
+    classification: unresolved
+    statement: Exact capture-design byte identity remains unresolved.
+    evidence: config/m2-target-design.json
+    limitation: Canonical capture-dependent domains, target-aware acceptance and publication remain fail-closed.
+  - id: website-baseline
+    classification: configured_only
+    statement: The existing vinext Cloudflare website is configured with both named custom domains.
+    repository_sha: d933578401d305bc8504e584f2aaa5f484085e18
+    evidence: docs/orchestration/evidence/baseline-website.json
+    limitation: No GIAB page/Explorer or current public HTTP verification is established.
+forbidden_without_new_evidence:
+  - historical professional Nextflow tenure
+  - clinical-grade or patient-care validation
+  - production-proven workflow or production use
+  - canonical HG001 alignment, dual-caller execution or benchmarking
+  - generalization beyond HG001 or a universal caller winner
+  - cloud-tested, SLURM-tested or Seqera-observed execution
+  - native Apple Silicon DeepVariant support or executed emulation
+  - independent Colab architecture/runtime qualification from a mirror metadata field
+  - published pipeline v1.0, deployed Explorer or website research results
+  - assay-wide recall from a depth-conditioned primary domain
+claim_rules:
+  - Distinguish raw observations, derived metrics and engineering interpretation.
+  - A configured profile is not an executed environment.
+  - A public build check is not a public HTTP deployment test.
+  - Full HG001 DeepVariant results require the documented training-overlap limitation.
+  - Chr20–22 sensitivity is a same-individual locus analysis, not population generalization.

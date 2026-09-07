@@ -27,12 +27,12 @@ class PackageTransitionTest(unittest.TestCase):
             wrapper=importlib.util.module_from_spec(spec);spec.loader.exec_module(wrapper)
             self.assertIs(wrapper.main,__import__(module,fromlist=['main']).main)
     def test_version_is_consistent(self):
-        self.assertEqual(__version__,'0.2.0-dev.3')
-        self.assertIn("version = '0.2.0-dev.3'",(ROOT/'nextflow.config').read_text())
+        self.assertEqual(__version__,'0.2.0-dev.4')
+        self.assertIn("version = '0.2.0-dev.4'",(ROOT/'nextflow.config').read_text())
         self.assertEqual(json.loads((ROOT/'config/m2-resources.json').read_text())['project_version'],__version__)
     def test_launcher_orders_fixture_before_samplesheet_validation(self):
         text=(ROOT/'scripts/run_m2_readiness.sh').read_text()
-        self.assertLess(text.index('python tests/data/generate_fixture.py'),text.index('python scripts/check_samplesheets.py'))
+        self.assertLess(text.index('tests/data/generate_fixture.py'),text.index('scripts/check_samplesheets.py'))
         self.assertNotIn('publish-m2',text);self.assertNotIn('work/drive',text.lower())
         self.assertIn('/content/m2-stage',text);self.assertIn('--repository-sha "$RESOLVED_SHA"',text)
     def test_import_from_outside_checkout(self):

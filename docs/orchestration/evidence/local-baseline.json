@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-09-07T06:55:06.840463+00:00",
+  "os": "Darwin",
+  "release": "25.6.0",
+  "architecture": "arm64",
+  "python": "3.13.15",
+  "docker": "not_found",
+  "java": "system launcher found; no usable JRE",
+  "deepvariant": "not_executed",
+  "baseline_python313": {
+    "tests": 37,
+    "errors": 15,
+    "status": "failed",
+    "cause": "manifest validation root /tmp was not normalized before containment check"
+  }
+}

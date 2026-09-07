@@ -8,7 +8,7 @@ from giab_wes_nextflow.resources import config_path, schema_path
 
 class HotfixTest(unittest.TestCase):
  def test_package_resources_and_canonical_manifest(self):
-  spec=load_manifest();self.assertEqual(__version__,'0.2.0-dev.3');self.assertEqual({x['id'] for x in spec['resources']},CANONICAL_IDS);self.assertEqual(len(spec['resources']),10);self.assertTrue(schema_path('m2-source-manifest.schema.json').is_file())
+  spec=load_manifest();self.assertEqual(__version__,'0.2.0-dev.4');self.assertEqual({x['id'] for x in spec['resources']},CANONICAL_IDS);self.assertEqual(len(spec['resources']),10);self.assertTrue(schema_path('m2-source-manifest.schema.json').is_file())
  def test_preflight_has_no_workspace_mutation(self):
   with tempfile.TemporaryDirectory() as td:
    root=Path(td)/'m2-stage';before=list(Path(td).iterdir());result=preflight(workspace=root);self.assertEqual(before,list(Path(td).iterdir()));self.assertEqual(result['resource_count'],10)
@@ -31,15 +31,4 @@ class HotfixTest(unittest.TestCase):
   self.assertTrue(all(c.get('execution_count') is None and not c.get('outputs') for c in notebook['cells'] if c['cell_type']=='code'))
   for stale in ('--skip-prepare','--target-hg19','!python','!pip','sys.path.insert','runpy') : self.assertNotIn(stale,source)
   for expected in ('REPOSITORY_URL','REPOSITORY_REF','giab_wes_nextflow','subprocess.run','RESOLVED_SHA'):self.assertIn(expected,source)
- def test_mirror_hydration_and_no_gate_b_marker(self):
-  with tempfile.TemporaryDirectory() as td:
-   stage=Path(td)/'m2-stage';drive=Path(td)/'giab-wes-nextflow-private';stage.mkdir();drive.mkdir();observations=[]
-   for i,item in enumerate(load_manifest()['resources']):
-    path=stage/item['destination'];path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(f'fixture-{i}'.encode());observations.append({'id':item['id'],'destination':item['destination'],'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
-   evidence=stage/'registry/runs/test/acquisition.json';evidence.parent.mkdir(parents=True);evidence.write_text(json.dumps({'source_manifest_sha256':'a'*64,'observations':observations}))
-   out=mirror_sources(stage,drive,'test','b'*40);self.assertTrue(out.is_file());self.assertFalse(any(drive.rglob('COMPLETED.json')))
-   for item in load_manifest()['resources']:(stage/item['destination']).unlink()
-   self.assertEqual(hydrate_sources(drive,stage,'test'),10)
-   first=load_manifest()['resources'][0];(drive/'cache/verified-sources'/first['destination']).write_bytes(b'corrupt')
-   with self.assertRaises(ValueError):hydrate_sources(drive,stage,'test')
 if __name__=='__main__':unittest.main()

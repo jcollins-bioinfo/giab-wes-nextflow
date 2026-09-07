@@ -1,5 +1,5 @@
-access_date: 2026-08-29
-status: "CI directly established that nf-schema 2.8.0 requires Nextflow >=26.04.0; the supported minimum was raised to 26.04.6 by explicit project-owner decision. Other live source queries were blocked by web 401/GitHub API 403."
+access_date: 2026-09-07
+status: "Entries retain their individual access dates. 2026-09-07 repository/CI, Git identity, Python path/atomic-rename documentation and private-cache metadata were reverified. Earlier tool/scientific entries retain their original evidence scope; configured does not mean executed."
 sources:
   - claim: "Nextflow stable and supported minimum 26.04.6; Java 17+"
     url: https://www.nextflow.io/docs/latest/install.html
@@ -44,6 +44,23 @@ sources:
   - claim: "Picard LiftOverIntervalList 3.1.1 behavior"
     url: https://github.com/broadinstitute/picard/releases/tag/3.1.1
     access_date: 2026-09-03
+  - claim: "M2.1 main baseline required CI succeeded; later path/provenance defects require a repair"
+    url: https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958
+    commit: d9a9d700ab5603b693468d22b4fd66ed96348881
+    access_date: 2026-09-07
+  - claim: "Git commit peeling and verification bind a requested ref to a commit; checkout equality is an additional application check"
+    url: https://git-scm.com/docs/git-rev-parse
+    access_date: 2026-09-07
+  - claim: "Path.resolve resolves symlinks and eliminates parent components; normalize both root and child before containment"
+    url: https://docs.python.org/3/library/pathlib.html#pathlib.Path.resolve
+    access_date: 2026-09-07
+  - claim: "os.replace can atomically rename on the same filesystem; successful return alone is not checksum validation"
+    url: https://docs.python.org/3/library/os.html#os.replace
+    access_date: 2026-09-07
+  - claim: "Historical source mirror control record and current metadata; no fresh object rehash or canonical preparation proof"
+    evidence: docs/orchestration/evidence/source-cache-metadata.json
+    access_date: 2026-09-07
+    control_record_sha256: 1a2302fa7f28bea57860ecd98293981f09d9b0d92913d8862bc043b5d4a633a2
 contradictions:
   - observed: "nf-schema 2.8.0 rejects Nextflow 25.10.4 and requires Nextflow >=26.04.0"
     resolution: "Owner selected option 1: raise the supported minimum; 26.04.6 is now the sole M1 runtime baseline."

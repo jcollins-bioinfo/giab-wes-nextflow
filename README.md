@@ -1,7 +1,7 @@
 
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
-> **Milestone 2 — data and provenance.** This repository now provides checksum-gated canonical acquisition, reference preparation, target liftover, and frozen domain construction. It performs no read processing, variant calling, or benchmarking.
+> **M2.1.1 recovery — version 0.2.0-dev.4.** The M2 source acquisition, recovery and publication contracts are being repaired and revalidated before M3. Reference/domain preparation is implemented but canonical capture-dependent execution remains blocked. This repository does not yet process reads, call variants or benchmark real HG001 data. See the [observed state](docs/orchestration/project-state.json), [implementation plan](docs/orchestration/implementation-plan.md), and [claim ledger](docs/claim-ledger.yaml).
 
 ## Motivation and architecture
 
@@ -33,17 +33,19 @@ The canonical input is original paired Garvan HiSeq 2500 `NIST7035_TAAGGCGA_L001
 
 `T_design` is individually lifted/audited/merged/unpadded; `R_call = merge(pad(T_design,100)) ∩ chr1-22,X`; `R_eval_full = HC ∩ T_design ∩ chr1-22`; `R_eval_holdout = R_eval_full ∩ chr20-22`. Denominators never depend on depth, callable/query calls, or genotypes. Full results are descriptive/in-sample because DeepVariant 1.10 WES training included HG001 replicates. Chr20–22 is only a same-individual locus-held-out sensitivity—not generalization. No winner, superiority, clinical, or scalar-ranking claim is allowed.
 
-## Baseline: tested versus planned
+## Baseline and current execution limits
 
-| Item | M1 status |
+| Item | Evidence/status |
 |---|---|
-| Python schema/publisher tests | Tested where reported in the PR |
+| M2.1 Python 3.12/3.13, wheel and synthetic foundation CI | Passed at `d9a9d700ab5603b693468d22b4fd66ed96348881`; recovery changes require new CI |
 | Nextflow 26.04.6 minimum, Java ≥17 | CI contract; local status reported honestly |
 | nf-core/tools 4.1.0, nf-schema 2.8.0, nf-test 0.9.5 | Pinned CI/tooling contracts |
 | GATK and DeepVariant 1.10.0 WES | Planned only; never invoked in M1 |
 | DeepVariant linux/amd64 CPU (AVX) and GPU images | Configured immutable contracts; not tested |
 | ARM64/Apple Silicon | Architecture-compatible orchestration only; DeepVariant execution untested/unsupported until qualified |
-| HG001, GIAB, Colab/Drive, cloud, SLURM, Seqera/Wave, Dash | Not tested in M1 |
+| Source-cache control record | Ten objects reported, 4,900,011,445 bytes; metadata observed, fresh byte rehash pending |
+| Reference preparation / real HG001 workflow / callers | No immutable canonical execution evidence established |
+| Cloud, SLURM, Seqera/Wave, Dash | Not executed |
 
 ## Data and private-workspace policy
 
@@ -57,11 +59,18 @@ Authoritative sources and access dates are recorded in [`docs/source-ledger.yaml
 
 ## M2 canonical data driver
 
-`config/m2-resources.json` locks the one HG001 lane, exact GRCh38 source, and GIAB v4.2.1 truth resources. Run `python scripts/acquire_m2.py --preflight-only --workspace /path/to/m2-stage
-# Then choose a unique ID:
-python scripts/acquire_m2.py --workspace /path/to/m2-stage --run-id m2-YYYYMMDDTHHMMSSZ`; partial downloads resume and completed bytes are re-verified before reuse. Then use `prepare_m2.py` with the verified hg19 capture BED and chain. See [capture evidence](docs/capture-design.md) and the ordered [Colab notebook](notebooks/m2_colab.ipynb). Human and large reference bytes remain private and ignored by Git.
+`config/m2-resources.json` locks the one HG001 lane, exact GRCh38 source and GIAB v4.2.1 truth resources. Install the repository as a Python package before using console commands:
 
-M2 distinguishes implementation readiness from canonical data readiness. **Gate A** provides strict source contracts, synthetic downloader/domain tests, and private-workspace tooling. **Gate B has not run and is blocked:** the public metadata does not bind this library to an exact capture-design target file. See [M2 operations](docs/m2-data-provenance.md), the machine-readable [target decision](config/m2-target-design.json), and [ADR 0008](docs/adr/0008-m2-canonical-data.md). No download, Drive publication, Colab architecture, or canonical domain is claimed without immutable execution evidence.
+```bash
+python -m pip install .
+giab-wes-acquire-m2 --preflight-only --workspace /path/to/m2-stage
+# Only if verified cache recovery is unavailable, choose a deliberate run ID:
+giab-wes-acquire-m2 --workspace /path/to/m2-stage --run-id m2-YYYYMMDDTHHMMSSZ
+```
+
+Partial downloads resume; completed bytes are verified before reuse. Use the [Colab launch center](notebooks/README.md) and [recovery runbook](docs/m2-recovery.md) to reuse the observed source cache. The primary source inventory is about 4.9 GB. No large acquisition was performed during the recovery audit. Human and large reference bytes remain private and outside Git.
+
+M2 distinguishes implementation readiness from canonical data readiness. **Gate A** provides strict source contracts, synthetic downloader/domain tests, and private-workspace tooling. **Gate B has not run and is blocked:** the public metadata does not bind this library to an exact capture-design target file. See [M2 operations](docs/m2-data-provenance.md), the machine-readable [target decision](config/m2-target-design.json), and [ADR 0008](docs/adr/0008-m2-canonical-data.md). The [source-cache metadata audit](docs/orchestration/evidence/source-cache-metadata.json) documents the observed older mirror. It does not establish preparation, a qualified Colab/container environment or canonical domains.
 
 ## Colab launch
 
@@ -70,6 +79,6 @@ Use the [notebook launch center](notebooks/README.md) or open M2 directly:
 
 ## M2.1 package and readiness boundary
 
-Version `0.2.0-dev.3` makes `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
+Version `0.2.0-dev.3` established `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
 
-Run `scripts/run_m2_readiness.sh verify` for offline code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact capture-design bytes remain unresolved. No real Colab, Drive, human-data, or biological execution is claimed by this release.
+Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact capture-design bytes remain unresolved. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3–M9 checkpoints explicitly remain not started until their prerequisites pass.

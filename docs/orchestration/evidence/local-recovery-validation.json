@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "observed_at": "2026-09-07T07:12:39.122846+00:00",
+  "kind": "local_synthetic_validation",
+  "base_commit": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+  "tested_subject": "uncommitted recovery code and tests; content digest below",
+  "code_and_test_inventory_sha256": "2a03464fcd3bfab8854cdaa37064db43b630b1aa2f0d68764c8d0ba7635161f7",
+  "python313": {
+    "tests": 104,
+    "seconds": 9.076,
+    "sha256": "e7a5a0165afe50da2c8cb24cf2fba95a6ce649b2ba03716efd0abaf93055b3d3",
+    "status": "passed"
+  },
+  "python312": {
+    "tests": 104,
+    "seconds": 9.191,
+    "sha256": "ba4987c69676f591b4603a809b0f654784e0ff8416fcff2043838e26723b67de",
+    "status": "passed"
+  },
+  "architecture": "arm64",
+  "os": "Darwin",
+  "wheel_build": "passed",
+  "wheel_outside_checkout": "passed for installed imports, packaged schemas, all five CLIs and zero-download preflight",
+  "schema_semantic_checks": "passed",
+  "samplesheet_negatives_rejected": 6,
+  "contract_negatives_rejected": 5,
+  "precommit": "passed for then-tracked files; final staged inventory check follows",
+  "local_nextflow_docker": "not_run; no Docker or usable Java runtime",
+  "limitations": [
+    "Local Python3.12.2 emits BLAKE2 module availability warnings; Linux CI remains separate.",
+    "No genomic bytes were downloaded or processed.",
+    "No new remote CI has yet been observed.",
+    "Locks are not stolen automatically after abrupt runtime death."
+  ]
+}

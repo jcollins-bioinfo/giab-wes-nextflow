@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0.0",
+  "record_type": "project_state",
+  "milestone": "M2.1.1",
+  "phase": "local synthetic repair validated; awaiting draft PR CI",
+  "state": "implemented",
+  "version": "0.2.0-dev.4",
+  "repositories": {
+    "pipeline": {
+      "full_name": "jcollins-bioinfo/giab-wes-nextflow",
+      "branch": "codex/m2.1.1-provenance-recovery",
+      "evidence_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+      "evidence_scope": "observed_prior_commit"
+    },
+    "website": {
+      "full_name": "jcollins-bioinfo/john-collins-bioinformatics",
+      "branch": "main",
+      "evidence_sha": "d933578401d305bc8504e584f2aaa5f484085e18",
+      "evidence_scope": "observed_prior_commit"
+    }
+  },
+  "required_inputs": [
+    {
+      "id": "current-source-manifest",
+      "status": "declared",
+      "sha256": "673f96c3e1a5b29405a12d8ce835814844d0592bb404c496ee8fa59aa73e257c",
+      "reason": "Manifest bytes in this working tree; real objects need fresh hydration validation."
+    },
+    {
+      "id": "exact-capture-design",
+      "status": "blocked",
+      "sha256": null,
+      "reason": "Exact sample-to-kit target-file identity remains unresolved; canonical domains fail closed."
+    },
+    {
+      "id": "giab_garvan_sequence_index",
+      "status": "declared",
+      "sha256": "c160cb67bc1e5fa68bc48daa8100d354454a91aacab79465309e67c2fa934424",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "hg001_nist7035_l001_r1",
+      "status": "declared",
+      "sha256": "e55206fdaece7f13d793c43a7728f7bfcb83279b0d0b554cd6b848e8813271d4",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "hg001_nist7035_l001_r2",
+      "status": "declared",
+      "sha256": "55a0e7068f804870ed9f19d4eb9a7a914c6ef70898160b1477323c279069900d",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "grch38_no_alt_fasta_gz",
+      "status": "declared",
+      "sha256": "3c8def6d325c5d1e934b2dd530c4d1709f027677a15859467071fddf3fff2026",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "grch38_compressed_fai",
+      "status": "declared",
+      "sha256": "502a1b8fb73ccd53285c28a0f12df90c818b4fe3de1e862ef47c593ef1a0a4b4",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "grch38_compressed_gzi",
+      "status": "declared",
+      "sha256": "aea5e0202577678b72ab195aa66138a7cdcb8408b4a36a7b3740b6edc2253745",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "hg001_v421_truth_vcf",
+      "status": "declared",
+      "sha256": "93bc4c2c696eaf13515ab058caecc064bfed704f85bac7482330ca91bc730daa",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "hg001_v421_truth_tbi",
+      "status": "declared",
+      "sha256": "68a91b78042e66ed9a53ae4069ac7686abf02ea9a1f88da00e0054a7db06dccc",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "hg001_v421_high_confidence_bed",
+      "status": "declared",
+      "sha256": "dc3485e60447a3e863c34dfc063c3710ea5ed5efae50855c5197ba62538263b9",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "ucsc_hg19_to_hg38_chain",
+      "status": "declared",
+      "sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    }
+  ],
+  "local_tests": [
+    {
+      "name": "Python 3.13 complete synthetic suite",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m unittest discover -s tests/unit -v",
+      "detail": "104 tests; uncommitted code/test inventory 2a03464fcd3bfab8854cdaa37064db43b630b1aa2f0d68764c8d0ba7635161f7; see local-recovery-validation.json."
+    },
+    {
+      "name": "Python 3.12 complete synthetic suite",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m unittest discover -s tests/unit -v",
+      "detail": "104 tests; uncommitted code/test inventory 2a03464fcd3bfab8854cdaa37064db43b630b1aa2f0d68764c8d0ba7635161f7; see local-recovery-validation.json."
+    },
+    {
+      "name": "Build, wheel, schemas and samplesheets",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m build --no-isolation; installed wheel CLI/preflight; contract/schema/samplesheet validators",
+      "detail": "Passed; exact subject digest and limitations in local-recovery-validation.json."
+    }
+  ],
+  "ci": [
+    {
+      "name": "baseline CI required",
+      "required": true,
+      "status": "success",
+      "repository": "jcollins-bioinfo/giab-wes-nextflow",
+      "evidence_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958",
+      "job_urls": [
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095258",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095324",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095440",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645350150"
+      ]
+    }
+  ],
+  "execution_environments": [
+    {
+      "id": "local-macos",
+      "status": "observed",
+      "os": "Darwin",
+      "architecture": "arm64",
+      "canonical": false,
+      "run_id": null,
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/local-baseline.json"
+      ]
+    }
+  ],
+  "publication": {
+    "drive": "partial",
+    "public_evidence": "not_published",
+    "deployment": "not_deployed",
+    "release": "not_released",
+    "authorization_reference": null,
+    "evidence_artifacts": [
+      "docs/orchestration/evidence/source-cache-metadata.json"
+    ]
+  },
+  "external_blockers": [
+    {
+      "id": "capture-design",
+      "gate": "canonical target-aware execution and publication",
+      "reason": "Exact capture target identity unresolved. Does not block synthetic M3 implementation once M2 is repaired.",
+      "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
+    }
+  ],
+  "next_safe_action": "Create and observe the M2.1.1 draft PR required CI, then begin stacked M3 only after the no-M2-defect continuation gate passes.",
+  "observed_at": "2026-09-07T07:12:39.122846+00:00"
+}
