@@ -21,10 +21,11 @@ claims:
     evidence: docs/orchestration/evidence/m2.1.1-verified.json
     limitation: Recovery evidence is at commit 22d01b202e15bb098e9d42d0ad4a98606e78c2c2; no completed M3 or canonical execution is implied.
   - id: m3-shared-preprocessing
-    classification: implemented
-    statement: A deterministic invented-input DSL2 workflow and Python evidence contracts implement shared preprocessing with retained duplicates and BQSR/OQ provenance.
+    classification: CI-tested
+    statement: Shared preprocessing passed real Linux/x86_64 synthetic Docker execution, independent BAM and original-quality checks, and complete 22-task resume reuse.
     evidence: docs/orchestration/checkpoints/M3.json
-    limitation: Required CI has not passed; the latest attempt completed all 21 upstream processing/QC tasks and reached the collector, which rejected the BWA distribution/executable version mismatch. Full bundle and independent BAM/ownership/resume acceptance remain unverified; no canonical HG001 processing is established.
+    repository_sha: c3426d3d4578ec6e66a6494c09fde983a7e4f3cd
+    limitation: Invented 20 kb fixture only; 48 reads and real BQSR wiring do not establish calibration performance, canonical HG001 processing or caller execution.
   - id: capture-design
     classification: unresolved
     statement: Exact capture-design byte identity remains unresolved.

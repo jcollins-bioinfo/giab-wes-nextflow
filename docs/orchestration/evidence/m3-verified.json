@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": 34103737524,
+  "job_id": 101683885830,
+  "head_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
+  "tested_repository_sha": "c929718a76b51e48bea6c4b9ebcb451a9d94574c",
+  "installed_package": {
+    "files": 32,
+    "package_inventory_sha256": "c424fcc396d523776b18dd9f190a0945a832c6a76ba0d83f5c503a26838b19d1",
+    "repository_sha": "c929718a76b51e48bea6c4b9ebcb451a9d94574c",
+    "version": "0.3.0-dev.1"
+  },
+  "artifact_id": 10011606714,
+  "artifact_name": "m3-synthetic-docker-evidence",
+  "artifact_bytes": 1259863,
+  "artifact_sha256": "5e77cccaaddb352bbb147f7fd3e28ce43c776a4a8f9c78d20e0e1e6eaad2014d",
+  "all_evidence_hashes_verified": true,
+  "first_trace_status_counts": {
+    "COMPLETED": 22
+  },
+  "resume_trace_status_counts": {
+    "CACHED": 22
+  },
+  "proof_status": "passed",
+  "biological_processing_validated": true,
+  "synthetic": true,
+  "canonical": false,
+  "bam_assertions_from_exact_ci_driver": {
+    "bai_sha256": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80",
+    "bam_sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8",
+    "coordinate_sorted": true,
+    "duplicate_reads": 4,
+    "exact_synthetic_alignments": true,
+    "indexed_region_queries_valid": true,
+    "mapped_reads": 44,
+    "oq_on_all_primary_reads": true,
+    "primary_reads": 48,
+    "read_groups": 2,
+    "reference_dictionary_identical": true,
+    "samtools_version": "samtools 1.24",
+    "unmapped_reads": 4
+  },
+  "resume_assertions": {
+    "all_expected_processes_present": true,
+    "contract_semantics_identical": true,
+    "first_executed_tasks": 22,
+    "pinned_containers_identical": true,
+    "published_hashes_identical": true,
+    "resumed_cached_tasks": 22,
+    "task_hashes_identical": true
+  },
+  "independently_recomputed_resume_assertions": {
+    "first_executed_tasks": 22,
+    "resumed_cached_tasks": 22,
+    "task_hashes_identical": true,
+    "all_expected_processes_present": true
+  },
+  "multiqc_permission_assertions_from_exact_ci_driver": {
+    "host_gid": 1001,
+    "host_uid": 1001,
+    "published_bytes_match_task_report": true,
+    "report_sha256": "a6e644f1e7c8f7bfd103b69056eb45b5f00624c6cf32352434069a29c59d179d",
+    "task_report_gid": 1001,
+    "task_report_owned_by_host_user_and_group": true,
+    "task_report_uid": 1001
+  },
+  "current_package_bundle_revalidated": true,
+  "tool_versions": [
+    {
+      "name": "bwa-mem2",
+      "distribution_version": "2.3",
+      "expected_reported_version": "2.2.1",
+      "observed_version_text": "Looking to launch executable \"/usr/local/bin/bwa-mem2.avx2\", simd = .avx2\nLaunching executable \"/usr/local/bin/bwa-mem2.avx2\"\n2.2.1",
+      "image": "quay.io/biocontainers/bwa-mem2@sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f"
+    },
+    {
+      "name": "fastqc",
+      "distribution_version": "0.12.1",
+      "expected_reported_version": "0.12.1",
+      "observed_version_text": "FastQC v0.12.1",
+      "image": "quay.io/biocontainers/fastqc@sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900"
+    },
+    {
+      "name": "gatk",
+      "distribution_version": "4.7.0.0",
+      "expected_reported_version": "4.7.0.0",
+      "observed_version_text": "Using GATK jar /gatk/gatk-package-4.7.0.0-local.jar",
+      "image": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891"
+    },
+    {
+      "name": "mosdepth",
+      "distribution_version": "0.3.14",
+      "expected_reported_version": "0.3.14",
+      "observed_version_text": "mosdepth 0.3.14",
+      "image": "quay.io/biocontainers/mosdepth@sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c"
+    },
+    {
+      "name": "multiqc",
+      "distribution_version": "1.35",
+      "expected_reported_version": "1.35",
+      "observed_version_text": "multiqc, version 1.35",
+      "image": "ghcr.io/multiqc/multiqc@sha256:976be2094a3bc1dab7315ad03440d43aab09bf7756f84f3a92ef7ae1013e4bfd"
+    },
+    {
+      "name": "samtools",
+      "distribution_version": "1.24",
+      "expected_reported_version": "1.24",
+      "observed_version_text": "samtools 1.24",
+      "image": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561"
+    }
+  ],
+  "contract_schemas": {
+    "bundle": "1.0.0",
+    "alignment": "1.0.0",
+    "qc": "1.0.0",
+    "coverage": "1.0.0",
+    "resources": "1.0.0",
+    "provenance": "2.0.0"
+  },
+  "callers_executed": [],
+  "capture_design_gate": "blocked",
+  "audit_boundary": "Local review revalidated JSON bundle and raw traces. Actual BAM and ownership assertions were executed by the exact installed CI driver; no BAM or sequence records were uploaded or downloaded for local recomputation.",
+  "observed_at": "2026-09-07T09:17:00.133528+00:00",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524",
+  "required_conclusion": "success",
+  "tree_equivalence": {
+    "head_commit": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
+    "tested_merge_commit": "c929718a76b51e48bea6c4b9ebcb451a9d94574c",
+    "tree_sha": "87cf718eb85301cd7c739bcc3f1fae85bc5e78e3",
+    "verification": "Both commit tree identities read independently from GitHub API"
+  },
+  "selected_public_evidence": [
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/contracts/m3-alignment.json",
+      "bytes": 3286,
+      "sha256": "c0c67848f922e863836e467892a41b1323acc2854590ed9ba5642f269efa682d",
+      "archive_member": "contracts/m3-alignment.json"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/contracts/m3-coverage.json",
+      "bytes": 2273,
+      "sha256": "fc25ab71ac9a99d80c3f91fa54aefd070222a51aa6ac79a3764f6301b62411e3",
+      "archive_member": "contracts/m3-coverage.json"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/contracts/m3-manifest.json",
+      "bytes": 3395,
+      "sha256": "acfe43f4375449bf438204bc2e9fb0a82154096cff337cd5d9d34c1293a5b9a8",
+      "archive_member": "contracts/m3-manifest.json"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/contracts/m3-provenance.json",
+      "bytes": 17350,
+      "sha256": "177fd376da16e2052c0e21ba3aa4c4f7f10ebea6cc888f24abae01eaad9b42ff",
+      "archive_member": "contracts/m3-provenance.json"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/contracts/m3-qc.json",
+      "bytes": 14250,
+      "sha256": "edfcf72a90b730aedc572a36b2df55fc69c475626278890f7ad5532899d2b6df",
+      "archive_member": "contracts/m3-qc.json"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/contracts/m3-resources.json",
+      "bytes": 19594,
+      "sha256": "69f376f4ff00e2221df231547be3a5438fab40ec75686ba4147ba7a5cf21a49d",
+      "archive_member": "contracts/m3-resources.json"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/first.trace.tsv",
+      "bytes": 5679,
+      "sha256": "cc43489ed176797ed5d08d098331f5bb6b2511b2a975dee169b56e70c9b91cc8",
+      "archive_member": "first.trace.tsv"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/integration-proof.json",
+      "bytes": 27510,
+      "sha256": "0eb93ee71e5d739efdc288ec2f53d8f58cb640c01cc9bd346b7227b03b907e9d",
+      "archive_member": "integration-proof.json"
+    },
+    {
+      "path": "docs/orchestration/evidence/m3-synthetic-ci-34103737524/resume.trace.tsv",
+      "bytes": 5613,
+      "sha256": "01032ab473f567d1f4670c1a67de069f8c2b32d8b1c298776a906bf72db304d9",
+      "archive_member": "resume.trace.tsv"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "nextflow",
+      "job_id": 101683885583,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885583"
+    },
+    {
+      "name": "python (3.12)",
+      "job_id": 101683885795,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885795"
+    },
+    {
+      "name": "m3-docker",
+      "job_id": 101683885830,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885830"
+    },
+    {
+      "name": "python (3.13)",
+      "job_id": 101683885912,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885912"
+    },
+    {
+      "name": "required",
+      "job_id": 101684702033,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101684702033"
+    }
+  ]
+}

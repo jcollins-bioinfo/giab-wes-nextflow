@@ -6,7 +6,7 @@
 | Linux CI Nextflow 26.04.6/nf-test/Docker | Same recovery run | Synthetic foundation; no alignment/caller result implied |
 | macOS ARM64 Python 3.12/3.13 | Local recovery suites and clean-wheel suite | 104 tests per run; Python3.12 interpreter BLAKE2 warnings recorded |
 | macOS ARM64 Java/Nextflow/nf-test | [version commands](orchestration/evidence/local-framework-versions.json) | Framework version commands executed; biological containers not tested |
-| M3 tool containers | [immutable declarations](../config/m3-tools.json) | Registry digests/platform metadata verified; actual synthetic execution evidence pending |
+| M3 tool containers, Linux/x86_64 Docker 28.0.4 | [Verified CI34103737524](orchestration/evidence/m3-verified.json), head c3426d3 and identical tested merge tree | Real invented-input preprocessing: 22 completed then 22 cached tasks; independent BAM/index/OQ/ownership checks; no HG001 or callers |
 | Historical source mirror | [control/metadata audit](orchestration/evidence/source-cache-metadata.json) | x86_64 producer field is not independent Colab or container qualification |
 | DeepVariant CPU/GPU | Existing immutable M4 contracts | Not executed; no Apple Silicon/native/emulation claim |
 | Colab real pipeline, Apptainer, SLURM, AWS, Seqera/Wave | None | Configured/planned only; paid infrastructure requires owner authorization |

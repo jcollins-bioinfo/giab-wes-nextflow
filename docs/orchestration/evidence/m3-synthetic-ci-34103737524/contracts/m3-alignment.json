@@ -1,0 +1,97 @@
+{
+  "artifact_type": "alignment",
+  "canonical": false,
+  "data": {
+    "bai": {
+      "artifact_id": "shared_analysis_ready_bai",
+      "bytes": 176,
+      "filename": "SYNTHETIC01.analysis-ready.bam.bai",
+      "role": "shared_caller_input_index",
+      "sha256": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80"
+    },
+    "bai_acceptance": "idxstats_matches_sam; indexed_random_access_verified_separately_by_integration_runner",
+    "bam": {
+      "artifact_id": "shared_analysis_ready_bam",
+      "bytes": 5099,
+      "filename": "SYNTHETIC01.analysis-ready.bam",
+      "role": "shared_caller_input",
+      "sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8"
+    },
+    "bqsr_applied": true,
+    "contigs": {
+      "chrSYN1": 12000,
+      "chrSYN2": 8000
+    },
+    "coordinate_sorted": true,
+    "duplicate_reads": 4,
+    "duplicates_retained": true,
+    "effective_quality_policy": {
+      "deepvariant": "original OQ",
+      "gatk": "recalibrated QUAL",
+      "quality_inputs_identical": false
+    },
+    "mapped_reads": 44,
+    "oq_complete": true,
+    "pre_bqsr_sam_export": {
+      "artifact_id": "pre_bqsr_sam_export",
+      "bytes": 23279,
+      "filename": "SYNTHETIC01.pre-bqsr.sam",
+      "role": "original_quality_acceptance",
+      "sha256": "b2685c161da77581a04975f4a3efcf02a4680a6aea41b6037d061f96509f5532"
+    },
+    "primary_reads": 48,
+    "read_group_count": 2,
+    "read_identity_digest": "7b648f4e1c8a9e37bf33004ccff04e67a9e9e9c384a1efeb262ac1015077d71f",
+    "reads_with_recalibrated_quality_changes": 44,
+    "reference_sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454",
+    "sam_export": {
+      "artifact_id": "final_sam_export",
+      "bytes": 32049,
+      "filename": "SYNTHETIC01.final.sam",
+      "role": "samtools_alignment_acceptance",
+      "sha256": "c886695b0e0d242dfc871b94b234704dd10cd187088bcb8e0268f046c179284b"
+    },
+    "sample": "SYNTHETIC01",
+    "unmapped_reads": 4
+  },
+  "input_artifacts": [
+    {
+      "artifact_id": "source_preflight",
+      "bytes": 4549,
+      "filename": "m3-preflight.json",
+      "role": "validated_source_contract",
+      "sha256": "76fb0ebe0e7b0d2fa30d7561e1dbf31f8ef37efe7b59f1fea3fa1ac6d99e20f0"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bam",
+      "bytes": 5099,
+      "filename": "SYNTHETIC01.analysis-ready.bam",
+      "role": "shared_caller_input",
+      "sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bai",
+      "bytes": 176,
+      "filename": "SYNTHETIC01.analysis-ready.bam.bai",
+      "role": "shared_caller_input_index",
+      "sha256": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80"
+    }
+  ],
+  "missingness": {},
+  "payload_sha256": "38e604b3a0fa6b497257079f6dc8af553a56350fc0903b05aa63f1067da0d1fc",
+  "producer": {
+    "module": "giab_wes_nextflow.m3",
+    "package": "giab-wes-nextflow",
+    "version": "0.3.0-dev.1"
+  },
+  "run_id": "m3-ci-c929718a76b5",
+  "runtime_architecture": "x86_64",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "units": {
+    "artifact_size": "bytes",
+    "coordinates": "1-based SAM",
+    "read_counts": "reads"
+  },
+  "validation_status": "validated_synthetic"
+}

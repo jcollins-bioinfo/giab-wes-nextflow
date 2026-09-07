@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "project_state",
   "milestone": "M3",
-  "phase": "reconcile observed BWA distribution and executable version identities; required CI failed",
-  "state": "implemented",
+  "phase": "synthetic shared preprocessing verified; M4 continuation gate satisfied",
+  "state": "verified",
   "version": "0.3.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/m3-shared-preprocessing",
-      "evidence_sha": "0f258bea9cbf60f978ced4b7be506f275268d19d",
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -106,30 +106,30 @@
     },
     {
       "id": "m3-tool-lock",
-      "status": "declared",
+      "status": "verified",
       "sha256": "429e5a393aff9776f1fe6ec8015f202598d45d3e92b60b3354b8ec1eceaf3b5f",
-      "reason": "Current schema2 declaration separates distribution release and exact executable report; BWA 2.2.1 report observed in prior failed CI. Complete current-lock Docker acceptance remains pending."
+      "reason": "Exact schema2 lock passed actual synthetic Docker collection, independent BAM and complete resume acceptance in CI34103737524; BWA distribution2.3 reports expected2.2.1."
     }
   ],
   "local_tests": [
     {
       "name": "Python3.12 and3.13 synthetic suites",
       "status": "passed",
-      "evidence_sha": null,
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
       "command": "python -m unittest discover -s tests/unit -v",
       "detail": "179 tests passed per interpreter for the source- and runtime-supported version repair; current source and log hashes are bound in m3-ci-attempt-4.json."
     },
     {
       "name": "M3 framework and stub resume",
       "status": "passed",
-      "evidence_sha": null,
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
       "command": "nf-test test --ci; nextflow lint -o concise .; synthetic stub plus named resume",
-      "detail": "7 nf-tests passed, including real collector command construction/rejection; earlier 22-task stub resume evidence retained. Actual complete Docker acceptance remains pending."
+      "detail": "7 nf-tests passed, including real collector command construction/rejection; earlier 22-task stub resume evidence retained. Actual complete Docker acceptance is separately established by CI34103737524."
     },
     {
       "name": "sdist wheel and distribution safety",
       "status": "passed",
-      "evidence_sha": null,
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
       "command": "python -m build --no-isolation; python scripts/check_distributions.py <current artifacts>",
       "detail": "Current source231/wheel37 allowed members; isolated installed wheel outside checkout verifies schema2 and the six-tool inventory. Build/log identities retained in m3-ci-attempt-4.json."
     }
@@ -138,12 +138,16 @@
     {
       "name": "required",
       "required": true,
-      "status": "failure",
+      "status": "success",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "0f258bea9cbf60f978ced4b7be506f275268d19d",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128",
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128/job/101679061162"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885583",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885795",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885830",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885912",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101684702033"
       ]
     }
   ],
@@ -170,11 +174,23 @@
         "docs/orchestration/evidence/m3-dsl2-local-qualification.json",
         "docs/orchestration/evidence/m3-local-validation.json"
       ]
+    },
+    {
+      "id": "github-ci-m3-docker",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "34103737524",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m3-verified.json",
+        "docs/orchestration/evidence/m3-synthetic-ci-34103737524/integration-proof.json"
+      ]
     }
   ],
   "publication": {
     "drive": "partial",
-    "public_evidence": "not_published",
+    "public_evidence": "partial",
     "deployment": "not_deployed",
     "release": "not_released",
     "authorization_reference": null,
@@ -186,7 +202,8 @@
       "docs/orchestration/evidence/m3-ci-attempt-1.json",
       "docs/orchestration/evidence/m3-ci-attempt-2.json",
       "docs/orchestration/evidence/m3-ci-attempt-3.json",
-      "docs/orchestration/evidence/m3-ci-attempt-4.json"
+      "docs/orchestration/evidence/m3-ci-attempt-4.json",
+      "docs/orchestration/evidence/m3-verified.json"
     ]
   },
   "external_blockers": [
@@ -197,6 +214,6 @@
       "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
     }
   ],
-  "next_safe_action": "Push the source- and runtime-supported exact version identity correction to draft PR20; require complete green synthetic CI before M3 verification and M4 implementation.",
-  "observed_at": "2026-09-07T08:51:13.371939+00:00"
+  "next_safe_action": "Begin stacked M4 independently selectable caller implementation and actual Linux/x86_64 qualification; preserve canonical capture and known-sites gates.",
+  "observed_at": "2026-09-07T09:17:00.133528+00:00"
 }

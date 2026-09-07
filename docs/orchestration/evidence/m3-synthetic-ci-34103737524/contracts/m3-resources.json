@@ -1,0 +1,518 @@
+{
+  "artifact_type": "resources",
+  "canonical": false,
+  "data": {
+    "comparison_cost_available": false,
+    "task_count": 22,
+    "tasks": [
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.apply_bqsr",
+        "peak_rss_bytes": null,
+        "process": "M3_APPLY_BQSR",
+        "raw_declaration": {
+          "artifact_id": "resource_0",
+          "bytes": 325,
+          "filename": "SYNTHETIC01.apply_bqsr.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "9d39f8590766cee898570a26e442eaca6b18b44ffb68c2f76261e9b8666e9f95"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 2147483648,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.bam_summary",
+        "peak_rss_bytes": null,
+        "process": "M3_BAM_SUMMARY",
+        "raw_declaration": {
+          "artifact_id": "resource_1",
+          "bytes": 317,
+          "filename": "SYNTHETIC01.bam_summary.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "6988fa6360569b7e806d547e9576e0c28389a2b582e3b8af3efa90abb9cef297"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.markdup",
+        "peak_rss_bytes": null,
+        "process": "M3_MARKDUP",
+        "raw_declaration": {
+          "artifact_id": "resource_2",
+          "bytes": 319,
+          "filename": "SYNTHETIC01.markdup.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "b2093c7af9902994c7f9b587838d6319b69fd244b15223c20adebcc42e02c8a4"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 2147483648,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.merge",
+        "peak_rss_bytes": null,
+        "process": "M3_MERGE",
+        "raw_declaration": {
+          "artifact_id": "resource_3",
+          "bytes": 305,
+          "filename": "SYNTHETIC01.merge.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "2f84bd8930ef163b6ab5ab5476eadce99875f5f5f7a87a73ec2cc4ec918f2431"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/mosdepth@sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.mosdepth",
+        "peak_rss_bytes": null,
+        "process": "M3_MOSDEPTH",
+        "raw_declaration": {
+          "artifact_id": "resource_4",
+          "bytes": 311,
+          "filename": "SYNTHETIC01.mosdepth.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "dfed83c34718f9a3127bfd50b71759220575a23d3f1d9e256428a04ea8fd70b9"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.picard_qc",
+        "peak_rss_bytes": null,
+        "process": "M3_PICARD_QC",
+        "raw_declaration": {
+          "artifact_id": "resource_5",
+          "bytes": 323,
+          "filename": "SYNTHETIC01.picard_qc.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "710e5bd474fbcba5f4ac1c86625e6ff58fa5a9dc3107b7f9a8263dd148c585ca"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 2147483648,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.pre_bqsr",
+        "peak_rss_bytes": null,
+        "process": "M3_PRE_BQSR",
+        "raw_declaration": {
+          "artifact_id": "resource_6",
+          "bytes": 311,
+          "filename": "SYNTHETIC01.pre_bqsr.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "bb1b6368f4b0a1b78493af1761ca5579b7e50efa1066ca0578280744c22cddcb"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYNTHETIC01.recalibrate",
+        "peak_rss_bytes": null,
+        "process": "M3_RECALIBRATE",
+        "raw_declaration": {
+          "artifact_id": "resource_7",
+          "bytes": 327,
+          "filename": "SYNTHETIC01.recalibrate.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "05f7fd2a230d91c951b4dc010a8174b78091b518987082e85c99345b7d594cbd"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 2147483648,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/bwa-mem2@sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L001.align",
+        "peak_rss_bytes": null,
+        "process": "M3_ALIGN",
+        "raw_declaration": {
+          "artifact_id": "resource_8",
+          "bytes": 302,
+          "filename": "SYN_L001.align.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "ffd362f4e6401e9ec89c3a4d5fcf9f255995f36957d3a0dd0c6fdabf64678a00"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": null,
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L001.fastq_validation",
+        "peak_rss_bytes": null,
+        "process": "M3_FASTQ_VALIDATE",
+        "raw_declaration": {
+          "artifact_id": "resource_9",
+          "bytes": 222,
+          "filename": "SYN_L001.fastq_validation.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "38fc360fe355a4e170d126344d138e2191926517c4eb4935c04a3b456335e8df"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/fastqc@sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L001.fastqc",
+        "peak_rss_bytes": null,
+        "process": "M3_FASTQC",
+        "raw_declaration": {
+          "artifact_id": "resource_10",
+          "bytes": 302,
+          "filename": "SYN_L001.fastqc.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "bcb8ae727c52f7730997848062e6af7f983a1296bf0cdf915c7ae6c9187253b1"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L001.sort",
+        "peak_rss_bytes": null,
+        "process": "M3_SORT",
+        "raw_declaration": {
+          "artifact_id": "resource_11",
+          "bytes": 300,
+          "filename": "SYN_L001.sort.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "07448b8cf53ffbfd46cf4dce26695de79f0a8b556fcaba4b29ec1cbbfe4b6dad"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/bwa-mem2@sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L002.align",
+        "peak_rss_bytes": null,
+        "process": "M3_ALIGN",
+        "raw_declaration": {
+          "artifact_id": "resource_12",
+          "bytes": 302,
+          "filename": "SYN_L002.align.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "1b48e93f05bc4f47deb8ecc8254d30315216388ef3eeab6cf73cf03dc054ae66"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": null,
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L002.fastq_validation",
+        "peak_rss_bytes": null,
+        "process": "M3_FASTQ_VALIDATE",
+        "raw_declaration": {
+          "artifact_id": "resource_13",
+          "bytes": 222,
+          "filename": "SYN_L002.fastq_validation.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "096fcf85a6f606feecf1e8cc5f938e55055b806b6c60a11f1c5b702e464a1dd4"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/fastqc@sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L002.fastqc",
+        "peak_rss_bytes": null,
+        "process": "M3_FASTQC",
+        "raw_declaration": {
+          "artifact_id": "resource_14",
+          "bytes": 302,
+          "filename": "SYN_L002.fastqc.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "8a6ce29176e43f012d5778913fd92a9aca9d2376e5e7830bdab129a536debe5b"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "SYN_L002.sort",
+        "peak_rss_bytes": null,
+        "process": "M3_SORT",
+        "raw_declaration": {
+          "artifact_id": "resource_15",
+          "bytes": 300,
+          "filename": "SYN_L002.sort.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "58b48860f6c323ed3ccba9980a2d9664ae847c8ad2cc6868a4fc8bb1e170013a"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/bwa-mem2@sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "bwa_index",
+        "peak_rss_bytes": null,
+        "process": "M3_BWA_INDEX",
+        "raw_declaration": {
+          "artifact_id": "resource_16",
+          "bytes": 301,
+          "filename": "bwa_index.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "a073a38eaf4b38ea005cbb1a6cbe92281c6cc2fb39e4528502318984bbed3d88"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "ghcr.io/multiqc/multiqc@sha256:976be2094a3bc1dab7315ad03440d43aab09bf7756f84f3a92ef7ae1013e4bfd",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "multiqc",
+        "peak_rss_bytes": null,
+        "process": "M3_MULTIQC",
+        "raw_declaration": {
+          "artifact_id": "resource_17",
+          "bytes": 290,
+          "filename": "multiqc.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "3de58e30fc778850c4151f8a4b3a7b16eb312c94ad32fca0ea08f624044ecb37"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "reference_faidx",
+        "peak_rss_bytes": null,
+        "process": "M3_REFERENCE_FAIDX",
+        "raw_declaration": {
+          "artifact_id": "resource_18",
+          "bytes": 313,
+          "filename": "reference_faidx.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "d90362f614535188d5d24e98c5963011b94b541c82a673cdd91a1df7bb99e2de"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "reference_metadata",
+        "peak_rss_bytes": null,
+        "process": "M3_REFERENCE_METADATA",
+        "raw_declaration": {
+          "artifact_id": "resource_19",
+          "bytes": 329,
+          "filename": "reference_metadata.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "bc10e69a21fff6240d938a6e569a2c749188a44674bcd0bc2368599eff43c96b"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 2147483648,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": null,
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "source_preflight",
+        "peak_rss_bytes": null,
+        "process": "M3_PREFLIGHT",
+        "raw_declaration": {
+          "artifact_id": "resource_20",
+          "bytes": 208,
+          "filename": "source_preflight.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "f2d30932d3b245c9daf15f96296f8287bbdada559c3c76e63884f084bb338489"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      },
+      {
+        "architecture": "x86_64",
+        "cache_status": null,
+        "container": null,
+        "cpu_seconds": null,
+        "elapsed_seconds": null,
+        "logical_artifact_id": "m3_collect",
+        "peak_rss_bytes": null,
+        "process": "M3_COLLECT",
+        "raw_declaration": {
+          "artifact_id": "resource_21",
+          "bytes": 200,
+          "filename": "m3_collect.resources.json",
+          "role": "nextflow_task_declaration",
+          "sha256": "bbba064b4b23f1d6a62c4da06a6c041aded11467ab1191d97c1d849ae6aa9003"
+        },
+        "requested_cpus": 1,
+        "requested_memory_bytes": 1073741824,
+        "requested_time_seconds": 600,
+        "task_id": null
+      }
+    ]
+  },
+  "input_artifacts": [
+    {
+      "artifact_id": "source_preflight",
+      "bytes": 4549,
+      "filename": "m3-preflight.json",
+      "role": "validated_source_contract",
+      "sha256": "76fb0ebe0e7b0d2fa30d7561e1dbf31f8ef37efe7b59f1fea3fa1ac6d99e20f0"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bam",
+      "bytes": 5099,
+      "filename": "SYNTHETIC01.analysis-ready.bam",
+      "role": "shared_caller_input",
+      "sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bai",
+      "bytes": 176,
+      "filename": "SYNTHETIC01.analysis-ready.bam.bai",
+      "role": "shared_caller_input_index",
+      "sha256": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80"
+    }
+  ],
+  "missingness": {
+    "observed_task_resources": "Measured Nextflow trace is retained by the integration runner; M3 collector does not infer cost from requested resources.",
+    "task_identity": "Task identity was not available in the module; logical artifacts must be joined to the retained Nextflow trace."
+  },
+  "payload_sha256": "ee6e42f5de66b1fca215ac9129cb023699975ba23b7d327f0a968b88092d7345",
+  "producer": {
+    "module": "giab_wes_nextflow.m3",
+    "package": "giab-wes-nextflow",
+    "version": "0.3.0-dev.1"
+  },
+  "run_id": "m3-ci-c929718a76b5",
+  "runtime_architecture": "x86_64",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "units": {
+    "cpu_seconds": "core-seconds",
+    "elapsed_seconds": "seconds",
+    "peak_rss_bytes": "bytes",
+    "requested_cpus": "cores",
+    "requested_memory_bytes": "bytes",
+    "requested_time_seconds": "seconds"
+  },
+  "validation_status": "validated_synthetic"
+}

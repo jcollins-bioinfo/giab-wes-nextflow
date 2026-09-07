@@ -1,6 +1,6 @@
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
-> **M3 shared preprocessing — version 0.3.0-dev.1, implemented; required synthetic Docker CI not yet passed.** M2.1.1 recovery passed required CI at `22d01b202e15bb098e9d42d0ad4a98606e78c2c2` and remains draft PR #19. This dependent branch adds synthetic shared-BAM qualification. Real HG001, independent known-sites compatibility and capture-dependent execution remain gated. See the [observed state](docs/orchestration/project-state.json), [implementation plan](docs/orchestration/implementation-plan.md), and [claim ledger](docs/claim-ledger.yaml).
+> **M3 shared preprocessing — version 0.3.0-dev.1, verified by required synthetic Docker CI 34103737524 at `c3426d3d4578ec6e66a6494c09fde983a7e4f3cd`.** M2.1.1 recovery passed required CI at `22d01b202e15bb098e9d42d0ad4a98606e78c2c2` and remains draft PR #19. This dependent branch adds synthetic shared-BAM qualification. Real HG001, independent known-sites compatibility and capture-dependent execution remain gated. See the [observed state](docs/orchestration/project-state.json), [implementation plan](docs/orchestration/implementation-plan.md), and [claim ledger](docs/claim-ledger.yaml).
 
 ## Motivation and architecture
 
@@ -13,7 +13,7 @@ lane-aware FASTQs → shared BWA-MEM2/sort/markdup/BQSR BAM (+ OQ)
 Nextflow canonical run → immutable evidence → tested Python model → Dash renderer
 ```
 
-Synthetic shared preprocessing and its typed Python evidence boundary are implemented and locally tested. Caller branches, benchmarking and Dash remain later milestones. ONT and somatic workflows are outside v1.
+Synthetic shared preprocessing and its typed Python evidence boundary passed local tests and actual Linux/x86_64 Docker CI. Caller branches, benchmarking and Dash remain later milestones. ONT and somatic workflows are outside v1.
 
 ## Foundation quick start (synthetic, nonhuman fixture only)
 
@@ -89,7 +89,7 @@ The canonical input is original paired Garvan HiSeq 2500 `NIST7035_TAAGGCGA_L001
 | M2.1.1 recovery Python 3.12/3.13, wheel and synthetic foundation CI | [Required CI passed](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34094504379) at `22d01b202e15bb098e9d42d0ad4a98606e78c2c2`; 104 Python tests per environment |
 | Nextflow 26.04.6 minimum, Java ≥17 | CI contract; local status reported honestly |
 | nf-core/tools 4.1.0, nf-schema 2.8.0, nf-test 0.9.5 | Pinned CI/tooling contracts |
-| M3 BWA-MEM2, GATK preprocessing and QC | Implemented on this branch; synthetic Docker qualification pending |
+| M3 BWA-MEM2, GATK preprocessing and QC | [Verified synthetic Docker execution and resume](docs/orchestration/evidence/m3-verified.json); no canonical HG001 result |
 | GATK HaplotypeCaller and DeepVariant WES | M4 caller branches not implemented or executed |
 | DeepVariant linux/amd64 CPU (AVX) and GPU images | Configured immutable contracts; not tested |
 | ARM64/Apple Silicon | Python tests and framework version commands executed; M3 biological containers and DeepVariant unqualified |
@@ -131,4 +131,4 @@ Use the [notebook launch center](notebooks/README.md) or open M2 directly:
 
 Version `0.2.0-dev.3` established `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
 
-Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact capture-design bytes remain unresolved. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is locally implemented after the verified recovery gate; M4–M9 checkpoints remain not started until their prerequisites pass.
+Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact capture-design bytes remain unresolved. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is synthetically verified after the recovery gate. M4 implementation may now begin; M4–M9 require their own execution and scientific gates.

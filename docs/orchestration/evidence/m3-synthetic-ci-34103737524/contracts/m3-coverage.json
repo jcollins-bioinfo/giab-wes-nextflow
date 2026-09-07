@@ -1,0 +1,66 @@
+{
+  "artifact_type": "coverage",
+  "canonical": false,
+  "data": {
+    "benchmark_domain": false,
+    "domain_kind": "whole_invented_reference_target_independent",
+    "maximum_depth": 2,
+    "mean_depth": 0.3,
+    "minimum_depth": 0,
+    "primary_evaluation_bases": null,
+    "reference_bases": 20000,
+    "reference_sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454",
+    "rounding_note": "mean_depth is depth-sum/reference-length; raw mosdepth mean is rounded",
+    "summed_depth_bases": 6000,
+    "target_aware_acceptance": "blocked"
+  },
+  "input_artifacts": [
+    {
+      "artifact_id": "source_preflight",
+      "bytes": 4549,
+      "filename": "m3-preflight.json",
+      "role": "validated_source_contract",
+      "sha256": "76fb0ebe0e7b0d2fa30d7561e1dbf31f8ef37efe7b59f1fea3fa1ac6d99e20f0"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bam",
+      "bytes": 5099,
+      "filename": "SYNTHETIC01.analysis-ready.bam",
+      "role": "shared_caller_input",
+      "sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bai",
+      "bytes": 176,
+      "filename": "SYNTHETIC01.analysis-ready.bam.bai",
+      "role": "shared_caller_input_index",
+      "sha256": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80"
+    },
+    {
+      "artifact_id": "mosdepth_summary",
+      "bytes": 215,
+      "filename": "SYNTHETIC01.mosdepth.summary.txt",
+      "role": "target_independent_depth",
+      "sha256": "439b1aff407866c7d2772fbcc3db597b55f618c94a908ecc89b56715fc7e82c0"
+    }
+  ],
+  "missingness": {
+    "primary_evaluation_bases": "Capture-design Gate B is unresolved; whole-reference synthetic coverage is not an evaluation denominator."
+  },
+  "payload_sha256": "dfb3903876954d7ad8b141e51a80406a565e02d8ba88879a9dd9a25a13fc4b11",
+  "producer": {
+    "module": "giab_wes_nextflow.m3",
+    "package": "giab-wes-nextflow",
+    "version": "0.3.0-dev.1"
+  },
+  "run_id": "m3-ci-c929718a76b5",
+  "runtime_architecture": "x86_64",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "units": {
+    "mean_depth": "reads/base",
+    "reference_bases": "bases",
+    "summed_depth_bases": "base-depth"
+  },
+  "validation_status": "validated_synthetic"
+}

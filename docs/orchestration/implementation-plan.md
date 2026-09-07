@@ -107,6 +107,9 @@ framework jobs and all 21 upstream processing/QC tasks, then the real collector
 rejected a tool-version mismatch. The exact BWA-MEM2 2.3 distribution reports
 executable version 2.2.1, matching its inspected release-source fallback. The
 contract must preserve both identities and require the exact expected report
-against the unchanged image digest. Complete collection, independent
-BAM/ownership checks and resume must still pass in actual Docker execution before
-M3 is verified.
+against the unchanged image digest. The subsequent required run 34103737524 passed complete collection, independent
+BAM/index/OQ/ownership checks and all 22-task resume assertions. Head
+`c3426d3d4578ec6e66a6494c09fde983a7e4f3cd` and tested merge
+`c929718a76b51e48bea6c4b9ebcb451a9d94574c` have identical Git trees.
+The exact artifact checksum and selected unmodified reports are recorded in
+`evidence/m3-verified.json`; M3 is verified for synthetic execution. M4 may proceed.
