@@ -67,3 +67,9 @@ M2 distinguishes implementation readiness from canonical data readiness. **Gate 
 
 Use the [notebook launch center](notebooks/README.md) or open M2 directly:
 [![Open M2 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jcollins-bioinfo/giab-wes-nextflow/blob/main/notebooks/m2_colab.ipynb). The launcher records the resolved commit and keeps canonical Gate B fail-closed.
+
+## M2.1 package and readiness boundary
+
+Version `0.2.0-dev.3` makes `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
+
+Run `scripts/run_m2_readiness.sh verify` for offline code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact capture-design bytes remain unresolved. No real Colab, Drive, human-data, or biological execution is claimed by this release.

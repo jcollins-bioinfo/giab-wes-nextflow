@@ -1,23 +1,11 @@
-# Notebook launch center
+# M2 Colab launcher
 
-Notebooks are thin, restart-safe launchers around the installed `giab-wes-nextflow` package and Nextflow code. No scientific logic should live only in notebook cells.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jcollins-bioinfo/giab-wes-nextflow/blob/main/notebooks/m2_colab.ipynb)
 
-[![Open M2 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jcollins-bioinfo/giab-wes-nextflow/blob/main/notebooks/m2_colab.ipynb)
+Start from a clean runtime, set `REPOSITORY_REF` to a reviewed immutable SHA, and run the thin notebook. It calls `scripts/run_m2_readiness.sh verify`, installs only this project with `python -m pip`, and generates deterministic nonhuman fixtures before samplesheet validation. The inherited Colab `ipython 7.34.0`/missing `jedi` resolver warning is not caused by the project's dependency set (`jsonschema` at runtime) and is not repaired by force-reinstalling unrelated packages.
 
-> The badge launches the current `main`. The notebook resolves and records the exact Git SHA actually executed; edit `REPOSITORY_REF` to select a reviewed branch, tag, or commit.
+For an interrupted data operation, reuse the same deliberate `RUN_ID`. Active I/O belongs in `/content/m2-stage`; the mounted `MyDrive/giab-wes-nextflow-private` directory is only the durable verified-source mirror. `hydrate` rehashes cached bytes before atomic local promotion, and `acquire` resumes package-managed partial files. Allow roughly the manifest's declared bytes plus working headroom on local disk and one source-copy capacity on Drive; inspect the preflight output for the current exact declared/free byte counts.
 
-| Notebook | Purpose | Inputs | Durable outputs | Disk | Scientific gate | Status |
-|---|---|---|---|---|---|---|
-| `m2_colab.ipynb` | Bootstrap, acquire, validate, mirror | Canonical ten-resource manifest; public HG001 sources | Checksummed source cache and mirror evidence in the established Drive workspace | Multi-gigabyte local `/content`; equivalent Drive capacity | Gate A configured; source mirror supported; canonical Gate B blocked | Bootstrap statically tested; Colab/Drive configured, not executed in CI |
+**Gate A** means all declared source objects were acquired and verified. **Gate B** requires the independently confirmed capture-design bytes and canonical materialized domains. A mirror can support Gate A recovery but never completes Gate B and never creates `COMPLETED.json`. The launcher refuses canonical preparation/publication while the gate is unresolved. `samtools` is detected before preparation; on Colab the deterministic installation path is `apt-get update && apt-get install -y samtools`.
 
-## Clean-runtime launch
-
-1. Open the badge in a clean Colab runtime and optionally pin `REPOSITORY_REF`.
-2. Run cells in order. Review the resolved SHA and installed package path.
-3. Mount the existing workspace at `/content/drive/MyDrive/giab-wes-nextflow-private` (folder ID `13R7K0NtUA-GOoyj2gi2hBWUaGITu98u5`).
-4. Keep downloads and compute-heavy I/O in `/content/m2-stage`; never use Drive as the Nextflow work directory.
-5. Choose a unique `RUN_ID`, run zero-download preflight, acquisition, validation, then verified mirroring.
-
-If the runtime is interrupted, bootstrap again, mount Drive, restore the prior run ID, and run the documented hydration command. Hydration re-hashes every cached object before atomic local promotion.
-
-**Gate status:** Gate A establishes contracts and synthetic tests. The durable verified-source mirror is a cache, not canonical completion, and never creates `COMPLETED.json`. Canonical Gate B remains fail-closed because public metadata has not bound the library to an exact capture-target BED. Only reviewed primary evidence and approved hashes in `config/m2-target-design.json` can enable liftover and canonical domains.
+The notebook and launcher have static/local tests only. They have not been executed in a real Colab runtime, and no Google Drive operation is claimed.
