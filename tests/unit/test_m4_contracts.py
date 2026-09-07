@@ -191,6 +191,36 @@ class ContractTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "inventory"):
             contracts.validate_m4_result_bundle(self.bundle)
 
+    def test_multiline_quoted_wrapper_preserves_both_caller_parameters(self) -> None:
+        """Parse actual-style printf literal newlines before continued caller commands."""
+        prefix = "#!/bin/bash -euo pipefail\n# An unmatched ' in a comment is inert.\n"
+        prefix += "printf '{\"task_id\":null,\"architecture\":\"%s\"}\n' \"$(uname -m)\" > resources.json\n"
+        for caller in contracts.CALLERS:
+            text = (self.root / f"source/{caller}/command.sh").read_text()
+            continued = text.replace(" --", " \\\n    --")
+            with self.subTest(caller=caller):
+                self.assertEqual(contracts._parameters(caller, prefix + continued),
+                                 contracts._parameters(caller, text))
+
+    def test_quoted_caller_text_is_not_a_scientific_invocation(self) -> None:
+        """Do not mistake a command printed inside a quoted argument for execution."""
+        for caller in contracts.CALLERS:
+            text = (self.root / f"source/{caller}/command.sh").read_text().strip()
+            quoted = "printf '%s\\n' '\n" + text + "\n'\n"
+            with self.subTest(caller=caller), self.assertRaisesRegex(ValueError, "exactly one"):
+                contracts._parameters(caller, quoted)
+
+    def test_multiline_wrapper_keeps_malformed_duplicate_and_option_gates(self) -> None:
+        """Literal-newline support must not ignore broken syntax or hidden parameters."""
+        prefix = "printf 'unit metadata\n' > resources.json\n"
+        for caller in contracts.CALLERS:
+            text = (self.root / f"source/{caller}/command.sh").read_text()
+            cases = (prefix + text + "printf 'unclosed\n", prefix + text + text,
+                     prefix + text.rstrip() + " --unapproved-scientific-option=true\n")
+            for changed in cases:
+                with self.subTest(caller=caller, command=changed), self.assertRaises(ValueError):
+                    contracts._parameters(caller, changed)
+
     def test_unknown_reference_and_unsafe_output_fail_before_marker(self) -> None:
         """Forbidden output ancestors and changed source references are fail-closed."""
         upstream = self.root / "source/preprocessing"

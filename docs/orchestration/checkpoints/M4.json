@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M4",
-  "phase": "repair first CI setup failures before actual caller execution",
+  "phase": "repair command collector after first actual GATK task",
   "state": "implemented",
   "version": "0.4.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/m4-dual-callers",
-      "evidence_sha": "1682c983fe287e1b0dac680e2b52f8cace066018",
+      "evidence_sha": "cfce0ef3243291970a83d49f690cb985f7ef2b85",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -158,6 +158,13 @@
       "evidence_sha": null,
       "command": "python -m unittest discover -s tests/unit -p test_m4_integration_driver.py; nf-test test tests/m4_pipeline.nf.test --ci",
       "detail": "17 driver tests passed on Python3.12/3.13 and independent root/reviewer checks; missing-fixture pipeline test passed after clean regeneration. No images, caller parameters or fixture bytes changed."
+    },
+    {
+      "name": "Collector logical command-line repair",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m unittest discover -s tests/unit; python -I -m unittest discover -s <repository>/tests/unit -p test_m4*.py",
+      "detail": "233 tests passed on Python3.12/3.13;53 M4 tests passed from isolated rebuilt wheel. Exact actual HC report script and genuine Nextflow-rendered HC/DV scripts recover unchanged parameters; malformed/duplicate/hidden invocations still fail."
     }
   ],
   "ci": [
@@ -166,15 +173,15 @@
       "required": true,
       "status": "failure",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "1682c983fe287e1b0dac680e2b52f8cace066018",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427",
+      "evidence_sha": "cfce0ef3243291970a83d49f690cb985f7ef2b85",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974346",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974532",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974576",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974586",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974632",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101700843030"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/job/101703087818",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/job/101703088132",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/job/101703088179",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/job/101703088284",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/job/101703088301",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/job/101704303004"
       ]
     }
   ],
@@ -215,7 +222,8 @@
       "docs/orchestration/evidence/m4-wes-model-metadata.json",
       "docs/orchestration/evidence/m4-local-verification.json",
       "docs/orchestration/evidence/m3-checkpoint-ci-repaired.json",
-      "docs/orchestration/evidence/m4-ci-attempt-1.json"
+      "docs/orchestration/evidence/m4-ci-attempt-1.json",
+      "docs/orchestration/evidence/m4-ci-attempt-2.json"
     ]
   },
   "external_blockers": [
@@ -226,6 +234,6 @@
       "owner_action": "At the canonical gate, provide stronger per-library assignment or approve an explicit domain and its limited estimand after reviewing the investigation."
     }
   ],
-  "next_safe_action": "Re-run required CI after binding the index reader to the actual unchanged image report and generating M4 inputs before nf-test; no caller ran in the failed attempt.",
-  "observed_at": "2026-09-07T10:06:21.946567+00:00"
+  "next_safe_action": "Re-run required CI after repairing valid multiline shell-command parsing; actual GATK ran but caller collection, DeepVariant, positive inference and independent acceptance remain unverified.",
+  "observed_at": "2026-09-07T10:19:19.913592+00:00"
 }

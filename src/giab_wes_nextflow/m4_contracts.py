@@ -291,12 +291,55 @@ def validate_native_calls(vcf_path: str | Path, *, caller: str,
             "reference_control_nonreference_calls": 0, "acceptance": "invented_integration_only"}
 
 
+def _shell_command_lines(command: str) -> list[list[str]]:
+    """Tokenize wrapper lines across quoted newlines without executing shell syntax.
+
+    These recorded wrappers contain one command per logical line. Preserve quoted
+    literal newlines, remove shell line continuations only outside single quotes,
+    and ignore quote characters in comments. This is an evidence reader, not a
+    general shell interpreter or a replacement for the actual task/mount audit.
+    """
+    lines: list[str] = []
+    current: list[str] = []
+    quote: str | None = None
+    comment = False
+    index = 0
+    while index < len(command):
+        character = command[index]
+        if character == "\\" and quote != "'" and not comment and index + 1 < len(command):
+            following = command[index + 1]
+            if following != "\n":
+                current.extend((character, following))
+            index += 2
+            continue
+        if character == "\n" and quote is None:
+            lines.append("".join(current))
+            current = []
+            comment = False
+        else:
+            current.append(character)
+            if not comment:
+                if character == "#" and quote is None:
+                    comment = True
+                elif character in {"'", '"'}:
+                    if quote is None:
+                        quote = character
+                    elif quote == character:
+                        quote = None
+        index += 1
+    if quote is not None:
+        raise ValueError("caller command script contains an unclosed shell quote")
+    if current:
+        lines.append("".join(current))
+    return [shlex.split(line, comments=True) for line in lines]
+
+
 def _parameters(caller: str, command: str) -> dict[str, Any]:
     """Read explicit scientific flags from the actual copied command script."""
-    lines = command.replace("\\\n", " ").splitlines()
-    candidates = [shlex.split(line, comments=True) for line in lines]
-    candidates = [tokens for tokens in candidates if ("HaplotypeCaller" in tokens if caller == "gatk"
-                  else any(token.startswith("--model_type") for token in tokens))]
+    candidates = [tokens for tokens in _shell_command_lines(command) if tokens and
+                  ((tokens[0] == "gatk" and "HaplotypeCaller" in tokens) if caller == "gatk" else
+                   (tokens[0] == "/opt/deepvariant/bin/run_deepvariant" and
+                    any(token.startswith("--model_type") for token in tokens)))]
     if len(candidates) != 1:
         raise ValueError("caller command must contain exactly one scientific invocation")
     tokens = candidates[0]
