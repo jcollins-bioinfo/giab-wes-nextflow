@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/schemas/m3-publication.schema.json",
+  "title": "Completed small M3 synthetic evidence publication",
+  "description": "Identical content in immutable registry and last-written COMPLETED.json. This is neither a reusable genomic source cache nor canonical scientific output. Byte sizes use bytes; timestamps are metadata; all six artifact hashes are SHA-256.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "bundle_sha256",
+    "repository_sha",
+    "producer_version",
+    "publisher_version",
+    "publisher_architecture",
+    "created_utc",
+    "synthetic",
+    "canonical",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "kind": {
+      "const": "m3-synthetic-evidence-publication"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "bundle_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repository_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "producer_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher_architecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "canonical": {
+      "const": false
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "filename": {
+            "enum": [
+              "m3-alignment.json",
+              "m3-coverage.json",
+              "m3-manifest.json",
+              "m3-provenance.json",
+              "m3-qc.json",
+              "m3-resources.json"
+            ]
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2097152
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,352 @@
+{
+  "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/schemas/m3-provenance.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "provenance"
+    },
+    "canonical": {
+      "const": false
+    },
+    "data": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_lineage": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "artifact_id": {
+                "type": "string"
+              },
+              "operation": {
+                "type": "string"
+              },
+              "parents": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "artifact_id",
+              "parents",
+              "operation"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "callers_executed": {
+          "maxItems": 0,
+          "type": "array"
+        },
+        "canonical_hg001_executed": {
+          "const": false
+        },
+        "capture_design_gate": {
+          "const": "blocked"
+        },
+        "claim_boundary": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "fixture_expectations_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "fixture_recipe_version": {
+          "const": "1.0.0"
+        },
+        "host_python_container": {
+          "type": "null"
+        },
+        "known_sites_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "reference_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "repository_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "sample": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "shared_bam_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_preflight_payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "stage_artifacts": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "artifact_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "bytes": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "filename": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "record_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "role": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "artifact_id",
+              "filename",
+              "role",
+              "sha256",
+              "bytes"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "tools": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "container_identity_status": {
+                "const": "workflow_declared_digest"
+              },
+              "container_image": {
+                "pattern": "@sha256:[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "declared_version": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "name": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "observed_version_text": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "version_evidence": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "artifact_id": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "filename": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "record_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "role": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "artifact_id",
+                      "filename",
+                      "role",
+                      "sha256",
+                      "bytes"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "declared_version",
+              "observed_version_text",
+              "container_image",
+              "container_identity_status",
+              "version_evidence"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "transform_order": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "sample",
+        "repository_sha",
+        "reference_sha256",
+        "shared_bam_sha256",
+        "fixture_recipe_version",
+        "source_preflight_payload_sha256",
+        "fixture_expectations_sha256",
+        "known_sites_sha256",
+        "stage_artifacts",
+        "transform_order",
+        "tools",
+        "host_python_container",
+        "callers_executed",
+        "canonical_hg001_executed",
+        "capture_design_gate",
+        "claim_boundary",
+        "artifact_lineage"
+      ],
+      "type": "object"
+    },
+    "input_artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "bytes": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "filename": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "record_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "role": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "filename",
+          "role",
+          "sha256",
+          "bytes"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "missingness": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer": {
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "package": {
+          "const": "giab-wes-nextflow"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "package",
+        "version",
+        "module"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "type": "string"
+    },
+    "runtime_architecture": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "units": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "validation_status": {
+      "const": "validated_synthetic"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "run_id",
+    "producer",
+    "synthetic",
+    "canonical",
+    "validation_status",
+    "runtime_architecture",
+    "input_artifacts",
+    "units",
+    "missingness",
+    "data",
+    "payload_sha256"
+  ],
+  "type": "object"
+}

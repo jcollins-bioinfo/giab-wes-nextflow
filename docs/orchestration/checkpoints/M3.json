@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M3",
-  "phase": "awaiting prerequisite milestone",
-  "state": "not_started",
-  "version": "0.2.0-dev.4",
+  "phase": "synthetic implementation locally tested; required Docker CI pending",
+  "state": "implemented",
+  "version": "0.3.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/m2.1.1-provenance-recovery",
-      "evidence_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+      "branch": "codex/m3-shared-preprocessing",
+      "evidence_sha": "22d01b202e15bb098e9d42d0ad4a98606e78c2c2",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -23,7 +23,7 @@
     {
       "id": "current-source-manifest",
       "status": "declared",
-      "sha256": "673f96c3e1a5b29405a12d8ce835814844d0592bb404c496ee8fa59aa73e257c",
+      "sha256": "49427c09ad060bddf4e8c76ca545c12d4da571cb55bd50eaccf28b110cc92ed4",
       "reason": "Manifest bytes in this working tree; real objects need fresh hydration validation."
     },
     {
@@ -91,18 +91,87 @@
       "status": "declared",
       "sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
       "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "canonical-bqsr-known-sites",
+      "status": "missing",
+      "sha256": null,
+      "reason": "Independent real known-sites release/hash and reference compatibility must be established; GIAB truth is forbidden as training/recalibration input."
+    },
+    {
+      "id": "invented-m3-fixture-expectations",
+      "status": "verified",
+      "sha256": "d8f87a4eddd93eebd1cee5c9d77bfa1b8093714a8b3c2edc434742a3f3e16c1d",
+      "reason": "Deterministic invented recipe; unit tests and real installed-host preflight passed; no external sequence."
+    },
+    {
+      "id": "m3-tool-lock",
+      "status": "declared",
+      "sha256": "12803f57143c724d2e565e8a4d461e5a33612b761fd191d19f1aff5f9bcefb8d",
+      "reason": "Registry byte identities and source commands audited; real Docker executable observations remain pending."
     }
   ],
-  "local_tests": [],
+  "local_tests": [
+    {
+      "name": "Python3.12 and3.13 synthetic suites",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m unittest discover -s tests/unit -v",
+      "detail": "165 tests passed per interpreter; uncommitted source inventory and logs bound by docs/orchestration/evidence/m3-local-validation.json."
+    },
+    {
+      "name": "M3 framework and stub resume",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "nf-test test --ci; nextflow lint -o concise .; synthetic stub plus named resume",
+      "detail": "6 nf-tests; lint passed with2 inherited warnings;22 executed stubtasks then22 cached; no biological execution."
+    },
+    {
+      "name": "sdist wheel and distribution safety",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m build --no-isolation; python scripts/check_distributions.py <current artifacts>",
+      "detail": "Source220/wheel37 allowed members; M3 wheel CLIs/resources work outside checkout."
+    }
+  ],
   "ci": [],
-  "execution_environments": [],
+  "execution_environments": [
+    {
+      "id": "local-macos",
+      "status": "observed",
+      "os": "Darwin",
+      "architecture": "arm64",
+      "canonical": false,
+      "run_id": null,
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/local-baseline.json"
+      ]
+    },
+    {
+      "id": "local-m3-framework-stub",
+      "status": "executed",
+      "os": "Darwin",
+      "architecture": "arm64",
+      "canonical": false,
+      "run_id": "m3-local-stub-qualification",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m3-dsl2-local-qualification.json",
+        "docs/orchestration/evidence/m3-local-validation.json"
+      ]
+    }
+  ],
   "publication": {
-    "drive": "not_published",
+    "drive": "partial",
     "public_evidence": "not_published",
     "deployment": "not_deployed",
     "release": "not_released",
     "authorization_reference": null,
-    "evidence_artifacts": []
+    "evidence_artifacts": [
+      "docs/orchestration/evidence/source-cache-metadata.json",
+      "docs/orchestration/evidence/m2.1.1-verified.json",
+      "docs/orchestration/evidence/m3-local-validation.json",
+      "docs/orchestration/evidence/m3-dsl2-local-qualification.json"
+    ]
   },
   "external_blockers": [
     {
@@ -112,6 +181,6 @@
       "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
     }
   ],
-  "next_safe_action": "Start M3 after repaired M2 required CI is green and package contracts are sound.",
-  "observed_at": "2026-09-07T06:55:06.840463+00:00"
+  "next_safe_action": "Push the M3 commit and create a draft PR stacked on PR19; require all M3 CI jobs, including real Docker execution and resume, before M4.",
+  "observed_at": "2026-09-07T07:59:35.904880+00:00"
 }

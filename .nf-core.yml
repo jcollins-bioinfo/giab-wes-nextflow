@@ -10,9 +10,11 @@ lint:
   files_unchanged: false
   # Stable workflow-output publication replaces template process publishDir behavior.
   nextflow_config: false
-  # M1 has no biological MultiQC output; this file is intentionally only a shell.
+  # Project-specific M3 MultiQC inputs are explicitly collected and tested; the
+  # external template config is not the authoritative scientific contract.
   multiqc_config: false
-  # M1 tests a foundation JSON contract, not the template versions.yml convention.
+  # Foundation and M3 use typed JSON/version-text contracts; nf-test assertions
+  # are project-owned rather than the official template versions.yml convention.
   nf_test_content: false
   # The public repository slug is intentionally unbranded and contains hyphens.
   pipeline_name_conventions: false

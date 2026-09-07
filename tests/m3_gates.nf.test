@@ -1,0 +1,13 @@
+nextflow_pipeline {
+    name 'M3 canonical fail-closed gate'
+    script '../main.nf'
+    tag 'm3'
+    test('canonical mode cannot launch any tools') {
+        when { params { workflow_mode = 'm3_canonical' } }
+        then {
+            assert !workflow.success
+            assert workflow.stdout.join(' ').contains('Canonical M3 is blocked')
+            assert workflow.trace.tasks().isEmpty()
+        }
+    }
+}

@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [0.3.0-dev.1] - 2026-09-07
+
+M3 shared-preprocessing implementation: deterministic invented paired reads and
+reference/known-sites fixtures, typed input/result contracts, digest-pinned DSL2
+QC/alignment/duplicate/BQSR modules, original-quality retention, target-independent
+coverage reporting, and synthetic integration/resume qualification. Canonical
+HG001 execution remains blocked pending independent known-sites compatibility
+and capture-design Gate B. Remote M3 execution evidence is recorded separately.
+Guard small synthetic evidence publication and recovery, bind `--outdir` to the
+supported workflow output root, and constrain/audit source-distribution members
+so local test work and generated genomic artifacts cannot enter release packages.
+
 ## [0.2.0-dev.4] - 2026-09-07
 
 M2.1.1 recovery: repair macOS path containment, validate immutable source-cache

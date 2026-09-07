@@ -211,6 +211,18 @@ class OrchestrationTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     VALIDATOR.validate_version_consistency(root)
 
+    def test_packaged_resource_nonversion_drift_is_rejected(self) -> None:
+        """A schema/tool declaration must retain all authoritative bytes in wheels."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            version_repository(root)
+            path = root / "src/giab_wes_nextflow/data/config/m2-resources.json"
+            value = json.loads(path.read_text())
+            value["unexpected_tool_digest"] = "a" * 64
+            path.write_text(json.dumps(value))
+            with self.assertRaisesRegex(ValueError, "packaged resource differs"):
+                VALIDATOR.validate_version_consistency(root)
+
     def test_required_checkpoint_identity_and_future_state(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

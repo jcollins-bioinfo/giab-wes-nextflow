@@ -16,10 +16,15 @@ claims:
     evidence: docs/orchestration/evidence/source-cache-metadata.json
     limitation: Size/name matching is not fresh byte verification; architecture is producer-reported; preparation and canonical execution are unverified.
   - id: m2-recovery
+    classification: CI-tested
+    statement: M2.1.1 recovery passed required CI and 104-test Python and clean-wheel suites.
+    evidence: docs/orchestration/evidence/m2.1.1-verified.json
+    limitation: Recovery evidence is at commit 22d01b202e15bb098e9d42d0ad4a98606e78c2c2; no completed M3 or canonical execution is implied.
+  - id: m3-shared-preprocessing
     classification: implemented
-    statement: M2.1.1 recovery contracts are under implementation and validation.
-    evidence: docs/orchestration/project-state.json
-    limitation: No green repair CI or completed M3 work is implied by an implementation record.
+    statement: A deterministic invented-input DSL2 workflow and Python evidence contracts implement shared preprocessing with retained duplicates and BQSR/OQ provenance.
+    evidence: docs/orchestration/checkpoints/M3.json
+    limitation: M3 required Docker CI is pending; local stub and parser tests do not establish actual biological-tool execution or canonical HG001 processing.
   - id: capture-design
     classification: unresolved
     statement: Exact capture-design byte identity remains unresolved.

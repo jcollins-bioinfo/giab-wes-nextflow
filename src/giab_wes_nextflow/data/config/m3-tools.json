@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "project_version": "0.3.0-dev.1",
+  "kind": "m3_immutable_tool_contracts",
+  "tools": {
+    "bwa-mem2": {
+      "version": "2.3",
+      "image": "quay.io/biocontainers/bwa-mem2@sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+      "registry_reference_observed": "2.3--he70b90d_0",
+      "platforms_declared": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        }
+      ],
+      "manifest_digest_bytes_verified": true,
+      "observed_at": "2026-09-07T07:05:45.569075+00:00",
+      "registry_manifest_url": "https://quay.io/v2/biocontainers/bwa-mem2/manifests/2.3--he70b90d_0",
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+    },
+    "samtools": {
+      "version": "1.24",
+      "image": "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+      "registry_reference_observed": "1.24--h9dcdb79_1",
+      "platforms_declared": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        }
+      ],
+      "manifest_digest_bytes_verified": true,
+      "observed_at": "2026-09-07T07:05:45.569075+00:00",
+      "registry_manifest_url": "https://quay.io/v2/biocontainers/samtools/manifests/1.24--h9dcdb79_1",
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+    },
+    "mosdepth": {
+      "version": "0.3.14",
+      "image": "quay.io/biocontainers/mosdepth@sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c",
+      "registry_reference_observed": "0.3.14--h87be163_2",
+      "platforms_declared": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        }
+      ],
+      "manifest_digest_bytes_verified": true,
+      "observed_at": "2026-09-07T07:05:45.569075+00:00",
+      "registry_manifest_url": "https://quay.io/v2/biocontainers/mosdepth/manifests/0.3.14--h87be163_2",
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+    },
+    "fastqc": {
+      "version": "0.12.1",
+      "image": "quay.io/biocontainers/fastqc@sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900",
+      "registry_reference_observed": "0.12.1--hdfd78af_0",
+      "platforms_declared": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        }
+      ],
+      "manifest_digest_bytes_verified": true,
+      "observed_at": "2026-09-07T07:05:45.569075+00:00",
+      "registry_manifest_url": "https://quay.io/v2/biocontainers/fastqc/manifests/0.12.1--hdfd78af_0",
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+    },
+    "multiqc": {
+      "version": "1.35",
+      "image": "ghcr.io/multiqc/multiqc@sha256:976be2094a3bc1dab7315ad03440d43aab09bf7756f84f3a92ef7ae1013e4bfd",
+      "registry_reference_observed": "v1.35",
+      "platforms_declared": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        },
+        {
+          "architecture": "unknown",
+          "os": "unknown"
+        },
+        {
+          "architecture": "unknown",
+          "os": "unknown"
+        }
+      ],
+      "manifest_digest_bytes_verified": true,
+      "observed_at": "2026-09-07T07:05:45.569075+00:00",
+      "registry_manifest_url": "https://ghcr.io/v2/multiqc/multiqc/manifests/v1.35",
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+    },
+    "gatk": {
+      "version": "4.7.0.0",
+      "image": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+      "registry_reference_observed": "4.7.0.0",
+      "platforms_declared": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        }
+      ],
+      "manifest_digest_bytes_verified": true,
+      "observed_at": "2026-09-07T07:05:45.569075+00:00",
+      "registry_manifest_url": "https://registry-1.docker.io/v2/broadinstitute/gatk/manifests/4.7.0.0",
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+    }
+  },
+  "scientific_policy": {
+    "duplicates": "marked and retained",
+    "bqsr": "required for final BAM; independent synthetic known sites qualify plumbing only",
+    "qualities": "preserve OQ; GATK uses recalibrated QUAL, DeepVariant will use OQ per ADR0003",
+    "trimming": "disabled; no evidence-based trimming choice has been made",
+    "coverage": "target-independent fixed reference windows, not a WES evaluation denominator",
+    "canonical_execution": "blocked pending real known-sites/reference compatibility and target gate"
+  }
+}

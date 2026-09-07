@@ -69,3 +69,32 @@ paid compute, DNS change or clinical/generalization claim is authorized by code
 readiness. The current local machine is macOS ARM64; no Docker or usable Java
 runtime was found during baseline inspection. Git SSH read access works; GitHub
 CLI credentials failed validation, and the connected GitHub API remains available.
+
+
+## M3 implementation plan, begun after recovery verification
+
+Recovery required CI run 34094504379 succeeded at
+`22d01b202e15bb098e9d42d0ad4a98606e78c2c2`. Draft PR #19 remains unmerged.
+Branch `codex/m3-shared-preprocessing` is explicitly stacked on
+`codex/m2.1.1-provenance-recovery`; its PR base must be that branch while PR #19
+is unmerged. The recovery evidence record is `evidence/m2.1.1-verified.json`.
+
+1. Preserve explicit foundation mode; add synthetic shared-preprocessing mode
+   and an actionable fail-closed canonical mode. Bind invented fixtures by hash.
+2. Implement typed package input/QC/alignment/coverage/resource/provenance models,
+   schemas and negative tests with deterministic paired reads/reference/known sites.
+3. Run raw FastQC, BWA-MEM2, sample-level merge, retained duplicate marking,
+   BaseRecalibrator/ApplyBQSR with original qualities, BAM acceptance/summaries,
+   target-independent mosdepth and explicit MultiQC inputs in DSL2 modules.
+4. Pin verified tool-container manifest identities and capture executable versions,
+   actual commands, task resources, trace/report/timeline/DAG and shared BAM lineage.
+5. Test malformed reads/metadata/reference, module/subworkflow stubs, actual tiny
+   Docker integration, sort/index/RG/duplicate/OQ invariants and resume behavior.
+6. Add a thin M3 Colab launcher, current README/methods/runbook and gate-aware
+   checkpoints. Run local and remote tests before any M4 continuation decision.
+
+Canonical known-sites resources are absent and require separate pinned identity
+and reference-compatibility verification. The existing ADR 0003 quality contract
+is preserved. Synthetic BQSR tests qualify plumbing, not calibration adequacy or
+HG001 performance. No assay targets, truth VCF/BED or benchmark inputs enter M3
+processing tasks. Canonical capture-dependent acceptance remains Gate B blocked.

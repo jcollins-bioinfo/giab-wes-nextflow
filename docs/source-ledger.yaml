@@ -61,6 +61,20 @@ sources:
     evidence: docs/orchestration/evidence/source-cache-metadata.json
     access_date: 2026-09-07
     control_record_sha256: 1a2302fa7f28bea57860ecd98293981f09d9b0d92913d8862bc043b5d4a633a2
+  - claim: "M2.1.1 recovery required CI passed at the repaired provenance baseline"
+    url: https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34094504379
+    commit: 22d01b202e15bb098e9d42d0ad4a98606e78c2c2
+    access_date: 2026-09-07
+  - claim: "M3 selected tool releases, primary method documentation and registry digest declarations"
+    evidence: docs/orchestration/evidence/m3-tool-sources.json
+    registry_evidence: docs/orchestration/evidence/m3-container-declarations.json
+    authoritative_configuration: config/m3-tools.json
+    access_date: 2026-09-07
+    limitation: "Registry metadata and documented behavior do not establish actual execution; immutable CI/run records own executed status."
 contradictions:
+  - observed: "workflow.output.directory is not a Nextflow 26.04 output-root option; outputs ignored --outdir while reports honored it."
+    resolution: "Use outputDir = params.outdir and assert the supplied output root in synthetic workflow tests."
+    url: https://docs.seqera.io/nextflow/workflow#publishing-files
+    access_date: 2026-09-07
   - observed: "nf-schema 2.8.0 rejects Nextflow 25.10.4 and requires Nextflow >=26.04.0"
     resolution: "Owner selected option 1: raise the supported minimum; 26.04.6 is now the sole M1 runtime baseline."

@@ -1,0 +1,208 @@
+{
+  "observed_at": "2026-09-07T07:05:45.569075+00:00",
+  "scope": "Public registry manifests/config only; no image layers, installs, scientific execution, or human data.",
+  "containers": [
+    {
+      "tool": "bwa-mem2",
+      "repository": "quay.io/biocontainers/bwa-mem2",
+      "reference": "2.3--he70b90d_0",
+      "manifest_url": "https://quay.io/v2/biocontainers/bwa-mem2/manifests/2.3--he70b90d_0",
+      "manifest_digest": "sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+      "registry_digest": "sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+      "digest_bytes_verified": true,
+      "media_type": "application/vnd.docker.distribution.manifest.v2+json",
+      "platforms": [
+        {
+          "manifest_digest": "sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "config_digest": "sha256:515ee4badd3c143c064c514a51565d9808ee15e04620b954cf460520fe842036"
+        }
+      ],
+      "layer_count": 3,
+      "compressed_layer_bytes": 14778650,
+      "execution_status": "not_executed",
+      "tag_lookup_url": "https://quay.io/api/v1/repository/biocontainers/bwa-mem2/tag/?onlyActiveTags=true&limit=100&page=1",
+      "tag_manifest_digest": "sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f",
+      "candidates": [
+        {
+          "tag": "2.3--he70b90d_0",
+          "digest": "sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f"
+        }
+      ]
+    },
+    {
+      "tool": "samtools",
+      "repository": "quay.io/biocontainers/samtools",
+      "reference": "1.24--h9dcdb79_1",
+      "manifest_url": "https://quay.io/v2/biocontainers/samtools/manifests/1.24--h9dcdb79_1",
+      "manifest_digest": "sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+      "registry_digest": "sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+      "digest_bytes_verified": true,
+      "media_type": "application/vnd.docker.distribution.manifest.v2+json",
+      "platforms": [
+        {
+          "manifest_digest": "sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "config_digest": "sha256:b45e022dcf6136b8da692473367122e40f1355d1d4acfd7fac39e0e558d7e6b9"
+        }
+      ],
+      "layer_count": 3,
+      "compressed_layer_bytes": 49457220,
+      "execution_status": "not_executed",
+      "tag_lookup_url": "https://quay.io/api/v1/repository/biocontainers/samtools/tag/?onlyActiveTags=true&limit=100&page=1",
+      "tag_manifest_digest": "sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+      "candidates": [
+        {
+          "tag": "1.24--h9dcdb79_1",
+          "digest": "sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561"
+        },
+        {
+          "tag": "1.24--h9dcdb79_0",
+          "digest": "sha256:a62a3a66c297e2b57967a84671b931355f8217c8dc9f34b06476292597ee2897"
+        }
+      ]
+    },
+    {
+      "tool": "mosdepth",
+      "repository": "quay.io/biocontainers/mosdepth",
+      "reference": "0.3.14--h87be163_2",
+      "manifest_url": "https://quay.io/v2/biocontainers/mosdepth/manifests/0.3.14--h87be163_2",
+      "manifest_digest": "sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c",
+      "registry_digest": "sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c",
+      "digest_bytes_verified": true,
+      "media_type": "application/vnd.docker.distribution.manifest.v2+json",
+      "platforms": [
+        {
+          "manifest_digest": "sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "config_digest": "sha256:e4ce22779ffa0b9af0832123335540db3b4cd00063127e8f1145aa78fb658bf4"
+        }
+      ],
+      "layer_count": 3,
+      "compressed_layer_bytes": 69980423,
+      "execution_status": "not_executed",
+      "tag_lookup_url": "https://quay.io/api/v1/repository/biocontainers/mosdepth/tag/?onlyActiveTags=true&limit=100&page=1",
+      "tag_manifest_digest": "sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c",
+      "candidates": [
+        {
+          "tag": "0.3.14--h87be163_2",
+          "digest": "sha256:63f50e21185f5ce50fb0b6c6d3b3d4b7e50ab19356096f1045ca2538b739793c"
+        },
+        {
+          "tag": "0.3.14--h05c3d44_1",
+          "digest": "sha256:52f0d8cb1e61714a8f4e7ccb0f720f3e9dd2928fc4367eb78a42e1cf7c24658d"
+        },
+        {
+          "tag": "0.3.14--h05c3d44_0",
+          "digest": "sha256:50a99dc99f7ede1475976a3f562ffd682d839d69f68ce439f441dd553b3172bc"
+        }
+      ]
+    },
+    {
+      "tool": "fastqc",
+      "repository": "quay.io/biocontainers/fastqc",
+      "reference": "0.12.1--hdfd78af_0",
+      "manifest_url": "https://quay.io/v2/biocontainers/fastqc/manifests/0.12.1--hdfd78af_0",
+      "manifest_digest": "sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900",
+      "registry_digest": "sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900",
+      "digest_bytes_verified": true,
+      "media_type": "application/vnd.docker.distribution.manifest.v2+json",
+      "platforms": [
+        {
+          "manifest_digest": "sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "config_digest": "sha256:dc85080d4574f19d39404c467ded96a90075f127e5bd3ecea3c06132632edacf"
+        }
+      ],
+      "layer_count": 3,
+      "compressed_layer_bytes": 295716227,
+      "execution_status": "not_executed",
+      "tag_lookup_url": "https://quay.io/api/v1/repository/biocontainers/fastqc/tag/?onlyActiveTags=true&limit=100&page=1",
+      "tag_manifest_digest": "sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900",
+      "candidates": [
+        {
+          "tag": "0.12.1--hdfd78af_0",
+          "digest": "sha256:e194048df39c3145d9b4e0a14f4da20b59d59250465b6f2a9cb698445fd45900"
+        }
+      ]
+    },
+    {
+      "tool": "multiqc",
+      "repository": "ghcr.io/multiqc/multiqc",
+      "reference": "v1.35",
+      "manifest_url": "https://ghcr.io/v2/multiqc/multiqc/manifests/v1.35",
+      "manifest_digest": "sha256:976be2094a3bc1dab7315ad03440d43aab09bf7756f84f3a92ef7ae1013e4bfd",
+      "registry_digest": "sha256:976be2094a3bc1dab7315ad03440d43aab09bf7756f84f3a92ef7ae1013e4bfd",
+      "digest_bytes_verified": true,
+      "media_type": "application/vnd.oci.image.index.v1+json",
+      "platforms": [
+        {
+          "manifest_digest": "sha256:a0c146fb9ec0207a88627da3aaa36c10014c5ef8dc841c55a01c0345d8b5cae5",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          }
+        },
+        {
+          "manifest_digest": "sha256:1d2a3bb22cce3cf20ec1df7a50b3e90e49a7f3fcf34fcb945290000df2b169c3",
+          "platform": {
+            "architecture": "arm64",
+            "os": "linux"
+          }
+        },
+        {
+          "manifest_digest": "sha256:3ccbd80f1cafac0f9fca3f290e1341efc567385f8dbc056306aa44f636b0e201",
+          "platform": {
+            "architecture": "unknown",
+            "os": "unknown"
+          }
+        },
+        {
+          "manifest_digest": "sha256:b9d23f909506e0bb000e79403edd6cac7804eb8482bc1eb1b42db46c3f833a83",
+          "platform": {
+            "architecture": "unknown",
+            "os": "unknown"
+          }
+        }
+      ],
+      "layer_count": 0,
+      "compressed_layer_bytes": 0,
+      "execution_status": "not_executed"
+    },
+    {
+      "tool": "gatk",
+      "repository": "registry-1.docker.io/broadinstitute/gatk",
+      "reference": "4.7.0.0",
+      "manifest_url": "https://registry-1.docker.io/v2/broadinstitute/gatk/manifests/4.7.0.0",
+      "manifest_digest": "sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+      "registry_digest": "sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+      "digest_bytes_verified": true,
+      "media_type": "application/vnd.docker.distribution.manifest.v2+json",
+      "platforms": [
+        {
+          "manifest_digest": "sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "config_digest": "sha256:399fb8c6da7d096127a064b740b13838c0a3799d920c316ad6d4b80c8f225ea3"
+        }
+      ],
+      "layer_count": 11,
+      "compressed_layer_bytes": 2490266320,
+      "execution_status": "not_executed"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "giab-wes-nextflow"
 dynamic = ["version"]
-description = "Reproducible GIAB HG001 WES acquisition and provenance tooling"
+description = "GIAB HG001 WES provenance and shared-preprocessing tooling"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
@@ -16,6 +16,7 @@ dependencies = ["jsonschema>=4.20"]
 dev = ["build==1.3.0", "pre-commit==4.3.0", "pytest==8.4.2"]
 
 [project.scripts]
+giab-wes-m3 = "giab_wes_nextflow.m3_cli:main"
 giab-wes-acquire-m2 = "giab_wes_nextflow.acquisition:main"
 giab-wes-prepare-m2 = "giab_wes_nextflow.preparation:main"
 giab-wes-validate-m2 = "giab_wes_nextflow.validation:main"
@@ -29,4 +30,5 @@ path = "src/giab_wes_nextflow/__init__.py"
 packages = ["src/giab_wes_nextflow"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src", "scripts", "config", "schemas", "tests", "notebooks", "pyproject.toml", "README.md", "LICENSE"]
+only-include = ["src", "scripts", "config", "schemas", "tests", "notebooks", "pyproject.toml", "README.md", "LICENSE", "main.nf", "nextflow.config", "nextflow_schema.json", "workflows", "subworkflows", "modules", "conf", "assets", "docs", "CITATION.cff", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "requirements-dev.in", "requirements-dev.txt", "nf-test.config", ".nf-core.yml", ".pre-commit-config.yaml", ".gitignore", ".gitattributes"]
+exclude = ["**/__pycache__/**", "**/*.pyc", "/tests/data/m3-generated/**", "/tests/data/synthetic_nonhuman_R1.fastq.gz", "/tests/data/synthetic_nonhuman_R2.fastq.gz", "**/*.bam", "**/*.bai", "**/*.sam", "**/*.cram", "**/*.vcf", "**/*.vcf.gz", "**/*.fastq.gz", "**/*.fq.gz", "**/*.fa", "**/*.fasta", "**/*.fai", "**/*.dict", "**/*.tbi", "**/*.part", "**/*.incomplete"]
