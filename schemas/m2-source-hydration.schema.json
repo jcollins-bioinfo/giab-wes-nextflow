@@ -1,0 +1,86 @@
+{
+  "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/schemas/m2-source-hydration.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "acquisition_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "created_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "publisher_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "repository_sha": {
+      "description": "Exact verified repository commit executing hydration; null means source-code identity is unqualified, never inferred from package version.",
+      "pattern": "^[0-9a-f]{40}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "type": "string"
+    },
+    "runtime_architecture": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "verified-source-cache-hydration-not-gate-b"
+        },
+        "source_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_mirror_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_repository_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "source_run_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "source_run_id",
+        "source_repository_sha",
+        "source_manifest_sha256",
+        "source_mirror_sha256"
+      ],
+      "type": "object"
+    },
+    "validated_objects": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "publisher_version",
+    "runtime_architecture",
+    "created_utc",
+    "acquisition_sha256",
+    "source",
+    "validated_objects",
+    "repository_sha"
+  ],
+  "type": "object"
+}

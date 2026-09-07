@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [0.2.0-dev.4] - 2026-09-07
+
+M2.1.1 recovery: repair macOS path containment, validate immutable source-cache
+identity and restart behavior, fail closed on canonical publication provenance,
+and enforce exact clean-checkout identity before package installation. Consolidate
+both Colab launch surfaces on the installed package. Add observed project state,
+M3–M9 checkpoints, version/state validation and negative safety tests. Retain the
+unresolved capture-design gate and historical source-cache evidence boundaries.
+
 ## [0.2.0-dev.3] - 2026-09-07
 
 ### Fixed

@@ -1,0 +1,153 @@
+{
+  "observed_at": "2026-09-07T06:44:26.388Z",
+  "repository": "jcollins-bioinfo/john-collins-bioinformatics",
+  "branch": "main",
+  "sha": "d933578401d305bc8504e584f2aaa5f484085e18",
+  "tree_sha": "b46f5530d3b366b32aef9913a38fe97e4f1f9c6a",
+  "commit_url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/commit/d933578401d305bc8504e584f2aaa5f484085e18",
+  "branch_protected": false,
+  "open_prs": [],
+  "main_workflow_runs": {
+    "total_count": 0,
+    "workflow_runs": []
+  },
+  "instructions": {
+    "recursive_tree_truncated": false,
+    "repository_agents_files": [],
+    "local_ancestor_agents_files": [],
+    "sites_hosting_config": false
+  },
+  "statuses": {
+    "state": "pending",
+    "total_count": 0,
+    "statuses": []
+  },
+  "checks": [
+    {
+      "id": 99102721605,
+      "name": "Workers Builds: john-collins-bioinformatics",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "d933578401d305bc8504e584f2aaa5f484085e18",
+      "html_url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/runs/99102721605",
+      "started_at": "2026-08-29T12:46:36Z",
+      "completed_at": "2026-08-29T12:46:36Z"
+    }
+  ],
+  "package": {
+    "version": "0.1.0",
+    "node": ">=22.13.0",
+    "lockfile_version": 3,
+    "versions": {
+      "next": "16.2.6",
+      "react": "19.2.6",
+      "react-dom": "19.2.6",
+      "vinext": "0.0.50",
+      "vite": "8.0.13",
+      "wrangler": "4.92.0",
+      "@cloudflare/vite-plugin": "1.37.1"
+    },
+    "scripts": {
+      "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
+      "build": "vinext build && npm run prepare:cgt-figure-003-transport && npm run validate:cgt-figure-004 && npm run validate:cgt-figure-005 && npm run validate:artifact",
+      "deploy:cloudflare": "npm run build && wrangler deploy",
+      "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+      "test": "npm run validate:cgt-figure-002 && npm run validate:cgt-figure-003 && npm run validate:cgt-figure-004 && npm run validate:cgt-figure-005 && npm run build && node --test tests/rendered-html.test.mjs",
+      "validate:artifact": "node scripts/validate-artifact.mjs",
+      "validate:cgt-figure-002": "node scripts/validate-cgt-figure-002.mjs",
+      "validate:cgt-figure-003": "node scripts/validate-cgt-figure-003.mjs",
+      "validate:cgt-figure-004": "node scripts/validate-cgt-figure-004.mjs",
+      "validate:cgt-figure-005": "node scripts/validate-cgt-figure-005.mjs",
+      "prepare:cgt-figure-003-transport": "node scripts/prepare-cgt-figure-003-transport.mjs",
+      "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+      "typecheck": "tsc --noEmit",
+      "preview:cloudflare": "npm run build && wrangler dev"
+    }
+  },
+  "cloudflare": {
+    "worker": "john-collins-bioinformatics",
+    "entry": "./worker/index.ts",
+    "compatibility_date": "2026-05-22",
+    "compatibility_flags": [
+      "nodejs_compat"
+    ],
+    "bindings": [
+      "ASSETS",
+      "IMAGES"
+    ],
+    "routes": [
+      {
+        "pattern": "johnpatrickcollins.info",
+        "custom_domain": true
+      },
+      {
+        "pattern": "www.johnpatrickcollins.info",
+        "custom_domain": true
+      }
+    ],
+    "apex_host": "johnpatrickcollins.info",
+    "www_redirect_status": 308,
+    "runtime": "vinext/server/app-router-entry"
+  },
+  "research_paths": [
+    "app/research/cgt",
+    "app/research/cgt/content.ts",
+    "app/research/cgt/figure-02-copy.json",
+    "app/research/cgt/figure-03-copy.json",
+    "app/research/cgt/figure-04-copy.json",
+    "app/research/cgt/figure-05-copy.json",
+    "app/research/cgt/methods-content.tsx",
+    "app/research/cgt/page.tsx",
+    "app/research/cgt/publication-components.tsx",
+    "app/research/cgt/publication.module.css",
+    "app/research/page.tsx",
+    "app/research/research-results-navigator.module.css",
+    "app/research/research-results-navigator.tsx",
+    "app/research/responsive-research-figure.module.css",
+    "app/research/responsive-research-figure.tsx",
+    "app/research/results-navigation.ts"
+  ],
+  "source_files": [
+    {
+      "path": "package.json",
+      "blob_sha": "d1a7bd47e3eee2ff72e8fafaa190a6c51c7f3069",
+      "url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/blob/d933578401d305bc8504e584f2aaa5f484085e18/package.json"
+    },
+    {
+      "path": "package-lock.json",
+      "blob_sha": "93bfbdf3e8250f854376b33e2284364131c772b1",
+      "url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/blob/d933578401d305bc8504e584f2aaa5f484085e18/package-lock.json"
+    },
+    {
+      "path": "wrangler.jsonc",
+      "blob_sha": "7890ee1aafb5a354c8ab1aeb5491dac1975a0ba4",
+      "url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/blob/d933578401d305bc8504e584f2aaa5f484085e18/wrangler.jsonc"
+    },
+    {
+      "path": "vite.config.ts",
+      "blob_sha": "bc47ffcf01800bd216bb41deae401e32df834a98",
+      "url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/blob/d933578401d305bc8504e584f2aaa5f484085e18/vite.config.ts"
+    },
+    {
+      "path": "worker/index.ts",
+      "blob_sha": "40c6f4688d45fd96368a5aaa514405564a3b80f1",
+      "url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/blob/d933578401d305bc8504e584f2aaa5f484085e18/worker/index.ts"
+    },
+    {
+      "path": "app/research/page.tsx",
+      "blob_sha": "396f0fac703f4b6fa26172a5f842c63dcfe54b37",
+      "url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/blob/d933578401d305bc8504e584f2aaa5f484085e18/app/research/page.tsx"
+    },
+    {
+      "path": "app/research/cgt/page.tsx",
+      "blob_sha": "b67b7dfc196f815e93530215c6831def77f98ef0",
+      "url": "https://github.com/jcollins-bioinfo/john-collins-bioinformatics/blob/d933578401d305bc8504e584f2aaa5f484085e18/app/research/cgt/page.tsx"
+    }
+  ],
+  "verification_limitations": [
+    "Read-only repository verification; no website tests executed.",
+    "No deployment or DNS mutations.",
+    "Public HTTP checks were not established: web open rejected both attempted URLs as unsafe; no public deployment inference made from that result.",
+    "No M8 or M9 implementation; canonical outputs remain prerequisite."
+  ]
+}

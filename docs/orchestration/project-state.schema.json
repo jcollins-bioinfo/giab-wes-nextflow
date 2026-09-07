@@ -1,0 +1,448 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/docs/orchestration/project-state.schema.json",
+  "title": "Observed project state or milestone checkpoint",
+  "description": "A record cites an already observed repository commit; it never claims to know its own future commit hash. State denotes only the named milestone's observed maturity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_type",
+    "milestone",
+    "phase",
+    "state",
+    "version",
+    "repositories",
+    "required_inputs",
+    "local_tests",
+    "ci",
+    "execution_environments",
+    "publication",
+    "external_blockers",
+    "next_safe_action",
+    "observed_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "record_type": {
+      "enum": [
+        "project_state",
+        "checkpoint"
+      ]
+    },
+    "milestone": {
+      "enum": [
+        "M2.1",
+        "M2.1.1",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "M9"
+      ]
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "not_started",
+        "in_progress",
+        "blocked",
+        "implemented",
+        "verified",
+        "canonically_executed",
+        "released"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "repositories": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline",
+        "website"
+      ],
+      "properties": {
+        "pipeline": {
+          "$ref": "#/$defs/repository"
+        },
+        "website": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/repository"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/input"
+      }
+    },
+    "local_tests": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/test"
+      }
+    },
+    "ci": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ci"
+      }
+    },
+    "execution_environments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/environment"
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "drive",
+        "public_evidence",
+        "deployment",
+        "release",
+        "authorization_reference",
+        "evidence_artifacts"
+      ],
+      "properties": {
+        "drive": {
+          "enum": [
+            "not_published",
+            "partial",
+            "verified"
+          ]
+        },
+        "public_evidence": {
+          "enum": [
+            "not_published",
+            "partial",
+            "verified"
+          ]
+        },
+        "deployment": {
+          "enum": [
+            "not_deployed",
+            "deployment_ready",
+            "deployed"
+          ]
+        },
+        "release": {
+          "enum": [
+            "not_released",
+            "release_ready",
+            "released"
+          ]
+        },
+        "authorization_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "external_blockers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/blocker"
+      }
+    },
+    "next_safe_action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full_name",
+        "branch",
+        "evidence_sha",
+        "evidence_scope"
+      ],
+      "properties": {
+        "full_name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "evidence_scope": {
+          "const": "observed_prior_commit"
+        }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "sha256",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "declared",
+            "blocked",
+            "missing"
+          ]
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "status",
+        "evidence_sha",
+        "command",
+        "detail"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "evidence_sha": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ci": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "required",
+        "status",
+        "repository",
+        "evidence_sha",
+        "run_url",
+        "job_urls"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "failure",
+            "pending",
+            "not_run"
+          ]
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_sha": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "run_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "job_urls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "os",
+        "architecture",
+        "canonical",
+        "run_id",
+        "evidence_artifacts"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "executed",
+            "configured_only"
+          ]
+        },
+        "os": {
+          "type": "string",
+          "minLength": 1
+        },
+        "architecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical": {
+          "type": "boolean"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "gate",
+        "reason",
+        "owner_action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner_action": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

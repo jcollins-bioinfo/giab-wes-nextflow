@@ -1,19 +1,28 @@
 # M3 readiness dossier
 
-Evidence date: 2026-09-07. Scope is code readiness for the GIAB HG001 Illumina WES workflow, not canonical biological execution readiness.
+Observed 2026-09-07. Author: John Patrick Collins.
 
-| Area | Evidence/status | Decision or owner/action |
+The expected M2.1 baseline was verified at
+`d9a9d700ab5603b693468d22b4fd66ed96348881`, including merged PR #18 and
+[successful required CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958).
+The audit subsequently reproduced package/path, cache-recovery, publication and
+launcher provenance defects beyond that CI coverage. M3 continuation therefore
+requires the M2.1.1 recovery checks and green required CI, not just the older run.
+
+| Boundary | Observed status | Continuation requirement |
 |---|---|---|
-| Repository/package integrity | M2 behavior resides in `src/giab_wes_nextflow`; five thin wrappers and wheel/resource/console tests cover the installed boundary. | Ready; maintainers keep wrappers algorithm-free. |
-| Python 3.12 and 3.13 | CI matrix configured for complete offline suite and installed-wheel checks. | Requires green feature-branch Actions evidence before merge. |
-| Nextflow/nf-test/nf-core synthetic | One pinned Nextflow job retains lint, schema, nf-test, and `test,docker`. | Requires green feature-branch Actions evidence; no real data. |
-| Colab launcher static status | JSON, shell syntax, ordering, identity, SHA, staging, and Gate B safety are statically tested. | Ready as configured code. |
-| Real Colab execution | Not executed. | Owner: maintainer; execute and retain runtime evidence separately. |
-| Verified-source acquisition/mirror | Synthetic tests cover destination rehash, hydration corruption, immutability, and absence of completion markers. | Code ready; no Drive/source operation performed. |
-| GRCh38 preparation | Implementation retained, but no public reference was downloaded or prepared here. | Operational execution remains untested. |
-| Capture-design Gate B | Exact capture-design bytes remain unresolved. | Block canonical domains and publication; data owner must confirm artifact/checksums. |
-| M3 work independent of Gate B | Alignment/QC module design, interfaces, synthetic fixtures, and fail-closed contracts may proceed. | May implement without claiming canonical execution. |
-| M3 work dependent on Gate B | Target-aware QC acceptance, canonical target metrics, real HG001 execution, and publication remain provisional/blocked. | Wait for confirmed canonical target domains. |
-| Remaining defects | Remote CI/Colab evidence and canonical capture artifact are absent. | Maintainer: run CI/Colab; data owner: resolve Gate B. |
+| M2 package | Sole implementation remains `src/giab_wes_nextflow`; wrappers delegate | Recovery unit/negative and clean-wheel tests pass |
+| Python 3.12/3.13 | Baseline CI passed; recovery tests recorded separately | Repair required CI green |
+| Nextflow/nf-test/Docker | Baseline synthetic foundation CI passed | Repair runtime-version contract and existing tests green |
+| Launcher | Exact origin, clean SHA, isolated interpreter and installed-file identity checks implemented | Local/CI negative tests; owner-run evidence remains separate |
+| Source mirror | Historical record plus 10 current size/name entries observed | Rehash bytes via explicit legacy-cache hydration |
+| Reference preparation | No immutable preparation record established | Owner runtime must execute/validate preparation separately |
+| Capture Gate B | Unresolved exact assay target identity | Block canonical domains, target-aware acceptance and publication |
+| M3 synthetic development | Permitted after M2 recovery continuation gate | Never call intermediate/synthetic BAM canonical HG001 output |
+| BQSR | Accepted ADR 0003 requires OQ retention and caller-specific effective qualities; known-sites absent from M2 manifest | Pin and validate distinct known-sites before BQSR, or seek a new material scientific decision |
+| DeepVariant/ARM64 | Not executed; local macOS has no verified supporting container runtime | M4 requires an actually supporting x86_64 smoke/integration environment |
 
-M3_IMPLEMENTATION_READY_WITH_EXPLICIT_GATES
+Current machine state and exact next action are authoritative in
+[project-state.json](orchestration/project-state.json). The historical decision
+`M3_IMPLEMENTATION_READY_WITH_EXPLICIT_GATES` was valid only with its stated
+no-package-defect condition; reproduced defects require repair before reuse.

@@ -44,6 +44,7 @@ jobs:
           python scripts/validate_contracts.py
           python scripts/validate_m2.py
           python scripts/acquire_m2.py --workspace /tmp/m2-stage --preflight-only
+          python scripts/validate_orchestration.py
       - name: Complete Python unit and negative suite
         run: python -m unittest discover -s tests/unit -v
       - name: Generate deterministic fixture before samplesheet validation
