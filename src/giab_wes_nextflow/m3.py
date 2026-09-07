@@ -197,9 +197,9 @@ def read_pairs(fastq1: str | Path, fastq2: str | Path) -> Iterator[tuple[str, st
 
 def envelope(kind: str, run_id: str, data: dict[str, Any], inputs: list[dict[str, Any]],
              units: dict[str, str] | None = None, missingness: dict[str, str] | None = None) -> dict[str, Any]:
-    """Create a schema-validated evidence object with a self-independent payload hash."""
+    """Create current evidence without upgrading historical provenance contracts."""
     validate_run_id(run_id)
-    record = {"schema_version": "1.0.0", "artifact_type": kind, "run_id": run_id,
+    record = {"schema_version": "2.0.0" if kind == "provenance" else "1.0.0", "artifact_type": kind, "run_id": run_id,
               "producer": {"package": "giab-wes-nextflow", "version": __version__, "module": "giab_wes_nextflow.m3"},
               "synthetic": True, "canonical": False, "validation_status": "validated_synthetic",
               "runtime_architecture": platform.machine(), "input_artifacts": inputs,
@@ -210,10 +210,12 @@ def envelope(kind: str, run_id: str, data: dict[str, Any], inputs: list[dict[str
 
 
 def validate_envelope(record: dict[str, Any]) -> None:
-    """Reject schema or payload-integrity failures before downstream rendering."""
+    """Reject obsolete provenance, schema or payload failures without upgrading bytes."""
     kind = record.get("artifact_type")
     if kind not in {"preflight", "fastq", "alignment", "qc", "coverage", "resources", "provenance", "bundle"}:
         raise ValueError("unknown M3 evidence artifact type")
+    if kind == "provenance" and record.get("schema_version") != "2.0.0":
+        raise ValueError("M3 provenance requires schema version 2.0.0; historical evidence is not upgraded")
     Draft202012Validator(load_json(schema_path(f"m3-{kind}.schema.json"))).validate(record)
     payload = {key: value for key, value in record.items() if key != "payload_sha256"}
     if canonical_hash(payload) != record["payload_sha256"]:

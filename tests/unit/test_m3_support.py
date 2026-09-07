@@ -104,7 +104,8 @@ def make_unit_bundle(root: Path, repository_sha: str = "a" * 40,
     versions = []
     for name, data in tool_contracts.items():
         path = root / f"{name}.version.txt"
-        path.write_text(f"{name} {data['version']}\n")
+        prefix = "" if name == "bwa-mem2" else f"{name} "
+        path.write_text(f"{prefix}{data['expected_reported_version']}\n")
         versions.append(f"{name}={path}")
     resources = root / "resources.json"
     resources.write_text(json.dumps({"task_id": "unit-task", "process": "unit-contract-fixture",

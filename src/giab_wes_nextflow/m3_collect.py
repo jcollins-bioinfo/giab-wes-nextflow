@@ -36,7 +36,12 @@ def _pairs(values: list[str]) -> dict[str, str]:
 
 
 def _sam(path: str | Path, expected: dict[str, Any], require_oq: bool) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Validate every primary alignment, read group, sequence and quality lineage."""
+    """Validate every primary alignment, read group, sequence and quality lineage.
+
+    SAM flag 16 requires reverse-complemented sequence and reversed original
+    FASTQ quality order. Final-BAM acceptance requires the resulting original
+    quality string in OQ for every primary read, including unmapped reads.
+    """
     headers: dict[str, Any] = {"contigs": [], "read_groups": {}, "sort_order": None}
     records: dict[str, Any] = {}
     duplicate_reads = 0
@@ -187,10 +192,50 @@ def parse_coverage(path: str | Path, reference_bases: int) -> dict[str, Any]:
             "rounding_note": "mean_depth is depth-sum/reference-length; raw mosdepth mean is rounded"}
 
 
-def _tool_inventory(tools: list[str], tool_versions: list[str], containers: list[str]) -> list[dict[str, Any]]:
-    """Bind observed version strings and declared images to the authoritative lock."""
+def _tool_declarations() -> dict[str, Any]:
+    """Require the current lock's separate release and executable-report identities."""
     declarations = load_json(config_path("m3-tools.json"))
-    declared_tools = declarations.get("tools", declarations)
+    if declarations.get("schema_version") != "2.0.0":
+        raise ValueError("M3 tool lock requires explicit executable-report contract version 2.0.0")
+    declared_tools = declarations["tools"]
+    for declaration in declared_tools.values():
+        if any(not declaration.get(key) for key in ("version", "expected_reported_version", "image", "version_note")):
+            raise ValueError("M3 tool lock is missing release or executable-report identity")
+        if not isinstance(declaration.get("version_evidence_sources"), list):
+            raise ValueError("M3 tool lock is missing version evidence sources")
+    return declared_tools
+
+
+def _require_reported_version(name: str, observed: str, expected: str) -> None:
+    """Check the exact BWA version line or another tool's bounded version token."""
+    if name == "bwa-mem2":
+        versions = re.findall(r"(?m)^\s*([0-9]+(?:\.[0-9]+)+(?:[-+][A-Za-z0-9.]+)?)\s*$", observed)
+        matched = versions == [expected]
+    else:
+        matched = re.search(r"(?<![0-9.])" + re.escape(expected) + r"(?![0-9.])", observed) is not None
+    if not matched:
+        raise ValueError(f"observed tool version does not match lock: {name}")
+
+
+def _validate_tool_inventory(inventory: list[dict[str, Any]]) -> None:
+    """Rebind all tool reports, source notes and image pins to the installed lock."""
+    declarations = _tool_declarations()
+    names = [item["name"] for item in inventory]
+    if len(names) != len(declarations) or set(names) != set(declarations):
+        raise ValueError("M3 tool inventory differs from immutable lock")
+    bindings = {"declared_version": "version", "expected_reported_version": "expected_reported_version",
+                "version_note": "version_note", "version_evidence_sources": "version_evidence_sources",
+                "container_image": "image"}
+    for item in inventory:
+        declaration = declarations[item["name"]]
+        if any(item.get(field) != declaration[key] for field, key in bindings.items()):
+            raise ValueError(f"M3 tool identity differs from immutable lock: {item['name']}")
+        _require_reported_version(item["name"], item["observed_version_text"], declaration["expected_reported_version"])
+
+
+def _tool_inventory(tools: list[str], tool_versions: list[str], containers: list[str]) -> list[dict[str, Any]]:
+    """Bind actual stdout to the exact executable report separately from its release."""
+    declared_tools = _tool_declarations()
     observed = _pairs(tools)
     files = _pairs(tool_versions)
     container_values = _pairs(containers)
@@ -198,21 +243,23 @@ def _tool_inventory(tools: list[str], tool_versions: list[str], containers: list
         if name in observed:
             raise ValueError("duplicate observed tool version")
         observed[name] = checked_file(path).read_text().strip()
-    required = {"bwa-mem2", "samtools", "gatk", "mosdepth", "fastqc", "multiqc"}
-    if not required <= set(observed):
-        raise ValueError("missing observed M3 tool versions")
+    required = set(declared_tools)
+    if set(observed) != required or set(container_values) - required:
+        raise ValueError("missing or unexpected observed M3 tool versions or containers")
     result = []
     for name in sorted(required):
         declaration = declared_tools[name]
-        version = declaration["version"]
-        if re.search(r"(?<![0-9.])" + re.escape(version) + r"(?![0-9.])", observed[name]) is None:
-            raise ValueError(f"observed tool version does not match lock: {name}")
+        _require_reported_version(name, observed[name], declaration["expected_reported_version"])
         image = container_values.get(name, declaration["image"])
         if image != declaration["image"]:
             raise ValueError(f"tool container differs from immutable lock: {name}")
-        result.append({"name": name, "declared_version": version, "observed_version_text": observed[name],
+        result.append({"name": name, "declared_version": declaration["version"],
+                       "expected_reported_version": declaration["expected_reported_version"],
+                       "version_note": declaration["version_note"], "version_evidence_sources": declaration["version_evidence_sources"],
+                       "observed_version_text": observed[name],
                        "container_image": image, "container_identity_status": "workflow_declared_digest",
                        "version_evidence": identity(files[name], f"{name}_version", "tool_version_stdout") if name in files else None})
+    _validate_tool_inventory(result)
     return result
 
 
@@ -382,6 +429,7 @@ def validate_result_bundle(path: str | Path) -> dict[str, dict[str, Any]]:
         result[kind] = record
     if any(record["producer"] != manifest["producer"] for record in result.values()):
         raise ValueError("M3 producer identity/version differs across outputs")
+    _validate_tool_inventory(result["provenance"]["data"]["tools"])
     common_ids = {"source_preflight", "shared_analysis_ready_bam", "shared_analysis_ready_bai"}
     manifest_common = {item["artifact_id"]: item for item in manifest["input_artifacts"] if item["artifact_id"] in common_ids}
     if set(manifest_common) != common_ids:

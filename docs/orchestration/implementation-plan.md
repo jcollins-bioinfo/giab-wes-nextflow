@@ -102,9 +102,11 @@ HG001 performance. No assay targets, truth VCF/BED or benchmark inputs enter M3
 processing tasks. Canonical capture-dependent acceptance remains Gate B blocked.
 
 Observed CI attempts are retained in `evidence/m3-ci-attempt-1.json` through
-`evidence/m3-ci-attempt-3.json`. The third attempt passed Python and Nextflow
-framework jobs and all 21 upstream processing/QC tasks, then failed collector
-script construction when reading a staged Nextflow task path. The correction
-must preserve the locked input and exercise real collector script construction;
-collection, independent BAM/ownership checks and resume must still pass in actual
-Docker execution before M3 is verified.
+`evidence/m3-ci-attempt-4.json`. The fourth attempt passed Python and Nextflow
+framework jobs and all 21 upstream processing/QC tasks, then the real collector
+rejected a tool-version mismatch. The exact BWA-MEM2 2.3 distribution reports
+executable version 2.2.1, matching its inspected release-source fallback. The
+contract must preserve both identities and require the exact expected report
+against the unchanged image digest. Complete collection, independent
+BAM/ownership checks and resume must still pass in actual Docker execution before
+M3 is verified.

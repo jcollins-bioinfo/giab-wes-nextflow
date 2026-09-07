@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "2.0.0",
   "project_version": "0.3.0-dev.1",
   "kind": "m3_immutable_tool_contracts",
   "tools": {
@@ -16,7 +16,23 @@
       "manifest_digest_bytes_verified": true,
       "observed_at": "2026-09-07T07:05:45.569075+00:00",
       "registry_manifest_url": "https://quay.io/v2/biocontainers/bwa-mem2/manifests/2.3--he70b90d_0",
-      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+      "execution_evidence": "The pinned avx2 executable was observed reporting 2.2.1 in failed CI run 34101964128, job 101678215450. That run did not complete M3 acceptance; every later run must record and validate its own executable stdout and environment.",
+      "expected_reported_version": "2.2.1",
+      "version_note": "Distribution release 2.3 at this immutable image digest reports 2.2.1 from its avx2 executable. The official v2.3 source archive retains PACKAGE_VERSION 2.2.1, consistent with the observed report. This stale self-report does not establish that the executed code is release 2.2.1 or prove complete source-to-binary correspondence. Require exactly 2.2.1 for this pin; retain each run stdout independently.",
+      "version_evidence_sources": [
+        {
+          "kind": "upstream_release_source",
+          "url": "https://github.com/bwa-mem2/bwa-mem2/releases/download/v2.3/Source_code_including_submodules.tar.gz",
+          "sha256": "0c48a1ea800af499ae7264b4c8908c4ca35fbe5a7df2ad6106c79aa94bb49cbb",
+          "detail": "Release archive member bwa-mem2-2.3/src/main.cpp defines fallback PACKAGE_VERSION as 2.2.1 and the version command prints it."
+        },
+        {
+          "kind": "historical_ci_artifact",
+          "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128/artifacts/10010921650",
+          "sha256": "42f4a0a40136e9a64305afc5d49fa973090d6f33da503e900bfea88d05ea4de1",
+          "detail": "CI job 101678215450 at tested merge 40078d3d5f2687a3715e00eb26706c2687b296e0 selected the avx2 executable and printed 2.2.1. The run failed its previous version gate and supplies no completed M3 acceptance claim."
+        }
+      ]
     },
     "samtools": {
       "version": "1.24",
@@ -31,7 +47,10 @@
       "manifest_digest_bytes_verified": true,
       "observed_at": "2026-09-07T07:05:45.569075+00:00",
       "registry_manifest_url": "https://quay.io/v2/biocontainers/samtools/manifests/1.24--h9dcdb79_1",
-      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run.",
+      "expected_reported_version": "1.24",
+      "version_note": "The expected executable version report equals the distribution release; each run must retain its own observed stdout.",
+      "version_evidence_sources": []
     },
     "mosdepth": {
       "version": "0.3.14",
@@ -46,7 +65,10 @@
       "manifest_digest_bytes_verified": true,
       "observed_at": "2026-09-07T07:05:45.569075+00:00",
       "registry_manifest_url": "https://quay.io/v2/biocontainers/mosdepth/manifests/0.3.14--h87be163_2",
-      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run.",
+      "expected_reported_version": "0.3.14",
+      "version_note": "The expected executable version report equals the distribution release; each run must retain its own observed stdout.",
+      "version_evidence_sources": []
     },
     "fastqc": {
       "version": "0.12.1",
@@ -61,7 +83,10 @@
       "manifest_digest_bytes_verified": true,
       "observed_at": "2026-09-07T07:05:45.569075+00:00",
       "registry_manifest_url": "https://quay.io/v2/biocontainers/fastqc/manifests/0.12.1--hdfd78af_0",
-      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run.",
+      "expected_reported_version": "0.12.1",
+      "version_note": "The expected executable version report equals the distribution release; each run must retain its own observed stdout.",
+      "version_evidence_sources": []
     },
     "multiqc": {
       "version": "1.35",
@@ -88,7 +113,10 @@
       "manifest_digest_bytes_verified": true,
       "observed_at": "2026-09-07T07:05:45.569075+00:00",
       "registry_manifest_url": "https://ghcr.io/v2/multiqc/multiqc/manifests/v1.35",
-      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run.",
+      "expected_reported_version": "1.35",
+      "version_note": "The expected executable version report equals the distribution release; each run must retain its own observed stdout.",
+      "version_evidence_sources": []
     },
     "gatk": {
       "version": "4.7.0.0",
@@ -103,7 +131,10 @@
       "manifest_digest_bytes_verified": true,
       "observed_at": "2026-09-07T07:05:45.569075+00:00",
       "registry_manifest_url": "https://registry-1.docker.io/v2/broadinstitute/gatk/manifests/4.7.0.0",
-      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run."
+      "execution_evidence": "Configured identity only; actual executable and environment must be recorded per run.",
+      "expected_reported_version": "4.7.0.0",
+      "version_note": "The expected executable version report equals the distribution release; each run must retain its own observed stdout.",
+      "version_evidence_sources": []
     }
   },
   "scientific_policy": {

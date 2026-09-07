@@ -45,6 +45,13 @@ def require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
+def validate_samtools_version(observed: str, declaration: dict[str, Any]) -> None:
+    """Compare executable stdout with its explicit report expectation."""
+    expected = declaration.get("expected_reported_version")
+    require(isinstance(expected, str) and bool(expected), "samtools reported-version expectation is missing")
+    require(observed == "samtools " + expected, "observed samtools version differs from pinned tool contract")
+
+
 def digest(path: Path) -> str:
     """Hash an artifact without loading large alignment files into memory."""
     value = hashlib.sha256()
@@ -553,7 +560,7 @@ def main(argv: list[str] | None = None) -> int:
             tools = json.loads((checkout / "config/m3-tools.json").read_text())
             bam = output / f"m3/{fixture['sample']}.analysis-ready.bam"
             proof["bam_assertions"] = inspect_bam(runner, args.docker, tools["tools"]["samtools"]["image"], bam, fixture)
-            require(proof["bam_assertions"]["samtools_version"] == "samtools " + tools["tools"]["samtools"]["version"], "observed samtools version differs from pinned tool contract")
+            validate_samtools_version(proof["bam_assertions"]["samtools_version"], tools["tools"]["samtools"])
             # Canonical package validation owns scientific output schemas and
             # cross-artifact lineage; the driver does not duplicate that model.
             runner.run("validate-result-bundle", [python, "-I", "-m", "giab_wes_nextflow.m3_cli", "validate-bundle", "--bundle", str(contracts)], output_root)

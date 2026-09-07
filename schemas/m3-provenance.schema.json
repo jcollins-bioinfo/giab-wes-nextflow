@@ -2,6 +2,7 @@
   "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/schemas/m3-provenance.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
+  "description": "M3 provenance v2 requires separate distribution and executable-report identities. Historical v1 evidence is not silently upgraded or accepted under this contract.",
   "properties": {
     "artifact_type": {
       "const": "provenance"
@@ -138,6 +139,12 @@
                 "type": "string"
               },
               "declared_version": {
+                "description": "Distribution release from the immutable image lock, which may differ from the executable self-report.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_reported_version": {
+                "description": "Exact executable version report expected for this immutable image digest.",
                 "minLength": 1,
                 "type": "string"
               },
@@ -192,6 +199,43 @@
                     "type": "null"
                   }
                 ]
+              },
+              "version_evidence_sources": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "detail": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "kind": {
+                      "enum": [
+                        "upstream_release_source",
+                        "historical_ci_artifact"
+                      ]
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "type": "string"
+                    },
+                    "url": {
+                      "pattern": "^https://",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "url",
+                    "sha256",
+                    "detail"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "version_note": {
+                "minLength": 1,
+                "type": "string"
               }
             },
             "required": [
@@ -200,7 +244,10 @@
               "observed_version_text",
               "container_image",
               "container_identity_status",
-              "version_evidence"
+              "version_evidence",
+              "expected_reported_version",
+              "version_note",
+              "version_evidence_sources"
             ],
             "type": "object"
           },
@@ -317,7 +364,7 @@
       "type": "string"
     },
     "schema_version": {
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
     "synthetic": {
       "const": true

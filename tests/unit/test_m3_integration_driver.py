@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from typing import Any
 from contextlib import redirect_stdout
 from unittest.mock import patch
 
@@ -23,7 +24,7 @@ sys.modules[SPEC.name] = DRIVER
 SPEC.loader.exec_module(DRIVER)
 
 
-def expected_sam():
+def expected_sam() -> tuple[str, dict[str, Any]]:
     """Build an oracle SAM from the invented recipe, with four known duplicates."""
     payloads, fixture = fixture_payloads()
     sequences = {}
@@ -57,7 +58,8 @@ def expected_sam():
 
 
 class BamOracleTest(unittest.TestCase):
-    def test_complete_expected_bam_shape_passes(self):
+    def test_complete_expected_bam_shape_passes(self) -> None:
+        """Accept the complete 48-read recipe with retained duplicates and original qualities."""
         sam, fixture = expected_sam()
         observed = DRIVER.validate_sam(sam, fixture)
         self.assertEqual(observed["primary_reads"], 48)
@@ -65,7 +67,8 @@ class BamOracleTest(unittest.TestCase):
         self.assertEqual(observed["duplicate_reads"], 4)
         self.assertTrue(observed["oq_on_all_primary_reads"])
 
-    def test_missing_oq_wrong_reference_and_missing_read_fail(self):
+    def test_missing_oq_wrong_reference_and_missing_read_fail(self) -> None:
+        """Reject each independent break in quality, reference, or read-inventory provenance."""
         sam, fixture = expected_sam()
         cases = [sam.replace("\tOQ:Z:", "\tXX:Z:", 1), sam.replace("SN:chrSYN1\tLN:12000", "SN:chrSYN1\tLN:11999"),
                  "\n".join(sam.splitlines()[:-1]) + "\n"]
@@ -73,7 +76,8 @@ class BamOracleTest(unittest.TestCase):
             with self.subTest(prefix=invalid[:30]), self.assertRaises(ValueError):
                 DRIVER.validate_sam(invalid, fixture)
 
-    def test_changed_read_sequence_position_or_group_fails(self):
+    def test_changed_read_sequence_position_or_group_fails(self) -> None:
+        """A valid record count cannot conceal altered sequence, placement, or read group."""
         sam, fixture = expected_sam()
         lines = sam.splitlines()
         first = next(index for index, line in enumerate(lines) if not line.startswith("@"))
@@ -86,7 +90,8 @@ class BamOracleTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 DRIVER.validate_sam("\n".join(altered) + "\n", fixture)
 
-    def test_reverse_read_oq_must_match_sam_orientation(self):
+    def test_reverse_read_oq_must_match_sam_orientation(self) -> None:
+        """Reverse-strand OQ must be reversed from FASTQ order exactly once."""
         sam, fixture = expected_sam()
         lines = sam.splitlines()
         index = next(i for i, line in enumerate(lines) if not line.startswith("@") and int(line.split("\t")[1]) & 16)
@@ -96,7 +101,8 @@ class BamOracleTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "original quality"):
             DRIVER.validate_sam("\n".join(lines), fixture)
 
-    def test_no_duplicate_marking_and_unsorted_records_fail(self):
+    def test_no_duplicate_marking_and_unsorted_records_fail(self) -> None:
+        """Require retained duplicate flags and observed coordinate ordering together."""
         sam, fixture = expected_sam()
         lines = sam.splitlines()
         without_duplicates = []
@@ -114,7 +120,8 @@ class BamOracleTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             DRIVER.validate_sam("\n".join(lines), fixture)
 
-    def test_preserving_duplicate_count_cannot_split_duplicate_pairs(self):
+    def test_preserving_duplicate_count_cannot_split_duplicate_pairs(self) -> None:
+        """Keeping the duplicate total fixed cannot hide inconsistent flags within a pair."""
         sam, fixture = expected_sam()
         lines = sam.splitlines()
         original = next(i for i, line in enumerate(lines) if line.startswith("SYN_L001_0001\t") and int(line.split("\t")[1]) & 64)
@@ -128,13 +135,15 @@ class BamOracleTest(unittest.TestCase):
 
 
 class ResumeOracleTest(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
+        """Prepare completed tasks and matching cached records with stable identity fields."""
         self.first = [{"task_id": "1", "hash": "aa/111", "name": "W:M3_ALIGN (lane1)", "status": "COMPLETED", "exit": "0", "container": "image@sha256:" + "a" * 64},
                       {"task_id": "2", "hash": "bb/222", "name": "W:M3_SORT (lane1)", "status": "COMPLETED", "exit": "0", "container": "image@sha256:" + "a" * 64}]
         self.repeat = [dict(row, status="CACHED") for row in self.first]
         self.processes = {"M3_ALIGN", "M3_SORT"}
 
-    def test_same_tasks_and_hashes_must_all_be_cached(self):
+    def test_same_tasks_and_hashes_must_all_be_cached(self) -> None:
+        """Reject reruns, changed hashes, missing tasks, and substituted processes on resume."""
         result = DRIVER.validate_resume(self.first, self.repeat, self.processes)
         self.assertEqual(result["resumed_cached_tasks"], 2)
         for mutate in [lambda rows: rows[0].update(status="COMPLETED"), lambda rows: rows[0].update(hash="cc/different"),
@@ -144,18 +153,21 @@ class ResumeOracleTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 DRIVER.validate_resume(self.first, altered, self.processes)
 
-    def test_first_run_cannot_have_a_preexisting_cache_hit(self):
+    def test_first_run_cannot_have_a_preexisting_cache_hit(self) -> None:
+        """Qualification must start with actual execution before any cache claim is accepted."""
         self.first[0]["status"] = "CACHED"
         with self.assertRaisesRegex(ValueError, "first run"):
             DRIVER.validate_resume(self.first, self.repeat, self.processes)
 
-    def test_trace_must_contain_required_columns_and_tasks(self):
+    def test_trace_must_contain_required_columns_and_tasks(self) -> None:
+        """Incomplete headers and empty traces cannot establish execution or resume evidence."""
         with self.assertRaisesRegex(ValueError, "required"):
             DRIVER.parse_trace("name\tstatus\nM3_ALIGN\tCOMPLETED\n")
         with self.assertRaisesRegex(ValueError, "empty"):
             DRIVER.parse_trace("task_id\thash\tname\tstatus\texit\tcontainer\n")
 
-    def test_command_keeps_params_and_work_identical_with_separate_raw_reports(self):
+    def test_command_keeps_params_and_work_identical_with_separate_raw_reports(self) -> None:
+        """Keep cached inputs stable while preserving distinct first-run and resume reports."""
         root = Path("/tmp/m3-driver-test")
         args = ["nextflow", root / "checkout", root / "work", root / "out", root / "evidence", "a" * 40, "synthetic-run", "docker"]
         first = DRIVER.nextflow_command(*args, "first")
@@ -173,7 +185,18 @@ class ResumeOracleTest(unittest.TestCase):
 
 
 class EvidenceBindingTest(unittest.TestCase):
-    def setUp(self):
+    def test_reported_tool_version_is_distinct_from_distribution_release(self) -> None:
+        """Executable identity must use its required report contract, not release metadata."""
+        declaration = {"version": "9.0", "expected_reported_version": "1.24"}
+        DRIVER.validate_samtools_version("samtools 1.24", declaration)
+        for observed in ("samtools 9.0", "samtools 1.240", "samtools 1.24.1"):
+            with self.assertRaisesRegex(ValueError, "observed samtools version"):
+                DRIVER.validate_samtools_version(observed, declaration)
+        with self.assertRaisesRegex(ValueError, "expectation is missing"):
+            DRIVER.validate_samtools_version("samtools 1.24", {"version": "1.24"})
+
+    def setUp(self) -> None:
+        """Prepare mutually consistent synthetic contracts for isolated identity mutations."""
         self.fixture = fixture_payloads()[1]
         self.version = "0.3.0-dev.1"
         base = {"run_id": "run", "producer": {"version": self.version}, "synthetic": True,
@@ -187,10 +210,12 @@ class EvidenceBindingTest(unittest.TestCase):
             "known_sites_sha256": self.fixture["files"]["known-sites.vcf"]["sha256"], "sample": self.fixture["sample"],
             "callers_executed": [], "canonical_hg001_executed": False, "capture_design_gate": "blocked"}
 
-    def check(self):
+    def check(self) -> None:
+        """Bind every contract to the same run, code, reference, BAM, and synthetic scope."""
         DRIVER.validate_contract_identity(self.contracts, self.fixture, "a" * 40, "run", self.version, "b" * 64, "c" * 64)
 
-    def test_contracts_bind_exact_execution_bam_reference_and_scope(self):
+    def test_contracts_bind_exact_execution_bam_reference_and_scope(self) -> None:
+        """Mutating one contract must break acceptance even when the remaining bundle agrees."""
         self.check()
         for filename, field, value in [("m3-manifest.json", "repository_sha", "d" * 40),
                                         ("m3-manifest.json", "reference_sha256", "d" * 64),
@@ -203,7 +228,8 @@ class EvidenceBindingTest(unittest.TestCase):
                 self.check()
             self.contracts[filename]["data"][field] = prior
 
-    def test_declared_container_tag_cannot_replace_verified_digest(self):
+    def test_declared_container_tag_cannot_replace_verified_digest(self) -> None:
+        """Only the configured immutable image identity may satisfy a task container record."""
         image = "quay.io/example/tool@sha256:" + "a" * 64
         row = {"name": "W:M3_ALIGN (lane1)", "container": image}
         DRIVER.validate_trace_containers([row], {"tools": {"bwa-mem2": {"image": image}}})
@@ -211,7 +237,8 @@ class EvidenceBindingTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "container"):
             DRIVER.validate_trace_containers([row], {"tools": {"bwa-mem2": {"image": image}}})
 
-    def test_uploadable_evidence_redacts_paths_and_url_credentials(self):
+    def test_uploadable_evidence_redacts_paths_and_url_credentials(self) -> None:
+        """Remove private roots and URL credentials while preserving safe logical locations."""
         root = Path.home() / "private-integration"
         text = f"{root}/task https://user:password@example.invalid/file?token=secret#fragment"
         result = DRIVER.redact_text(text, root)
@@ -220,7 +247,8 @@ class EvidenceBindingTest(unittest.TestCase):
         self.assertNotIn("token=", result)
         self.assertIn("$INTEGRATION_ROOT/task", result)
 
-    def test_exact_raw_reports_are_preserved_before_public_redaction(self):
+    def test_exact_raw_reports_are_preserved_before_public_redaction(self) -> None:
+        """Retain original report bytes and bind them to separately hashed redacted copies."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             evidence = root / "evidence"
@@ -235,7 +263,8 @@ class EvidenceBindingTest(unittest.TestCase):
             self.assertNotIn(str(root), report.read_text())
 
 
-    def test_invalid_report_quarantines_all_candidates_before_any_promotion(self):
+    def test_invalid_report_quarantines_all_candidates_before_any_promotion(self) -> None:
+        """One unsafe report prevents promotion of every candidate, including safe diagnostics."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             evidence = root / "evidence"
@@ -248,7 +277,8 @@ class EvidenceBindingTest(unittest.TestCase):
             self.assertEqual(list(evidence.iterdir()), [])
             self.assertTrue(list(root.glob("quarantined-evidence-*")))
 
-    def test_evidence_or_proof_privacy_failure_leaves_only_a_safe_failed_proof(self):
+    def test_evidence_or_proof_privacy_failure_leaves_only_a_safe_failed_proof(self) -> None:
+        """Any privacy failure clears success claims and leaves only a sanitized failure record."""
         cases = [("diagnostic.stdout.txt", "invented /Users/another-person/private/path", {}),
                  ("contracts/m3-provenance.json", '{"filename":"/content/drive/private/file"}', {}),
                  ("safe.txt", "safe diagnostic", {"failure": {"message": "invented /home/another-person/path"}})]
@@ -269,7 +299,8 @@ class EvidenceBindingTest(unittest.TestCase):
                 self.assertNotIn("another-person", json.dumps(failed))
                 self.assertNotIn("/content/drive", json.dumps(failed))
 
-    def test_runner_validates_both_diagnostic_streams_before_upload(self):
+    def test_runner_validates_both_diagnostic_streams_before_upload(self) -> None:
+        """Unsafe stderr blocks publication even when command exit and stdout appear valid."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             runner = DRIVER.Runner(root, {}, [])
@@ -281,7 +312,8 @@ class EvidenceBindingTest(unittest.TestCase):
 
 
 class PreflightSafetyTest(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
+        """Create an isolated empty Git commit with the exact expected repository origin."""
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
@@ -292,7 +324,8 @@ class PreflightSafetyTest(unittest.TestCase):
             subprocess.run(command, cwd=self.repository, check=True, capture_output=True)
         self.sha = DRIVER.git_output(self.repository, "rev-parse", "HEAD")
 
-    def test_preflight_observes_missing_docker_without_creating_output(self):
+    def test_preflight_observes_missing_docker_without_creating_output(self) -> None:
+        """Read-only preflight may report missing tools without claiming execution or creating output."""
         output = self.root / "qualification"
         stream = io.StringIO()
         with patch("m3_integration_driver.shutil.which", return_value=None), redirect_stdout(stream):
@@ -303,7 +336,8 @@ class PreflightSafetyTest(unittest.TestCase):
         self.assertEqual(result["storage"]["minimum_free_bytes"], 10 * 1024 ** 3)
         self.assertFalse(output.exists())
 
-    def test_low_disk_fails_before_cloning_installing_or_creating_output(self):
+    def test_low_disk_fails_before_cloning_installing_or_creating_output(self) -> None:
+        """Insufficient storage must fail before any command or qualification directory is created."""
         output = self.root / "qualification"
         observation = {"free_bytes": 1, "total_bytes": 20 * 1024 ** 3,
                        "minimum_free_bytes": 10 * 1024 ** 3, "meets_synthetic_minimum": False}
@@ -315,7 +349,8 @@ class PreflightSafetyTest(unittest.TestCase):
             execute.assert_not_called()
         self.assertFalse(output.exists())
 
-    def test_docker_capability_checks_memory_cpu_and_architecture(self):
+    def test_docker_capability_checks_memory_cpu_and_architecture(self) -> None:
+        """Require usable Linux amd64 capacity and exclude unrelated daemon metadata."""
         valid = {"OSType": "linux", "Architecture": "x86_64", "NCPU": 2,
                  "MemTotal": 4 * 1024 ** 3, "ServerVersion": "observed", "unrelated": "excluded"}
         self.assertNotIn("unrelated", DRIVER.validate_docker_capability(valid))
@@ -324,7 +359,8 @@ class PreflightSafetyTest(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 DRIVER.validate_docker_capability(dict(valid, **change))
 
-    def test_docker_format_requests_only_runtime_capacity_and_identity(self):
+    def test_docker_format_requests_only_runtime_capacity_and_identity(self) -> None:
+        """Request each of the five allowed daemon fields exactly once and preserve valid JSON."""
         template = DRIVER.docker_info_format()
         fields = ("OSType", "Architecture", "ServerVersion", "NCPU", "MemTotal")
         rendered = template
@@ -334,7 +370,8 @@ class PreflightSafetyTest(unittest.TestCase):
             rendered = rendered.replace(token, "null")
         self.assertEqual(json.loads(rendered), dict.fromkeys(fields))
 
-    def test_multiqc_ownership_binds_original_task_to_published_report(self):
+    def test_multiqc_ownership_binds_original_task_to_published_report(self) -> None:
+        """Verify task-report UID, GID, and bytes independently of the published copy."""
         work = self.root / "nextflow-work"
         report = work / "aa" / ("b" * 30) / "multiqc_report.html"
         report.parent.mkdir(parents=True)
@@ -355,7 +392,8 @@ class PreflightSafetyTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "differs"):
             DRIVER.validate_multiqc_ownership(rows, work, published)
 
-    def test_multiqc_ownership_rejects_ambiguous_or_unsafe_trace_location(self):
+    def test_multiqc_ownership_rejects_ambiguous_or_unsafe_trace_location(self) -> None:
+        """Resolve one safe task directory from the trace before inspecting report ownership."""
         work = self.root / "nextflow-work"
         for suffix in ("c", "d"):
             (work / "aa" / ("b" * 6 + suffix * 24)).mkdir(parents=True)
@@ -366,7 +404,8 @@ class PreflightSafetyTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "invalid MultiQC trace hash"):
             DRIVER.validate_multiqc_ownership(rows, work, self.root / "report.html")
 
-    def test_preflight_reports_low_disk_without_running_an_engine(self):
+    def test_preflight_reports_low_disk_without_running_an_engine(self) -> None:
+        """Observe capacity through an existing ancestor without creating paths or invoking an engine."""
         output = self.root / "missing-parent" / "qualification"
         fake_usage = type("Usage", (), {"free": 1, "total": 2})()
         with patch("m3_integration_driver.shutil.disk_usage", return_value=fake_usage), \
@@ -376,13 +415,15 @@ class PreflightSafetyTest(unittest.TestCase):
         self.assertFalse(result["storage"]["meets_synthetic_minimum"])
         self.assertFalse(output.parent.exists())
 
-    def test_missing_docker_cannot_be_reported_as_execution_success(self):
+    def test_missing_docker_cannot_be_reported_as_execution_success(self) -> None:
+        """Missing Docker must stop execution mode before a qualification directory exists."""
         with patch("m3_integration_driver.shutil.which", side_effect=lambda value: "/fake/nextflow" if value == "nextflow" else None):
             with self.assertRaisesRegex(ValueError, "Docker is unavailable"):
                 DRIVER.main(["--repository", str(self.repository), "--output-root", str(self.root / "qualification"), "--expected-sha", self.sha, "--mode", "docker"])
         self.assertFalse((self.root / "qualification").exists())
 
-    def test_wrong_sha_dirty_source_and_substring_origin_are_rejected(self):
+    def test_wrong_sha_dirty_source_and_substring_origin_are_rejected(self) -> None:
+        """Require the exact clean commit and origin rather than a matching repository substring."""
         with self.assertRaisesRegex(ValueError, "commit"):
             DRIVER.repository_identity(self.repository, "0" * 40)
         (self.repository / "untracked.txt").write_text("synthetic")
@@ -393,7 +434,8 @@ class PreflightSafetyTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "origin"):
             DRIVER.repository_identity(self.repository, self.sha)
 
-    def test_forbidden_output_name_rejected_before_access(self):
+    def test_forbidden_output_name_rejected_before_access(self) -> None:
+        """Reject a prohibited path component before reading or creating its descendants."""
         with self.assertRaisesRegex(ValueError, "prohibited"):
             DRIVER.guarded_path(self.root / "DO NOT ACCESS WITH CHATGPT area" / "integration")
 

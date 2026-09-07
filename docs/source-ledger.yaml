@@ -1,6 +1,11 @@
 access_date: 2026-09-07
 status: "Entries retain their individual access dates. 2026-09-07 repository/CI, Git identity, Python path/atomic-rename documentation and private-cache metadata were reverified. Earlier tool/scientific entries retain their original evidence scope; configured does not mean executed."
 sources:
+  - claim: "Pinned BWA-MEM2 2.3 distribution reports executable version 2.2.1; source release archive defines the same fallback"
+    url: https://github.com/bwa-mem2/bwa-mem2/releases/download/v2.3/Source_code_including_submodules.tar.gz
+    archive_sha256: 0c48a1ea800af499ae7264b4c8908c4ca35fbe5a7df2ad6106c79aa94bb49cbb
+    runtime_evidence: docs/orchestration/evidence/m3-ci-attempt-4.json
+    access_date: 2026-09-07
   - claim: "MultiQC 1.35 filename-derived data directory is overridden by explicit data_dir_name configuration; --cl-config accepts inline YAML"
     url: https://github.com/MultiQC/MultiQC/blob/87e504bb77e3d94687dd980638724b7ef8e1e92f/multiqc/core/write_results.py
     documentation: https://github.com/MultiQC/MultiQC/blob/87e504bb77e3d94687dd980638724b7ef8e1e92f/multiqc/multiqc.py

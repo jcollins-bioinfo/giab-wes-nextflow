@@ -37,6 +37,14 @@ and six typed JSON evidence artifacts under `<outdir>/m3/contracts/`.
 The tiny BQSR fixture tests wiring and quality preservation, not empirical
 calibration performance. See [the M3 decision](docs/adr/0011-m3-synthetic-shared-preprocessing.md).
 
+Tool provenance separates the distribution release from the executable's actual
+version report. The pinned BWA-MEM2 2.3 distribution reports `2.2.1`, matching its
+release-source fallback; the collector requires that exact report and the
+unchanged image digest. Both identities and their evidence are retained in
+provenance schema 2.0.0. Older provenance is rejected rather than upgraded.
+See [data contracts](docs/data-contracts.md) and the
+[observed version discrepancy](docs/orchestration/evidence/m3-ci-attempt-4.json).
+
 From a clean reviewed checkout on Linux/x86_64 with working Docker, Python and
 Nextflow 26.04.6/Java 17:
 
