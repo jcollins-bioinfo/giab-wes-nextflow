@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "project_state",
   "milestone": "M3",
-  "phase": "repair observed MultiQC container permissions and source-template lint; required CI failed",
+  "phase": "repair observed MultiQC data-directory output contract; required CI failed",
   "state": "implemented",
   "version": "0.3.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/m3-shared-preprocessing",
-      "evidence_sha": "fb6276b33e423cc68f4e878fe69000baabcbe829",
+      "evidence_sha": "e4a6e4d3c73d40923e632e3293b2dc9800a50326",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -115,9 +115,9 @@
     {
       "name": "Python3.12 and3.13 synthetic suites",
       "status": "passed",
-      "evidence_sha": null,
+      "evidence_sha": "e4a6e4d3c73d40923e632e3293b2dc9800a50326",
       "command": "python -m unittest discover -s tests/unit -v",
-      "detail": "165 tests passed per interpreter; uncommitted source inventory and logs bound by docs/orchestration/evidence/m3-local-validation.json."
+      "detail": "168 tests passed per interpreter for the preceding repair; exact log and source hashes are recorded in m3-ci-attempt-1.json."
     },
     {
       "name": "M3 framework and stub resume",
@@ -140,10 +140,10 @@
       "required": true,
       "status": "failure",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "fb6276b33e423cc68f4e878fe69000baabcbe829",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766",
+      "evidence_sha": "e4a6e4d3c73d40923e632e3293b2dc9800a50326",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766/job/101667809978"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146/job/101671578291"
       ]
     }
   ],
@@ -183,7 +183,8 @@
       "docs/orchestration/evidence/m2.1.1-verified.json",
       "docs/orchestration/evidence/m3-local-validation.json",
       "docs/orchestration/evidence/m3-dsl2-local-qualification.json",
-      "docs/orchestration/evidence/m3-ci-attempt-1.json"
+      "docs/orchestration/evidence/m3-ci-attempt-1.json",
+      "docs/orchestration/evidence/m3-ci-attempt-2.json"
     ]
   },
   "external_blockers": [
@@ -194,6 +195,6 @@
       "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
     }
   ],
-  "next_safe_action": "Push tested fixes to draft PR20 after first Docker attempt completes, then require all CI jobs before M3 verification and M4.",
-  "observed_at": "2026-09-07T08:09:05.325272+00:00"
+  "next_safe_action": "Push the locally checked MultiQC output contract correction to draft PR20; require complete green synthetic CI before M3 verification and M4 implementation.",
+  "observed_at": "2026-09-07T08:25:37.857792+00:00"
 }

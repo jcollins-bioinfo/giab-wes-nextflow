@@ -25,6 +25,7 @@ process M3_MULTIQC {
     mkdir qc_reports
     cp -L ${report_args} qc_reports/
     multiqc --force --filename multiqc_report.html --outdir . \
+        --cl-config 'data_dir_name: multiqc_data' \
         --module fastqc --module samtools --module picard --module mosdepth --require-logs qc_reports
     multiqc --version > multiqc.versions.txt 2>&1
 

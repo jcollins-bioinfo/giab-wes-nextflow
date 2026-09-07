@@ -90,11 +90,20 @@ is unmerged. The recovery evidence record is `evidence/m2.1.1-verified.json`.
    actual commands, task resources, trace/report/timeline/DAG and shared BAM lineage.
 5. Test malformed reads/metadata/reference, module/subworkflow stubs, actual tiny
    Docker integration, sort/index/RG/duplicate/OQ invariants and resume behavior.
-6. Add a thin M3 Colab launcher, current README/methods/runbook and gate-aware
-   checkpoints. Run local and remote tests before any M4 continuation decision.
+6. Maintain current README/methods/runbook and gate-aware checkpoints. Execution
+   uses the clean-clone Docker CI driver; a thin M3 Colab launcher is required if
+   Colab becomes an execution target. Run local and remote tests before any M4
+   continuation decision.
 
 Canonical known-sites resources are absent and require separate pinned identity
 and reference-compatibility verification. The existing ADR 0003 quality contract
 is preserved. Synthetic BQSR tests qualify plumbing, not calibration adequacy or
 HG001 performance. No assay targets, truth VCF/BED or benchmark inputs enter M3
 processing tasks. Canonical capture-dependent acceptance remains Gate B blocked.
+
+Observed CI attempts are retained in `evidence/m3-ci-attempt-1.json` and
+`evidence/m3-ci-attempt-2.json`. The second attempt passed Python and Nextflow
+framework jobs and the MultiQC executable, then failed its required directory
+output contract. The correction explicitly configures the stable data-directory
+name; collection, independent BAM/ownership checks and resume must still pass in
+actual Docker execution before M3 is verified.

@@ -1,6 +1,6 @@
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
-> **M3 shared preprocessing — version 0.3.0-dev.1, implemented; required synthetic Docker CI pending.** M2.1.1 recovery passed required CI at `22d01b202e15bb098e9d42d0ad4a98606e78c2c2` and remains draft PR #19. This dependent branch adds synthetic shared-BAM qualification. Real HG001, independent known-sites compatibility and capture-dependent execution remain gated. See the [observed state](docs/orchestration/project-state.json), [implementation plan](docs/orchestration/implementation-plan.md), and [claim ledger](docs/claim-ledger.yaml).
+> **M3 shared preprocessing — version 0.3.0-dev.1, implemented; required synthetic Docker CI not yet passed.** M2.1.1 recovery passed required CI at `22d01b202e15bb098e9d42d0ad4a98606e78c2c2` and remains draft PR #19. This dependent branch adds synthetic shared-BAM qualification. Real HG001, independent known-sites compatibility and capture-dependent execution remain gated. See the [observed state](docs/orchestration/project-state.json), [implementation plan](docs/orchestration/implementation-plan.md), and [claim ledger](docs/claim-ledger.yaml).
 
 ## Motivation and architecture
 
