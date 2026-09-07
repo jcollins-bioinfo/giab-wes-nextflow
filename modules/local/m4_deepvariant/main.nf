@@ -39,7 +39,7 @@ process M4_DEEPVARIANT {
         --expected-model-metadata-sha256 10a47721a3ea86f6c25bcabda3af5c31a936a3183847ac8a25857a709359187a \
         --reference-fai caller-inputs/reference.fa.fai \
         --examples deepvariant.intermediate/make_examples.tfrecord-00000-of-00001.gz \
-        --call-variants deepvariant.intermediate/call_variants_output.tfrecord.gz \
+        --call-variants deepvariant.intermediate/call_variants_output-00000-of-00001.tfrecord.gz \
         --output m4-deepvariant-inference.json
     """
     stub:

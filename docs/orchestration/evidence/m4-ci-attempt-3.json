@@ -1,0 +1,256 @@
+{
+  "allele_assertions": {
+    "all_mapped_cigars_150M": true,
+    "sites": [
+      {
+        "contig": "chrSYN1",
+        "fragment_counts": {
+          "A": 40,
+          "T": 40
+        },
+        "position_1based": 3151
+      },
+      {
+        "contig": "chrSYN2",
+        "fragment_counts": {
+          "A": 80
+        },
+        "position_1based": 7101
+      },
+      {
+        "contig": "chrSYN1",
+        "fragment_counts": {
+          "G": 80
+        },
+        "position_1based": 5401
+      }
+    ]
+  },
+  "artifact": {
+    "all_member_hashes_verified": true,
+    "bytes": 1272590,
+    "id": 10014454305,
+    "integration_proof_sha256": "064b665135bfa0c9e15f9e1e52fd85d382b830bffd6026843f1fd549a763b027",
+    "name": "m4-synthetic-docker-evidence",
+    "sha256": "b71d4d8867cee7a567ad8aab7536ec55d44a443197af3067d3a90630e72ce089",
+    "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/artifacts/10014454305",
+    "verified_evidence_members": 59
+  },
+  "attempt": 3,
+  "bam_assertions": {
+    "bai_sha256": "92c10fc979cbcbf7a58c0327e8a9a4dd7781bc53f604477038fc5c56673a64c7",
+    "bam_sha256": "9b5b52eead9816905136f093d272c2f394014646f18ea65ae4d24f880ff12af0",
+    "coordinate_sorted": true,
+    "duplicate_reads": 4,
+    "exact_synthetic_alignments": true,
+    "indexed_region_queries_valid": true,
+    "mapped_reads": 524,
+    "oq_on_all_primary_reads": true,
+    "primary_reads": 528,
+    "read_groups": 2,
+    "reference_dictionary_identical": true,
+    "samtools_version": "samtools 1.24",
+    "unmapped_reads": 4
+  },
+  "canonical": false,
+  "execution_scope": {
+    "biological_processing_validated": false,
+    "both_and_final_resume_phases_reached": false,
+    "deepvariant_collector_accepted": false,
+    "deepvariant_native_driver_oracle_index_mount_checks_completed": false,
+    "deepvariant_pipeline_native_vcf_gvcf_index_creation_logged": true,
+    "deepvariant_pipeline_predictions_logged": 2,
+    "gatk_caller_collector_bundle_accepted": true,
+    "gatk_native_snvs_oracle_index_mount_verified": true,
+    "independent_deepvariant_probability_candidate_lineage_validation_completed": false,
+    "phase_trace_counts": {
+      "deepvariant": {
+        "CACHED": 23,
+        "FAILED": 1
+      },
+      "gatk": {
+        "COMPLETED": 26
+      }
+    }
+  },
+  "fixture": {
+    "manifest_sha256": "e31ffa05a94f540e563f56d4dc3990ec0c8fa803cdccb7c3c8fe40a16a0348ad",
+    "recipe_version": "1.0.0",
+    "sample": "SYNTHETIC01"
+  },
+  "frozen_oracle_sha256": "c971c2bac375dbffc37608b6cde4ec4d9b72a9f094dba446d8fe6e9032566d4f",
+  "gatk_caller_isolation": {
+    "gatk": {
+      "mounts": [
+        "task"
+      ],
+      "mounts_within_task_only": true,
+      "network": "none",
+      "staged_input_identity": {
+        "actual_bytes_match_accepted_contract": true,
+        "exact_seven_regular_inputs": true,
+        "files": [
+          {
+            "bytes": 388,
+            "filename": "reference.dict",
+            "sha256": "261ac98cb51682fc16e404fec7fc0b0b2163eb4825daaa3be839015209448242"
+          },
+          {
+            "bytes": 20352,
+            "filename": "reference.fa",
+            "sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454"
+          },
+          {
+            "bytes": 47,
+            "filename": "reference.fa.fai",
+            "sha256": "495e967f24a319fec0ee13c6e7c729f39e491431a2bf8f123afb0eb49da62267"
+          },
+          {
+            "bytes": 31,
+            "filename": "regions.bed",
+            "sha256": "c3dc1442e95a7409413eaebe354771c881caeffbc37bbcf50a7f556ee764ca9a"
+          },
+          {
+            "bytes": 18510,
+            "filename": "shared.bam",
+            "sha256": "9b5b52eead9816905136f093d272c2f394014646f18ea65ae4d24f880ff12af0"
+          },
+          {
+            "bytes": 176,
+            "filename": "shared.bam.bai",
+            "sha256": "92c10fc979cbcbf7a58c0327e8a9a4dd7781bc53f604477038fc5c56673a64c7"
+          }
+        ],
+        "metadata_sha256": "83ba7378a3de094579304908c3d5b3c133caed6f9212d67da95743a24fdf65f9"
+      }
+    }
+  },
+  "gatk_native_assertions": {
+    "gatk:gatk": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    }
+  },
+  "gatk_native_index_assertions": {
+    "gatk": {
+      "files": [
+        {
+          "filename": "SYNTHETIC01.gatk.native.vcf.gz",
+          "index_query_matches_sequential_records": true,
+          "records": 2
+        }
+      ],
+      "fixed_full_reference_domain": "chrSYN1:1-12000,chrSYN2:1-8000",
+      "reader_image": "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    }
+  },
+  "head_sha": "7d1ca90bfc9aeb87bf0b17a64ad4e3ed39272d2c",
+  "image": {
+    "Architecture": "amd64",
+    "Id": "sha256:96e40015101d9178131fe129456345a225c0bd3c3dfe6c7da79a8355b3710506",
+    "Os": "linux",
+    "RepoDigests": [
+      "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    ],
+    "Size": 4914595016
+  },
+  "installed_package": {
+    "files": 42,
+    "package_inventory_sha256": "4afb2bb8aee3a009c2bfc1dded9f08cd34f32fab0714541709b67e796af6691b",
+    "repository_sha": "3e2170cc6b31fcc7d1def9ea40afa47ec1311215",
+    "version": "0.4.0-dev.1"
+  },
+  "job_conclusions": [
+    {
+      "conclusion": "failure",
+      "id": 101706720181,
+      "name": "m4-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101706720207,
+      "name": "python (3.12)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101706720267,
+      "name": "python (3.13)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101706720361,
+      "name": "nextflow",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101706720446,
+      "name": "m3-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "id": 101708063292,
+      "name": "required",
+      "status": "completed"
+    }
+  ],
+  "job_id": 101706720181,
+  "job_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/job/101706720181",
+  "m4_failure": {
+    "cause": "Pinned call_variants dynamically rewrites the logical outfile into one CPU writer shard; inspector received the unsharded logical path.",
+    "error_type": "ValueError",
+    "example_path": "deepvariant.intermediate/make_examples.tfrecord-00000-of-00001.gz",
+    "expected_physical_cvo_path": "deepvariant.intermediate/call_variants_output-00000-of-00001.tfrecord.gz",
+    "message": "inspection input is not a regular file",
+    "phase": "deepvariant mode after actual native pipeline, before independent inference inspection",
+    "physical_filename_evidence": "Deterministically inferred from actual one-writer log plus pinned source; retained artifact does not contain a direct directory listing.",
+    "report_script": {
+      "bytes": 1864,
+      "scope": "Actual report script body; direct copied wrapper bytes not separately archived.",
+      "sha256": "2791697b295b2e148aa8f8f76361209198b533befe8d742d7201db8235abe0ec",
+      "source_member": "deepvariant.report.html",
+      "source_member_sha256": "a2af886442f376336beda50de4965953ba55e5589966353c9903ad9769e88321"
+    },
+    "selected_diagnostic_lines": [
+      "python3 \"m4_inspect_deepvariant.py\" --model-root /opt/models/wes         --expected-model-metadata-sha256 10a47721a3ea86f6c25bcabda3af5c31a936a3183847ac8a25857a709359187a         --reference-fai caller-inputs/reference.fa.fai         --examples deepvariant.intermediate/make_examples.tfrecord-00000-of-00001.gz         --call-variants deepvariant.intermediate/call_variants_output.tfrecord.gz         --output m4-deepvariant-inference.json",
+      "time /opt/deepvariant/bin/call_variants --outfile \"deepvariant.intermediate/call_variants_output.tfrecord.gz\" --examples \"deepvariant.intermediate/make_examples.tfrecord@1.gz\" --checkpoint \"/opt/models/wes\"",
+      "I0907 10:24:57.834617 140052017512448 call_variants.py:953] Total 1 writing processes started.",
+      "I0907 10:24:58.928169 140052017512448 call_variants.py:1031] Predicted 2 examples in 1 batches [54.636 sec per 100].",
+      "I0907 10:24:58.935677 140052017512448 call_variants.py:597] Wrote 2 examples over 1 batches. Closing writer.",
+      "I0907 10:25:05.471349 139984682418176 postprocess_variants.py:1544] Processed 2 variants.",
+      "I0907 10:25:05.474933 139984682418176 postprocess_variants.py:1869] VCF and gVCF creation took 5.791187286376953e-05 minutes.",
+      "I0907 10:25:05.476243 139984682418176 postprocess_variants.py:2368] Indexing VCF and gVCF took 1.9900004069010417e-05 minutes.",
+      "require(raw.is_file(), \"inspection input is not a regular file\")",
+      "ValueError: inspection input is not a regular file"
+    ],
+    "source": "scripts/m4_inspect_deepvariant.py:49 via unique_files at line146",
+    "supplied_cvo_path": "deepvariant.intermediate/call_variants_output.tfrecord.gz"
+  },
+  "milestone": "M4",
+  "primary_sources": [
+    {
+      "lines": "805-826",
+      "observation": "CPU automatic writer count1; unsharded .tfrecord.gz becomes @1.tfrecord.gz",
+      "sha256": "aa84d26f3d42f8199776363787fd8fae375dc8c4fbecbf45a0708e94d7c3c5de",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/deepvariant/call_variants.py"
+    },
+    {
+      "lines": "99-119,269-290",
+      "observation": "Expand prefix@1.tfrecord.gz to prefix-00000-of-00001.tfrecord.gz",
+      "sha256": "ec5164e0eec39be32fa6f5172f30e4af8f5dbdcd58327de6ad978e089724b31e",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/third_party/nucleus/io/sharded_file_utils.py"
+    }
+  ],
+  "pull_request": 21,
+  "repository": "jcollins-bioinfo/giab-wes-nextflow",
+  "run_id": 34110920618,
+  "schema_version": "1.0.0",
+  "status": "failed",
+  "synthetic": true,
+  "tested_merge_sha": "3e2170cc6b31fcc7d1def9ea40afa47ec1311215"
+}
