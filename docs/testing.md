@@ -70,6 +70,13 @@ attempt remains recorded as failed and cannot qualify M3.
 
 ## M4 local and actual-caller qualification
 
+Generate all three fixture families after installing the package and before
+`nf-test test --ci`: `python tests/data/generate_fixture.py`,
+`python tests/data/generate_m3_fixture.py --output tests/data/m3-generated`,
+and `python -m giab_wes_nextflow.m4_fixture --output tests/data/m4-generated`.
+The CI job uses this exact order; no ignored files from an earlier local test
+may substitute for generation in a fresh checkout.
+
 M4 adds package contracts, a separately versioned positive SNV fixture, guarded
 JSON publication, and 14 total nf-tests covering foundation, M3 and M4 wiring,
 selection and early failure gates. Unit tests exercise malformed native records,

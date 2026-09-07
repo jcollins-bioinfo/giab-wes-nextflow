@@ -86,6 +86,7 @@ jobs:
       - run: python -m pip install .
       - run: python tests/data/generate_fixture.py
       - run: python tests/data/generate_m3_fixture.py --output tests/data/m3-generated
+      - run: python -m giab_wes_nextflow.m4_fixture --output tests/data/m4-generated
       - run: nextflow -version
       - run: nextflow lint -o concise .
       - run: nf-core pipelines schema lint

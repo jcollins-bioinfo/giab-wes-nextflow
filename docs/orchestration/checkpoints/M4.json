@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M4",
-  "phase": "await actual Linux dual-caller synthetic CI",
+  "phase": "repair first CI setup failures before actual caller execution",
   "state": "implemented",
   "version": "0.4.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/m4-dual-callers",
-      "evidence_sha": "23b939efeb2b7b01403dab3124b5a7c6a57f6290",
+      "evidence_sha": "1682c983fe287e1b0dac680e2b52f8cace066018",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -151,17 +151,31 @@
       "evidence_sha": null,
       "command": "python -m build --no-isolation; python scripts/check_distributions.py; pre-commit run --all-files; python scripts/validate_orchestration.py",
       "detail": "Safe wheel/sdist, closed schemas/version consistency, typed/documented changed Python, formatting and no large/generated/credential/sequence findings; final branch scan follows commit."
+    },
+    {
+      "name": "First CI setup repairs",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m unittest discover -s tests/unit -p test_m4_integration_driver.py; nf-test test tests/m4_pipeline.nf.test --ci",
+      "detail": "17 driver tests passed on Python3.12/3.13 and independent root/reviewer checks; missing-fixture pipeline test passed after clean regeneration. No images, caller parameters or fixture bytes changed."
     }
   ],
   "ci": [
     {
       "name": "required M4 CI including m4-docker",
       "required": true,
-      "status": "not_run",
+      "status": "failure",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": null,
-      "run_url": null,
-      "job_urls": []
+      "evidence_sha": "1682c983fe287e1b0dac680e2b52f8cace066018",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427",
+      "job_urls": [
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974346",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974532",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974576",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974586",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974632",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101700843030"
+      ]
     }
   ],
   "execution_environments": [
@@ -174,6 +188,17 @@
       "run_id": "m4-local-uncommitted-20260907",
       "evidence_artifacts": [
         "docs/orchestration/evidence/m4-local-verification.json"
+      ]
+    },
+    {
+      "id": "linux-x86-64-m4-image-preflight",
+      "status": "observed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34108811427-m4-image-preflight",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-ci-attempt-1.json"
       ]
     }
   ],
@@ -189,7 +214,8 @@
       "docs/orchestration/evidence/m4-container-declaration.json",
       "docs/orchestration/evidence/m4-wes-model-metadata.json",
       "docs/orchestration/evidence/m4-local-verification.json",
-      "docs/orchestration/evidence/m3-checkpoint-ci-repaired.json"
+      "docs/orchestration/evidence/m3-checkpoint-ci-repaired.json",
+      "docs/orchestration/evidence/m4-ci-attempt-1.json"
     ]
   },
   "external_blockers": [
@@ -200,6 +226,6 @@
       "owner_action": "At the canonical gate, provide stronger per-library assignment or approve an explicit domain and its limited estimand after reviewing the investigation."
     }
   ],
-  "next_safe_action": "Commit and push reviewed M4 implementation as draft PR stacked on M3; require actual Linux/x86_64 caller, positive DeepVariant inference, native-index and cache evidence before M4 verification.",
-  "observed_at": "2026-09-07T09:55:39.003756+00:00"
+  "next_safe_action": "Re-run required CI after binding the index reader to the actual unchanged image report and generating M4 inputs before nf-test; no caller ran in the failed attempt.",
+  "observed_at": "2026-09-07T10:06:21.946567+00:00"
 }

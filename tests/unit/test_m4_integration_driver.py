@@ -97,6 +97,36 @@ class ModeReuseTest(unittest.TestCase):
         self.assertNotIn("-stub-run", gatk + both + repeat)
 
 
+class IndexReaderVersionTest(unittest.TestCase):
+    """A Conda prefix declaration cannot replace exact image-bound version evidence."""
+
+    def test_observation_preserves_selector_and_exact_runtime_versions(self) -> None:
+        """Accept the observed versions only for the immutable image in the tool lock."""
+        lock = json.loads((ROOT / "config/m4-tools.json").read_text())
+        text = "bcftools 1.15.1\nUsing htslib 1.21\nLicense information\n"
+        result = DRIVER.validate_index_reader_version(text, lock["tools"]["deepvariant"]["image"])
+        self.assertEqual(result["declared_conda_selector"], "bioconda::bcftools=1.15")
+        self.assertEqual(result["observed_version"], "1.15.1")
+        self.assertEqual(result["observed_htslib_version"], "1.21")
+        self.assertEqual(result["observed_text"], text)
+        self.assertEqual(result["observed_text_sha256"], DRIVER.hashlib.sha256(text.encode()).hexdigest())
+
+    def test_selector_patch_drift_missing_library_and_ambiguous_reports_fail(self) -> None:
+        """Reject fuzzy matches, absent HTSlib identity and conflicting version lines."""
+        text = "bcftools 1.15.1\nUsing htslib 1.21\n"
+        for bad in (text.replace("1.15.1", "1.15"), text.replace("1.15.1", "1.15.10"),
+                    text.replace("1.21", "1.21.1"), "bcftools 1.15.1\n", "warning\n" + text,
+                    text + "bcftools 1.15\n", text + "Using htslib 1.15\n"):
+            with self.subTest(text=bad), self.assertRaises(ValueError):
+                DRIVER.validate_index_reader_version(bad, DRIVER.INDEX_READER_IMAGE)
+
+    def test_matching_versions_do_not_qualify_a_different_image(self) -> None:
+        """Identical version text cannot transfer qualification to another image digest."""
+        image = DRIVER.INDEX_READER_IMAGE.rsplit("@", 1)[0] + "@sha256:" + "0" * 64
+        with self.assertRaisesRegex(ValueError, "image lacks"):
+            DRIVER.validate_index_reader_version("bcftools 1.15.1\nUsing htslib 1.21\n", image)
+
+
 class IsolationAndCapabilityTest(unittest.TestCase):
     """A caller must never see fixture ancestors or launch on an unsupported CPU."""
 

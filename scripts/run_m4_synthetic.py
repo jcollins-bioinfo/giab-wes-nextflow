@@ -28,6 +28,9 @@ require = shared.require
 MINIMUM_FREE_BYTES = 30 * 1024 ** 3
 MINIMUM_MEMORY_BYTES = 12 * 1024 ** 3
 CALLER_PROCESSES = {"gatk": "M4_HAPLOTYPECALLER", "deepvariant": "M4_DEEPVARIANT"}
+INDEX_READER_IMAGE = "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+INDEX_READER_SOURCE = "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/Dockerfile#L18-L35"
+INDEX_READER_EVIDENCE = "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/artifacts/10013513831"
 ORACLE = (
     {"contig": "chrSYN1", "position_1based": 3151, "ref": "T", "alt": "A", "genotype": "0/1", "ref_fragments": 40, "alt_fragments": 40},
     {"contig": "chrSYN2", "position_1based": 7101, "ref": "T", "alt": "A", "genotype": "1/1", "ref_fragments": 0, "alt_fragments": 80},
@@ -69,6 +72,27 @@ def validate_capability(info: dict[str, Any], cpu: dict[str, Any], flags: Sequen
     require(cpu.get("system") == "Linux" and cpu.get("architecture") in {"amd64", "x86_64"}, "M4 requires actual Linux x86_64 execution")
     require(set(flags) <= set(cpu.get("flags", [])), "M4 requires observed SSE4.1, SSE4.2 and AVX CPU support")
     return {"docker": engine, "cpu": cpu}
+
+
+def validate_index_reader_version(text: str, image: str) -> dict[str, Any]:
+    """Bind exact observed binary versions to the qualified image, separate from its Conda selector."""
+    require(image == INDEX_READER_IMAGE, "native index reader image lacks this exact version qualification")
+    lines = text.splitlines()
+    require(lines[:2] == ["bcftools 1.15.1", "Using htslib 1.21"],
+            "native index reader must report exactly bcftools 1.15.1 with HTSlib 1.21 for the pinned image")
+    require(sum(line.startswith("bcftools ") for line in lines) == 1
+            and sum(line.startswith("Using htslib ") for line in lines) == 1,
+            "native index reader has ambiguous version observations")
+    return {"image": image, "declared_conda_selector": "bioconda::bcftools=1.15",
+            "expected_reported_version": "1.15.1", "observed_version": "1.15.1",
+            "expected_reported_htslib_version": "1.21", "observed_htslib_version": "1.21",
+            "observed_text": text, "observed_text_sha256": hashlib.sha256(text.encode()).hexdigest(),
+            "declaration_source": INDEX_READER_SOURCE,
+            "selector_semantics_source": "https://docs.conda.io/projects/conda/en/stable/user-guide/concepts/pkg-specs.html",
+            "initial_version_observation": {"artifact_url": INDEX_READER_EVIDENCE,
+                "artifact_sha256": "4e0c6c39c77400ad139dd5894f6123c505bc546f35e2de9bafe2d895c0be119c",
+                "stdout_sha256": "ac3714859d2260e77f6d8a4b1d73d5d4401d7907ea1dac8897bee1d325611205",
+                "qualification_status": "version_observed_before_failed_workflow_preflight"}}
 
 
 def nextflow_command(executable: str, checkout: Path, work: Path, output: Path,
@@ -439,9 +463,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                                    "--entrypoint", "/usr/bin/python3", dv_image, "-c", cpu_program], root))
         proof["in_container_capability"] = validate_capability(engine, in_image, lock["tools"]["deepvariant"]["cpu_required_flags"])
         reader_version = runner.run("native-index-reader-version", [args.docker, "run", "--rm", "--network", "none", "--platform", "linux/amd64",
-                      "--user", f"{os.getuid()}:{os.getgid()}", "--entrypoint", "/opt/conda/envs/bio/bin/bcftools", dv_image, "--version"], root).splitlines()[0]
-        require(reader_version == "bcftools 1.15", "native index reader differs from the pinned image's declared build")
-        proof["native_index_reader"] = {"version": reader_version, "image": dv_image}
+                      "--user", f"{os.getuid()}:{os.getgid()}", "--entrypoint", "/opt/conda/envs/bio/bin/bcftools", dv_image, "--version"], root)
+        proof["native_index_reader"] = validate_index_reader_version(reader_version, dv_image)
         proof["storage_after_image"] = storage_observation(root)
         require(proof["storage_after_image"]["free_bytes"] >= 10 * 1024 ** 3, "insufficient work space remains after image preparation")
         fixture_root = checkout / "tests/data/m4-generated"
