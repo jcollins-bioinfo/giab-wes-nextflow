@@ -216,6 +216,12 @@ def validate_version_consistency(root: Path) -> str:
                     raise ValueError(f"{path.relative_to(root)} project_version differs from {version}")
         if not declarations:
             raise ValueError(f"missing {relative} project_version declarations")
+    for kind in ("config", "schemas"):
+        packaged_root = root / "src/giab_wes_nextflow/data" / kind
+        for packaged in sorted(packaged_root.rglob("*.json")):
+            authoritative = root / kind / packaged.relative_to(packaged_root)
+            if not authoritative.is_file() or authoritative.read_bytes() != packaged.read_bytes():
+                raise ValueError(f"packaged resource differs from authoritative {authoritative.relative_to(root)}")
     return version
 
 

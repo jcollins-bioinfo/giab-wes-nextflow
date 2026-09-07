@@ -1,0 +1,183 @@
+{
+  "observed_date": "2026-09-07",
+  "scope": "M3 selected release/documentation evidence; executed status is established only by CI/run records.",
+  "versions": {
+    "bwa-mem2/bwa-mem2": {
+      "tag": "v2.3",
+      "url": "https://github.com/bwa-mem2/bwa-mem2/releases/tag/v2.3",
+      "published": "2025-06-30T08:18:36Z",
+      "assets": [
+        {
+          "name": "bwa-mem2-2.3_x64-linux.tar.bz2",
+          "digest": "sha256:112f3a3ebf3f8c2377f52d61446ead392c4a98ecf89e7629617d3ed16f4e73cb",
+          "url": "https://github.com/bwa-mem2/bwa-mem2/releases/download/v2.3/bwa-mem2-2.3_x64-linux.tar.bz2"
+        },
+        {
+          "name": "Source_code_including_submodules.tar.gz",
+          "digest": "sha256:0c48a1ea800af499ae7264b4c8908c4ca35fbe5a7df2ad6106c79aa94bb49cbb",
+          "url": "https://github.com/bwa-mem2/bwa-mem2/releases/download/v2.3/Source_code_including_submodules.tar.gz"
+        },
+        {
+          "name": "Source_code_including_submodules.zip",
+          "digest": "sha256:a69fa150ced805eb6af22790aeee9be12a7af4820c97bc71275e84f108903a2a",
+          "url": "https://github.com/bwa-mem2/bwa-mem2/releases/download/v2.3/Source_code_including_submodules.zip"
+        }
+      ],
+      "commit_sha": "7aa5ff6c3330490e5629ab9b7327683d2dce02d6"
+    },
+    "samtools/samtools": {
+      "tag": "1.24",
+      "url": "https://github.com/samtools/samtools/releases/tag/1.24",
+      "published": "2026-07-09T15:02:41Z",
+      "assets": [
+        {
+          "name": "samtools-1.24.tar.bz2",
+          "digest": "sha256:89b2a440123eeaa400392ce1736e7d60ce9041843027d76819753c5a8246bfdd",
+          "url": "https://github.com/samtools/samtools/releases/download/1.24/samtools-1.24.tar.bz2"
+        }
+      ],
+      "commit_sha": "dc71c7274044d1050ccb64901731373ec7e915b6"
+    },
+    "brentp/mosdepth": {
+      "tag": "v0.3.14",
+      "url": "https://github.com/brentp/mosdepth/releases/tag/v0.3.14",
+      "published": "2026-04-24T13:39:34Z",
+      "assets": [
+        {
+          "name": "mosdepth",
+          "digest": "sha256:c5182b74a8f1b66710efa16e122cbc8a197834874b103e7c5c0bd9a6265ae7b6",
+          "url": "https://github.com/brentp/mosdepth/releases/download/v0.3.14/mosdepth"
+        },
+        {
+          "name": "mosdepth_d4",
+          "digest": "sha256:d94d545aef6490ea91f348bcebb2ed74b3e2d1c635abc10d8a65dc8387606160",
+          "url": "https://github.com/brentp/mosdepth/releases/download/v0.3.14/mosdepth_d4"
+        }
+      ],
+      "commit_sha": "821fddb12860d024fef4cf0bfe86918f2413d4e4"
+    },
+    "s-andrews/FastQC": {
+      "tag": "v0.12.1",
+      "url": "https://github.com/s-andrews/FastQC/releases/tag/v0.12.1",
+      "published": "2023-03-01T15:24:28Z",
+      "assets": [],
+      "commit_sha": "e7ef390bf10382f60786bdd0cf28abd4f8683ffd"
+    },
+    "MultiQC/MultiQC": {
+      "tag": "v1.35",
+      "url": "https://github.com/MultiQC/MultiQC/releases/tag/v1.35",
+      "published": "2026-05-13T01:00:41Z",
+      "assets": [],
+      "commit_sha": "87e504bb77e3d94687dd980638724b7ef8e1e92f"
+    },
+    "broadinstitute/gatk": {
+      "tag": "4.7.0.0",
+      "url": "https://github.com/broadinstitute/gatk/releases/tag/4.7.0.0",
+      "published": "2026-08-18T03:12:21Z",
+      "assets": [
+        {
+          "name": "gatk-4.7.0.0.zip",
+          "digest": "sha256:d093d2693b1626361a413ca59d6d4a0bf968717f280a8fd9ce060b25eb2ed1db",
+          "url": "https://github.com/broadinstitute/gatk/releases/download/4.7.0.0/gatk-4.7.0.0.zip"
+        }
+      ],
+      "commit_sha": "0cde69eed30339f5978cbb1ac6e5cf3662f9e1f8"
+    },
+    "broadinstitute/picard": {
+      "tag": "3.5.0",
+      "url": "https://github.com/broadinstitute/picard/releases/tag/3.5.0",
+      "published": "2026-07-31T18:56:06Z",
+      "assets": [
+        {
+          "name": "picard.jar",
+          "digest": "sha256:b7d97861c3a54ba5a421f5a317f38382f955803862d30ef4aca2bcdc54943631",
+          "url": "https://github.com/broadinstitute/picard/releases/download/3.5.0/picard.jar"
+        }
+      ],
+      "commit_sha": "a53d7ebd975606b79ca0eaddb7bf93f555ec4db4"
+    }
+  },
+  "sources": [
+    {
+      "id": "bwa-mem2-usage",
+      "url": "https://github.com/bwa-mem2/bwa-mem2/blob/7aa5ff6c3330490e5629ab9b7327683d2dce02d6/README.md",
+      "supports": "Index/mem interface, read-group options inherited from BWA, source license and x64 release provenance."
+    },
+    {
+      "id": "samtools-markdup",
+      "url": "https://www.htslib.org/doc/samtools-markdup.html",
+      "supports": "markdup requires fixmate -m tags and coordinate sorting; duplicate-retention default; optional optical identification."
+    },
+    {
+      "id": "samtools-sort",
+      "url": "https://www.htslib.org/doc/samtools-sort.html",
+      "supports": "Coordinate order required for indexing; memory per thread and sorting options."
+    },
+    {
+      "id": "samtools-fixmate",
+      "url": "https://www.htslib.org/doc/samtools-fixmate.html",
+      "supports": "Name-collated input, MC/ms tags, removal flag effects."
+    },
+    {
+      "id": "picard-metrics",
+      "url": "https://broadinstitute.github.io/picard/command-line-overview.html",
+      "supports": "MarkDuplicates retention/options and library metrics; CollectHsMetrics requires actual capture-kit bait/target intervals."
+    },
+    {
+      "id": "mosdepth-usage",
+      "url": "https://github.com/brentp/mosdepth/blob/821fddb12860d024fef4cf0bfe86918f2413d4e4/README.md",
+      "supports": "Coverage filters, mate overlap handling, region denominator, threshold outputs."
+    },
+    {
+      "id": "fastqc",
+      "url": "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/",
+      "supports": "Raw read QC purpose and artifacts; warnings are diagnostics."
+    },
+    {
+      "id": "multiqc-containers",
+      "url": "https://docs.seqera.io/multiqc/getting_started/installation",
+      "supports": "Official container names and documented amd64/arm64 architecture variants."
+    },
+    {
+      "id": "multiqc-fastqc",
+      "url": "https://docs.seqera.io/multiqc/modules/fastqc",
+      "supports": "ZIP/data input discovery and filename-based sample identities."
+    },
+    {
+      "id": "multiqc-mosdepth",
+      "url": "https://docs.seqera.io/multiqc/modules/mosdepth",
+      "supports": "Distribution and summary files needed by aggregation."
+    },
+    {
+      "id": "multiqc-samtools",
+      "url": "https://docs.seqera.io/multiqc/modules/samtools",
+      "supports": "Supported alignment-QC aggregation."
+    },
+    {
+      "id": "multiqc-picard",
+      "url": "https://docs.seqera.io/multiqc/modules/picard",
+      "supports": "Supported duplicate and Picard-QC aggregation."
+    },
+    {
+      "id": "bqsr-known-sites",
+      "url": "https://github.com/broadinstitute/gatk/blob/0cde69eed30339f5978cbb1ac6e5cf3662f9e1f8/src/main/java/org/broadinstitute/hellbender/tools/walkers/bqsr/BaseRecalibrator.java",
+      "supports": "Known-sites is a required input; known polymorphisms are excluded from error modeling."
+    },
+    {
+      "id": "apply-bqsr-oq",
+      "url": "https://github.com/broadinstitute/gatk/blob/0cde69eed30339f5978cbb1ac6e5cf3662f9e1f8/src/main/java/org/broadinstitute/hellbender/tools/walkers/bqsr/ApplyBQSR.java",
+      "supports": "Recalibration table must originate from same input BAM; original qualities may be emitted in OQ."
+    },
+    {
+      "id": "gatk-release",
+      "url": "https://github.com/broadinstitute/gatk/releases/tag/4.7.0.0",
+      "supports": "Official Docker image and bundled Picard 3.5.0."
+    },
+    {
+      "id": "deepvariant-oq",
+      "url": "https://github.com/google/deepvariant/blob/45f2627504c59785ea2b88d0256a2ec347bce7b4/deepvariant/make_examples_options.py",
+      "supports": "use_original_quality_scores defaults false; explicitly switches to OQ; candidate source evidence only, not M4 execution or a selected DeepVariant release."
+    }
+  ],
+  "registry_evidence": "m3-container-metadata.json"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "observed_at": "2026-09-07T09:28:32.697251+00:00",
+  "head_sha": "a3bd99e193437016cc0cacf9f96f555dd6103f2f",
+  "tested_merge_sha": "6c3849a26398f3c9ceb6b4d10243d7527a96019e",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34105192843",
+  "required_conclusion": "failure",
+  "job_conclusions": {
+    "python_312": "success",
+    "python_313": "success",
+    "m3_docker": "success",
+    "nextflow": "failure"
+  },
+  "failure": "nf-core template_strings misclassified five literal Docker Go-template expressions in the exact archived proof JSON as unrendered Jinja.",
+  "repair": "Use supported per-file exclusion only for the immutable archived proof. Preserve every proof byte and keep source-code checks enabled.",
+  "pinned_linter_source": "https://github.com/nf-core/tools/blob/4.1.0/nf_core/pipelines/lint/template_strings.py",
+  "pinned_linter_source_sha256": "4e83deb82fc036905edb7407fe3dfc5b1bd44a1b38527d0fe127e8b7b5efcf9b",
+  "local_reproduction": {
+    "before_failures": 5,
+    "after_failures": 0,
+    "exact_ignored_files": [
+      "docs/orchestration/evidence/m3-synthetic-ci-34103737524/integration-proof.json"
+    ],
+    "proof_sha256_unchanged": "0eb93ee71e5d739efdc288ec2f53d8f58cb640c01cc9bd346b7227b03b907e9d"
+  },
+  "scientific_scope": "No workflow, package, biological tool, fixture or accepted invariant changed. Earlier complete required CI34103737524 remains the M3 verified evidence; this documentation-checkpoint run is separately failed until repair CI passes."
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "local_m3_validation_before_commit",
+  "observed_at": "2026-09-07T07:59:35.904880+00:00",
+  "repository_head_before_commit": "22d01b202e15bb098e9d42d0ad4a98606e78c2c2",
+  "clean_checkout": false,
+  "implementation_file_inventory_sha256": "d55b6e0f03cbdffcec889212811c1e6f5fe60751017795fcdae3e8c24aafb114",
+  "python": [
+    {
+      "version": "3.13.15",
+      "tests": 165,
+      "status": "passed",
+      "log_sha256": "75d2a808a1b4f13413f406945cdc784fd76a9c44a489136314fd3642506be5b2"
+    },
+    {
+      "version": "3.12.2",
+      "tests": 165,
+      "status": "passed",
+      "log_sha256": "34d207d5dd37604f163b9dea4b5aef1a2bbc7f02b1e8023168819cb9d9bde970",
+      "limitation": "Local interpreter emits BLAKE2 availability warnings; remote Python3.12 remains separate evidence."
+    }
+  ],
+  "nf_test": {
+    "tests": 6,
+    "status": "passed",
+    "scope": "working-tree scaffold and installed-host preflight"
+  },
+  "nextflow_lint": {
+    "status": "passed",
+    "files": 32,
+    "inherited_warnings": 2
+  },
+  "stub_resume": {
+    "first_completed": 22,
+    "resume_cached": 22,
+    "biological_processing": false,
+    "evidence": "m3-dsl2-local-qualification.json"
+  },
+  "build": {
+    "status": "passed",
+    "source_distribution_sha256": "e50ade1030d8da6984f5a2f69f259d81a0537160cd02d56f831698d5107ec962",
+    "wheel_sha256": "32c85f91f22e5ac0c2f57e38ca347c03a69d28e23993db438323b16ec2d79e90",
+    "safe_sdist_members": 220,
+    "safe_wheel_members": 37,
+    "installed_wheel_outside_checkout": "M3 CLI and publication CLI passed; resource/version checks passed"
+  },
+  "canonical_hg001_executed": false,
+  "docker_available_locally": false,
+  "remote_m3_ci": "not_run"
+}

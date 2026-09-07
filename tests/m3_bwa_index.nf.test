@@ -1,0 +1,24 @@
+nextflow_process {
+    name 'M3 BWA index explicit stub'
+    script '../modules/local/m3_bwa_index/main.nf'
+    process 'M3_BWA_INDEX'
+    tag 'm3'
+    options '-stub-run'
+    test('stub preserves fixture reference but never reports tool execution') {
+        when {
+            process {
+                """
+                input[0] = file("${projectDir}/tests/data/m3-generated/reference.fa")
+                input[1] = file("${projectDir}/tests/data/m3-generated/fixture-expectations.json")
+                """
+            }
+        }
+        then {
+            assert process.success
+            def source = path("${projectDir}/tests/data/m3-generated/reference.fa")
+            assert path(process.out.index[0].find { value -> value.toString().endsWith('/reference.fa') }).md5 == source.md5
+            assert path(process.out.versions[0]).text.trim() == 'STUB_ONLY'
+            assert path(process.out.resources[0]).json.status == 'stub_only'
+        }
+    }
+}

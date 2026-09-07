@@ -1,0 +1,465 @@
+{
+  "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/schemas/m3-preflight.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "preflight"
+    },
+    "canonical": {
+      "const": false
+    },
+    "data": {
+      "additionalProperties": false,
+      "properties": {
+        "bqsr_policy": {
+          "const": "required_with_independent_known_sites_and_emit_original_quals"
+        },
+        "calling_policy": {
+          "const": "no_callers_in_M3"
+        },
+        "canonical_gate_status": {
+          "const": "blocked"
+        },
+        "expected_primary_reads": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "fixture_recipe_version": {
+          "const": "1.0.0"
+        },
+        "known_sites": {
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "filename": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "record_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "artifact_id",
+            "filename",
+            "role",
+            "sha256",
+            "bytes"
+          ],
+          "type": "object"
+        },
+        "known_sites_index": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "artifact_id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "bytes": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "filename": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "record_count": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "role": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "artifact_id",
+                "filename",
+                "role",
+                "sha256",
+                "bytes"
+              ],
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lanes": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "fastq_1": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "fastq_2": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "lane": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "library": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "platform": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "platform_unit": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "read_group_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "sample": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "sequencing_center": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "sample",
+              "library",
+              "lane",
+              "read_group_id",
+              "platform_unit",
+              "fastq_1",
+              "fastq_2",
+              "sequencing_center",
+              "platform"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "library": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "reference": {
+          "additionalProperties": false,
+          "properties": {
+            "contigs": {
+              "additionalProperties": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "minProperties": 1,
+              "type": "object"
+            },
+            "coordinate_convention": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "dictionary": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "artifact_id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "filename": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "record_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "role": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "artifact_id",
+                    "filename",
+                    "role",
+                    "sha256",
+                    "bytes"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fai": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "artifact_id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "filename": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "record_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "role": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "artifact_id",
+                    "filename",
+                    "role",
+                    "sha256",
+                    "bytes"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fasta": {
+              "additionalProperties": false,
+              "properties": {
+                "artifact_id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "bytes": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "filename": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "record_count": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "role": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "artifact_id",
+                "filename",
+                "role",
+                "sha256",
+                "bytes"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "fasta",
+            "contigs",
+            "fai",
+            "dictionary",
+            "coordinate_convention"
+          ],
+          "type": "object"
+        },
+        "repository_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "sample": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_bytes_verified": {
+          "const": true
+        }
+      },
+      "required": [
+        "fixture_recipe_version",
+        "repository_sha",
+        "sample",
+        "library",
+        "lanes",
+        "reference",
+        "known_sites",
+        "known_sites_index",
+        "source_bytes_verified",
+        "canonical_gate_status",
+        "bqsr_policy",
+        "calling_policy",
+        "expected_primary_reads"
+      ],
+      "type": "object"
+    },
+    "input_artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "bytes": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "filename": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "record_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "role": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "filename",
+          "role",
+          "sha256",
+          "bytes"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "missingness": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer": {
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "package": {
+          "const": "giab-wes-nextflow"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "package",
+        "version",
+        "module"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "type": "string"
+    },
+    "runtime_architecture": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "units": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "validation_status": {
+      "const": "validated_synthetic"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "run_id",
+    "producer",
+    "synthetic",
+    "canonical",
+    "validation_status",
+    "runtime_architecture",
+    "input_artifacts",
+    "units",
+    "missingness",
+    "data",
+    "payload_sha256"
+  ],
+  "type": "object"
+}

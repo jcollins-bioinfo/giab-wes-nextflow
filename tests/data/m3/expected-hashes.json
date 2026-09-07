@@ -1,0 +1,52 @@
+{
+  "canonical": false,
+  "expected_counts": {
+    "duplicate_read_count": 4,
+    "mapped_read_count": 44,
+    "pair_count": 24,
+    "primary_read_count": 48,
+    "unmapped_read_count": 4
+  },
+  "files": {
+    "known-sites.vcf": {
+      "bytes": 709,
+      "sha256": "1d186908d513980e73b91dadd1470b780d05a952c7c927c363ee30be58713f9d"
+    },
+    "reads_1.fastq.gz": {
+      "bytes": 3875,
+      "sha256": "2405d236486d101f98d9209f758716d85d6d0b194451f389a04a66f1b2cb2952"
+    },
+    "reads_2.fastq.gz": {
+      "bytes": 3875,
+      "sha256": "e04d855e4398318ec0e98ac88b738f4ba2de14e42de80a09beb1f41d777ed0f2"
+    },
+    "reads_lane2_1.fastq.gz": {
+      "bytes": 3875,
+      "sha256": "8646576c9f3da78648bc60dba0ed542d9419e9fbaed6795d2ad1cba6dd6dde94"
+    },
+    "reads_lane2_2.fastq.gz": {
+      "bytes": 3875,
+      "sha256": "a42148e9e89ecf044f5f65c02af0f87a1d639d7b910896492099207e5b2e8394"
+    },
+    "reference-source.json": {
+      "bytes": 446,
+      "sha256": "af4c51d5df08d9c01f31fe440b1306acda72493808629f3f8eebb24ffe05106c"
+    },
+    "reference.fa": {
+      "bytes": 20352,
+      "sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454"
+    },
+    "samplesheet.csv": {
+      "bytes": 301,
+      "sha256": "fcaa8c410028f2d1eb1b92afc571f0902fb92a012aaf3ae6e4591f7d5fc3878d"
+    }
+  },
+  "fixture_expectations": {
+    "bytes": 26307,
+    "filename": "fixture-expectations.json",
+    "sha256": "d8f87a4eddd93eebd1cee5c9d77bfa1b8093714a8b3c2edc434742a3f3e16c1d"
+  },
+  "recipe_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "synthetic": true
+}

@@ -27,8 +27,8 @@ class PackageTransitionTest(unittest.TestCase):
             wrapper=importlib.util.module_from_spec(spec);spec.loader.exec_module(wrapper)
             self.assertIs(wrapper.main,__import__(module,fromlist=['main']).main)
     def test_version_is_consistent(self):
-        self.assertEqual(__version__,'0.2.0-dev.4')
-        self.assertIn("version = '0.2.0-dev.4'",(ROOT/'nextflow.config').read_text())
+        self.assertEqual(__version__,'0.3.0-dev.1')
+        self.assertIn("version = '0.3.0-dev.1'",(ROOT/'nextflow.config').read_text())
         self.assertEqual(json.loads((ROOT/'config/m2-resources.json').read_text())['project_version'],__version__)
     def test_launcher_orders_fixture_before_samplesheet_validation(self):
         text=(ROOT/'scripts/run_m2_readiness.sh').read_text()

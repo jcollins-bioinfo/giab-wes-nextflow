@@ -8,7 +8,7 @@ from giab_wes_nextflow.resources import config_path, schema_path
 
 class HotfixTest(unittest.TestCase):
  def test_package_resources_and_canonical_manifest(self):
-  spec=load_manifest();self.assertEqual(__version__,'0.2.0-dev.4');self.assertEqual({x['id'] for x in spec['resources']},CANONICAL_IDS);self.assertEqual(len(spec['resources']),10);self.assertTrue(schema_path('m2-source-manifest.schema.json').is_file())
+  spec=load_manifest();self.assertEqual(__version__,'0.3.0-dev.1');self.assertEqual({x['id'] for x in spec['resources']},CANONICAL_IDS);self.assertEqual(len(spec['resources']),10);self.assertTrue(schema_path('m2-source-manifest.schema.json').is_file())
  def test_preflight_has_no_workspace_mutation(self):
   with tempfile.TemporaryDirectory() as td:
    root=Path(td)/'m2-stage';before=list(Path(td).iterdir());result=preflight(workspace=root);self.assertEqual(before,list(Path(td).iterdir()));self.assertEqual(result['resource_count'],10)

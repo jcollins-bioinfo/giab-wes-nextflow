@@ -1,0 +1,382 @@
+{
+  "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/schemas/m3-alignment.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "alignment"
+    },
+    "canonical": {
+      "const": false
+    },
+    "data": {
+      "additionalProperties": false,
+      "properties": {
+        "bai": {
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "filename": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "record_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "artifact_id",
+            "filename",
+            "role",
+            "sha256",
+            "bytes"
+          ],
+          "type": "object"
+        },
+        "bai_acceptance": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "bam": {
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "filename": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "record_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "artifact_id",
+            "filename",
+            "role",
+            "sha256",
+            "bytes"
+          ],
+          "type": "object"
+        },
+        "bqsr_applied": {
+          "const": true
+        },
+        "contigs": {
+          "additionalProperties": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minProperties": 1,
+          "type": "object"
+        },
+        "coordinate_sorted": {
+          "const": true
+        },
+        "duplicate_reads": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "duplicates_retained": {
+          "const": true
+        },
+        "effective_quality_policy": {
+          "additionalProperties": false,
+          "properties": {
+            "deepvariant": {
+              "const": "original OQ"
+            },
+            "gatk": {
+              "const": "recalibrated QUAL"
+            },
+            "quality_inputs_identical": {
+              "const": false
+            }
+          },
+          "required": [
+            "gatk",
+            "deepvariant",
+            "quality_inputs_identical"
+          ],
+          "type": "object"
+        },
+        "mapped_reads": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "oq_complete": {
+          "const": true
+        },
+        "pre_bqsr_sam_export": {
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "filename": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "record_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "artifact_id",
+            "filename",
+            "role",
+            "sha256",
+            "bytes"
+          ],
+          "type": "object"
+        },
+        "primary_reads": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "read_group_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "read_identity_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "reads_with_recalibrated_quality_changes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "reference_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "sam_export": {
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "filename": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "record_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "artifact_id",
+            "filename",
+            "role",
+            "sha256",
+            "bytes"
+          ],
+          "type": "object"
+        },
+        "sample": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "unmapped_reads": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "primary_reads",
+        "mapped_reads",
+        "unmapped_reads",
+        "duplicate_reads",
+        "read_group_count",
+        "coordinate_sorted",
+        "oq_complete",
+        "reads_with_recalibrated_quality_changes",
+        "read_identity_digest",
+        "contigs",
+        "sample",
+        "reference_sha256",
+        "bam",
+        "bai",
+        "sam_export",
+        "pre_bqsr_sam_export",
+        "bai_acceptance",
+        "duplicates_retained",
+        "bqsr_applied",
+        "effective_quality_policy"
+      ],
+      "type": "object"
+    },
+    "input_artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "bytes": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "filename": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "record_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "role": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "filename",
+          "role",
+          "sha256",
+          "bytes"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "missingness": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer": {
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "package": {
+          "const": "giab-wes-nextflow"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "package",
+        "version",
+        "module"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "type": "string"
+    },
+    "runtime_architecture": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "units": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "validation_status": {
+      "const": "validated_synthetic"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "run_id",
+    "producer",
+    "synthetic",
+    "canonical",
+    "validation_status",
+    "runtime_architecture",
+    "input_artifacts",
+    "units",
+    "missingness",
+    "data",
+    "payload_sha256"
+  ],
+  "type": "object"
+}

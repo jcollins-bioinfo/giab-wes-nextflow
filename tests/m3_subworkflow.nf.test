@@ -1,0 +1,44 @@
+nextflow_workflow {
+    name 'M3 shared preprocessing topology'
+    script '../subworkflows/local/m3_shared_preprocessing/main.nf'
+    workflow 'M3_SHARED_PREPROCESSING'
+    tag 'm3'
+    options '-stub-run'
+    profile 'm3_test'
+    test('two lanes converge to one explicitly unvalidated stub BAM contract') {
+        when {
+            workflow {
+                """
+                def source = "${projectDir}/tests/data/m3-generated"
+                def rows = [['L001','reads_1.fastq.gz','reads_2.fastq.gz'],['L002','reads_lane2_1.fastq.gz','reads_lane2_2.fastq.gz']].collect { lane ->
+                    [sample:'SYNTHETIC01',library:'SYN_LIB',lane:lane[0],read_group_id:'SYN_' + lane[0],platform_unit:'SYN_PU_' + lane[0],platform:'ILLUMINA',fastq_1:source + '/' + lane[1],fastq_2:source + '/' + lane[2]]
+                }
+                input[0] = channel.of(rows)
+                input[1] = file(source + '/samplesheet.csv')
+                input[2] = file(source + '/reference.fa')
+                input[3] = file(source + '/known-sites.vcf')
+                input[4] = file(source + '/fixture-expectations.json')
+                input[5] = [run_id:'nf-test-stub',repository_sha:'0000000000000000000000000000000000000000']
+                input[6] = file("${projectDir}/config/m3-tools.json")
+                input[7] = 500
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 22
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M3_ALIGN ') } == 2
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M3_SORT ') } == 2
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M3_APPLY_BQSR ') } == 1
+            assert workflow.out.bam.size() == 1
+            assert workflow.out.bam[0][0].sample == 'SYNTHETIC01'
+            assert path(workflow.out.bam[0][1]).toString().endsWith('/SYNTHETIC01.analysis-ready.bam')
+            assert path(workflow.out.bam[0][2]).toString().endsWith('/SYNTHETIC01.analysis-ready.bam.bai')
+            def manifest = path(workflow.out.contracts[0] + "/m3-manifest.json").json
+            assert manifest.status == 'stub_only'
+            assert manifest.validation_status == 'not_validated'
+            assert manifest.biological_processing == false
+            assert manifest.canonical == false
+        }
+    }
+}

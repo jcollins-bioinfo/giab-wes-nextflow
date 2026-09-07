@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/nextflow_schema.json",
   "title": "GIAB WES parameters",
-  "description": "Strict parameters for the nonclinical M1 foundation workflow; no biological processing is performed.",
+  "description": "Strict nonclinical foundation and synthetic M3 shared-preprocessing parameters. Canonical execution remains gated.",
   "type": "object",
   "$defs": {
     "input_output_options": {
@@ -23,6 +23,16 @@
           "type": "string",
           "description": "Directory for copied stable workflow outputs.",
           "default": "results"
+        },
+        "workflow_mode": {
+          "type": "string",
+          "enum": [
+            "foundation",
+            "m3_synthetic",
+            "m3_canonical"
+          ],
+          "default": "foundation",
+          "description": "Select explicit foundation or synthetic M3 workflow; canonical mode is fail-closed until approved inputs and gates exist."
         }
       }
     },
@@ -37,8 +47,16 @@
             "string",
             "null"
           ],
-          "description": "Future exact reference FASTA path; unset in M1.",
+          "description": "Exact reference FASTA; M3 synthetic mode binds invented reference bytes to its fixture manifest.",
           "default": null
+        },
+        "known_sites": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Independent BQSR known-sites VCF; synthetic qualification requires invented fixture bytes. Benchmark truth is forbidden."
         }
       }
     },
@@ -72,8 +90,28 @@
       "properties": {
         "retain_oq": {
           "type": "boolean",
-          "description": "Future preprocessing contract requiring retained original qualities.",
+          "description": "Required original-quality retention through BQSR; false is rejected in M3.",
           "default": true
+        },
+        "m3_fixture_manifest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Deterministic invented fixture manifest with exact FASTQ/reference/known-sites identities and expected invariants."
+        },
+        "m3_run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "default": "m3-synthetic",
+          "description": "Deliberate synthetic M3 run identity."
+        },
+        "m3_qc_window": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 500,
+          "description": "Fixed target-independent coverage windows in reference bases; never an assay evaluation domain."
         }
       }
     },
@@ -150,6 +188,15 @@
           "type": "boolean",
           "description": "Enable provenance contract emission.",
           "default": true
+        },
+        "m3_repository_sha": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$",
+          "default": null,
+          "description": "Exact execution checkout SHA, required when Nextflow cannot infer commitId; CI supplies actual git HEAD."
         }
       }
     },

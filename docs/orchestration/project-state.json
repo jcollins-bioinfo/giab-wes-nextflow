@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0.0",
   "record_type": "project_state",
-  "milestone": "M2.1.1",
-  "phase": "local synthetic repair validated; awaiting draft PR CI",
-  "state": "implemented",
-  "version": "0.2.0-dev.4",
+  "milestone": "M3",
+  "phase": "synthetic shared preprocessing verified; M4 continuation gate satisfied",
+  "state": "verified",
+  "version": "0.3.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/m2.1.1-provenance-recovery",
-      "evidence_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+      "branch": "codex/m3-shared-preprocessing",
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -23,7 +23,7 @@
     {
       "id": "current-source-manifest",
       "status": "declared",
-      "sha256": "673f96c3e1a5b29405a12d8ce835814844d0592bb404c496ee8fa59aa73e257c",
+      "sha256": "49427c09ad060bddf4e8c76ca545c12d4da571cb55bd50eaccf28b110cc92ed4",
       "reason": "Manifest bytes in this working tree; real objects need fresh hydration validation."
     },
     {
@@ -91,44 +91,63 @@
       "status": "declared",
       "sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
       "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "canonical-bqsr-known-sites",
+      "status": "missing",
+      "sha256": null,
+      "reason": "Independent real known-sites release/hash and reference compatibility must be established; GIAB truth is forbidden as training/recalibration input."
+    },
+    {
+      "id": "invented-m3-fixture-expectations",
+      "status": "verified",
+      "sha256": "d8f87a4eddd93eebd1cee5c9d77bfa1b8093714a8b3c2edc434742a3f3e16c1d",
+      "reason": "Deterministic invented recipe; unit tests and real installed-host preflight passed; no external sequence."
+    },
+    {
+      "id": "m3-tool-lock",
+      "status": "verified",
+      "sha256": "429e5a393aff9776f1fe6ec8015f202598d45d3e92b60b3354b8ec1eceaf3b5f",
+      "reason": "Exact schema2 lock passed actual synthetic Docker collection, independent BAM and complete resume acceptance in CI34103737524; BWA distribution2.3 reports expected2.2.1."
     }
   ],
   "local_tests": [
     {
-      "name": "Python 3.13 complete synthetic suite",
+      "name": "Python3.12 and3.13 synthetic suites",
       "status": "passed",
-      "evidence_sha": null,
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
       "command": "python -m unittest discover -s tests/unit -v",
-      "detail": "104 tests; uncommitted code/test inventory 2a03464fcd3bfab8854cdaa37064db43b630b1aa2f0d68764c8d0ba7635161f7; see local-recovery-validation.json."
+      "detail": "179 tests passed per interpreter for the source- and runtime-supported version repair; current source and log hashes are bound in m3-ci-attempt-4.json."
     },
     {
-      "name": "Python 3.12 complete synthetic suite",
+      "name": "M3 framework and stub resume",
       "status": "passed",
-      "evidence_sha": null,
-      "command": "python -m unittest discover -s tests/unit -v",
-      "detail": "104 tests; uncommitted code/test inventory 2a03464fcd3bfab8854cdaa37064db43b630b1aa2f0d68764c8d0ba7635161f7; see local-recovery-validation.json."
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
+      "command": "nf-test test --ci; nextflow lint -o concise .; synthetic stub plus named resume",
+      "detail": "7 nf-tests passed, including real collector command construction/rejection; earlier 22-task stub resume evidence retained. Actual complete Docker acceptance is separately established by CI34103737524."
     },
     {
-      "name": "Build, wheel, schemas and samplesheets",
+      "name": "sdist wheel and distribution safety",
       "status": "passed",
-      "evidence_sha": null,
-      "command": "python -m build --no-isolation; installed wheel CLI/preflight; contract/schema/samplesheet validators",
-      "detail": "Passed; exact subject digest and limitations in local-recovery-validation.json."
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
+      "command": "python -m build --no-isolation; python scripts/check_distributions.py <current artifacts>",
+      "detail": "Current source231/wheel37 allowed members; isolated installed wheel outside checkout verifies schema2 and the six-tool inventory. Build/log identities retained in m3-ci-attempt-4.json."
     }
   ],
   "ci": [
     {
-      "name": "baseline CI required",
+      "name": "required",
       "required": true,
       "status": "success",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958",
+      "evidence_sha": "c3426d3d4578ec6e66a6494c09fde983a7e4f3cd",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095258",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095324",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645095440",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34091284958/job/101645350150"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885583",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885795",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885830",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101683885912",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524/job/101684702033"
       ]
     }
   ],
@@ -143,16 +162,48 @@
       "evidence_artifacts": [
         "docs/orchestration/evidence/local-baseline.json"
       ]
+    },
+    {
+      "id": "local-m3-framework-stub",
+      "status": "executed",
+      "os": "Darwin",
+      "architecture": "arm64",
+      "canonical": false,
+      "run_id": "m3-local-stub-qualification",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m3-dsl2-local-qualification.json",
+        "docs/orchestration/evidence/m3-local-validation.json"
+      ]
+    },
+    {
+      "id": "github-ci-m3-docker",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "34103737524",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m3-verified.json",
+        "docs/orchestration/evidence/m3-synthetic-ci-34103737524/integration-proof.json"
+      ]
     }
   ],
   "publication": {
     "drive": "partial",
-    "public_evidence": "not_published",
+    "public_evidence": "partial",
     "deployment": "not_deployed",
     "release": "not_released",
     "authorization_reference": null,
     "evidence_artifacts": [
-      "docs/orchestration/evidence/source-cache-metadata.json"
+      "docs/orchestration/evidence/source-cache-metadata.json",
+      "docs/orchestration/evidence/m2.1.1-verified.json",
+      "docs/orchestration/evidence/m3-local-validation.json",
+      "docs/orchestration/evidence/m3-dsl2-local-qualification.json",
+      "docs/orchestration/evidence/m3-ci-attempt-1.json",
+      "docs/orchestration/evidence/m3-ci-attempt-2.json",
+      "docs/orchestration/evidence/m3-ci-attempt-3.json",
+      "docs/orchestration/evidence/m3-ci-attempt-4.json",
+      "docs/orchestration/evidence/m3-verified.json"
     ]
   },
   "external_blockers": [
@@ -163,6 +214,6 @@
       "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
     }
   ],
-  "next_safe_action": "Create and observe the M2.1.1 draft PR required CI, then begin stacked M3 only after the no-M2-defect continuation gate passes.",
-  "observed_at": "2026-09-07T07:12:39.122846+00:00"
+  "next_safe_action": "Begin stacked M4 independently selectable caller implementation and actual Linux/x86_64 qualification; preserve canonical capture and known-sites gates.",
+  "observed_at": "2026-09-07T09:17:00.133528+00:00"
 }

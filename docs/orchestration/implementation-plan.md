@@ -69,3 +69,47 @@ paid compute, DNS change or clinical/generalization claim is authorized by code
 readiness. The current local machine is macOS ARM64; no Docker or usable Java
 runtime was found during baseline inspection. Git SSH read access works; GitHub
 CLI credentials failed validation, and the connected GitHub API remains available.
+
+
+## M3 implementation plan, begun after recovery verification
+
+Recovery required CI run 34094504379 succeeded at
+`22d01b202e15bb098e9d42d0ad4a98606e78c2c2`. Draft PR #19 remains unmerged.
+Branch `codex/m3-shared-preprocessing` is explicitly stacked on
+`codex/m2.1.1-provenance-recovery`; its PR base must be that branch while PR #19
+is unmerged. The recovery evidence record is `evidence/m2.1.1-verified.json`.
+
+1. Preserve explicit foundation mode; add synthetic shared-preprocessing mode
+   and an actionable fail-closed canonical mode. Bind invented fixtures by hash.
+2. Implement typed package input/QC/alignment/coverage/resource/provenance models,
+   schemas and negative tests with deterministic paired reads/reference/known sites.
+3. Run raw FastQC, BWA-MEM2, sample-level merge, retained duplicate marking,
+   BaseRecalibrator/ApplyBQSR with original qualities, BAM acceptance/summaries,
+   target-independent mosdepth and explicit MultiQC inputs in DSL2 modules.
+4. Pin verified tool-container manifest identities and capture executable versions,
+   actual commands, task resources, trace/report/timeline/DAG and shared BAM lineage.
+5. Test malformed reads/metadata/reference, module/subworkflow stubs, actual tiny
+   Docker integration, sort/index/RG/duplicate/OQ invariants and resume behavior.
+6. Maintain current README/methods/runbook and gate-aware checkpoints. Execution
+   uses the clean-clone Docker CI driver; a thin M3 Colab launcher is required if
+   Colab becomes an execution target. Run local and remote tests before any M4
+   continuation decision.
+
+Canonical known-sites resources are absent and require separate pinned identity
+and reference-compatibility verification. The existing ADR 0003 quality contract
+is preserved. Synthetic BQSR tests qualify plumbing, not calibration adequacy or
+HG001 performance. No assay targets, truth VCF/BED or benchmark inputs enter M3
+processing tasks. Canonical capture-dependent acceptance remains Gate B blocked.
+
+Observed CI attempts are retained in `evidence/m3-ci-attempt-1.json` through
+`evidence/m3-ci-attempt-4.json`. The fourth attempt passed Python and Nextflow
+framework jobs and all 21 upstream processing/QC tasks, then the real collector
+rejected a tool-version mismatch. The exact BWA-MEM2 2.3 distribution reports
+executable version 2.2.1, matching its inspected release-source fallback. The
+contract must preserve both identities and require the exact expected report
+against the unchanged image digest. The subsequent required run 34103737524 passed complete collection, independent
+BAM/index/OQ/ownership checks and all 22-task resume assertions. Head
+`c3426d3d4578ec6e66a6494c09fde983a7e4f3cd` and tested merge
+`c929718a76b51e48bea6c4b9ebcb451a9d94574c` have identical Git trees.
+The exact artifact checksum and selected unmodified reports are recorded in
+`evidence/m3-verified.json`; M3 is verified for synthetic execution. M4 may proceed.

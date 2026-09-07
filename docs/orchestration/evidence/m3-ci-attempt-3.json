@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "observed_m3_ci_attempt",
+  "head_sha": "af164c90f23a0071b47af34bee7b1a8cdbcf17be",
+  "tested_merge_sha": "1002dd90216b5d94bde413816d0f462d31d28d8f",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073",
+  "jobs": [
+    {
+      "name": "python (3.12)",
+      "id": 101674140480,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073/job/101674140480",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "nextflow",
+      "id": 101674140703,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073/job/101674140703",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "m3-docker",
+      "id": 101674140757,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073/job/101674140757",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "python (3.13)",
+      "id": 101674140809,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073/job/101674140809",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "required",
+      "id": 101675013077,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073/job/101675013077",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "issues": [
+    {
+      "component": "M3_COLLECT",
+      "cause": "Nextflow script construction raised java.nio.file.ProviderMismatchException before the collector task was scheduled.",
+      "correction": "Resolve the path-provider boundary and qualify actual collector script construction before Docker rerun."
+    }
+  ],
+  "docker_evidence": {
+    "artifact_id": 10010430391,
+    "artifact_sha256": "34b9e1bbd579a288c6e93028063a7692024204868419f8344513aae60c0234e6",
+    "biological_processing_validated": false,
+    "committed_source_at_line": "def tools = new groovy.json.JsonSlurper().parseText(tool_lock.text).tools",
+    "failed_proof_sha256": "c1046af1794f8f1216e0c0f92f61e4f711570486aca4df3636bbf4b83a4bdb84",
+    "failure_phase": "Nextflow process script rendering before task directory assignment and Python collector execution",
+    "failure_process": "M3_COLLECT",
+    "hypothesis_pending_reproduction": "tool_lock.text accesses a staged TaskPath rather than a supported source Path during Groovy script rendering",
+    "job_id": 101674140757,
+    "job_status": "failed",
+    "observed_error": "java.nio.file.ProviderMismatchException at process script rendering, module line33",
+    "pull_request_head_sha": "af164c90f23a0071b47af34bee7b1a8cdbcf17be",
+    "reported_source_line": "modules/local/m3_collect/main.nf:33",
+    "stack_evidence": "Retained Nextflow log line252 identifies ProviderMismatchException at committed source line33; no lower-level provider stack was emitted.",
+    "tested_merge_sha": "1002dd90216b5d94bde413816d0f462d31d28d8f",
+    "trace_counts": {
+      "COMPLETED": 21
+    },
+    "workflow_run_id": 34100670073
+  },
+  "scope": "All 21 upstream processing/QC tasks including MultiQC completed. Collector, independent BAM/ownership and resume acceptance remain unverified; required CI failed.",
+  "repair_local_validation": {
+    "observed_at": "2026-09-07T08:39:07.662104+00:00",
+    "failure_source": {
+      "run_id": 34100670073,
+      "commit": "af164c90f23a0071b47af34bee7b1a8cdbcf17be",
+      "symptom": "ProviderMismatchException while script construction reads tool_lock.text at M3_COLLECT line 33; 21 upstream tasks completed"
+    },
+    "changed_files": {
+      "modules/local/m3_collect/main.nf": "b9ed054b506ac0ed85dad9d8910842277f8da93069175ce6f802f2462b2f5d7d",
+      "subworkflows/local/m3_shared_preprocessing/main.nf": "6ab42b92503192ba9252e75bff1d3a4cc61d0f4bf434bf1438e8a238196632f6",
+      "tests/m3_collect.nf.test": "01dce321aeee1215ac1b4e3dc20b73daa0ef041844abbd22800ae15c783e31be",
+      "modules/local/m3_bwa_index/main.nf": "493029ad5662d8c68ef2491a88d7f22c93d00147aa100354f29545acdbff7752"
+    },
+    "repair": "Parse regular lock Path before staging in workflow; pass plain image map as val; preserve lock path input and hash it as immutable_tool_lock artifact.",
+    "local_before": {
+      "log": "m3-collector-render-before.txt",
+      "reproduced_provider_mismatch": true,
+      "task_submitted": false
+    },
+    "local_after": {
+      "log": "m3-collector-render-after.txt",
+      "real_nonstub_collector_command_executed": true,
+      "invalid_preflight_rejected": "ValueError: unknown M3 evidence artifact type",
+      "all_six_container_arguments_present": true,
+      "immutable_lock_artifact_argument_present": true,
+      "stub_tasks_completed": 22
+    },
+    "qualification": {
+      "nextflow": "26.04.6",
+      "nf_test": "0.9.5",
+      "lint": {
+        "exit_code": 0,
+        "files_without_errors": 31,
+        "inherited_warnings": 2,
+        "log": "m3-collector-lint.txt"
+      },
+      "nf_test_all_log": "m3-collector-nftest-all.txt",
+      "all_tests_passed": true,
+      "docker_executed_locally": false,
+      "python_install": "Task-local installed editable package under isolated -I command; does not replace clean-clone wheel CI evidence"
+    },
+    "bwa_version_diagnostic": {
+      "change": "tee preserves reported output artifact; process-specific debug forwards stdout to workflow output; pipefail, image and expected version unchanged",
+      "actual_binary_observation": "pending real Docker CI",
+      "lint_exit_code": 0,
+      "lint_log": "m3-bwa-version-log-lint.txt",
+      "full_nf_test_suite_order": "Full seven-test suite passed before subsequent tee/debug-only BWA diagnostic change.",
+      "post_change_stub_test_passed": true,
+      "stub_log": "m3-bwa-version-log-stub.txt"
+    },
+    "log_sha256": {
+      "m3-collector-render-before.txt": "0e820eabf3d7a160bebd050d9ded467874c5577c2c18a193e1f48600462b0f3b",
+      "m3-collector-render-after.txt": "de76c98b4d0daefd6f22a02c11c36e50c391d49165c497446a3faa58caab0172",
+      "m3-collector-nftest-all.txt": "6fe60fe73b9d5314aed64da0957c800c1b3b280a6bfbd07a72ccc4dceab43c75",
+      "m3-collector-lint.txt": "3ca69f8d63b4e7c2b55c7bf51e23752a7c777004a830aeff767807662e3fa54e"
+    }
+  }
+}

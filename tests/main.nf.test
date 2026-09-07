@@ -12,11 +12,11 @@ nextflow_pipeline {
         then {
             assert workflow.success
             assert workflow.trace.succeeded().any { it.name.contains('EMIT_FOUNDATION_CONTRACT') }
-            def contractPath = path("$launchDir/results/foundation/foundation-run-contract.json")
+            def contractPath = path("$outputDir/foundation/foundation-run-contract.json")
             assert contractPath.exists()
             def contract = new groovy.json.JsonSlurper().parse(contractPath)
             assert contract.status == 'foundation_only'
-            assert contract.pipeline_version == '0.2.0-dev.4'
+            assert contract.pipeline_version == '0.3.0-dev.1'
             assert contract.fixture == 'synthetic_nonhuman'
             assert contract.biological_processing == false
             assert contract.benchmark_result == false

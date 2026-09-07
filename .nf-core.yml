@@ -4,15 +4,21 @@ template:
   name: giab-wes-nextflow
   description: External unbranded foundation; not an official nf-core pipeline.
 lint:
+  # Preserve exact archived Docker Go-template commands in this checksummed
+  # execution proof. Source-code template checks remain enabled.
+  template_strings:
+    - docs/orchestration/evidence/m3-synthetic-ci-34103737524/integration-proof.json
   # This external, unbranded repository intentionally does not carry the complete
   # official nf-core template, branding, deployment, AWS, email, or website files.
   files_exist: false
   files_unchanged: false
   # Stable workflow-output publication replaces template process publishDir behavior.
   nextflow_config: false
-  # M1 has no biological MultiQC output; this file is intentionally only a shell.
+  # Project-specific M3 MultiQC inputs are explicitly collected and tested; the
+  # external template config is not the authoritative scientific contract.
   multiqc_config: false
-  # M1 tests a foundation JSON contract, not the template versions.yml convention.
+  # Foundation and M3 use typed JSON/version-text contracts; nf-test assertions
+  # are project-owned rather than the official template versions.yml convention.
   nf_test_content: false
   # The public repository slug is intentionally unbranded and contains hyphens.
   pipeline_name_conventions: false
