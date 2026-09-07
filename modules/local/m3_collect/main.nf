@@ -21,6 +21,7 @@ process M3_COLLECT {
     path artifacts
     val artifact_names
     path tool_lock
+    val tool_images
     output:
     path 'contracts', emit: contracts
     script:
@@ -30,8 +31,7 @@ process M3_COLLECT {
     def artifact_args = artifacts.withIndex().collect { value, index -> "--artifact '${artifact_names[index]}=${value}'" }.join(' ')
     def command_args = commands.collect { value -> "--artifact 'command_${value.name.replaceAll(/[^A-Za-z0-9_-]/, '_')}=${value}'" }.join(' ')
     def resource_args = resource_records.collect { value -> "--resource-record '${value}'" }.join(' ')
-    def tools = new groovy.json.JsonSlurper().parseText(tool_lock.text).tools
-    def container_args = tools.collect { name, declaration -> "--container '${name}=${declaration.image}'" }.join(' ')
+    def container_args = tool_images.collect { name, image -> "--container '${name}=${image}'" }.join(' ')
     """
     set -euo pipefail
     cp .command.sh m3_collect.command.sh
@@ -44,6 +44,7 @@ process M3_COLLECT {
         --stage "analysis_ready=${bam}" ${stage_args} ${lane_args} ${version_args} \
         ${artifact_args} ${command_args} ${resource_args} ${container_args} \
         --artifact "command_M3_COLLECT=m3_collect.command.sh" --artifact "sam_header=${header}" \
+        --artifact "immutable_tool_lock=${tool_lock}" \
         --resource-record m3_collect.resources.json
     """
     stub:

@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "project_state",
   "milestone": "M3",
-  "phase": "repair observed MultiQC data-directory output contract; required CI failed",
+  "phase": "repair observed collector script construction path-provider exception; required CI failed",
   "state": "implemented",
   "version": "0.3.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/m3-shared-preprocessing",
-      "evidence_sha": "e4a6e4d3c73d40923e632e3293b2dc9800a50326",
+      "evidence_sha": "af164c90f23a0071b47af34bee7b1a8cdbcf17be",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -140,10 +140,10 @@
       "required": true,
       "status": "failure",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "e4a6e4d3c73d40923e632e3293b2dc9800a50326",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146",
+      "evidence_sha": "af164c90f23a0071b47af34bee7b1a8cdbcf17be",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146/job/101671578291"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34100670073/job/101675013077"
       ]
     }
   ],
@@ -184,7 +184,8 @@
       "docs/orchestration/evidence/m3-local-validation.json",
       "docs/orchestration/evidence/m3-dsl2-local-qualification.json",
       "docs/orchestration/evidence/m3-ci-attempt-1.json",
-      "docs/orchestration/evidence/m3-ci-attempt-2.json"
+      "docs/orchestration/evidence/m3-ci-attempt-2.json",
+      "docs/orchestration/evidence/m3-ci-attempt-3.json"
     ]
   },
   "external_blockers": [
@@ -195,6 +196,6 @@
       "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
     }
   ],
-  "next_safe_action": "Push the locally checked MultiQC output contract correction to draft PR20; require complete green synthetic CI before M3 verification and M4 implementation.",
-  "observed_at": "2026-09-07T08:25:37.857792+00:00"
+  "next_safe_action": "Push the collector script-construction correction with focused regression evidence to draft PR20; require complete green synthetic CI before M3 verification and M4 implementation.",
+  "observed_at": "2026-09-07T08:34:00.025933+00:00"
 }

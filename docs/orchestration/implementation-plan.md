@@ -101,9 +101,10 @@ is preserved. Synthetic BQSR tests qualify plumbing, not calibration adequacy or
 HG001 performance. No assay targets, truth VCF/BED or benchmark inputs enter M3
 processing tasks. Canonical capture-dependent acceptance remains Gate B blocked.
 
-Observed CI attempts are retained in `evidence/m3-ci-attempt-1.json` and
-`evidence/m3-ci-attempt-2.json`. The second attempt passed Python and Nextflow
-framework jobs and the MultiQC executable, then failed its required directory
-output contract. The correction explicitly configures the stable data-directory
-name; collection, independent BAM/ownership checks and resume must still pass in
-actual Docker execution before M3 is verified.
+Observed CI attempts are retained in `evidence/m3-ci-attempt-1.json` through
+`evidence/m3-ci-attempt-3.json`. The third attempt passed Python and Nextflow
+framework jobs and all 21 upstream processing/QC tasks, then failed collector
+script construction when reading a staged Nextflow task path. The correction
+must preserve the locked input and exercise real collector script construction;
+collection, independent BAM/ownership checks and resume must still pass in actual
+Docker execution before M3 is verified.

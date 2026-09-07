@@ -24,7 +24,7 @@ claims:
     classification: implemented
     statement: A deterministic invented-input DSL2 workflow and Python evidence contracts implement shared preprocessing with retained duplicates and BQSR/OQ provenance.
     evidence: docs/orchestration/checkpoints/M3.json
-    limitation: Required CI has not passed; the latest attempt completed upstream processing but failed MultiQC output validation before collection and independent BAM/resume acceptance. Local stub and parser tests do not establish completed biological-tool qualification or canonical HG001 processing.
+    limitation: Required CI has not passed; the latest attempt completed all 21 upstream processing/QC tasks but failed collector script construction before collection and independent BAM/resume acceptance. Local stub and parser tests do not establish completed biological-tool qualification or canonical HG001 processing.
   - id: capture-design
     classification: unresolved
     statement: Exact capture-design byte identity remains unresolved.

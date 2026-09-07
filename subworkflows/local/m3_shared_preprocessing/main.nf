@@ -30,6 +30,10 @@ workflow M3_SHARED_PREPROCESSING {
     tool_lock
     qc_window
     main:
+    // Parse the source Path before staging; process TaskPath inputs cannot be read while rendering commands.
+    def tool_images = new groovy.json.JsonSlurper().parseText(tool_lock.text).tools.collectEntries { name, declaration ->
+        [(name.toString()): declaration.image.toString()]
+    }
     INPUT_VALIDATION(rows)
     normalized = INPUT_VALIDATION.out.first()
     lanes = normalized.flatMap { entries ->
@@ -104,7 +108,7 @@ workflow M3_SHARED_PREPROCESSING {
     M3_COLLECT(final_summary, before_bqsr.map { item -> item[3] }, before_bqsr.map { item -> item[4] }, coverage.map { item -> item[1] },
         gate, expectations, stage_inventory.map { item -> item[1] }, stage_inventory.map { item -> item[0] }, lane_reports,
         tool_versions.map { item -> item[1] }, tool_versions.map { item -> item[0] }, resource_records, commands,
-        extra_inventory.map { item -> item[1] }, extra_inventory.map { item -> item[0] }, tool_lock)
+        extra_inventory.map { item -> item[1] }, extra_inventory.map { item -> item[0] }, tool_lock, tool_images)
     // Nothing is published as an accepted output before the semantic collector succeeds.
     accepted_artifacts = M3_COLLECT.out.contracts.combine(final_summary).combine(before_bqsr.map { item -> item[3] })
         .combine(multiqc_html).combine(multiqc_data).combine(qc_sources).map { values ->

@@ -2,6 +2,7 @@
 process M3_BWA_INDEX {
     tag "stage"
     cache 'deep'
+    debug true
     label 'm3_small'
     container 'quay.io/biocontainers/bwa-mem2@sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f'
 
@@ -21,7 +22,7 @@ process M3_BWA_INDEX {
     mkdir bwa_index
     cp -L "${reference}" bwa_index/reference.fa
     bwa-mem2 index bwa_index/reference.fa
-    bwa-mem2 version > bwa_index.versions.txt 2>&1
+    bwa-mem2 version 2>&1 | tee bwa_index.versions.txt
 
     printf '{"task_id":null,"logical_artifact_id":"bwa_index","process":"M3_BWA_INDEX","requested_cpus":%s,"requested_memory_bytes":%s,"requested_time_seconds":%s,"container":"quay.io/biocontainers/bwa-mem2@sha256:374f4b910b4b04d32772fccd4cab1cdcd0758356856a960cfa8b1edebfd38c9f","architecture":"%s"}\n' ${task.cpus} ${task.memory.toBytes()} ${task.time.toSeconds()} "\$(uname -m)" > bwa_index.resources.json
     cp .command.sh bwa_index.command.sh
