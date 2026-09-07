@@ -16,8 +16,9 @@ from typing import Any
 
 from .m3 import (canonical_hash, checked_file, envelope, identity, load_json,
                  require_fixture, validate_envelope, write_envelope)
-from .m3_fixture import fixture_payloads, reverse_complement, sha256_bytes
+from .m3_fixture import reverse_complement, sha256_bytes
 from .resources import config_path
+from .synthetic_fixtures import fixture_contract, fixture_contract_from_manifest_sha256
 
 KINDS = ("alignment", "qc", "coverage", "resources", "provenance")
 
@@ -295,13 +296,16 @@ def collect(preflight_path: str | Path, sam: str | Path, pre_bqsr_sam: str | Pat
             duplicate_metrics: str | Path, coverage_summary: str | Path, expectations: str | Path,
             output_dir: str | Path, stages: list[str], lane_validations: list[str],
             tools: list[str], tool_versions: list[str], containers: list[str],
-            artifacts: list[str], resource_records: list[str]) -> dict[str, Any]:
+            artifacts: list[str], resource_records: list[str], *, fixture_id: str = "m3-preprocessing") -> dict[str, Any]:
     """Collect a complete synthetic shared-BAM result from actual tool evidence."""
     preflight = load_json(preflight_path)
     validate_envelope(preflight)
     if preflight["artifact_type"] != "preflight":
         raise ValueError("collector requires M3 source preflight evidence")
-    expected = require_fixture(expectations)
+    expected = require_fixture(expectations, fixture_id=fixture_id)
+    fixture_inputs = [item for item in preflight["input_artifacts"] if item["artifact_id"] == "fixture_expectations"]
+    if len(fixture_inputs) != 1 or fixture_inputs[0]["sha256"] != fixture_contract(fixture_id).manifest_sha256:
+        raise ValueError("preflight fixture manifest differs from selected recipe")
     run_id = preflight["run_id"]
     if (preflight["data"]["reference"]["fasta"]["sha256"] != expected["files"]["reference.fa"]["sha256"]
             or preflight["data"]["known_sites"]["sha256"] != expected["files"]["known-sites.vcf"]["sha256"]
@@ -342,6 +346,8 @@ def collect(preflight_path: str | Path, sam: str | Path, pre_bqsr_sam: str | Pat
         raise ValueError("incomplete ordered shared-preprocessing stage inventory")
     if "GATKReport" not in checked_file(stage_paths["recalibration_table"]).read_text():
         raise ValueError("missing actual GATK recalibration table")
+    if fixture_id == "m4-snv-positive":
+        validate_bqsr_observations(stage_paths["recalibration_table"])
     stage_artifacts = [identity(path, name, "preprocessing_transformation") for name, path in stage_paths.items()]
     aligned_suffixes = {name.removeprefix("aligned_") for name in stage_paths if name.startswith("aligned_")}
     sorted_suffixes = {name.removeprefix("sorted_") for name in stage_paths if name.startswith("sorted_")}
@@ -442,8 +448,11 @@ def validate_result_bundle(path: str | Path) -> dict[str, dict[str, Any]]:
             or result["alignment"]["data"]["bai"] != manifest_common["shared_analysis_ready_bai"]):
         raise ValueError("M3 shared BAM/BAI data disagrees with common input identities")
     reference_hash = manifest["data"]["reference_sha256"]
-    expected = fixture_payloads()[1]
+    fixture = fixture_contract_from_manifest_sha256(result["provenance"]["data"]["fixture_expectations_sha256"])
+    expected = fixture.expectations
     if (reference_hash != expected["files"]["reference.fa"]["sha256"]
+            or result["provenance"]["data"]["fixture_recipe_version"] != expected["recipe_version"]
+            or result["provenance"]["data"]["sample"] != expected["sample"]
             or result["provenance"]["data"]["known_sites_sha256"] != expected["files"]["known-sites.vcf"]["sha256"]
             or result["provenance"]["data"]["repository_sha"] != manifest["data"]["repository_sha"]
             or result["alignment"]["data"]["primary_reads"] != expected["primary_read_count"]
@@ -459,3 +468,30 @@ def validate_result_bundle(path: str | Path) -> dict[str, dict[str, Any]]:
             or result["qc"]["data"]["raw_read_count"] != result["alignment"]["data"]["primary_reads"]):
         raise ValueError("M3 BAM/read-count lineage diverges across outputs")
     return result
+
+
+def validate_bqsr_observations(path: str | Path) -> int:
+    """Require a GATK recalibration table containing positive actual observations."""
+    lines = checked_file(path).read_text().splitlines()
+    if not any("GATKReport" in line for line in lines):
+        raise ValueError("missing GATK recalibration report")
+    observations = 0
+    for index, line in enumerate(lines):
+        fields = line.split()
+        if "Observations" not in fields or "Errors" not in fields:
+            continue
+        column = fields.index("Observations")
+        for row in lines[index + 1:]:
+            values = row.split()
+            if len(values) != len(fields) or row.startswith("#"):
+                break
+            try:
+                count = int(values[column])
+            except ValueError as error:
+                raise ValueError("invalid BQSR observation count") from error
+            if count < 0:
+                raise ValueError("negative BQSR observation count")
+            observations += count
+    if observations <= 0:
+        raise ValueError("BQSR requires nonempty recalibration tables with positive observations")
+    return observations

@@ -8,7 +8,7 @@
       "const": "1.0.0"
     },
     "pipeline_version": {
-      "const": "0.3.0-dev.1"
+      "const": "0.4.0-dev.1"
     },
     "status": {
       "const": "foundation_only"

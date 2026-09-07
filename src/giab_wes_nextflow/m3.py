@@ -19,7 +19,7 @@ from jsonschema import Draft202012Validator
 
 from . import __version__
 from .acquisition import checksum, destination, safe_root, validate_run_id
-from .m3_fixture import fixture_payloads
+from .synthetic_fixtures import fixture_contract
 from .resources import schema_path
 
 IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -44,6 +44,9 @@ def checked_file(path: str | Path) -> Path:
     source = Path(path).expanduser()
     if any("DO NOT ACCESS WITH CHATGPT" in part for part in source.parts):
         raise PermissionError("prohibited artifact path")
+    for parent in source.absolute().parents:
+        if (parent / "DO NOT ACCESS WITH CHATGPT").exists():
+            raise PermissionError("artifact ancestor safety marker present")
     source = source.resolve()
     if any("DO NOT ACCESS WITH CHATGPT" in part for part in source.parts):
         raise PermissionError("prohibited artifact target")
@@ -62,11 +65,12 @@ def identity(path: str | Path, logical_id: str, role: str) -> dict[str, Any]:
             "sha256": checksum(source), "bytes": source.stat().st_size}
 
 
-def require_fixture(path: str | Path) -> dict[str, Any]:
-    """Reject invented provenance labels that are not bound to this exact recipe."""
-    expected = fixture_payloads()[1]
+def require_fixture(path: str | Path, *, fixture_id: str = "m3-preprocessing") -> dict[str, Any]:
+    """Require full equality and byte identity with one explicitly selected recipe."""
+    contract = fixture_contract(fixture_id)
+    expected = contract.expectations
     observed = load_json(path)
-    if observed != expected:
+    if observed != expected or checksum(checked_file(path)) != contract.manifest_sha256:
         raise ValueError("synthetic manifest does not match the installed deterministic fixture recipe")
     return expected
 
@@ -239,11 +243,11 @@ def write_envelope(path: str | Path, record: dict[str, Any]) -> None:
 def preflight(samplesheet: str | Path, reference: str | Path, known_sites: str | Path,
               expectations: str | Path, repository_sha: str, run_id: str,
               reference_fai: str | Path | None = None, reference_dict: str | Path | None = None,
-              known_sites_index: str | Path | None = None) -> dict[str, Any]:
+              known_sites_index: str | Path | None = None, *, fixture_id: str = "m3-preprocessing") -> dict[str, Any]:
     """Admit only exact invented sources before reference indexing or alignment."""
     if not re.fullmatch(r"[0-9a-f]{40}", repository_sha):
         raise ValueError("repository SHA must identify an exact commit")
-    expected = require_fixture(expectations)
+    expected = require_fixture(expectations, fixture_id=fixture_id)
     sheet = checked_file(samplesheet)
     inputs = [require_fixture_file(sheet, "samplesheet.csv", expected), identity(expectations, "fixture_expectations", "recipe_identity")]
     with sheet.open(newline="") as stream:
@@ -269,12 +273,13 @@ def preflight(samplesheet: str | Path, reference: str | Path, known_sites: str |
 def validate_fastq(fastq1: str | Path, fastq2: str | Path, sample: str, library: str, lane: str,
                    read_group: str, platform_unit: str, sequencing_platform: str, reference: str | Path,
                    expectations: str | Path, reference_fai: str | Path | None = None,
-                   reference_dict: str | Path | None = None, run_id: str = "m3-synthetic") -> dict[str, Any]:
+                   reference_dict: str | Path | None = None, run_id: str = "m3-synthetic", *,
+                   fixture_id: str = "m3-preprocessing") -> dict[str, Any]:
     """Validate lane metadata, paired gzip FASTQ integrity, and reference identities."""
     values = [sample, library, lane, read_group, platform_unit]
     if any(IDENTIFIER.fullmatch(value) is None for value in values) or sequencing_platform != "ILLUMINA":
         raise ValueError("invalid read-group metadata or platform")
-    expected = require_fixture(expectations)
+    expected = require_fixture(expectations, fixture_id=fixture_id)
     matches = [row for row in expected["lanes"] if row["lane"] == lane]
     if len(matches) != 1:
         raise ValueError("unknown fixture lane")

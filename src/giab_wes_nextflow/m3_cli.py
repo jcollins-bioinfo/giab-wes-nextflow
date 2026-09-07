@@ -7,6 +7,7 @@ from pathlib import Path
 from .m3 import preflight, validate_fastq, write_envelope
 from .m3_collect import collect, validate_result_bundle
 from .m3_fixture import generate_fixture
+from .synthetic_fixtures import FIXTURE_IDS
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -33,6 +34,8 @@ def main(argv: list[str] | None = None) -> int:
         collector.add_argument(f"--{name}", required=True)
     for name in ("stage", "lane-validation", "tool", "tool-version", "container", "artifact", "resource-record"):
         collector.add_argument(f"--{name}", action="append", default=[])
+    for selected in (before, fastq, collector):
+        selected.add_argument("--fixture-id", choices=FIXTURE_IDS, default="m3-preprocessing")
     validate = sub.add_parser("validate-bundle")
     validate.add_argument("path", nargs="?")
     validate.add_argument("--bundle")
@@ -41,17 +44,17 @@ def main(argv: list[str] | None = None) -> int:
         generate_fixture(args.output)
     elif args.command == "preflight":
         result = preflight(args.samplesheet, args.reference, args.known_sites, args.expectations, args.repository_sha,
-                           args.run_id, args.reference_fai, args.reference_dict, args.known_sites_index)
+                           args.run_id, args.reference_fai, args.reference_dict, args.known_sites_index, fixture_id=args.fixture_id)
         write_envelope(args.output, result)
     elif args.command == "validate-fastq":
         result = validate_fastq(args.fastq1, args.fastq2, args.sample, args.library, args.lane, args.read_group,
                                args.platform_unit, args.platform, args.reference, args.expectations,
-                               args.reference_fai, args.reference_dict, args.run_id)
+                               args.reference_fai, args.reference_dict, args.run_id, fixture_id=args.fixture_id)
         write_envelope(args.output, result)
     elif args.command == "collect":
         collect(args.preflight, args.sam, args.pre_bqsr_sam, args.bam, args.bai, args.flagstat, args.idxstats,
                 args.samtools_stats, args.duplicate_metrics, args.coverage_summary, args.expectations, args.output_dir,
-                args.stage, args.lane_validation, args.tool, args.tool_version, args.container, args.artifact, args.resource_record)
+                args.stage, args.lane_validation, args.tool, args.tool_version, args.container, args.artifact, args.resource_record, fixture_id=args.fixture_id)
     elif args.command == "validate-bundle":
         if bool(args.path) == bool(args.bundle):
             parser.error("validate-bundle requires exactly one path or --bundle")

@@ -26,10 +26,15 @@ claims:
     evidence: docs/orchestration/checkpoints/M3.json
     repository_sha: c3426d3d4578ec6e66a6494c09fde983a7e4f3cd
     limitation: Invented 20 kb fixture only; 48 reads and real BQSR wiring do not establish calibration performance, canonical HG001 processing or caller execution.
+  - id: m4-local-implementation
+    classification: locally-tested
+    statement: Selectable caller contracts, positive synthetic fixture, guarded evidence publication and local framework/cache behavior are implemented and tested.
+    evidence: docs/orchestration/checkpoints/M4.json
+    limitation: Actual Linux Docker callers and positive DeepVariant inference remain pending; no M4 verification or canonical HG001 result is claimed.
   - id: capture-design
     classification: unresolved
-    statement: Exact capture-design byte identity remains unresolved.
-    evidence: config/m2-target-design.json
+    statement: Exact deposited Expanded Exome target bytes and dataset association are established; unique NIST7035 assay assignment remains unresolved.
+    evidence: docs/orchestration/evidence/capture-design-investigation.json
     limitation: Canonical capture-dependent domains, target-aware acceptance and publication remain fail-closed.
   - id: website-baseline
     classification: configured_only

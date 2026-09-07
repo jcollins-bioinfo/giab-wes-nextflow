@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/nextflow_schema.json",
   "title": "GIAB WES parameters",
-  "description": "Strict nonclinical foundation and synthetic M3 shared-preprocessing parameters. Canonical execution remains gated.",
+  "description": "Strict nonclinical foundation, synthetic M3 preprocessing and M4 caller parameters. Canonical execution remains gated.",
   "type": "object",
   "$defs": {
     "input_output_options": {
@@ -29,10 +29,12 @@
           "enum": [
             "foundation",
             "m3_synthetic",
-            "m3_canonical"
+            "m3_canonical",
+            "m4_synthetic",
+            "m4_canonical"
           ],
           "default": "foundation",
-          "description": "Select explicit foundation or synthetic M3 workflow; canonical mode is fail-closed until approved inputs and gates exist."
+          "description": "Select foundation, registered synthetic preprocessing or calling; canonical modes fail closed until approved input and domain gates exist."
         }
       }
     },
@@ -112,6 +114,15 @@
           "minimum": 1,
           "default": 500,
           "description": "Fixed target-independent coverage windows in reference bases; never an assay evaluation domain."
+        },
+        "m3_fixture_id": {
+          "type": "string",
+          "enum": [
+            "m3-preprocessing",
+            "m4-snv-positive"
+          ],
+          "default": "m3-preprocessing",
+          "description": "Closed installed fixture family; M3 and M4 modes require their corresponding exact registered recipe."
         }
       }
     },
@@ -129,7 +140,7 @@
             "both"
           ],
           "default": "both",
-          "description": "Planned caller-selection contract; M1 invokes no caller."
+          "description": "Independently select GATK direct VCF, DeepVariant WES VCF/gVCF, or both from one accepted BAM in M4; foundation and M3 execute no callers."
         }
       },
       "required": [

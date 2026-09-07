@@ -30,6 +30,7 @@ workflow M3_SHARED_PREPROCESSING {
     tool_lock
     qc_window
     main:
+    def fixture_id = run_meta.fixture_id ?: 'm3-preprocessing'
     // Parse the source Path before staging; process TaskPath inputs cannot be read while rendering commands.
     def tool_images = new groovy.json.JsonSlurper().parseText(tool_lock.text).tools.collectEntries { name, declaration ->
         [(name.toString()): declaration.image.toString()]
@@ -108,15 +109,17 @@ workflow M3_SHARED_PREPROCESSING {
     M3_COLLECT(final_summary, before_bqsr.map { item -> item[3] }, before_bqsr.map { item -> item[4] }, coverage.map { item -> item[1] },
         gate, expectations, stage_inventory.map { item -> item[1] }, stage_inventory.map { item -> item[0] }, lane_reports,
         tool_versions.map { item -> item[1] }, tool_versions.map { item -> item[0] }, resource_records, commands,
-        extra_inventory.map { item -> item[1] }, extra_inventory.map { item -> item[0] }, tool_lock, tool_images)
+        extra_inventory.map { item -> item[1] }, extra_inventory.map { item -> item[0] }, tool_lock, tool_images, fixture_id)
     // Nothing is published as an accepted output before the semantic collector succeeds.
     accepted_artifacts = M3_COLLECT.out.contracts.combine(final_summary).combine(before_bqsr.map { item -> item[3] })
         .combine(multiqc_html).combine(multiqc_data).combine(qc_sources).map { values ->
             [values[0], values[2], values[3], values[4], values[9], values[10], values[11], values[12]]
         }.flatMap { item -> item }
     accepted_bam = M3_COLLECT.out.contracts.combine(shared_bam).map { _contract, meta, bam, bai -> tuple(meta, bam, bai) }
+    accepted_reference = M3_COLLECT.out.contracts.combine(prepared_reference.map { files -> [files: files] }).map { _contract, record -> record.files }
     emit:
     bam = accepted_bam
     artifacts = accepted_artifacts
     contracts = M3_COLLECT.out.contracts
+    reference = accepted_reference
 }

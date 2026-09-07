@@ -35,6 +35,7 @@ nextflow_process {
                 input[16] = new groovy.json.JsonSlurper().parseText(input[15].text).tools.collectEntries { name, declaration ->
                     [(name.toString()): declaration.image.toString()]
                 }
+                input[17] = 'm3-preprocessing'
                 """
             }
         }

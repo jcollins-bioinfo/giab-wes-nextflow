@@ -86,6 +86,30 @@ sources:
     access_date: 2026-09-07
     execution_evidence: docs/orchestration/evidence/m3-ci-attempt-1.json
     limitation: "The observed wrapper permission failure motivated a Docker-only process UID/GID mapping; successful tool execution and original report ownership require the repaired CI run."
+  - claim: "M3 real Linux/x86_64 synthetic preprocessing, accepted BAM and complete resume passed required CI"
+    url: https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34103737524
+    commit: c3426d3d4578ec6e66a6494c09fde983a7e4f3cd
+    evidence: docs/orchestration/evidence/m3-verified.json
+    access_date: 2026-09-07
+  - claim: "M4 DeepVariant 1.10.0 CPU image, bundled WES model, original-quality option and documented HG001 training overlap"
+    evidence: docs/orchestration/evidence/m4-primary-sources.json
+    registry_evidence: docs/orchestration/evidence/m4-container-declaration.json
+    model_metadata: docs/orchestration/evidence/m4-wes-model-metadata.json
+    authoritative_configuration: config/m4-tools.json
+    commit: d6b15e21323d9d15b347083f1d256ad62998c4cf
+    access_date: 2026-09-07
+    limitation: "Primary-source and registry declarations precede execution; actual architecture, model inventory and inference must be recorded by the integration gate."
+  - claim: "Pinned HaplotypeCaller supports native raw VCF and intermediate gVCF; direct VCF is selected for this bounded single-sample path"
+    url: https://github.com/broadinstitute/gatk/blob/0cde69eed30339f5978cbb1ac6e5cf3662f9e1f8/src/main/java/org/broadinstitute/hellbender/tools/walkers/haplotypecaller/HaplotypeCaller.java
+    commit: 0cde69eed30339f5978cbb1ac6e5cf3662f9e1f8
+    decision: docs/adr/0012-m4-caller-execution-and-qualification.md
+    access_date: 2026-09-07
+  - claim: "Exact deposited Expanded Exome target identity and primary dataset association are established; unique NIST7035 kit assignment remains unresolved"
+    evidence: docs/orchestration/evidence/capture-design-investigation.json
+    url: https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/Garvan_NA12878_HG001_HiSeq_Exome.README
+    contributor_confirmation: https://github.com/genome-in-a-bottle/giab_data_indexes/issues/2#issuecomment-324378470
+    access_date: 2026-09-07
+    limitation: "This establishes the deposited target and dataset recommendation, not unique per-library 37 Mb versus 62 Mb assay identity or approved canonical domain construction."
 contradictions:
   - observed: "workflow.output.directory is not a Nextflow 26.04 output-root option; outputs ignored --outdir while reports honored it."
     resolution: "Use outputDir = params.outdir and assert the supplied output root in synthetic workflow tests."

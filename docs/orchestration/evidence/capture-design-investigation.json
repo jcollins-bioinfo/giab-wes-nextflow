@@ -1,0 +1,63 @@
+{
+  "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/nexterarapidcapture_expandedexome_targetedregions.bed.gz",
+  "observed_utc": "2026-09-07T08:32:03.003471+00:00",
+  "compressed_bytes": 2878665,
+  "compressed_sha256": "7ce7a9f769e51ecb8ab5588c6bc7c24d19e25b2bd6c1b958415b7b16987f01b8",
+  "decompressed_bytes": 10907040,
+  "decompressed_sha256": "13130066e4c50adcd2a8d1c14514aee3a80f8167881b9e64dab4e524c225f0c0",
+  "gzip_integrity": "allmembersreadtoEOFandCRCvalidated",
+  "interval_count": 201071,
+  "column_counts": {
+    "4": 201071
+  },
+  "coordinate_interpretation": "BED0basedhalfopen; buildnotinferredfromcoordinatesalone",
+  "union_bases": 62085286,
+  "merged_interval_count": 201032,
+  "sum_raw_interval_lengths": 62085295,
+  "overlapping_or_touching_interval_count": 39,
+  "authoritative_checksum_published": false,
+  "schema_version": "1.0.0",
+  "kind": "capture-artifact-investigation",
+  "canonical_domains_allowed": false,
+  "library_kit_assignment": "The unique NIST7035 assignment to the 37 Mb or 62 Mb kit remains unresolved.",
+  "target_file_identity": "Exact deposited 62 Mb design bytes were observed and SHA-256 pinned.",
+  "reference_dictionary_validation": "not_run",
+  "liftover": "not_run",
+  "vendor_bytes_committed": false,
+  "sources": [
+    {
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/Garvan_NA12878_HG001_HiSeq_Exome.README",
+      "bytes": 1089,
+      "sha256": "85198836d978b98fa05bee10c35220fbd30a83a91c63145ab447cd9415a03caf",
+      "finding": "Names both NIST7035 and NIST7086 and Exome/Expanded Exome kits; explicitly identifies the deposited Expanded target file without unique library assignment."
+    },
+    {
+      "url": "https://github.com/genome-in-a-bottle/giab_data_indexes/issues/2#issuecomment-324378470",
+      "finding": "Official repository contributor links the deposited target for the Garvan trimmed index, which includes both libraries."
+    },
+    {
+      "url": "https://github.com/genome-in-a-bottle/giab_data_indexes/blob/a9b86cee05e63591924991d349609cc838b2636c/NA12878/sequence.index.NA12878_Illumina_HiSeq_Exome_Garvan_trimmed_fastq_09252015",
+      "git_blob_sha": "6f47be8bcb483eaaa45e2235de09e12b32565293",
+      "finding": "The historical 2015 index includes both libraries and both lanes."
+    },
+    {
+      "url": "https://www.illumina.com/documents/products/datasheets/datasheet_nextera_rapid_capture_exome.pdf",
+      "finding": "Publication 770-2013-002, dated 16 May 2015, declares NCBI37/hg19, 37 Mb Exome and 62 Mb Expanded Exome. Target-exon count and BED-row count remain distinct, unreconciled units."
+    },
+    {
+      "url": "https://www.ebi.ac.uk/ena/browser/api/xml/SRX1608029",
+      "bytes": 2768,
+      "sha256": "77d8b6ddc50762e1b8a930ec3a999858997618bdddd3bc2d15937cebaf095aea"
+    },
+    {
+      "url": "https://www.ebi.ac.uk/ena/browser/api/xml/SRR3197785",
+      "bytes": 2180,
+      "sha256": "60a16ab9eb672476ab9457012fc76a40ea3ac2172ba5d3f97cc59f3cf74e7af1"
+    },
+    {
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data_indexes/NA12878/sequence.index.NA12878_Illumina_HiSeq_Exome_Garvan_fastq_09252015",
+      "bytes": 1439,
+      "sha256": "c160cb67bc1e5fa68bc48daa8100d354454a91aacab79465309e67c2fa934424"
+    }
+  ]
+}

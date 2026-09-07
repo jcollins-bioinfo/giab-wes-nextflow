@@ -50,4 +50,5 @@ build/
 
 # M3 fixtures/results are generated from an invented deterministic recipe.
 tests/data/m3-generated/
+tests/data/m4-generated/
 m3-test-results/

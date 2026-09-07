@@ -13,14 +13,15 @@ from typing import Any
 from giab_wes_nextflow.m3 import preflight, read_pairs, validate_fastq, write_envelope
 from giab_wes_nextflow.m3_collect import collect
 from giab_wes_nextflow.m3_fixture import generate_fixture, reverse_complement
+from giab_wes_nextflow.m4_fixture import generate_m4_fixture
 from giab_wes_nextflow.resources import config_path
 
 
 def make_unit_bundle(root: Path, repository_sha: str = "a" * 40,
-                     run_id: str = "m3-unit-contract") -> Path:
+                     run_id: str = "m3-unit-contract", *, fixture_id: str = "m3-preprocessing") -> Path:
     """Produce all six validated synthetic result objects in a temporary root."""
     fixture = root / "fixture"
-    expected = generate_fixture(fixture)
+    expected = generate_fixture(fixture) if fixture_id == "m3-preprocessing" else generate_m4_fixture(fixture)
     reference = fixture / "reference.fa"
     fai = fixture / "reference.fa.fai"
     dictionary = fixture / "reference.dict"
@@ -36,7 +37,7 @@ def make_unit_bundle(root: Path, repository_sha: str = "a" * 40,
     dictionary.write_text("\n".join(dict_rows) + "\n")
     preflight_path = root / "m3-preflight.json"
     write_envelope(preflight_path, preflight(fixture / "samplesheet.csv", reference, fixture / "known-sites.vcf",
-                   fixture / "fixture-expectations.json", repository_sha, run_id))
+                   fixture / "fixture-expectations.json", repository_sha, run_id, fixture_id=fixture_id))
     lane_files = []
     originals = {}
     for lane in expected["lanes"]:
@@ -44,7 +45,7 @@ def make_unit_bundle(root: Path, repository_sha: str = "a" * 40,
         output = root / f"{lane['lane']}.fastq-validation.json"
         record = validate_fastq(fastq1, fastq2, lane["sample"], lane["library"], lane["lane"], lane["read_group_id"],
                                 lane["platform_unit"], lane["platform"], reference, fixture / "fixture-expectations.json",
-                                fai, dictionary, run_id)
+                                fai, dictionary, run_id, fixture_id=fixture_id)
         write_envelope(output, record)
         lane_files.append(str(output))
         for qname, seq1, qual1, seq2, qual2 in read_pairs(fastq1, fastq2):
@@ -84,13 +85,13 @@ def make_unit_bundle(root: Path, repository_sha: str = "a" * 40,
     stages = []
     for name in stage_names:
         path = root / f"{name}.unit-identity"
-        path.write_text("#:GATKReport.unit-fixture\n" if name == "recalibration_table" else f"unit-contract-stand-in:{name}\n")
+        path.write_text("#:GATKReport.unit-fixture\nReadGroup EventType Observations Errors\nSYN_L001 M 100 1\n\n" if name == "recalibration_table" else f"unit-contract-stand-in:{name}\n")
         stages.append(f"{name}={path}")
     bam = root / "analysis_ready.unit-identity"
     bai = root / "analysis_ready.unit-index"
     bai.write_text("unit-contract-index-identity\n")
     flagstat = root / "flagstat.json"
-    flagstat.write_text(json.dumps({"QC-passed reads": {"total": 48, "primary": 48, "mapped": 44, "duplicates": 4}}))
+    flagstat.write_text(json.dumps({"QC-passed reads": {"total": expected["primary_read_count"], "primary": expected["primary_read_count"], "mapped": expected["mapped_read_count"], "duplicates": 4}}))
     idxstats = root / "idxstats.tsv"
     mapped_counts = {name: sum(item["contig"] == name for item in expected["read_expectations"].values()) for name in expected["contigs"]}
     idxstats.write_text("".join(f"{name}\t{length}\t{mapped_counts[name]}\t0\n" for name, length in expected["contigs"].items()) + "*\t0\t0\t4\n")
@@ -113,5 +114,5 @@ def make_unit_bundle(root: Path, repository_sha: str = "a" * 40,
                          "container": None, "architecture": "synthetic-unit-contract"}))
     output = root / "contracts"
     collect(preflight_path, after_path, before_path, bam, bai, flagstat, idxstats, stats, duplicate_metrics,
-            coverage, fixture / "fixture-expectations.json", output, stages, lane_files, [], versions, [], [], [str(resources)])
+            coverage, fixture / "fixture-expectations.json", output, stages, lane_files, [], versions, [], [], [str(resources)], fixture_id=fixture_id)
     return output
