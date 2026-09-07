@@ -4,6 +4,8 @@ process M3_MULTIQC {
     cache 'deep'
     label 'm3_small'
     container 'ghcr.io/multiqc/multiqc@sha256:976be2094a3bc1dab7315ad03440d43aab09bf7756f84f3a92ef7ae1013e4bfd'
+    // Match the execution host's work-directory owner; the image defaults to UID 1000.
+    containerOptions { workflow.containerEngine == 'docker' ? '--user $(id -u):$(id -g)' : '' }
 
     input:
     path reports

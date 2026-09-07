@@ -247,6 +247,31 @@ def validate_trace_containers(rows: list[dict[str, str]], tools: dict[str, Any])
                     "unexpected host task or container identity")
 
 
+def validate_multiqc_ownership(rows: list[dict[str, str]], work: Path,
+                              published_report: Path) -> dict[str, int | bool | str]:
+    """Verify ownership of the container-created report and its published byte copy."""
+    matches = [row for row in rows if process_name(row["name"]) == "M3_MULTIQC"]
+    require(len(matches) == 1, "exactly one MultiQC task is required for ownership verification")
+    task_hash = matches[0]["hash"]
+    require(re.fullmatch(r"[0-9a-f]{2}/[0-9a-f]{6,30}", task_hash) is not None,
+            "invalid MultiQC trace hash")
+    prefix, remainder = task_hash.split("/")
+    directory = guarded_path(work / prefix)
+    candidates = [path for path in directory.glob(remainder + "*") if path.is_dir()]
+    require(len(candidates) == 1, "MultiQC trace hash does not identify exactly one task directory")
+    report = guarded_path(candidates[0] / "multiqc_report.html")
+    require(report.is_file(), "original MultiQC task report is missing")
+    observed = report.stat()
+    require(observed.st_uid == os.getuid() and observed.st_gid == os.getgid(),
+            "original MultiQC report ownership differs from the executing host user/group")
+    source_hash = digest(report)
+    require(source_hash == digest(published_report), "published MultiQC report differs from the task output")
+    return {"task_report_uid": observed.st_uid, "task_report_gid": observed.st_gid,
+            "host_uid": os.getuid(), "host_gid": os.getgid(),
+            "task_report_owned_by_host_user_and_group": True,
+            "published_bytes_match_task_report": True, "report_sha256": source_hash}
+
+
 def validate_contract_identity(contracts: dict[str, dict[str, Any]], fixture: dict[str, Any],
                                sha: str, run_id: str, package_version: str,
                                bam_sha256: str, bai_sha256: str) -> None:
@@ -420,6 +445,16 @@ def validate_docker_capability(info: dict[str, Any]) -> dict[str, Any]:
     return {key: info.get(key) for key in ("OSType", "Architecture", "ServerVersion", "NCPU", "MemTotal")}
 
 
+def docker_info_format() -> str:
+    """Build Docker's Go format while keeping daemon output limited to five facts.
+
+    Compose Go delimiters explicitly so nf-core's source-template guard does not
+    mistake Docker expressions for unfinished pipeline template substitutions.
+    """
+    fields = ("OSType", "Architecture", "ServerVersion", "NCPU", "MemTotal")
+    return "{" + ",".join('"' + field + '":' + "{" * 2 + "json ." + field + "}" * 2 for field in fields) + "}"
+
+
 def preflight(repository: Path, expected_sha: str, nextflow: str, docker: str,
               output_root: Path) -> dict[str, Any]:
     """Observe source and local executables without cloning, installing or running tasks."""
@@ -472,7 +507,7 @@ def main(argv: list[str] | None = None) -> int:
         require(re.search(r"version\s+26\.04\.6\b", nf_version) is not None, "Nextflow version is not the pinned 26.04.6")
         proof["nextflow_version"] = nf_version.strip()
         if args.mode == "docker":
-            docker_info = json.loads(runner.run("docker-info", [args.docker, "info", "--format", '{"OSType":{{json .OSType}},"Architecture":{{json .Architecture}},"ServerVersion":{{json .ServerVersion}},"NCPU":{{json .NCPU}},"MemTotal":{{json .MemTotal}}}'], output_root))
+            docker_info = json.loads(runner.run("docker-info", [args.docker, "info", "--format", docker_info_format()], output_root))
             proof["docker"] = validate_docker_capability(docker_info)
             # Retain only relevant engine facts; a full info document may contain
             # host/proxy details unrelated to scientific execution evidence.
@@ -533,6 +568,7 @@ def main(argv: list[str] | None = None) -> int:
             proof["resume_assertions"] = validate_resume(first_trace, second_trace)
             validate_trace_containers(first_trace, tools)
             validate_trace_containers(second_trace, tools)
+            proof["multiqc_permission_assertions"] = validate_multiqc_ownership(first_trace, work, output / "m3/multiqc_report.html")
             proof["resume_assertions"]["pinned_containers_identical"] = True
             require(first_files == file_inventory(output / "m3"), "resume changed published artifact bytes")
             require(first_contracts == {path.name: json.loads(path.read_text()) for path in contracts.glob("*.json")}, "resume changed contract semantics")

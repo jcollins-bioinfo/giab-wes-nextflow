@@ -57,3 +57,12 @@ A green Python or stub suite is insufficient for M3 verification. The required
 aggregate includes `python`, `nextflow`, and `m3-docker`; only green CI on the
 observed code plus local synthetic tests can mark M3 verified. Current exact
 results are recorded in the orchestration checkpoint after observation.
+
+The first M3 CI attempt passed both Python jobs but exposed a legitimate Docker
+format string that the nf-core template linter rejected, plus a MultiQC image
+user/work-directory ownership mismatch. The format builder retains only five
+non-sensitive engine fields; the lint check remains enabled. MultiQC alone maps
+Docker execution to the host UID/GID. The integration oracle checks ownership of
+the original task report and hashes it against the published copy, so a host-owned
+Nextflow copy cannot conceal a mismatched container-created artifact. The first
+attempt remains recorded as failed and cannot qualify M3.

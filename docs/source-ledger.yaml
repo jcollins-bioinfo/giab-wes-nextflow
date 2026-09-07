@@ -71,6 +71,11 @@ sources:
     authoritative_configuration: config/m3-tools.json
     access_date: 2026-09-07
     limitation: "Registry metadata and documented behavior do not establish actual execution; immutable CI/run records own executed status."
+  - claim: "The MultiQC v1.35 Dockerfile selects an application user with UID/GID 1000; host ownership can differ."
+    url: https://github.com/MultiQC/MultiQC/blob/87e504bb77e3d94687dd980638724b7ef8e1e92f/Dockerfile
+    access_date: 2026-09-07
+    execution_evidence: docs/orchestration/evidence/m3-ci-attempt-1.json
+    limitation: "The observed wrapper permission failure motivated a Docker-only process UID/GID mapping; successful tool execution and original report ownership require the repaired CI run."
 contradictions:
   - observed: "workflow.output.directory is not a Nextflow 26.04 output-root option; outputs ignored --outdir while reports honored it."
     resolution: "Use outputDir = params.outdir and assert the supplied output root in synthetic workflow tests."

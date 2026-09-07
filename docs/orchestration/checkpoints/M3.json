@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M3",
-  "phase": "synthetic implementation locally tested; required Docker CI pending",
+  "phase": "repair observed MultiQC container permissions and source-template lint; required CI failed",
   "state": "implemented",
   "version": "0.3.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/m3-shared-preprocessing",
-      "evidence_sha": "22d01b202e15bb098e9d42d0ad4a98606e78c2c2",
+      "evidence_sha": "fb6276b33e423cc68f4e878fe69000baabcbe829",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -134,7 +134,19 @@
       "detail": "Source220/wheel37 allowed members; M3 wheel CLIs/resources work outside checkout."
     }
   ],
-  "ci": [],
+  "ci": [
+    {
+      "name": "required",
+      "required": true,
+      "status": "failure",
+      "repository": "jcollins-bioinfo/giab-wes-nextflow",
+      "evidence_sha": "fb6276b33e423cc68f4e878fe69000baabcbe829",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766",
+      "job_urls": [
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766/job/101667809978"
+      ]
+    }
+  ],
   "execution_environments": [
     {
       "id": "local-macos",
@@ -170,7 +182,8 @@
       "docs/orchestration/evidence/source-cache-metadata.json",
       "docs/orchestration/evidence/m2.1.1-verified.json",
       "docs/orchestration/evidence/m3-local-validation.json",
-      "docs/orchestration/evidence/m3-dsl2-local-qualification.json"
+      "docs/orchestration/evidence/m3-dsl2-local-qualification.json",
+      "docs/orchestration/evidence/m3-ci-attempt-1.json"
     ]
   },
   "external_blockers": [
@@ -181,6 +194,6 @@
       "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
     }
   ],
-  "next_safe_action": "Push the M3 commit and create a draft PR stacked on PR19; require all M3 CI jobs, including real Docker execution and resume, before M4.",
-  "observed_at": "2026-09-07T07:59:35.904880+00:00"
+  "next_safe_action": "Push tested fixes to draft PR20 after first Docker attempt completes, then require all CI jobs before M3 verification and M4.",
+  "observed_at": "2026-09-07T08:09:05.325775+00:00"
 }

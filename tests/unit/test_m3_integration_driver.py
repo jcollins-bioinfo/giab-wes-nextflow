@@ -324,6 +324,48 @@ class PreflightSafetyTest(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 DRIVER.validate_docker_capability(dict(valid, **change))
 
+    def test_docker_format_requests_only_runtime_capacity_and_identity(self):
+        template = DRIVER.docker_info_format()
+        fields = ("OSType", "Architecture", "ServerVersion", "NCPU", "MemTotal")
+        rendered = template
+        for field in fields:
+            token = "{" * 2 + "json ." + field + "}" * 2
+            self.assertEqual(template.count(token), 1)
+            rendered = rendered.replace(token, "null")
+        self.assertEqual(json.loads(rendered), dict.fromkeys(fields))
+
+    def test_multiqc_ownership_binds_original_task_to_published_report(self):
+        work = self.root / "nextflow-work"
+        report = work / "aa" / ("b" * 30) / "multiqc_report.html"
+        report.parent.mkdir(parents=True)
+        report.write_text("<html>invented report</html>")
+        published = self.root / "multiqc_report.html"
+        published.write_bytes(report.read_bytes())
+        rows = [{"name": "W:M3_MULTIQC (stage)", "hash": "aa/" + "b" * 6}]
+        result = DRIVER.validate_multiqc_ownership(rows, work, published)
+        self.assertTrue(result["task_report_owned_by_host_user_and_group"])
+        self.assertEqual(result["report_sha256"], DRIVER.digest(published))
+        with patch("m3_integration_driver.os.getuid", return_value=report.stat().st_uid + 1):
+            with self.assertRaisesRegex(ValueError, "ownership"):
+                DRIVER.validate_multiqc_ownership(rows, work, published)
+        with patch("m3_integration_driver.os.getgid", return_value=report.stat().st_gid + 1):
+            with self.assertRaisesRegex(ValueError, "ownership"):
+                DRIVER.validate_multiqc_ownership(rows, work, published)
+        published.write_text("altered report")
+        with self.assertRaisesRegex(ValueError, "differs"):
+            DRIVER.validate_multiqc_ownership(rows, work, published)
+
+    def test_multiqc_ownership_rejects_ambiguous_or_unsafe_trace_location(self):
+        work = self.root / "nextflow-work"
+        for suffix in ("c", "d"):
+            (work / "aa" / ("b" * 6 + suffix * 24)).mkdir(parents=True)
+        rows = [{"name": "W:M3_MULTIQC (stage)", "hash": "aa/" + "b" * 6}]
+        with self.assertRaisesRegex(ValueError, "exactly one task directory"):
+            DRIVER.validate_multiqc_ownership(rows, work, self.root / "report.html")
+        rows[0]["hash"] = "../outside"
+        with self.assertRaisesRegex(ValueError, "invalid MultiQC trace hash"):
+            DRIVER.validate_multiqc_ownership(rows, work, self.root / "report.html")
+
     def test_preflight_reports_low_disk_without_running_an_engine(self):
         output = self.root / "missing-parent" / "qualification"
         fake_usage = type("Usage", (), {"free": 1, "total": 2})()
