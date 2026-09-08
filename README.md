@@ -1,6 +1,9 @@
-# GIAB HG001 WES: dual-caller benchmark and evidence explorer
+[![CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml/badge.svg)](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml)
+# GIAB¹ HG001 WES: Dual-caller Benchmark and Evidence Explorer
 
 > **Synthetic Dash prototype available; real HG001 results pending.** The owner approved the fixed GENCODE v50 coding-domain alternative and early synthetic prototype (ADR 0013). M3 synthetic preprocessing is verified. M4 remains implemented, not verified: CI 34202569517 completed DeepVariant inference but failed native heterozygote acceptance. [Run the explorer](explorer/README.md) and [prepare the Colab capability observation](docs/canonical-colab.md). Index construction will use Colab CPU/RAM with durable large storage in the permitted private Drive hierarchy. No canonical run or public deployment is claimed.
+>
+> ¹ <sub>See: **NIST GIAB ([*Genome in a Bottle*](https://www.nist.gov/programs-projects/genome-bottle))</sub>**
 
 ## Motivation and architecture
 
