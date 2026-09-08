@@ -187,3 +187,16 @@ Use the [notebook launch center](notebooks/README.md) or open M2 directly:
 Version `0.2.0-dev.3` established `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
 
 Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact deposited target bytes are now recorded; their unique per-library assay assignment remains unresolved; canonical analysis instead uses the approved coding-domain alternative once its implementation is validated. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is synthetically verified after the recovery gate. M4 is synthetically verified on merged main; M5 and canonical execution retain their own gates.
+
+## M5 implementation under qualification
+
+Version `0.5.0-dev.1` adds common BCFtools normalization, direct RTG vcfeval
+benchmarking, schema-validated Python count/metric artifacts and typed resource
+attribution. [ADR 0014](docs/adr/0014-m5-common-normalization-and-benchmark.md)
+preregisters the policy and immutable tools. `m5.nf -profile m5_test` is a
+synthetic-only downstream workflow; truth stays outside normalization. Actual
+engine qualification uses the bounded driver in the existing M4 CI job.
+Until that run is observed, M5 is implemented with local checks, not marked
+synthetically verified. Canonical HG001 accuracy, cost and clinical/generalization
+claims remain unavailable. Optional coding-domain construction and reusable-index
+qualification remain deferred; the observed Colab allocation is still unqualified.

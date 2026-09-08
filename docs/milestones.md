@@ -11,3 +11,9 @@
 9. **M9 — website research showcase and final claim/reproducibility audit.**
 
 The dependency is `Nextflow canonical run → immutable machine-readable results → tested Python analysis/result model → Dash`. Scientific calculations never exist only in Dash callbacks. ONT and somatic workflows are outside v1.
+
+Current boundary (2026-09-08): M3 and M4 are synthetically verified on recorded
+Linux/x86_64 Docker CI. M5 common normalization, authoritative benchmarking and
+resource infrastructure are implemented with local checks; actual engine and
+Nextflow resume qualification remain distinct. The approved early Explorer is a
+synthetic prototype and does not advance canonical M7/M8 completion.

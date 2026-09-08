@@ -97,3 +97,25 @@ A local Python, wheel or stub pass does not qualify dual-caller execution. Only
 an observed successful required CI run and reviewed actual inference/output
 artifacts can advance M4 to verified. Canonical HG001, indel accuracy, common
 normalization and benchmarking remain separate later gates.
+
+## M5 qualification boundary
+
+Generate `python tests/data/generate_m5_stub.py` before the three additional M5
+nf-tests. These test both caller selections through identical modules and explicit
+noncanonical stub outputs; they do not exercise normalization or matching engines.
+The independently versioned `m5_fixture` supplies real representation-sensitive
+query/truth cases to `scripts/run_m5_synthetic.py`. The existing `m4-docker` job
+runs that bounded driver after successful M4 execution, consuming its actual
+outputs without another preprocessing/caller run. Its separate evidence artifact
+retains M5 outputs and engine proof. An observed engine pass is required before
+claiming M5 synthetic execution verification. Local unit/negative, arithmetic,
+resource, schema and wiring tests alone establish implementation checks.
+M4's accepted fixture remains unchanged and qualifies SNVs only.
+
+The initial M5 real-tool driver verifies independent caller interfaces and repeated
+normalization bytes. It records `nextflow_resume_qualified: false`: repeated tool
+execution is not cache reuse. Actual M5 independent-versus-both execution and
+resume acceptance remain an explicit follow-up, although all three selections
+are wired and stub-tested. The M5 JSON launcher also relies on Nextflow's
+JsonSlurper manifest parsing; duplicate manifest-key rejection is an open
+hardening item, distinct from strict duplicate rejection in package evidence JSON.

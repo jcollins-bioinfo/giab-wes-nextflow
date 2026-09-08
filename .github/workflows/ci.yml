@@ -35,6 +35,8 @@ jobs:
           cd /tmp
           /tmp/wheel-venv/bin/python -c "import giab_wes_nextflow; from giab_wes_nextflow.resources import config_path,schema_path; assert config_path('m2-resources.json').is_file(); assert schema_path('m2-source-manifest.schema.json').is_file(); print(giab_wes_nextflow.__version__)"
           for command in acquire prepare validate publish mirror; do /tmp/wheel-venv/bin/giab-wes-${command}-m2 --help >/dev/null; done
+          /tmp/wheel-venv/bin/giab-wes-m5 --help >/dev/null
+          /tmp/wheel-venv/bin/giab-wes-m5-resources --help >/dev/null
           /tmp/wheel-venv/bin/giab-wes-m3 --help >/dev/null
           /tmp/wheel-venv/bin/python -m giab_wes_nextflow.m3_publication --help >/dev/null
           /tmp/wheel-venv/bin/python -m giab_wes_nextflow.m4_cli --help >/dev/null
@@ -87,6 +89,7 @@ jobs:
       - run: python tests/data/generate_fixture.py
       - run: python tests/data/generate_m3_fixture.py --output tests/data/m3-generated
       - run: python -m giab_wes_nextflow.m4_fixture --output tests/data/m4-generated
+      - run: python tests/data/generate_m5_stub.py
       - run: nextflow -version
       - run: nextflow lint -o concise .
       - run: nf-core pipelines schema lint
@@ -140,6 +143,18 @@ jobs:
       - name: Actual shared-BAM callers, positive inference, selection and resume
         run: |
           python scripts/run_m4_synthetic.py --output-root "$RUNNER_TEMP/m4-integration" --expected-sha "$(git rev-parse HEAD)" --mode docker
+      - name: M5 downstream normalization and authoritative benchmark qualification
+        run: |
+          python -m pip install .
+          python scripts/run_m5_synthetic.py --output-root "$RUNNER_TEMP/m5-integration" --m4-output-root "$RUNNER_TEMP/m4-integration" --expected-sha "$(git rev-parse HEAD)"
+      - name: Preserve small synthetic M5 evidence only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: m5-synthetic-docker-evidence
+          path: ${{ runner.temp }}/m5-integration/evidence/
+          if-no-files-found: warn
+          retention-days: 30
       - name: Preserve small synthetic caller evidence only
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

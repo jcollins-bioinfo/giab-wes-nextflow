@@ -1,4 +1,4 @@
-access_date: 2026-09-07
+access_date: 2026-09-08
 status: "Entries retain their individual access dates. 2026-09-07 repository/CI, Git identity, Python path/atomic-rename documentation and private-cache metadata were reverified. Earlier tool/scientific entries retain their original evidence scope; configured does not mean executed."
 sources:
   - claim: "Owner approved fixed GENCODE v50 coding estimand, early synthetic prototype, Colab compute and private Drive durable storage"
@@ -123,3 +123,14 @@ contradictions:
     access_date: 2026-09-07
   - observed: "nf-schema 2.8.0 rejects Nextflow 25.10.4 and requires Nextflow >=26.04.0"
     resolution: "Owner selected option 1: raise the supported minimum; 26.04.6 is now the sole M1 runtime baseline."
+
+  - claim: "M5 normalization policy and command semantics; bcftools 1.24"
+    url: https://raw.githubusercontent.com/samtools/bcftools/1.24/doc/bcftools.txt
+    access_date: 2026-09-08
+    image: quay.io/biocontainers/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3
+    evidence: docs/m5-primary-sources.json
+  - claim: "M5 direct diploid haplotype matching, evaluation regions and split partitions; RTG Tools 3.13"
+    url: https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html
+    access_date: 2026-09-08
+    image: registry-1.docker.io/realtimegenomics/rtg-tools@sha256:b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790
+    evidence: docs/m5-primary-sources.json

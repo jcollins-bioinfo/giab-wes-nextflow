@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M5",
-  "phase": "awaiting prerequisite milestone",
-  "state": "not_started",
-  "version": "0.2.0-dev.4",
+  "phase": "M5 common normalization, authoritative benchmarking and resource attribution",
+  "state": "implemented",
+  "version": "0.5.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/m2.1.1-provenance-recovery",
-      "evidence_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+      "branch": "codex/m5-benchmark-and-canonical-readiness",
+      "evidence_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -23,14 +23,14 @@
     {
       "id": "current-source-manifest",
       "status": "declared",
-      "sha256": "673f96c3e1a5b29405a12d8ce835814844d0592bb404c496ee8fa59aa73e257c",
+      "sha256": "db201581f1360b4ebec741a62e61821d3f94f0236a0cc53f6782e91b015ddfe4",
       "reason": "Manifest bytes in this working tree; real objects need fresh hydration validation."
     },
     {
       "id": "exact-capture-design",
-      "status": "blocked",
-      "sha256": null,
-      "reason": "Exact sample-to-kit target-file identity remains unresolved; canonical domains fail closed."
+      "status": "declared",
+      "sha256": "7ce7a9f769e51ecb8ab5588c6bc7c24d19e25b2bd6c1b958415b7b16987f01b8",
+      "reason": "Physical kit identity remains uncertain; owner approved fixed coding-domain alternative in ADR 0013. Package-owned canonical domain implementation remains unvalidated."
     },
     {
       "id": "giab_garvan_sequence_index",
@@ -91,27 +91,184 @@
       "status": "declared",
       "sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
       "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+    },
+    {
+      "id": "canonical-bqsr-known-sites",
+      "status": "missing",
+      "sha256": null,
+      "reason": "Independent real known-sites release/hash and reference compatibility must be established; GIAB truth is forbidden as training/recalibration input."
+    },
+    {
+      "id": "invented-m3-fixture-expectations",
+      "status": "verified",
+      "sha256": "d8f87a4eddd93eebd1cee5c9d77bfa1b8093714a8b3c2edc434742a3f3e16c1d",
+      "reason": "Deterministic invented recipe; unit tests and real installed-host preflight passed; no external sequence."
+    },
+    {
+      "id": "m3-tool-lock",
+      "status": "declared",
+      "sha256": "f3e5d99044b597d08df2ea6d7809940d93d327bb64a74705d6eab584e759141a",
+      "reason": "Pinned actual Linux/x86_64 tool execution passed merged-main CI34237377774; no canonical HG001 execution."
+    },
+    {
+      "id": "m4-caller-tool-lock",
+      "status": "declared",
+      "sha256": "be32c936c2f4371920da5cb786bf5eb4f69d45672043256ff066eeae1206f2e3",
+      "reason": "Pinned actual Linux/x86_64 tool execution passed merged-main CI34237377774; no canonical HG001 execution."
+    },
+    {
+      "id": "invented-m4-fixture-expectations",
+      "status": "verified",
+      "sha256": "c54c4d5a7dd0b758dcbe38d3091676a45fbf9f1729cc6d1d852bb9593e17be38",
+      "reason": "Accepted separately versioned 264-pair SNV fixture; staggered support and process-name parser repairs preserve strict allele/genotype oracle. See actual green-main M4 proof."
+    },
+    {
+      "id": "owner-approved-fixed-coding-domain",
+      "status": "declared",
+      "sha256": "9c270a2c46c2e83ae0d35e5ceaa75e4b77918924bf7443d4fffe467cd9b950d4",
+      "reason": "Owner explicitly approved proposal on 2026-09-08; 33,567,783 confident autosomal coding bases. Approval is not validated canonical implementation."
     }
   ],
-  "local_tests": [],
-  "ci": [],
-  "execution_environments": [],
+  "local_tests": [
+    {
+      "name": "M5 final local qualification checks",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "complete installed-wheel suite; targeted environment/version retries; nf-test; lint; contracts; build; pre-commit",
+      "detail": "264 unique Python tests and 17 unique nf-tests resolved; 5 Explorer tests passed. Exact initial failures and focused retries retained in m5-local-verification.json. Actual M5 engines and Nextflow resume remain unobserved."
+    }
+  ],
+  "ci": [
+    {
+      "name": "required merged-main synthetic M3/M4 CI",
+      "required": true,
+      "status": "success",
+      "repository": "jcollins-bioinfo/giab-wes-nextflow",
+      "evidence_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774",
+      "job_urls": [
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098476873",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477130",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477151",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477158",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477215",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102100375843"
+      ]
+    }
+  ],
+  "execution_environments": [
+    {
+      "id": "macos-arm64-m4-local",
+      "status": "executed",
+      "os": "macOS",
+      "architecture": "arm64",
+      "canonical": false,
+      "run_id": "m4-local-uncommitted-20260907",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-local-verification.json"
+      ]
+    },
+    {
+      "id": "linux-x86-64-m4-image-preflight",
+      "status": "observed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34108811427-m4-image-preflight",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-ci-attempt-1.json"
+      ]
+    },
+    {
+      "id": "linux-x86-64-m4-attempt-3",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34110920618-m4-attempt-3",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-ci-attempt-3.json"
+      ]
+    },
+    {
+      "id": "linux-x86-64-m4-attempt-4",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34113889045-m4-attempt-4",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-ci-attempt-4.json"
+      ]
+    },
+    {
+      "id": "linux-x86-64-m4-attempt-5",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34202569517-m4-attempt-5",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-ci-attempt-5.json"
+      ]
+    },
+    {
+      "id": "linux-x86-64-m4-merged-main",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34237377774",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/main-ci-34237377774.json"
+      ]
+    },
+    {
+      "id": "owner-colab-20260908",
+      "status": "observed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "owner-capability-20260908",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/colab-capability-observed-20260908.json",
+        "docs/orchestration/evidence/colab-capability-assessment.json"
+      ]
+    }
+  ],
   "publication": {
-    "drive": "not_published",
+    "drive": "partial",
     "public_evidence": "not_published",
     "deployment": "not_deployed",
     "release": "not_released",
     "authorization_reference": null,
-    "evidence_artifacts": []
+    "evidence_artifacts": [
+      "docs/orchestration/evidence/m3-verified.json",
+      "docs/orchestration/evidence/m4-primary-sources.json",
+      "docs/orchestration/evidence/m4-container-declaration.json",
+      "docs/orchestration/evidence/m4-wes-model-metadata.json",
+      "docs/orchestration/evidence/m4-local-verification.json",
+      "docs/orchestration/evidence/m3-checkpoint-ci-repaired.json",
+      "docs/orchestration/evidence/m4-ci-attempt-1.json",
+      "docs/orchestration/evidence/m4-ci-attempt-2.json",
+      "docs/orchestration/evidence/m4-ci-attempt-3.json",
+      "docs/orchestration/evidence/m4-ci-attempt-4.json",
+      "docs/orchestration/evidence/m4-ci-attempt-5.json",
+      "docs/orchestration/evidence/main-ci-34237377774.json",
+      "docs/orchestration/evidence/colab-capability-observed-20260908.json",
+      "docs/orchestration/evidence/colab-capability-assessment.json",
+      "docs/orchestration/evidence/m4-verified-main-34237377774.json",
+      "docs/orchestration/evidence/m5-local-verification.json"
+    ]
   },
   "external_blockers": [
     {
-      "id": "capture-design",
-      "gate": "canonical target-aware execution and publication",
-      "reason": "Exact capture target identity unresolved. Does not block synthetic M3 implementation once M2 is repaired.",
-      "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
+      "id": "colab-memory-and-container",
+      "gate": "canonical HG001 execution",
+      "reason": "Owner report: High-RAM enabled, 50.99 GiB RAM versus 80.84 GiB index-build estimate before headroom; Docker absent. Candidate reusable index not yet reference/reader qualified.",
+      "owner_action": "Do not retry index construction on this allocation. Await a qualified reusable-index handoff or a sufficient Colab allocation; container isolation needs independent qualification."
     }
   ],
-  "next_safe_action": "Wait for M4 continuation gate; do not infer implementation from this checkpoint.",
-  "observed_at": "2026-09-07T06:55:06.840463+00:00"
+  "next_safe_action": "Inspect the single draft-PR CI run and its M5 evidence; do not mark M5 verified before actual tool acceptance. Nextflow M5 cache/equivalence qualification, duplicate manifest-key gate, coding-domain constructor and reusable-index handoff remain follow-up.",
+  "observed_at": "2026-09-08T19:04:01.980925+00:00"
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "project_version": "0.4.0-dev.1",
+  "project_version": "0.5.0-dev.1",
   "kind": "m4_immutable_caller_contracts",
   "tools": {
     "gatk": {

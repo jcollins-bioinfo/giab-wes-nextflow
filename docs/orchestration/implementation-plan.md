@@ -155,3 +155,13 @@ not establish indel accuracy, a canonical denominator or HG001 benchmarking.
 M5 independent implementation can begin only after actual M4 qualification;
 canonical completion additionally needs an approved scientific domain, fully
 validated real data and immutable accuracy/resource evidence.
+
+## Bounded M5 delivery, 2026-09-08
+
+M4's verified merged-main envelope is reconciled. M5 common normalization,
+RTG benchmarking, package metrics, typed resource attribution and separate
+synthetic workflow/driver are implemented for qualification. One CI run will
+exercise the new driver after the existing M4 job. No local expensive M3/M4
+Docker rerun or genomic download is needed. Coding-domain constructor and
+reusable-index qualification handoff are deferred to preserve the owner's usage
+budget. They remain prerequisites, not completed canonical-readiness claims.

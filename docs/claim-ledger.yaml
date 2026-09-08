@@ -74,3 +74,9 @@ claim_rules:
   - A public build check is not a public HTTP deployment test.
   - Full HG001 DeepVariant results require the documented training-overlap limitation.
   - Chr20–22 sensitivity is a same-individual locus analysis, not population generalization.
+
+  - id: m5-common-implementation
+    classification: implemented
+    statement: Package and downstream workflow implement symmetric normalization, pinned RTG benchmarking and typed resource attribution.
+    evidence: docs/adr/0014-m5-common-normalization-and-benchmark.md
+    limitation: Local unit and stub checks do not qualify actual container matching; canonical metrics and costs remain unavailable.

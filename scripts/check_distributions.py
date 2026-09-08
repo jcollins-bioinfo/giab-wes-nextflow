@@ -14,7 +14,7 @@ import tarfile
 import zipfile
 
 FORBIDDEN_PARTS = {".git", ".nf-test", ".nextflow", "__pycache__", ".pytest_cache",
-                   "work", "results", "m3-generated", "m4-generated", "m3-test-results", "cache",
+                   "work", "results", "m3-generated", "m4-generated", "m5-generated", "m5-test-results", "m3-test-results", "cache",
                    ".venv", "dist", "inputs", "references", "private-workspace"}
 FORBIDDEN_SUFFIXES = (".pyc", ".bam", ".bai", ".sam", ".cram", ".crai", ".vcf",
                       ".vcf.gz", ".bcf", ".fastq.gz", ".fq.gz", ".fa", ".fasta",

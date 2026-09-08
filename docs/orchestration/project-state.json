@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0.0",
   "record_type": "project_state",
-  "milestone": "M4",
-  "phase": "M4 verified on merged main; M5 implementation now permitted",
-  "state": "verified",
-  "version": "0.4.0-dev.1",
+  "milestone": "M5",
+  "phase": "M5 common normalization, authoritative benchmarking and resource attribution",
+  "state": "implemented",
+  "version": "0.5.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "main",
+      "branch": "codex/m5-benchmark-and-canonical-readiness",
       "evidence_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
       "evidence_scope": "observed_prior_commit"
     },
@@ -131,60 +131,11 @@
   ],
   "local_tests": [
     {
-      "name": "Python 3.12 and 3.13 M4 diagnostic regression",
-      "status": "passed",
-      "evidence_sha": "99a5b061675304158f85819f4ca0327fdec5da3c",
-      "command": "python -m unittest discover -s tests/unit -v",
-      "detail": "236 tests passed on each interpreter at 99a5b06; separate installed-wheel diagnostic subset passed 56 tests. Unchanged suites reused for this app-only continuation."
-    },
-    {
-      "name": "Explorer installed wheel and capability module",
+      "name": "M5 final local qualification checks",
       "status": "passed",
       "evidence_sha": null,
-      "command": "python -I -m unittest discover -s explorer/tests -v; python -m unittest discover -s tests/unit -p test_canonical_host.py -v",
-      "detail": "Explorer five tests passed on Python 3.13 installed wheel; host two tests passed on Python 3.12 and 3.13. Browser views, filter and responsive rendering checked; no console errors/warnings."
-    },
-    {
-      "name": "Nextflow and nf-test",
-      "status": "passed",
-      "evidence_sha": null,
-      "command": "nf-test test; nextflow lint .",
-      "detail": "14 tests passed; zero lint errors/two inherited warnings; synthetic stubs only. Counts26/0,3/23,1/27,0/28 completed/cached."
-    },
-    {
-      "name": "Build, source and documentation checks",
-      "status": "passed",
-      "evidence_sha": null,
-      "command": "python -m build --no-isolation; python scripts/check_distributions.py; pre-commit run --all-files; python scripts/validate_orchestration.py",
-      "detail": "Safe wheel/sdist, closed schemas/version consistency, typed/documented changed Python, formatting and no large/generated/credential/sequence findings; final branch scan follows commit."
-    },
-    {
-      "name": "First CI setup repairs",
-      "status": "passed",
-      "evidence_sha": null,
-      "command": "python -m unittest discover -s tests/unit -p test_m4_integration_driver.py; nf-test test tests/m4_pipeline.nf.test --ci",
-      "detail": "17 driver tests passed on Python3.12/3.13 and independent root/reviewer checks; missing-fixture pipeline test passed after clean regeneration. No images, caller parameters or fixture bytes changed."
-    },
-    {
-      "name": "Collector logical command-line repair",
-      "status": "passed",
-      "evidence_sha": null,
-      "command": "python -m unittest discover -s tests/unit; python -I -m unittest discover -s <repository>/tests/unit -p test_m4*.py",
-      "detail": "233 tests passed on Python3.12/3.13;53 M4 tests passed from isolated rebuilt wheel. Exact actual HC report script and genuine Nextflow-rendered HC/DV scripts recover unchanged parameters; malformed/duplicate/hidden invocations still fail."
-    },
-    {
-      "name": "DeepVariant physical prediction filename repair",
-      "status": "passed",
-      "evidence_sha": null,
-      "command": "nextflow lint .; git diff --check",
-      "detail": "Pinned primary writer and shard utility plus actual one-writer log establish exact filename; one inspector input literal changed, with no caller parameter, fixture, tool identity or acceptance relaxation. Actual CI rerun required."
-    },
-    {
-      "name": "Bounded native-call failure diagnostics",
-      "status": "passed",
-      "evidence_sha": null,
-      "command": "python -m unittest discover -s tests/unit; python -I -m unittest discover -s <repository>/tests/unit -p test_m4*.py",
-      "detail": "236 tests passed on Python3.12/3.13;56 M4 tests passed from exact-source isolated rebuilt wheel. Independent AST review preserves acceptance and success paths. Failure-only observations are bounded to registered synthetic loci."
+      "command": "complete installed-wheel suite; targeted environment/version retries; nf-test; lint; contracts; build; pre-commit",
+      "detail": "264 unique Python tests and 17 unique nf-tests resolved; 5 Explorer tests passed. Exact initial failures and focused retries retained in m5-local-verification.json. Actual M5 engines and Nextflow resume remain unobserved."
     }
   ],
   "ci": [
@@ -306,7 +257,8 @@
       "docs/orchestration/evidence/main-ci-34237377774.json",
       "docs/orchestration/evidence/colab-capability-observed-20260908.json",
       "docs/orchestration/evidence/colab-capability-assessment.json",
-      "docs/orchestration/evidence/m4-verified-main-34237377774.json"
+      "docs/orchestration/evidence/m4-verified-main-34237377774.json",
+      "docs/orchestration/evidence/m5-local-verification.json"
     ]
   },
   "external_blockers": [
@@ -317,6 +269,6 @@
       "owner_action": "Do not retry index construction on this allocation. Await a qualified reusable-index handoff or a sufficient Colab allocation; container isolation needs independent qualification."
     }
   ],
-  "next_safe_action": "Implement and synthetically qualify M5 common normalization, authoritative benchmarking and resource attribution. Preserve canonical domain, reference/BQSR, reusable-index and runtime gates.",
-  "observed_at": "2026-09-08T18:40:36.841119+00:00"
+  "next_safe_action": "Inspect the single draft-PR CI run and its M5 evidence; do not mark M5 verified before actual tool acceptance. Nextflow M5 cache/equivalence qualification, duplicate manifest-key gate, coding-domain constructor and reusable-index handoff remain follow-up.",
+  "observed_at": "2026-09-08T19:04:01.980925+00:00"
 }

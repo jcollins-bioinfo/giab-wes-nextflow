@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0-dev.1 — M5 implementation
+
+- Add preregistered common normalization and RTG benchmark contracts with Python metrics.
+- Add typed trace/resource attribution and separate synthetic downstream workflow.
+- Extend the existing M4 CI job with bounded M5 qualification; no canonical execution.
+- Defer coding-domain constructor and index handoff within the owner usage budget.
+
 ## [0.4.0-dev.1] - 2026-09-07
 
 M4 implementation subsequently verified on merged main f29ed262b886ba4afe18cf9cc6455edcf13df808 by CI34237377774 (2026-09-08): separately registered positive SNV fixture,

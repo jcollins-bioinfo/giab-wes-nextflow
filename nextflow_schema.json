@@ -172,6 +172,14 @@
         "benchmark": {
           "type": "boolean",
           "description": "Future benchmark enablement; false in M1."
+        },
+        "m5_manifest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Explicit synthetic M5 reference/query/truth manifest for the downstream m5.nf entry; never forwarded into caller or normalization environments."
         }
       }
     },

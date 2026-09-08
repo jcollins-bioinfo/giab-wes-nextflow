@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "package_version",
+    "synthetic",
+    "canonical",
+    "caller",
+    "sample",
+    "payload_sha256",
+    "inputs",
+    "outputs",
+    "commands",
+    "tools",
+    "warnings",
+    "native_contract",
+    "record_count",
+    "excluded_records"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "kind": {
+      "const": "normalization"
+    },
+    "package_version": {
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "canonical": {
+      "const": false
+    },
+    "caller": {
+      "enum": [
+        "gatk",
+        "deepvariant",
+        "truth"
+      ]
+    },
+    "sample": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "filename": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "required": [
+        "raw_vcf",
+        "raw_index",
+        "reference",
+        "fai",
+        "dictionary"
+      ]
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "filename": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "required": [
+        "normalized.vcf.gz",
+        "normalized.vcf.gz.tbi"
+      ]
+    },
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool",
+          "image",
+          "argv",
+          "exit_code",
+          "stdout_sha256",
+          "stderr_sha256",
+          "network",
+          "mounts"
+        ],
+        "properties": {
+          "tool": {
+            "enum": [
+              "bcftools",
+              "rtg"
+            ]
+          },
+          "image": {
+            "type": "string"
+          },
+          "argv": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "exit_code": {
+            "const": 0
+          },
+          "stdout_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "stderr_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "network": {
+            "const": "none"
+          },
+          "mounts": {
+            "const": [
+              "task"
+            ]
+          }
+        }
+      }
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bcftools"
+      ],
+      "properties": {
+        "bcftools": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "declared",
+            "observed_version"
+          ],
+          "properties": {
+            "declared": {
+              "const": {
+                "version": "1.24",
+                "image": "quay.io/biocontainers/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+              }
+            },
+            "observed_version": {
+              "type": "string",
+              "minLength": 5
+            }
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "native_contract": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "filename",
+            "bytes",
+            "sha256"
+          ],
+          "properties": {
+            "filename": {
+              "type": "string"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "excluded_records": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    }
+  }
+}

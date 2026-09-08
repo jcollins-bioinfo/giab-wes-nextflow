@@ -10,7 +10,7 @@ from giab_wes_nextflow.resources import config_path, schema_path
 class HotfixTest(unittest.TestCase):
  def test_package_resources_and_canonical_manifest(self) -> None:
   """Keep current package version and the ten-resource canonical source identity consistent."""
-  spec=load_manifest();self.assertEqual(__version__,'0.4.0-dev.1');self.assertEqual({x['id'] for x in spec['resources']},CANONICAL_IDS);self.assertEqual(len(spec['resources']),10);self.assertTrue(schema_path('m2-source-manifest.schema.json').is_file())
+  spec=load_manifest();self.assertEqual(__version__,'0.5.0-dev.1');self.assertEqual({x['id'] for x in spec['resources']},CANONICAL_IDS);self.assertEqual(len(spec['resources']),10);self.assertTrue(schema_path('m2-source-manifest.schema.json').is_file())
  def test_preflight_has_no_workspace_mutation(self) -> None:
   """Ensure metadata preflight never creates or changes workspace files."""
   with tempfile.TemporaryDirectory() as td:
