@@ -35,5 +35,4 @@ redownload large files merely to create new evidence when validated reuse works.
 The latest observed mirror reports 10 objects and 4,900,011,445 bytes; this audit
 inspected control records and metadata only. No prepared reference or canonical
 completion marker was observed. Gate A source readiness requires fresh verified
-bytes. Gate B additionally requires confirmed capture-design identity and
-canonical materialized domains. A mirror never completes Gate B.
+bytes. Under ADR 0013, Gate B requires validated materialization of the owner-approved fixed coding domain instead of unresolved physical capture-kit adoption. A mirror never completes Gate B.

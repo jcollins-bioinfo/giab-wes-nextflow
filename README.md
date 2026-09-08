@@ -1,6 +1,6 @@
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
-> **M4 dual callers — version 0.4.0-dev.1, implemented; local tests passed, actual caller qualification pending.** M3 synthetic shared preprocessing passed required CI 34103737524 at `c3426d3d4578ec6e66a6494c09fde983a7e4f3cd`; its evidence checkpoint is draft PR #20, stacked on M2.1.1 recovery draft PR #19. This M4 branch adds isolated caller contracts and a separately versioned positive fixture. Real HG001, independent known-sites compatibility and capture-dependent execution remain gated. See the [observed state](docs/orchestration/project-state.json), [implementation plan](docs/orchestration/implementation-plan.md), and [claim ledger](docs/claim-ledger.yaml).
+> **Synthetic Dash prototype available; real HG001 results pending.** The owner approved the fixed GENCODE v50 coding-domain alternative and early synthetic prototype (ADR 0013). M3 synthetic preprocessing is verified. M4 remains implemented, not verified: CI 34202569517 completed DeepVariant inference but failed native heterozygote acceptance. [Run the explorer](explorer/README.md) and [prepare the Colab capability observation](docs/canonical-colab.md). Index construction will use Colab CPU/RAM with durable large storage in the permitted private Drive hierarchy. No canonical run or public deployment is claimed.
 
 ## Motivation and architecture
 
@@ -13,7 +13,7 @@ lane-aware FASTQs → shared BWA-MEM2/sort/markdup/BQSR BAM (+ OQ)
 Nextflow canonical run → immutable evidence → tested Python model → Dash renderer
 ```
 
-Synthetic shared preprocessing and its typed Python evidence boundary passed local tests and actual Linux/x86_64 Docker CI. Caller branches are implemented and locally tested in M4; benchmarking and Dash require later gates. ONT and somatic workflows are outside v1.
+Synthetic shared preprocessing and its typed Python evidence boundary passed local tests and actual Linux/x86_64 Docker CI. Caller branches are implemented and locally tested in M4; canonical benchmarking and completion of M8 require later gates; the owner-approved synthetic Dash prototype is available now. ONT and somatic workflows are outside v1.
 
 ## Foundation quick start (synthetic, nonhuman fixture only)
 
@@ -70,7 +70,7 @@ GATK layers; allow at least 10 GiB free for image/runtime/test headroom. This
 estimate is for the tiny integration test, not full-reference HG001 alignment.
 
 `--workflow_mode m3_canonical` fails closed. No exact real known-sites manifest,
-prepared reference or approved capture-dependent domain is established. Synthetic
+prepared reference or validated canonical domain implementation is established. The fixed coding-domain alternative is owner-approved under ADR 0013. Synthetic
 reference windows are QC intervals and cannot serve as the primary evaluation
 domain. Neither caller executes in M3. Future GATK consumes recalibrated QUAL;
 future DeepVariant consumes OQ, so identical BAM bytes do not imply identical

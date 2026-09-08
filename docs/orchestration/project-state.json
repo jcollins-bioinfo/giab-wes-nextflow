@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "project_state",
   "milestone": "M4",
-  "phase": "diagnose native DeepVariant acceptance after completed prediction inspection",
+  "phase": "M4 native failure identified; owner-approved synthetic explorer and Colab capability handoff",
   "state": "implemented",
   "version": "0.4.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/m4-dual-callers",
-      "evidence_sha": "a5fb7d8dd3e22f3f94f2259ae6626e35da4d1039",
+      "branch": "codex/evidence-explorer-prototype",
+      "evidence_sha": "99a5b061675304158f85819f4ca0327fdec5da3c",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -28,9 +28,9 @@
     },
     {
       "id": "exact-capture-design",
-      "status": "blocked",
+      "status": "declared",
       "sha256": "7ce7a9f769e51ecb8ab5588c6bc7c24d19e25b2bd6c1b958415b7b16987f01b8",
-      "reason": "Exact deposited Expanded target bytes and dataset association verified; unique NIST7035 kit assignment and canonical domain adoption remain unresolved. No source-dictionary/liftover execution yet."
+      "reason": "Physical kit identity remains uncertain; owner approved fixed coding-domain alternative in ADR 0013. Package-owned canonical domain implementation remains unvalidated."
     },
     {
       "id": "giab_garvan_sequence_index",
@@ -114,29 +114,35 @@
       "id": "m4-caller-tool-lock",
       "status": "declared",
       "sha256": "be32c936c2f4371920da5cb786bf5eb4f69d45672043256ff066eeae1206f2e3",
-      "reason": "Pinned CPU image/model metadata and exact caller parameters; actual M4 execution pending."
+      "reason": "Pinned CPU WES execution and prediction inspection completed in CI34202569517; native heterozygote acceptance failed."
     },
     {
       "id": "invented-m4-fixture-expectations",
       "status": "verified",
       "sha256": "e31ffa05a94f540e563f56d4dc3990ec0c8fa803cdccb7c3c8fe40a16a0348ad",
       "reason": "Frozen separately versioned 264-pair invented recipe; exact generation/unit checks passed, actual caller acceptance pending."
+    },
+    {
+      "id": "owner-approved-fixed-coding-domain",
+      "status": "declared",
+      "sha256": "9c270a2c46c2e83ae0d35e5ceaa75e4b77918924bf7443d4fffe467cd9b950d4",
+      "reason": "Owner explicitly approved proposal on 2026-09-08; 33,567,783 confident autosomal coding bases. Approval is not validated canonical implementation."
     }
   ],
   "local_tests": [
     {
-      "name": "Python 3.12 complete suite",
+      "name": "Python 3.12 and 3.13 M4 diagnostic regression",
       "status": "passed",
-      "evidence_sha": null,
-      "command": "python -m unittest discover -s tests/unit",
-      "detail": "227 tests passed in24.863s on current source; original BLAKE2 host warnings retained in hashed log."
+      "evidence_sha": "99a5b061675304158f85819f4ca0327fdec5da3c",
+      "command": "python -m unittest discover -s tests/unit -v",
+      "detail": "236 tests passed on each interpreter at 99a5b06; separate installed-wheel diagnostic subset passed 56 tests. Unchanged suites reused for this app-only continuation."
     },
     {
-      "name": "Python 3.13 isolated installed wheel complete suite",
+      "name": "Explorer installed wheel and capability module",
       "status": "passed",
       "evidence_sha": null,
-      "command": "python -I -m unittest discover -s <repository>/tests/unit -v",
-      "detail": "227 tests passed in21.842s from /tmp; clean wheel package bytes matched current source; original cwd-dependent notebook test repaired."
+      "command": "python -I -m unittest discover -s explorer/tests -v; python -m unittest discover -s tests/unit -p test_canonical_host.py -v",
+      "detail": "Explorer five tests passed on Python 3.13 installed wheel; host two tests passed on Python 3.12 and 3.13. Browser views, filter and responsive rendering checked; no console errors/warnings."
     },
     {
       "name": "Nextflow and nf-test",
@@ -187,15 +193,15 @@
       "required": true,
       "status": "failure",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "a5fb7d8dd3e22f3f94f2259ae6626e35da4d1039",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045",
+      "evidence_sha": "99a5b061675304158f85819f4ca0327fdec5da3c",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106801",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106899",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106948",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106972",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106977",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101717548124"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526495",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526694",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526771",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526823",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526831",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101986088007"
       ]
     }
   ],
@@ -243,6 +249,17 @@
       "evidence_artifacts": [
         "docs/orchestration/evidence/m4-ci-attempt-4.json"
       ]
+    },
+    {
+      "id": "linux-x86-64-m4-attempt-5",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34202569517-m4-attempt-5",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-ci-attempt-5.json"
+      ]
     }
   ],
   "publication": {
@@ -261,17 +278,18 @@
       "docs/orchestration/evidence/m4-ci-attempt-1.json",
       "docs/orchestration/evidence/m4-ci-attempt-2.json",
       "docs/orchestration/evidence/m4-ci-attempt-3.json",
-      "docs/orchestration/evidence/m4-ci-attempt-4.json"
+      "docs/orchestration/evidence/m4-ci-attempt-4.json",
+      "docs/orchestration/evidence/m4-ci-attempt-5.json"
     ]
   },
   "external_blockers": [
     {
-      "id": "capture-design",
-      "gate": "canonical target-aware execution and publication",
-      "reason": "Unique NIST7035 assay assignment remains uncertain despite exact deposited target identity and dataset-level primary support; canonical domain adoption needs a documented scientific decision.",
-      "owner_action": "At the canonical gate, provide stronger per-library assignment or approve an explicit domain and its limited estimand after reviewing the investigation."
+      "id": "owner-colab-capability",
+      "gate": "real HG001 execution",
+      "reason": "Actual Colab allocation, memory, disk and container capabilities have not been observed.",
+      "owner_action": "Run the pinned capability notebook and return canonical-host-capability.json. Index construction must use Colab CPU/RAM; durable large files belong in the permitted Drive project folders."
     }
   ],
-  "next_safe_action": "Re-run unchanged biological execution with bounded native VCF/gVCF failure diagnostics. DeepVariant and its strict TFRecord inspector completed; native expected-site acceptance failed, and absent diagnostic rows prevent distinguishing missing locus, genotype, filter or duplicate acceptance. Preserve all gates; no M5 implementation yet.",
-  "observed_at": "2026-09-08T08:03:25.319372+00:00"
+  "next_safe_action": "Obtain owner Colab capability observation. Resolve unchanged M4 native heterozygote acceptance; validate approved domain, independent BQSR resources, reference/index and canonical interfaces before real HG001 execution. Synthetic explorer is an approved early prototype, not M8 completion.",
+  "observed_at": "2026-09-08T08:35:12.376669+00:00"
 }

@@ -2,7 +2,11 @@
 
 Author: John Patrick Collins. Observed baseline: 2026-09-07.
 
-## Baseline and dependency
+## Current owner-directed continuation (2026-09-08)
+
+Owner merged PR 19 into main (15188236b786dd36f65dbf966d75a245ef52a8b1) and PR 20 into the recovery branch (f16670452736def68d3329d61c72524641ab9a00). PR 21 remains draft and M4 failed native acceptance. ADR 0013 records approved fixed coding-domain selection, early synthetic Dash prototype, Colab compute and Drive durable storage. Prioritize the prototype and capability handoff while preserving real-execution gates. The following baseline is historical.
+
+## Historical baseline and dependency
 
 Pipeline main is `d9a9d700ab5603b693468d22b4fd66ed96348881`, version
 `0.2.0-dev.3`, including merged PR #18. CI run 34091284958 and its required

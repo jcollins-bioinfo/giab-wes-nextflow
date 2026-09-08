@@ -1,6 +1,12 @@
 access_date: 2026-09-07
 status: "Entries retain their individual access dates. 2026-09-07 repository/CI, Git identity, Python path/atomic-rename documentation and private-cache metadata were reverified. Earlier tool/scientific entries retain their original evidence scope; configured does not mean executed."
 sources:
+  - claim: "Owner approved fixed GENCODE v50 coding estimand, early synthetic prototype, Colab compute and private Drive durable storage"
+    url: docs/adr/0013-approved-domain-colab-and-prototype.md
+    access_date: 2026-09-08
+  - claim: "BWA-MEM2 v2.3 index build memory planning formula is 28 times reference size; not measured peak RSS"
+    url: https://github.com/bwa-mem2/bwa-mem2/blob/v2.3/README.md
+    access_date: 2026-09-08
   - claim: "Pinned BWA-MEM2 2.3 distribution reports executable version 2.2.1; source release archive defines the same fallback"
     url: https://github.com/bwa-mem2/bwa-mem2/releases/download/v2.3/Source_code_including_submodules.tar.gz
     archive_sha256: 0c48a1ea800af499ae7264b4c8908c4ca35fbe5a7df2ad6106c79aa94bb49cbb
