@@ -2,7 +2,11 @@
 
 Author: John Patrick Collins. Observed baseline: 2026-09-07.
 
-## Baseline and dependency
+## Current owner-directed continuation (2026-09-08)
+
+Owner merged PR 19 into main (15188236b786dd36f65dbf966d75a245ef52a8b1) and PR 20 into the recovery branch (f16670452736def68d3329d61c72524641ab9a00). PR 21 remains draft and M4 failed native acceptance. ADR 0013 records approved fixed coding-domain selection, early synthetic Dash prototype, Colab compute and Drive durable storage. Prioritize the prototype and capability handoff while preserving real-execution gates. The following baseline is historical.
+
+## Historical baseline and dependency
 
 Pipeline main is `d9a9d700ab5603b693468d22b4fd66ed96348881`, version
 `0.2.0-dev.3`, including merged PR #18. CI run 34091284958 and its required
@@ -113,3 +117,34 @@ BAM/index/OQ/ownership checks and all 22-task resume assertions. Head
 `c929718a76b51e48bea6c4b9ebcb451a9d94574c` have identical Git trees.
 The exact artifact checksum and selected unmodified reports are recorded in
 `evidence/m3-verified.json`; M3 is verified for synthetic execution. M4 may proceed.
+
+
+## M4 implementation plan, begun after synthetic M3 verification
+
+Branch `codex/m4-dual-callers` is stacked on `codex/m3-shared-preprocessing`
+at `23b939efeb2b7b01403dab3124b5a7c6a57f6290` (draft PR #20). Required
+CI 34106269114 passed that M3 checkpoint and its exact archival lint repair.
+The original actual M3 proof remains bound to executable head `c3426d3`
+and its identical tested tree; no unobserved M4 result is inferred.
+
+1. Preserve original M3 fixture bytes and register a separate positive SNV
+   fixture with exact manifest/read expectations, independent known sites and
+   the same genuine preprocessing/OQ acceptance boundary.
+2. Implement package-owned typed caller input, native VCF and bundle contracts;
+   validate every BAM/BAI/reference/full-contig calling-region identity.
+3. Add independently selectable direct GATK VCF and DeepVariant WES paths with
+   fixed parameters, isolated regular input files and actual mount auditing.
+4. Detect Linux/x86_64 CPU/Docker capabilities, inspect the pinned model's
+   actual file inventory, and require positive candidate and inference records.
+5. Qualify independent/both equivalence and resume reuse using a clean clone,
+   isolated installed package, frozen allele oracle and real Docker tools.
+6. Run unit/negative tests on Python 3.12/3.13, nf-tests, source/wheel checks,
+   branch-history privacy scans and all required remote CI; record observed
+   success or failure without weakening scientific gates.
+
+[ADR 0012](../adr/0012-m4-caller-execution-and-qualification.md) fixes the
+method decisions before caller results. M4 synthetic SNV qualification does
+not establish indel accuracy, a canonical denominator or HG001 benchmarking.
+M5 independent implementation can begin only after actual M4 qualification;
+canonical completion additionally needs an approved scientific domain, fully
+validated real data and immutable accuracy/resource evidence.

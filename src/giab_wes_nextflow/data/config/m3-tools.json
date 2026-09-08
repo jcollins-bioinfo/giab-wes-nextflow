@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0.0",
-  "project_version": "0.3.0-dev.1",
+  "project_version": "0.4.0-dev.1",
   "kind": "m3_immutable_tool_contracts",
   "tools": {
     "bwa-mem2": {

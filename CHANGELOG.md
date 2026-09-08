@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0-dev.1] - 2026-09-07
+
+M4 implementation in progress: separately registered positive SNV fixture,
+shared accepted preprocessing inputs, independent/both GATK and DeepVariant WES
+caller contracts and actual Linux/x86_64 qualification. Execution status is
+owned by the M4 checkpoint; a version declaration is not a passing run.
+
 
 ## [0.3.0-dev.1] - 2026-09-07
 

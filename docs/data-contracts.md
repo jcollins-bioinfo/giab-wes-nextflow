@@ -26,3 +26,33 @@ major version. Historical 1.0.0 provenance is preserved as historical bytes and
 rejected by current acceptance; there is no implicit migration. Other M3 evidence
 schemas remain at 1.0.0 and retain their own validation and hash rules. Neither
 schema version establishes successful synthetic or canonical execution by itself.
+
+## M4 input, native-caller and bundle contracts
+
+`m4-inputs`, `m4-caller`, `m4-bundle` and `m4-publication` schemas use version
+1.0.0. Their package validators enforce closed inventories and scientific
+relationships in addition to JSON structure. All current M4 records explicitly
+say synthetic, noncanonical, and pre-normalization. The selected fixture identity
+is exact and independently bound to its authored manifest; the original M3
+recipe remains unchanged.
+
+The input envelope binds the accepted M3 manifest, BAM/BAI, FASTA/FAI/dictionary,
+and a complete invented-reference calling region by hash and size. The copied
+input directory contains only these six data files and aggregate metadata.
+Reference/calling-region bytes are identical between callers. Recalibrated QUAL
+for GATK and OQ for DeepVariant are separately declared quality policies.
+
+Each native-caller envelope binds run/repository/package identity, sample,
+input payload and physical file identities, the exact installed image/version
+and parameters, observed command, resources and native output hashes. GATK
+uses direct VCF with null gVCF/model fields. DeepVariant requires WES model
+inventory and nonzero candidate/inference evidence. Native representation is
+retained; M5 will own common normalization and accuracy/cost results. Null
+logical task IDs in host-collected JSON are not actual task IDs: preserved
+Nextflow trace rows bind actual process/task/cache identities independently.
+
+The bundle selects GATK, DeepVariant or both in canonical order and revalidates
+every selected record and shared input lineage. Publication accepts only the
+selected three or four JSON files, hashes destination bytes, writes an immutable
+registry and exposes the completion marker last. Recovery revalidates those
+records; it does not recover Nextflow work or qualify a new caller execution.

@@ -16,6 +16,7 @@ dependencies = ["jsonschema>=4.20"]
 dev = ["build==1.3.0", "pre-commit==4.3.0", "pytest==8.4.2"]
 
 [project.scripts]
+giab-wes-m4 = "giab_wes_nextflow.m4_cli:main"
 giab-wes-m3 = "giab_wes_nextflow.m3_cli:main"
 giab-wes-acquire-m2 = "giab_wes_nextflow.acquisition:main"
 giab-wes-prepare-m2 = "giab_wes_nextflow.preparation:main"
@@ -31,4 +32,4 @@ packages = ["src/giab_wes_nextflow"]
 
 [tool.hatch.build.targets.sdist]
 only-include = ["src", "scripts", "config", "schemas", "tests", "notebooks", "pyproject.toml", "README.md", "LICENSE", "main.nf", "nextflow.config", "nextflow_schema.json", "workflows", "subworkflows", "modules", "conf", "assets", "docs", "CITATION.cff", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "requirements-dev.in", "requirements-dev.txt", "nf-test.config", ".nf-core.yml", ".pre-commit-config.yaml", ".gitignore", ".gitattributes"]
-exclude = ["**/__pycache__/**", "**/*.pyc", "/tests/data/m3-generated/**", "/tests/data/synthetic_nonhuman_R1.fastq.gz", "/tests/data/synthetic_nonhuman_R2.fastq.gz", "**/*.bam", "**/*.bai", "**/*.sam", "**/*.cram", "**/*.vcf", "**/*.vcf.gz", "**/*.fastq.gz", "**/*.fq.gz", "**/*.fa", "**/*.fasta", "**/*.fai", "**/*.dict", "**/*.tbi", "**/*.part", "**/*.incomplete"]
+exclude = ["**/__pycache__/**", "**/*.pyc", "/tests/data/m3-generated/**", "/tests/data/m4-generated/**", "/tests/data/synthetic_nonhuman_R1.fastq.gz", "/tests/data/synthetic_nonhuman_R2.fastq.gz", "**/*.bam", "**/*.bai", "**/*.sam", "**/*.cram", "**/*.vcf", "**/*.vcf.gz", "**/*.fastq.gz", "**/*.fq.gz", "**/*.fa", "**/*.fasta", "**/*.fai", "**/*.dict", "**/*.tbi", "**/*.part", "**/*.incomplete"]

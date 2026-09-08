@@ -8,6 +8,7 @@ lint:
   # execution proof. Source-code template checks remain enabled.
   template_strings:
     - docs/orchestration/evidence/m3-synthetic-ci-34103737524/integration-proof.json
+    - explorer/src/pipeline_evidence_explorer/data/m3-proof.json
   # This external, unbranded repository intentionally does not carry the complete
   # official nf-core template, branding, deployment, AWS, email, or website files.
   files_exist: false

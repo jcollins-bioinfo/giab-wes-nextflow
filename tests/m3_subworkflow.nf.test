@@ -39,6 +39,8 @@ nextflow_workflow {
             assert manifest.validation_status == 'not_validated'
             assert manifest.biological_processing == false
             assert manifest.canonical == false
+            assert workflow.out.reference.size() == 1
+            assert workflow.out.reference[0].collect { item -> path(item).fileName.toString() }.sort() == ['reference.dict','reference.fa','reference.fa.fai']
         }
     }
 }

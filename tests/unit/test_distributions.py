@@ -39,6 +39,24 @@ class DistributionTest(unittest.TestCase):
                 CHECK.validate_archive(archive_path)
             self.assertEqual([path.name for path in Path(directory).iterdir()], ["unsafe.tar.gz"])
 
+    def test_m4_generated_metadata_is_rejected_in_both_archive_formats(self) -> None:
+        """Generated M4 JSON must fail independently of genomic suffix or build exclusions."""
+        member = "package/tests/data/m4-generated/reference-source.json"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "unsafe.tar.gz"
+            with tarfile.open(source, "w:gz") as archive:
+                item = tarfile.TarInfo(member)
+                item.size = 2
+                archive.addfile(item, io.BytesIO(b"{}"))
+            wheel = root / "unsafe.whl"
+            with zipfile.ZipFile(wheel, "w") as archive:
+                archive.writestr(member, "{}")
+            for path in (source, wheel):
+                with self.subTest(format=path.suffix), self.assertRaisesRegex(ValueError, "generated or prohibited"):
+                    CHECK.validate_archive(path)
+            self.assertEqual({path.name for path in root.iterdir()}, {"unsafe.tar.gz", "unsafe.whl"})
+
     def test_source_code_and_schema_archive_is_accepted(self) -> None:
         """Small authored source files pass the independent distribution inventory."""
         with tempfile.TemporaryDirectory() as directory:

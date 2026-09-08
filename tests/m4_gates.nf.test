@@ -1,0 +1,50 @@
+nextflow_pipeline {
+    name 'M4 canonical and oracle-input boundaries'
+    script '../main.nf'
+    tag 'm4'
+    test('canonical callers cannot launch without the outstanding source and domain gates') {
+        when {
+            params {
+                workflow_mode = 'm4_canonical'
+            }
+        }
+        then {
+            assert !workflow.success
+            assert workflow.trace.tasks().isEmpty()
+            assert workflow.stdout.join(' ').contains('Canonical M4 is blocked')
+        }
+    }
+    test('M4 cannot silently select the original preprocessing-only fixture') {
+        when {
+            params {
+                workflow_mode = 'm4_synthetic'
+                reference = "${projectDir}/tests/data/m3-generated/reference.fa"
+                known_sites = "${projectDir}/tests/data/m3-generated/known-sites.vcf"
+                m3_fixture_manifest = "${projectDir}/tests/data/m3-generated/fixture-expectations.json"
+                m3_fixture_id = 'm3-preprocessing'
+            }
+        }
+        then {
+            assert !workflow.success
+            assert workflow.trace.tasks().isEmpty()
+            assert workflow.stdout.join(' ').contains('exact registered synthetic fixture')
+        }
+    }
+    test('benchmark inputs cannot enter synthetic caller execution') {
+        when {
+            params {
+                workflow_mode = 'm4_synthetic'
+                reference = "${projectDir}/tests/data/m3-generated/reference.fa"
+                known_sites = "${projectDir}/tests/data/m3-generated/known-sites.vcf"
+                m3_fixture_manifest = "${projectDir}/tests/data/m3-generated/fixture-expectations.json"
+                m3_fixture_id = 'm4-snv-positive'
+                benchmark = true
+            }
+        }
+        then {
+            assert !workflow.success
+            assert workflow.trace.tasks().isEmpty()
+            assert workflow.stdout.join(' ').contains('cannot consume benchmark, truth or target inputs')
+        }
+    }
+}

@@ -1,0 +1,208 @@
+{
+  "artifact": {
+    "bytes": 1267140,
+    "id": 10046585231,
+    "proof_sha256": "99ff89f9f57da9b6397bd919d72cd92668bc1d5f37b01cb387502c2d1d607b4e",
+    "sha256": "2672ad49e3b4ae1da34072ba69f7b50852306b509d96d4986cfa02a55bc7f90c",
+    "verified_members": 59
+  },
+  "attempt": 5,
+  "canonical": false,
+  "execution_scope": {
+    "both_and_resume_accepted": false,
+    "deepvariant_and_prediction_inspector_completed": true,
+    "deepvariant_native_acceptance": false,
+    "gatk_native_acceptance": true
+  },
+  "gvcf_diagnostic": {
+    "acceptance": false,
+    "file_bytes": 2548,
+    "file_sha256": "02ee884141ba52e1b7466de88213218516f8db46b8f28488a187d9f7f42eb6a6",
+    "fixture_id": "m4-snv-positive",
+    "record_count": 196,
+    "schema_version": "1.0.0",
+    "sites": [
+      {
+        "contig": "chrSYN1",
+        "expected": {
+          "alt": "A",
+          "genotype": "0/1",
+          "ref": "T"
+        },
+        "overlapping_record_count": 1,
+        "position_1based": 3151,
+        "rows": [
+          {
+            "alt": [
+              "A",
+              "<*>"
+            ],
+            "alt_count": 2,
+            "alts_truncated": false,
+            "end_1based": 3151,
+            "filter": "RefCall",
+            "format": {
+              "AD": [
+                40,
+                40,
+                0
+              ],
+              "DP": 80,
+              "GQ": 21,
+              "PL": [
+                0,
+                24,
+                24,
+                990,
+                990,
+                990
+              ]
+            },
+            "genotype": "0/0",
+            "position_1based": 3151,
+            "ref": "T"
+          }
+        ],
+        "rows_truncated": false
+      },
+      {
+        "contig": "chrSYN2",
+        "expected": {
+          "alt": "A",
+          "genotype": "1/1",
+          "ref": "T"
+        },
+        "overlapping_record_count": 1,
+        "position_1based": 7101,
+        "rows": [
+          {
+            "alt": [
+              "A",
+              "<*>"
+            ],
+            "alt_count": 2,
+            "alts_truncated": false,
+            "end_1based": 7101,
+            "filter": "PASS",
+            "format": {
+              "AD": [
+                0,
+                80,
+                0
+              ],
+              "DP": 80,
+              "GQ": 22,
+              "PL": [
+                24,
+                24,
+                0,
+                990,
+                990,
+                990
+              ]
+            },
+            "genotype": "1/1",
+            "position_1based": 7101,
+            "ref": "T"
+          }
+        ],
+        "rows_truncated": false
+      }
+    ]
+  },
+  "head_sha": "99a5b061675304158f85819f4ca0327fdec5da3c",
+  "interpretation": "Actual native model disagreement at frozen heterozygous synthetic site; cause not established. No oracle, model, parameter or gate changed.",
+  "job_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526823",
+  "milestone": "M4",
+  "native_diagnostic": {
+    "acceptance": false,
+    "file_bytes": 920,
+    "file_sha256": "fe089cdd0a2be37cdeb87fbd0e5173cc2e5f2df7da599ba83544254738713c48",
+    "fixture_id": "m4-snv-positive",
+    "record_count": 2,
+    "schema_version": "1.0.0",
+    "sites": [
+      {
+        "contig": "chrSYN1",
+        "expected": {
+          "alt": "A",
+          "genotype": "0/1",
+          "ref": "T"
+        },
+        "overlapping_record_count": 1,
+        "position_1based": 3151,
+        "rows": [
+          {
+            "alt": [
+              "A"
+            ],
+            "alt_count": 1,
+            "alts_truncated": false,
+            "end_1based": 3151,
+            "filter": "RefCall",
+            "format": {
+              "AD": [
+                40,
+                40
+              ],
+              "DP": 80,
+              "GQ": 21,
+              "PL": [
+                0,
+                24,
+                24
+              ]
+            },
+            "genotype": "0/0",
+            "position_1based": 3151,
+            "ref": "T"
+          }
+        ],
+        "rows_truncated": false
+      },
+      {
+        "contig": "chrSYN2",
+        "expected": {
+          "alt": "A",
+          "genotype": "1/1",
+          "ref": "T"
+        },
+        "overlapping_record_count": 1,
+        "position_1based": 7101,
+        "rows": [
+          {
+            "alt": [
+              "A"
+            ],
+            "alt_count": 1,
+            "alts_truncated": false,
+            "end_1based": 7101,
+            "filter": "PASS",
+            "format": {
+              "AD": [
+                0,
+                80
+              ],
+              "DP": 80,
+              "GQ": 22,
+              "PL": [
+                24,
+                24,
+                0
+              ]
+            },
+            "genotype": "1/1",
+            "position_1based": 7101,
+            "ref": "T"
+          }
+        ],
+        "rows_truncated": false
+      }
+    ]
+  },
+  "run_id": 34202569517,
+  "schema_version": "1.0.0",
+  "status": "failed",
+  "synthetic": true,
+  "tested_merge_sha": "c08c4d4c7abe96f0a4d41d106e28ff75d8bc6dc0"
+}

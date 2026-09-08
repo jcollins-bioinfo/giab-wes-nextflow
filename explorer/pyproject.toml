@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pipeline-evidence-explorer"
+version = "0.1.0.dev1"
+description = "Synthetic evidence prototype; no canonical HG001 results"
+requires-python = ">=3.12"
+authors = [{name = "John Patrick Collins"}]
+dependencies = ["dash==4.4.1", "plotly==7.0.0", "gunicorn==26.2.0"]
+
+[project.scripts]
+pipeline-evidence-explorer = "pipeline_evidence_explorer.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pipeline_evidence_explorer"]

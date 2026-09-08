@@ -1,0 +1,33 @@
+nextflow_pipeline {
+    name 'M4 entry point preserves the shared preprocessing gate'
+    script '../main.nf'
+    tag 'm4'
+    options '-stub-run'
+    profile 'm4_test'
+    test('both callers follow one complete preprocessing DAG and publish only explicit stubs') {
+        when {
+            params {
+                callers = 'both'
+                m3_repository_sha = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+                m3_run_id = 'nf-test-m4-stub'
+                outdir = "$outputDir"
+            }
+        }
+        then {
+            assert workflow.success
+            def tasks = workflow.trace.succeeded()
+            assert tasks.size() == 28
+            assert tasks.count { item -> item.name.startsWith('M3_SHARED_PREPROCESSING:') } == 22
+            assert tasks.count { item -> item.name.contains(':M4_PREPARE_INPUTS ') } == 1
+            assert tasks.count { item -> item.name.contains(':M4_HAPLOTYPECALLER ') } == 1
+            assert tasks.count { item -> item.name.contains(':M4_DEEPVARIANT ') } == 1
+            def preprocessing = path("$outputDir/m3/contracts/m3-manifest.json").json
+            def calling = path("$outputDir/m4/both/contracts/m4-manifest.json").json
+            assert preprocessing.status == 'stub_only' && calling.status == 'stub_only'
+            assert calling.validation_status == 'not_validated'
+            assert !calling.inference_validated && !calling.biological_processing && !calling.canonical
+            assert path("$outputDir/m4/both/contracts/m4-gatk.json").json.caller == 'gatk'
+            assert path("$outputDir/m4/both/contracts/m4-deepvariant.json").json.caller == 'deepvariant'
+        }
+    }
+}

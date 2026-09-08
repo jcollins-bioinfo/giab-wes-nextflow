@@ -1,6 +1,6 @@
 # GIAB HG001 WES: dual-caller benchmark and evidence explorer
 
-> **M3 shared preprocessing — version 0.3.0-dev.1, verified by required synthetic Docker CI 34103737524 at `c3426d3d4578ec6e66a6494c09fde983a7e4f3cd`.** M2.1.1 recovery passed required CI at `22d01b202e15bb098e9d42d0ad4a98606e78c2c2` and remains draft PR #19. This dependent branch adds synthetic shared-BAM qualification. Real HG001, independent known-sites compatibility and capture-dependent execution remain gated. See the [observed state](docs/orchestration/project-state.json), [implementation plan](docs/orchestration/implementation-plan.md), and [claim ledger](docs/claim-ledger.yaml).
+> **Synthetic Dash prototype available; real HG001 results pending.** The owner approved the fixed GENCODE v50 coding-domain alternative and early synthetic prototype (ADR 0013). M3 synthetic preprocessing is verified. M4 remains implemented, not verified: CI 34202569517 completed DeepVariant inference but failed native heterozygote acceptance. [Run the explorer](explorer/README.md) and [prepare the Colab capability observation](docs/canonical-colab.md). Index construction will use Colab CPU/RAM with durable large storage in the permitted private Drive hierarchy. No canonical run or public deployment is claimed.
 
 ## Motivation and architecture
 
@@ -13,7 +13,7 @@ lane-aware FASTQs → shared BWA-MEM2/sort/markdup/BQSR BAM (+ OQ)
 Nextflow canonical run → immutable evidence → tested Python model → Dash renderer
 ```
 
-Synthetic shared preprocessing and its typed Python evidence boundary passed local tests and actual Linux/x86_64 Docker CI. Caller branches, benchmarking and Dash remain later milestones. ONT and somatic workflows are outside v1.
+Synthetic shared preprocessing and its typed Python evidence boundary passed local tests and actual Linux/x86_64 Docker CI. Caller branches are implemented and locally tested in M4; canonical benchmarking and completion of M8 require later gates; the owner-approved synthetic Dash prototype is available now. ONT and somatic workflows are outside v1.
 
 ## Foundation quick start (synthetic, nonhuman fixture only)
 
@@ -70,11 +70,61 @@ GATK layers; allow at least 10 GiB free for image/runtime/test headroom. This
 estimate is for the tiny integration test, not full-reference HG001 alignment.
 
 `--workflow_mode m3_canonical` fails closed. No exact real known-sites manifest,
-prepared reference or approved capture-dependent domain is established. Synthetic
+prepared reference or validated canonical domain implementation is established. The fixed coding-domain alternative is owner-approved under ADR 0013. Synthetic
 reference windows are QC intervals and cannot serve as the primary evaluation
 domain. Neither caller executes in M3. Future GATK consumes recalibrated QUAL;
 future DeepVariant consumes OQ, so identical BAM bytes do not imply identical
 effective quality evidence.
+
+## M4 dual-caller qualification
+
+The `m4_synthetic` workflow accepts `--callers gatk`, `--callers deepvariant`,
+or `--callers both`. It uses the same accepted BAM/BAI, reference and fixed
+full-contig calling region in all modes. GATK HaplotypeCaller 4.7.0.0 emits a
+direct native VCF using recalibrated QUAL. DeepVariant 1.10.0 uses its CPU WES
+model and explicitly consumes OQ. Their effective quality evidence differs,
+as recorded in [ADR 0003](docs/adr/0003-shared-bam-oq.md) and
+[the M4 execution decision](docs/adr/0012-m4-caller-execution-and-qualification.md).
+
+The separate [M4 fixture](tests/data/m4/README.md) has 264 invented read pairs,
+two expected SNVs and a reference control. The original M3 fixture is unchanged.
+Caller tasks contain seven explicit regular files, mount only their task
+directory and run without network access. The independent qualification driver
+checks the actual mounted copies and requires positive candidate and inference
+records tied to the pinned WES model, indexed native outputs, matching independent
+and both-mode results, and complete resume reuse.
+
+From a clean committed checkout on Linux/x86_64 with Docker, SSE4.1/SSE4.2/AVX,
+Python and Nextflow 26.04.6/Java 17:
+
+```bash
+python scripts/run_m4_synthetic.py --mode preflight \
+  --output-root /tmp/giab-m4-check --expected-sha "$(git rev-parse HEAD)"
+python scripts/run_m4_synthetic.py --mode docker \
+  --output-root /tmp/giab-m4-integration --expected-sha "$(git rev-parse HEAD)"
+```
+
+The synthetic driver requires at least two Docker CPUs, 12 GiB engine memory
+and 30 GiB free before preparing images. These are tiny-test prerequisites,
+not a canonical HG001 resource estimate. Local macOS/ARM tests qualify Python
+and framework behavior; real DeepVariant execution there remains unsupported
+by this project. M4 is not verified until required Linux Docker CI passes.
+
+The [fourth actual CI attempt](docs/orchestration/evidence/m4-ci-attempt-4.json)
+passed GATK's native-call, shared-BAM and isolation checks. DeepVariant and its
+strict prediction inspector completed, then its native expected-site gate
+failed. The retained artifact lacks the site rows needed to distinguish a
+missing call, filter, genotype or ambiguous accepted record. Bounded diagnostic
+collection is being added without changing the frozen fixture or acceptance
+rules. Both-mode and final resume acceptance remain unverified.
+
+Each selected caller emits a versioned pre-normalization JSON contract, with
+input/output hashes, image/version/model identity, exact parameters and task
+resources. Only validated small JSON contracts enter the guarded
+[M4 evidence publisher](docs/m4-evidence-publication.md). See
+[actual integration acceptance](tests/integration/M4.md) for the complete gate.
+This fixture establishes no indel accuracy, canonical domain, HG001 benchmark
+or compute-cost comparison; those belong to M5 and later execution.
 
 ## Scientific plan and claim boundary
 
@@ -90,7 +140,7 @@ The canonical input is original paired Garvan HiSeq 2500 `NIST7035_TAAGGCGA_L001
 | Nextflow 26.04.6 minimum, Java ≥17 | CI contract; local status reported honestly |
 | nf-core/tools 4.1.0, nf-schema 2.8.0, nf-test 0.9.5 | Pinned CI/tooling contracts |
 | M3 BWA-MEM2, GATK preprocessing and QC | [Verified synthetic Docker execution and resume](docs/orchestration/evidence/m3-verified.json); no canonical HG001 result |
-| GATK HaplotypeCaller and DeepVariant WES | M4 caller branches not implemented or executed |
+| GATK HaplotypeCaller and DeepVariant WES | M4 implemented; local tests passed, actual caller qualification pending |
 | DeepVariant linux/amd64 CPU (AVX) and GPU images | Configured immutable contracts; not tested |
 | ARM64/Apple Silicon | Python tests and framework version commands executed; M3 biological containers and DeepVariant unqualified |
 | Source-cache control record | Ten objects reported, 4,900,011,445 bytes; metadata observed, fresh byte rehash pending |
@@ -120,7 +170,7 @@ giab-wes-acquire-m2 --workspace /path/to/m2-stage --run-id m2-YYYYMMDDTHHMMSSZ
 
 Partial downloads resume; completed bytes are verified before reuse. Use the [Colab launch center](notebooks/README.md) and [recovery runbook](docs/m2-recovery.md) to reuse the observed source cache. The primary source inventory is about 4.9 GB. No large acquisition was performed during the recovery audit. Human and large reference bytes remain private and outside Git.
 
-M2 distinguishes implementation readiness from canonical data readiness. **Gate A** provides strict source contracts, synthetic downloader/domain tests, and private-workspace tooling. **Gate B has not run and is blocked:** the public metadata does not bind this library to an exact capture-design target file. See [M2 operations](docs/m2-data-provenance.md), the machine-readable [target decision](config/m2-target-design.json), and [ADR 0008](docs/adr/0008-m2-canonical-data.md). The [source-cache metadata audit](docs/orchestration/evidence/source-cache-metadata.json) documents the observed older mirror. It does not establish preparation, a qualified Colab/container environment or canonical domains.
+M2 distinguishes implementation readiness from canonical data readiness. **Gate A** provides strict source contracts, synthetic downloader/domain tests, and private-workspace tooling. **Gate B has not run and is blocked:** new primary-source research establishes the exact deposited Expanded Exome target and dataset association, but does not uniquely assign NIST7035 to the 37 Mb or 62 Mb assay. Canonical domain adoption, reference-dictionary validation and audited liftover remain pending. See [M2 operations](docs/m2-data-provenance.md), the machine-readable [target decision](config/m2-target-design.json), and [ADR 0008](docs/adr/0008-m2-canonical-data.md). The [source-cache metadata audit](docs/orchestration/evidence/source-cache-metadata.json) documents the observed older mirror. It does not establish preparation, a qualified Colab/container environment or canonical domains.
 
 ## Colab launch
 
@@ -131,4 +181,4 @@ Use the [notebook launch center](notebooks/README.md) or open M2 directly:
 
 Version `0.2.0-dev.3` established `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
 
-Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact capture-design bytes remain unresolved. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is synthetically verified after the recovery gate. M4 implementation may now begin; M4–M9 require their own execution and scientific gates.
+Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact deposited target bytes are now recorded; their unique per-library assay assignment and canonical adoption remain unresolved. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is synthetically verified after the recovery gate. M4 is implemented and locally tested; actual caller execution and M5–M9 retain their own gates.

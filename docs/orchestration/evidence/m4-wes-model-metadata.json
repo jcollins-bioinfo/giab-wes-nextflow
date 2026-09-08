@@ -1,0 +1,38 @@
+{
+  "bytes": 250,
+  "headers": {
+    "Content-Length": "250",
+    "Content-Type": "application/json",
+    "ETag": "\"f9a763b4ea4c3ca321fe5b7557bb39cf\"",
+    "x-goog-generation": "1770670458654104",
+    "x-goog-hash": "crc32c=1QqR+Q=="
+  },
+  "model_metadata": {
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      19
+    ],
+    "flags_for_calling": {
+      "pileup_image_height": 100,
+      "pileup_image_width": 221
+    },
+    "flags_for_postprocessing": {
+      "multiallelic_mode": "min"
+    },
+    "shape": [
+      100,
+      221,
+      7
+    ],
+    "version": "1.10.0"
+  },
+  "observed_utc": "2026-09-07T08:21:59.224715+00:00",
+  "sha256": "10a47721a3ea86f6c25bcabda3af5c31a936a3183847ac8a25857a709359187a",
+  "url": "https://storage.googleapis.com/deepvariant/models/DeepVariant/1.10.0/savedmodels/deepvariant.wes.savedmodel/model.example_info.json",
+  "weights_downloaded": false
+}

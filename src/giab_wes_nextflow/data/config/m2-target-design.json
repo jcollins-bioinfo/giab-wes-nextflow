@@ -1,6 +1,6 @@
 {
   "approved_artifacts": null,
-  "block_reason": "Exact capture design and coordinate-file byte identity are not defensibly established.",
+  "block_reason": "Exact deposited Expanded Exome target bytes and dataset association are established; unique NIST7035 37Mb-versus-62Mb assay assignment remains unresolved. Domain approval, source-dictionary compatibility and audited liftover remain required.",
   "candidate": "Illumina Nextera Rapid Capture Expanded Exome, legacy hg19",
   "canonical_domains_allowed": false,
   "classification": "unresolved",
@@ -13,6 +13,18 @@
     {
       "finding": "Relevant vendor download page, but no primary sample-to-file identity link established",
       "url": "https://support.illumina.com/sequencing/sequencing_kits/nextera-rapid-capture-exome-kit/downloads.html"
+    },
+    {
+      "finding": "GIAB README explicitly identifies the deposited Expanded Exome BED for the combined Garvan dataset; it names both libraries and both kit types without unique per-library assignment.",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/Garvan_NA12878_HG001_HiSeq_Exome.README"
+    },
+    {
+      "finding": "Official GIAB repository contributor recommends the exact deposited BED for an index demonstrably containing both NIST7035 and NIST7086.",
+      "url": "https://github.com/genome-in-a-bottle/giab_data_indexes/issues/2#issuecomment-324378470"
+    },
+    {
+      "finding": "Exact deposited target: compressed2878665bytes SHA2567ce7a9f769e51ecb8ab5588c6bc7c24d19e25b2bd6c1b958415b7b16987f01b8; detailed audit docs/orchestration/evidence/capture-design-investigation.json; no canonical approval.",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/nexterarapidcapture_expandedexome_targetedregions.bed.gz"
     }
   ],
   "schema_version": "1.0.0"

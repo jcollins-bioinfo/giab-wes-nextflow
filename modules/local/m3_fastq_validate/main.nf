@@ -27,7 +27,8 @@ process M3_FASTQ_VALIDATE {
         --platform-unit "${meta.platform_unit}" --platform ILLUMINA \
         --reference "reference_bundle/reference.fa" --reference-fai "reference_bundle/reference.fa.fai" \
         --reference-dict "reference_bundle/reference.dict" --fixture-manifest "${expectations}" \
-        --run-id "${run_meta.run_id}" --output "${meta.read_group_id}.fastq-validation.json"
+        --run-id "${run_meta.run_id}" --fixture-id "${run_meta.fixture_id ?: 'm3-preprocessing'}" \
+        --output "${meta.read_group_id}.fastq-validation.json"
     python -I -c 'import giab_wes_nextflow; print(giab_wes_nextflow.__version__)' > ${meta.read_group_id}.fastq_validation.versions.txt 2>&1
 
     printf '{"task_id":null,"logical_artifact_id":"${meta.read_group_id}.fastq_validation","process":"M3_FASTQ_VALIDATE","requested_cpus":%s,"requested_memory_bytes":%s,"requested_time_seconds":%s,"container":null,"architecture":"%s"}\n' ${task.cpus} ${task.memory.toBytes()} ${task.time.toSeconds()} "\$(uname -m)" > ${meta.read_group_id}.fastq_validation.resources.json

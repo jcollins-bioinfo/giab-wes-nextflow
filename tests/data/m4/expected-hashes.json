@@ -1,0 +1,42 @@
+{
+  "files": {
+    "fixture-expectations.json": {
+      "bytes": 269666,
+      "sha256": "c54c4d5a7dd0b758dcbe38d3091676a45fbf9f1729cc6d1d852bb9593e17be38"
+    },
+    "known-sites.vcf": {
+      "bytes": 709,
+      "sha256": "1d186908d513980e73b91dadd1470b780d05a952c7c927c363ee30be58713f9d"
+    },
+    "reads_1.fastq.gz": {
+      "bytes": 42755,
+      "sha256": "c953e09f4622ff13a2f2926e00164a7cc129b351409e4a9141b82bb4bc0fe548"
+    },
+    "reads_2.fastq.gz": {
+      "bytes": 42755,
+      "sha256": "bf0e0444258607746e829999b9a8d97a3e371c90d740b19b20e9dbcddf0d2701"
+    },
+    "reads_lane2_1.fastq.gz": {
+      "bytes": 42755,
+      "sha256": "34912341a21ab1643615d0a31096b281e7f3ff8542c35388c6328b77bfab5a14"
+    },
+    "reads_lane2_2.fastq.gz": {
+      "bytes": 42755,
+      "sha256": "107dc23e818ecd9951b74f2865554136369f1a64bc2109a0db62487882a99a46"
+    },
+    "reference-source.json": {
+      "bytes": 446,
+      "sha256": "af4c51d5df08d9c01f31fe440b1306acda72493808629f3f8eebb24ffe05106c"
+    },
+    "reference.fa": {
+      "bytes": 20352,
+      "sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454"
+    },
+    "samplesheet.csv": {
+      "bytes": 301,
+      "sha256": "fcaa8c410028f2d1eb1b92afc571f0902fb92a012aaf3ae6e4591f7d5fc3878d"
+    }
+  },
+  "fixture_id": "m4-snv-positive",
+  "recipe_version": "1.1.0"
+}

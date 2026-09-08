@@ -22,6 +22,7 @@ process M3_COLLECT {
     val artifact_names
     path tool_lock
     val tool_images
+    val fixture_id
     output:
     path 'contracts', emit: contracts
     script:
@@ -37,6 +38,7 @@ process M3_COLLECT {
     cp .command.sh m3_collect.command.sh
     printf '{"task_id":null,"logical_artifact_id":"m3_collect","process":"M3_COLLECT","requested_cpus":%s,"requested_memory_bytes":%s,"requested_time_seconds":%s,"container":null,"architecture":"%s"}\n' ${task.cpus} ${task.memory.toBytes()} ${task.time.toSeconds()} "\$(uname -m)" > m3_collect.resources.json
     python -I -m giab_wes_nextflow.m3_cli collect \
+        --fixture-id "${fixture_id}" \
         --preflight "${preflight}" --sam "${sam}" --pre-bqsr-sam "${pre_bqsr_sam}" \
         --bam "${bam}" --bai "${bai}" --flagstat "${flagstat}" --idxstats "${idxstats}" \
         --samtools-stats "${stats}" --duplicate-metrics "${duplicate_metrics}" \
@@ -51,5 +53,8 @@ process M3_COLLECT {
     """
     mkdir contracts
     printf '{"schema_version":"1.0.0","status":"stub_only","synthetic":true,"biological_processing":false,"validation_status":"not_validated","canonical":false}\n' > contracts/m3-manifest.json
+    for kind in alignment qc coverage resources provenance; do
+        printf '{"status":"stub_only","validation_status":"not_validated","canonical":false}\n' > "contracts/m3-\${kind}.json"
+    done
     """
 }

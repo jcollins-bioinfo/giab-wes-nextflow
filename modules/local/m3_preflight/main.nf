@@ -26,6 +26,7 @@ process M3_PREFLIGHT {
         --samplesheet "${samplesheet}" --reference "${reference}" \
         --known-sites "${known_sites}" --expectations "${expectations}" \
         --repository-sha "${run_meta.repository_sha}" --run-id "${run_meta.run_id}" \
+        --fixture-id "${run_meta.fixture_id ?: 'm3-preprocessing'}" \
         --output m3-preflight.json
     python -I -c 'import giab_wes_nextflow; print(giab_wes_nextflow.__version__)' > source_preflight.versions.txt 2>&1
 

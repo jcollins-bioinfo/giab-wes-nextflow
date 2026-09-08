@@ -66,3 +66,34 @@ Docker execution to the host UID/GID. The integration oracle checks ownership of
 the original task report and hashes it against the published copy, so a host-owned
 Nextflow copy cannot conceal a mismatched container-created artifact. The first
 attempt remains recorded as failed and cannot qualify M3.
+
+
+## M4 local and actual-caller qualification
+
+Generate all three fixture families after installing the package and before
+`nf-test test --ci`: `python tests/data/generate_fixture.py`,
+`python tests/data/generate_m3_fixture.py --output tests/data/m3-generated`,
+and `python -m giab_wes_nextflow.m4_fixture --output tests/data/m4-generated`.
+The CI job uses this exact order; no ignored files from an earlier local test
+may substitute for generation in a fresh checkout.
+
+M4 adds package contracts, a separately versioned positive SNV fixture, guarded
+JSON publication, and 14 total nf-tests covering foundation, M3 and M4 wiring,
+selection and early failure gates. Unit tests exercise malformed native records,
+changed BAM/reference/model identities, unknown caller parameters, unsafe paths,
+interrupted publication, candidate-to-inference mismatch and cache regressions.
+Stand-ins in unit tests are explicitly synthetic and cannot establish native
+BAM/VCF/index behavior.
+
+The required aggregate now also includes `m4-docker`. Its clean-clone driver
+executes the same scientific parameters in independent and both modes, validates
+actual copied caller inputs and network-disabled mounts, observes positive WES
+model inference, checks expected native SNVs/genotypes and actual random-access
+indexes, and requires complete shared-task reuse. Expected completed/cached
+counts are 26/0, 3/23, 1/27 and 0/28. Cached executions are reuse evidence, not
+new compute measurements. See [M4 integration](../tests/integration/M4.md).
+
+A local Python, wheel or stub pass does not qualify dual-caller execution. Only
+an observed successful required CI run and reviewed actual inference/output
+artifacts can advance M4 to verified. Canonical HG001, indel accuracy, common
+normalization and benchmarking remain separate later gates.

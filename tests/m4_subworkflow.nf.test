@@ -1,0 +1,134 @@
+nextflow_workflow {
+    name 'M4 independent caller selection and isolated stub topology'
+    script '../subworkflows/local/m4_dual_callers/main.nf'
+    workflow 'M4_DUAL_CALLERS'
+    tag 'm4'
+    options '-stub-run'
+    profile 'm4_test'
+    test('gatk mode copies isolated inputs and remains explicitly unvalidated') {
+        when {
+            workflow {
+                """
+                def source = file("${outputDir}/accepted-inputs")
+                source.mkdirs()
+                ['shared.bam','shared.bam.bai','reference.fa.fai','reference.dict'].each { name -> source.resolve(name).text = 'STUB_ONLY' }
+                source.resolve('reference.fa').text = file("${projectDir}/tests/data/m3-generated/reference.fa").text
+                def bundle = source.resolve('preprocessing-contracts')
+                bundle.mkdirs()
+                ['manifest','alignment','qc','coverage','resources','provenance'].each { kind -> bundle.resolve('m3-' + kind + '.json').text = '{"status":"stub_only"}' }
+                source.resolve('oracle-not-for-callers.json').text = '{"forbidden_for_caller":true}'
+                input[0] = channel.of(tuple([sample:'SYNTHETIC01'],source.resolve('shared.bam'),source.resolve('shared.bam.bai')))
+                input[1] = channel.value(['reference.fa','reference.fa.fai','reference.dict'].collect { name -> source.resolve(name) })
+                input[2] = channel.value(bundle)
+                input[3] = 'gatk'
+                input[4] = file("${projectDir}/scripts/m4_inspect_deepvariant.py")
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 4
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M4_HAPLOTYPECALLER ') } == 1
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M4_DEEPVARIANT ') } == 0
+            def contract = path(workflow.out.contracts[0] + '/m4-manifest.json').json
+            assert contract.status == 'stub_only'
+            assert contract.callers == 'gatk'
+            assert contract.validation_status == 'not_validated'
+            assert !contract.canonical && !contract.inference_validated && !contract.biological_processing
+            ['gatk'].each { caller ->
+                def command = path(workflow.out.artifacts.find { item -> item.toString().endsWith('/' + caller + '.command.sh') })
+                def copied = command.parent.resolve('caller-inputs')
+                assert !java.nio.file.Files.isSymbolicLink(copied)
+                def files = copied.toFile().listFiles().toList()
+                assert files.collect { item -> item.name }.sort() == ['m4-inputs.json','reference.dict','reference.fa','reference.fa.fai','regions.bed','shared.bam','shared.bam.bai']
+                assert files.every { item -> item.isFile() && !java.nio.file.Files.isSymbolicLink(item.toPath()) }
+                assert path(copied.resolve('shared.bam').toString()).text == 'STUB_ONLY'
+                assert !copied.resolve('oracle-not-for-callers.json').toFile().exists()
+            }
+        }
+    }
+    test('deepvariant mode copies isolated inputs and remains explicitly unvalidated') {
+        when {
+            workflow {
+                """
+                def source = file("${outputDir}/accepted-inputs")
+                source.mkdirs()
+                ['shared.bam','shared.bam.bai','reference.fa.fai','reference.dict'].each { name -> source.resolve(name).text = 'STUB_ONLY' }
+                source.resolve('reference.fa').text = file("${projectDir}/tests/data/m3-generated/reference.fa").text
+                def bundle = source.resolve('preprocessing-contracts')
+                bundle.mkdirs()
+                ['manifest','alignment','qc','coverage','resources','provenance'].each { kind -> bundle.resolve('m3-' + kind + '.json').text = '{"status":"stub_only"}' }
+                source.resolve('oracle-not-for-callers.json').text = '{"forbidden_for_caller":true}'
+                input[0] = channel.of(tuple([sample:'SYNTHETIC01'],source.resolve('shared.bam'),source.resolve('shared.bam.bai')))
+                input[1] = channel.value(['reference.fa','reference.fa.fai','reference.dict'].collect { name -> source.resolve(name) })
+                input[2] = channel.value(bundle)
+                input[3] = 'deepvariant'
+                input[4] = file("${projectDir}/scripts/m4_inspect_deepvariant.py")
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 4
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M4_HAPLOTYPECALLER ') } == 0
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M4_DEEPVARIANT ') } == 1
+            def contract = path(workflow.out.contracts[0] + '/m4-manifest.json').json
+            assert contract.status == 'stub_only'
+            assert contract.callers == 'deepvariant'
+            assert contract.validation_status == 'not_validated'
+            assert !contract.canonical && !contract.inference_validated && !contract.biological_processing
+            ['deepvariant'].each { caller ->
+                def command = path(workflow.out.artifacts.find { item -> item.toString().endsWith('/' + caller + '.command.sh') })
+                def copied = command.parent.resolve('caller-inputs')
+                assert !java.nio.file.Files.isSymbolicLink(copied)
+                def files = copied.toFile().listFiles().toList()
+                assert files.collect { item -> item.name }.sort() == ['m4-inputs.json','reference.dict','reference.fa','reference.fa.fai','regions.bed','shared.bam','shared.bam.bai']
+                assert files.every { item -> item.isFile() && !java.nio.file.Files.isSymbolicLink(item.toPath()) }
+                assert path(copied.resolve('shared.bam').toString()).text == 'STUB_ONLY'
+                assert !copied.resolve('oracle-not-for-callers.json').toFile().exists()
+            }
+        }
+    }
+    test('both mode copies isolated inputs and remains explicitly unvalidated') {
+        when {
+            workflow {
+                """
+                def source = file("${outputDir}/accepted-inputs")
+                source.mkdirs()
+                ['shared.bam','shared.bam.bai','reference.fa.fai','reference.dict'].each { name -> source.resolve(name).text = 'STUB_ONLY' }
+                source.resolve('reference.fa').text = file("${projectDir}/tests/data/m3-generated/reference.fa").text
+                def bundle = source.resolve('preprocessing-contracts')
+                bundle.mkdirs()
+                ['manifest','alignment','qc','coverage','resources','provenance'].each { kind -> bundle.resolve('m3-' + kind + '.json').text = '{"status":"stub_only"}' }
+                source.resolve('oracle-not-for-callers.json').text = '{"forbidden_for_caller":true}'
+                input[0] = channel.of(tuple([sample:'SYNTHETIC01'],source.resolve('shared.bam'),source.resolve('shared.bam.bai')))
+                input[1] = channel.value(['reference.fa','reference.fa.fai','reference.dict'].collect { name -> source.resolve(name) })
+                input[2] = channel.value(bundle)
+                input[3] = 'both'
+                input[4] = file("${projectDir}/scripts/m4_inspect_deepvariant.py")
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 6
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M4_HAPLOTYPECALLER ') } == 1
+            assert workflow.trace.succeeded().count { task -> task.name.contains(':M4_DEEPVARIANT ') } == 1
+            def contract = path(workflow.out.contracts[0] + '/m4-manifest.json').json
+            assert contract.status == 'stub_only'
+            assert contract.callers == 'both'
+            assert contract.validation_status == 'not_validated'
+            assert !contract.canonical && !contract.inference_validated && !contract.biological_processing
+            ['gatk', 'deepvariant'].each { caller ->
+                def command = path(workflow.out.artifacts.find { item -> item.toString().endsWith('/' + caller + '.command.sh') })
+                def copied = command.parent.resolve('caller-inputs')
+                assert !java.nio.file.Files.isSymbolicLink(copied)
+                def files = copied.toFile().listFiles().toList()
+                assert files.collect { item -> item.name }.sort() == ['m4-inputs.json','reference.dict','reference.fa','reference.fa.fai','regions.bed','shared.bam','shared.bam.bai']
+                assert files.every { item -> item.isFile() && !java.nio.file.Files.isSymbolicLink(item.toPath()) }
+                assert path(copied.resolve('shared.bam').toString()).text == 'STUB_ONLY'
+                assert !copied.resolve('oracle-not-for-callers.json').toFile().exists()
+            }
+        }
+    }
+}

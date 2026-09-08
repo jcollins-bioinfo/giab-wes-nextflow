@@ -1,0 +1,955 @@
+{
+  "$id": "https://jcollins-bioinfo.github.io/giab-wes-nextflow/schemas/m4-caller.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "caller"
+    },
+    "canonical": {
+      "const": false
+    },
+    "data": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "else": {
+            "properties": {
+              "inference": {
+                "additionalProperties": false,
+                "properties": {
+                  "all_probabilities_valid": {
+                    "const": true
+                  },
+                  "call_variants_files": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "bytes": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "filename": {
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "sha256": {
+                          "pattern": "^[0-9a-f]{64}$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "filename",
+                        "bytes",
+                        "sha256"
+                      ],
+                      "type": "object"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "call_variants_record_count": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "example_files": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "bytes": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "filename": {
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "sha256": {
+                          "pattern": "^[0-9a-f]{64}$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "filename",
+                        "bytes",
+                        "sha256"
+                      ],
+                      "type": "object"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "example_record_count": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "kind": {
+                    "const": "m4_deepvariant_inference"
+                  },
+                  "model_files": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "bytes": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "filename": {
+                          "enum": [
+                            "fingerprint.pb",
+                            "saved_model.pb",
+                            "model.example_info.json",
+                            "variables/variables.data-00000-of-00001",
+                            "variables/variables.index"
+                          ]
+                        },
+                        "sha256": {
+                          "pattern": "^[0-9a-f]{64}$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "filename",
+                        "bytes",
+                        "sha256"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 5,
+                    "minItems": 5,
+                    "type": "array"
+                  },
+                  "model_type": {
+                    "const": "WES"
+                  },
+                  "probability_tolerance": {
+                    "const": 1e-05
+                  },
+                  "schema_version": {
+                    "const": "1.0.0"
+                  },
+                  "variant_contigs": {
+                    "items": {
+                      "enum": [
+                        "chrSYN1",
+                        "chrSYN2"
+                      ]
+                    },
+                    "minItems": 1,
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "schema_version",
+                  "kind",
+                  "model_type",
+                  "model_files",
+                  "example_record_count",
+                  "call_variants_record_count",
+                  "all_probabilities_valid",
+                  "probability_tolerance",
+                  "variant_contigs",
+                  "example_files",
+                  "call_variants_files"
+                ],
+                "type": "object"
+              },
+              "inference_evidence": {
+                "additionalProperties": false,
+                "properties": {
+                  "bytes": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "filename": {
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "filename",
+                  "bytes",
+                  "sha256"
+                ],
+                "type": "object"
+              },
+              "model_before": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "m4_deepvariant_model_inventory"
+                  },
+                  "model_files": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "bytes": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "filename": {
+                          "enum": [
+                            "fingerprint.pb",
+                            "saved_model.pb",
+                            "model.example_info.json",
+                            "variables/variables.data-00000-of-00001",
+                            "variables/variables.index"
+                          ]
+                        },
+                        "sha256": {
+                          "pattern": "^[0-9a-f]{64}$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "filename",
+                        "bytes",
+                        "sha256"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 5,
+                    "minItems": 5,
+                    "type": "array"
+                  },
+                  "model_type": {
+                    "const": "WES"
+                  },
+                  "schema_version": {
+                    "const": "1.0.0"
+                  }
+                },
+                "required": [
+                  "schema_version",
+                  "kind",
+                  "model_type",
+                  "model_files"
+                ],
+                "type": "object"
+              },
+              "model_before_evidence": {
+                "additionalProperties": false,
+                "properties": {
+                  "bytes": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "filename": {
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "filename",
+                  "bytes",
+                  "sha256"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "if": {
+            "properties": {
+              "caller": {
+                "const": "gatk"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "inference": {
+                "type": "null"
+              },
+              "inference_evidence": {
+                "type": "null"
+              },
+              "model_before": {
+                "type": "null"
+              },
+              "model_before_evidence": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "caller": {
+          "enum": [
+            "gatk",
+            "deepvariant"
+          ]
+        },
+        "command_evidence": {
+          "additionalProperties": false,
+          "properties": {
+            "bytes": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "filename": {
+              "pattern": "^[A-Za-z0-9_.-]+$",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "filename",
+            "bytes",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "inference": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "all_probabilities_valid": {
+                  "const": true
+                },
+                "call_variants_files": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "bytes": {
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "filename": {
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "filename",
+                      "bytes",
+                      "sha256"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "call_variants_record_count": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "example_files": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "bytes": {
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "filename": {
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "filename",
+                      "bytes",
+                      "sha256"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "example_record_count": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "kind": {
+                  "const": "m4_deepvariant_inference"
+                },
+                "model_files": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "bytes": {
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "filename": {
+                        "enum": [
+                          "fingerprint.pb",
+                          "saved_model.pb",
+                          "model.example_info.json",
+                          "variables/variables.data-00000-of-00001",
+                          "variables/variables.index"
+                        ]
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "filename",
+                      "bytes",
+                      "sha256"
+                    ],
+                    "type": "object"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "model_type": {
+                  "const": "WES"
+                },
+                "probability_tolerance": {
+                  "const": 1e-05
+                },
+                "schema_version": {
+                  "const": "1.0.0"
+                },
+                "variant_contigs": {
+                  "items": {
+                    "enum": [
+                      "chrSYN1",
+                      "chrSYN2"
+                    ]
+                  },
+                  "minItems": 1,
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "schema_version",
+                "kind",
+                "model_type",
+                "model_files",
+                "example_record_count",
+                "call_variants_record_count",
+                "all_probabilities_valid",
+                "probability_tolerance",
+                "variant_contigs",
+                "example_files",
+                "call_variants_files"
+              ],
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inference_evidence": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "bytes": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "filename": {
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "filename",
+                "bytes",
+                "sha256"
+              ],
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inputs_payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "model_before": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "m4_deepvariant_model_inventory"
+                },
+                "model_files": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "bytes": {
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "filename": {
+                        "enum": [
+                          "fingerprint.pb",
+                          "saved_model.pb",
+                          "model.example_info.json",
+                          "variables/variables.data-00000-of-00001",
+                          "variables/variables.index"
+                        ]
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "filename",
+                      "bytes",
+                      "sha256"
+                    ],
+                    "type": "object"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "model_type": {
+                  "const": "WES"
+                },
+                "schema_version": {
+                  "const": "1.0.0"
+                }
+              },
+              "required": [
+                "schema_version",
+                "kind",
+                "model_type",
+                "model_files"
+              ],
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model_before_evidence": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "bytes": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "filename": {
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "filename",
+                "bytes",
+                "sha256"
+              ],
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "native_acceptance": {
+          "additionalProperties": false,
+          "properties": {
+            "acceptance": {
+              "const": "invented_integration_only"
+            },
+            "expected_positive_sites": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "alt": {
+                    "pattern": "^[ACGT]$",
+                    "type": "string"
+                  },
+                  "contig": {
+                    "enum": [
+                      "chrSYN1",
+                      "chrSYN2"
+                    ]
+                  },
+                  "genotype": {
+                    "enum": [
+                      "0/1",
+                      "1/1"
+                    ]
+                  },
+                  "position_1based": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "ref": {
+                    "pattern": "^[ACGT]$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "contig",
+                  "position_1based",
+                  "ref",
+                  "alt",
+                  "genotype"
+                ],
+                "type": "object"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "record_count": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "reference_control_nonreference_calls": {
+              "const": 0
+            }
+          },
+          "required": [
+            "record_count",
+            "expected_positive_sites",
+            "reference_control_nonreference_calls",
+            "acceptance"
+          ],
+          "type": "object"
+        },
+        "observed_parameters": {
+          "type": "object"
+        },
+        "observed_version_text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "type": "string"
+        },
+        "outputs": {
+          "additionalProperties": false,
+          "properties": {
+            "gvcf": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "bytes": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "filename": {
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "filename",
+                    "bytes",
+                    "sha256"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "gvcf_index": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "bytes": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "filename": {
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "filename",
+                    "bytes",
+                    "sha256"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "vcf": {
+              "additionalProperties": false,
+              "properties": {
+                "bytes": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "filename": {
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "filename",
+                "bytes",
+                "sha256"
+              ],
+              "type": "object"
+            },
+            "vcf_index": {
+              "additionalProperties": false,
+              "properties": {
+                "bytes": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "filename": {
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "filename",
+                "bytes",
+                "sha256"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "vcf",
+            "vcf_index",
+            "gvcf",
+            "gvcf_index"
+          ],
+          "type": "object"
+        },
+        "repository_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "resource_evidence": {
+          "additionalProperties": false,
+          "properties": {
+            "bytes": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "filename": {
+              "pattern": "^[A-Za-z0-9_.-]+$",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "filename",
+            "bytes",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "architecture": {
+              "type": "string"
+            },
+            "container": {
+              "pattern": "^[a-zA-Z0-9./_-]+@sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "logical_artifact_id": {
+              "enum": [
+                "m4_gatk",
+                "m4_deepvariant"
+              ]
+            },
+            "process": {
+              "enum": [
+                "M4_HAPLOTYPECALLER",
+                "M4_DEEPVARIANT"
+              ]
+            },
+            "requested_cpus": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "requested_memory_bytes": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "requested_time_seconds": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "task_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "task_id",
+            "logical_artifact_id",
+            "process",
+            "requested_cpus",
+            "requested_memory_bytes",
+            "requested_time_seconds",
+            "container",
+            "architecture"
+          ],
+          "type": "object"
+        },
+        "sample": {
+          "const": "SYNTHETIC01"
+        },
+        "tool_contract": {
+          "type": "object"
+        },
+        "version_evidence": {
+          "additionalProperties": false,
+          "properties": {
+            "bytes": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "filename": {
+              "pattern": "^[A-Za-z0-9_.-]+$",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "filename",
+            "bytes",
+            "sha256"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "caller",
+        "repository_sha",
+        "sample",
+        "inputs_payload_sha256",
+        "tool_contract",
+        "observed_parameters",
+        "observed_version_text",
+        "version_evidence",
+        "command_evidence",
+        "resources",
+        "resource_evidence",
+        "outputs",
+        "native_acceptance",
+        "inference",
+        "model_before",
+        "inference_evidence",
+        "model_before_evidence"
+      ],
+      "type": "object"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer": {
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "const": "giab_wes_nextflow.m4_contracts"
+        },
+        "package": {
+          "const": "giab-wes-nextflow"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "package",
+        "version",
+        "module"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,119}$",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "run_id",
+    "producer",
+    "synthetic",
+    "canonical",
+    "payload_sha256",
+    "data"
+  ],
+  "type": "object"
+}

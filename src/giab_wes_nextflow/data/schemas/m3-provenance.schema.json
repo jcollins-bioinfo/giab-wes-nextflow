@@ -58,7 +58,10 @@
           "type": "string"
         },
         "fixture_recipe_version": {
-          "const": "1.0.0"
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ]
         },
         "host_python_container": {
           "type": "null"
