@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "status": "failed",
+  "repository_sha": "829f3d7ff16f367bfc75e87fd52f4ee15f45bd4e",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34266895406",
+  "m4_execution_step": "passed",
+  "m5_step": "failed preregistered SNP counts",
+  "artifact": {
+    "id": 10072402846,
+    "bytes": 10394,
+    "sha256": "c4a911a912f9255e19080ae871954b5824a847571878483fa66d6e98639350bc",
+    "inventory": [
+      "benchmark-deepvariant.json",
+      "benchmark-gatk.json",
+      "integration-proof.json"
+    ]
+  },
+  "observed_both_callers": {
+    "SNP": {
+      "tp_query": 3,
+      "tp_truth": 3,
+      "fp": 3,
+      "fn": 3
+    },
+    "INDEL": {
+      "tp_query": 1,
+      "tp_truth": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    "evaluated_bases": 350
+  },
+  "unchanged_expected_SNP": {
+    "tp_query": 4,
+    "tp_truth": 4,
+    "fp": 2,
+    "fn": 2
+  },
+  "diagnosis": "RTG default reference-overlap restriction conflicts with decomposed heterozygous multiallelic records; documentation-supported inference, original partitions not retained.",
+  "repair": "Symmetric --ref-overlap; preserve exact oracle and diploid genotype matching. Retain failure partitions.",
+  "canonical": false,
+  "actual_repair_execution": "not_observed"
+}

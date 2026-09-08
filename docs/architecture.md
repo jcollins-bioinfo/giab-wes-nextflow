@@ -36,3 +36,9 @@ The package owns reference/index validation, immutable lineage, RTG partition
 parsing and metric arithmetic. Resource collection runs after Nextflow exits.
 Dash continues consuming its verified synthetic prototype; it is not a metric
 calculator or a claim of canonical results.
+
+The M5 driver now calls `m5_nextflow_qualification.py` after direct engine and M4
+interface acceptance. Four phases share one Nextflow cache and must yield
+2/0,2/0,0/4,0/4 completed/cached tasks. Canonical JSON from the strict package
+manifest reader is parsed once before task creation. The coding-domain constructor
+is independent of query, truth VCF, reads, alignments and coverage.

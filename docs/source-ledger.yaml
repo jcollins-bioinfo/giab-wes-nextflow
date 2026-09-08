@@ -134,3 +134,8 @@ contradictions:
     access_date: 2026-09-08
     image: registry-1.docker.io/realtimegenomics/rtg-tools@sha256:b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790
     evidence: docs/m5-primary-sources.json
+
+  - claim: "RTG3.13 default disallows same-as-reference allele overlaps; ref-overlap permits decomposed overlapping representations while preserving diploid matching"
+    url: https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html#vcfeval
+    access_date: 2026-09-08
+    evidence: docs/orchestration/evidence/m5-ci-attempt-1.json

@@ -80,3 +80,9 @@ claim_rules:
     statement: Package and downstream workflow implement symmetric normalization, pinned RTG benchmarking and typed resource attribution.
     evidence: docs/adr/0014-m5-common-normalization-and-benchmark.md
     limitation: Local unit and stub checks do not qualify actual container matching; canonical metrics and costs remain unavailable.
+
+  - id: approved-coding-domain-reproduced
+    classification: locally-tested
+    statement: Package constructor reproduced the three owner-approved domain hashes from exact pinned annotation, FAI and confidence inputs.
+    evidence: docs/orchestration/evidence/coding-domain-reproduced.json
+    limitation: In-memory coordinate verification only; no reference-base, index, runtime or canonical processing qualification.

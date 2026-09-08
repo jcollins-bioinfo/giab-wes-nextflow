@@ -40,4 +40,17 @@ nextflow_pipeline {
             assert !path("$outputDir/m5/gatk").exists()
         }
     }
+    test('duplicate manifest keys fail before any normalization task') {
+        when {
+            params {
+                m5_manifest = "$projectDir/tests/data/m5-duplicate-manifest.invalid-json.txt"
+                outdir = "$outputDir"
+            }
+        }
+        then {
+            assert !workflow.success
+            assert workflow.trace.succeeded().size() == 0
+            assert workflow.stdout.join('\n').contains('duplicate manifest key')
+        }
+    }
 }

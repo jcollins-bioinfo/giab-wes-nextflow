@@ -48,3 +48,14 @@ Historical CI34202569517 completed DeepVariant inference and prediction inspecti
 then failed frozen native genotype/filter acceptance on recipe 1.0.0. Its failed
 record remains unchanged. The early Explorer now renders the current synthetic
 pass and retains that historical diagnostic in its hash-locked evidence bundle.
+
+## Approved-domain reproduction
+
+The package-owned `coding_domain` constructor now reproduces all three approved
+identities, including bases and interval counts, from the exact GENCODE gzip,
+FAI and confidence-BED pins. See
+[the observed reproduction](../orchestration/evidence/coding-domain-reproduced.json).
+This verification used existing files and in-memory output hashing only; it
+downloaded no genomic bytes and published no new Drive assets. Source mismatch
+or any expected-output mismatch fails closed. Reference-base identity and
+canonical runtime qualification remain independent gates.

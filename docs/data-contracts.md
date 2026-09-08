@@ -70,3 +70,9 @@ intersection supplies evaluated bases independently of query/depth/callability.
 Resource observations retain attempts, cached versus executed costs and units;
 summed task durations and maxima of individual task memory peaks are not whole-run
 wall time or concurrent run peak memory. See [resource semantics](m5-resources.md).
+
+M5 entry manifests now reject duplicate keys at every JSON depth before Nextflow
+resolves inputs. The qualification helper checks actual task inventories, cache
+status/hash continuity, immutable output identities and normalization staging.
+The approved-domain constructor accepts only the pinned GENCODE gzip, FAI and
+confidence BED; fixed output pins remain immutable and canonical readiness false.

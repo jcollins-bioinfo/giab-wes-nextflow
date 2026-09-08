@@ -79,7 +79,7 @@ def validate_record(record: dict[str, Any], kind: str) -> None:
             require(all(n + '.vcf.gz' in record['outputs'] for n in ('tp', 'tp-baseline', 'fp', 'fn')),
                     'authoritative benchmark partitions missing')
             require(['vcfeval', '-b', 'truth.vcf.gz', '-c', 'query.vcf.gz', '-t', 'reference.sdf', '-o', 'vcfeval',
-                     '--evaluation-regions', 'evaluation.bed', '--sample', record['sample'], '--all-records',
+                     '--evaluation-regions', 'evaluation.bed', '--sample', record['sample'], '--all-records', '--ref-overlap',
                      '--output-mode', 'split', '--no-roc', '--sample-ploidy', '2', '--threads', '2'] in
                     [c['argv'] for c in record['commands']], 'benchmark command policy missing')
         require((record['status'] == 'evaluated') == evaluated and (record['interval_count'] > 0) == evaluated,
@@ -324,7 +324,7 @@ def benchmark(normalized: Path, truth: Path, truth_index: Path, confidence: Path
         if region:
             runtime.run('rtg', ['format', '-o', 'reference.sdf', 'reference.fa'])
             sdf = {p.relative_to(task / 'reference.sdf').as_posix(): identity(p) for p in sorted((task / 'reference.sdf').rglob('*')) if p.is_file()}
-            runtime.run('rtg', ['vcfeval', '-b', 'truth.vcf.gz', '-c', 'query.vcf.gz', '-t', 'reference.sdf', '-o', 'vcfeval', '--evaluation-regions', 'evaluation.bed', '--sample', sample, '--all-records', '--output-mode', 'split', '--no-roc', '--sample-ploidy', '2', '--threads', '2'])
+            runtime.run('rtg', ['vcfeval', '-b', 'truth.vcf.gz', '-c', 'query.vcf.gz', '-t', 'reference.sdf', '-o', 'vcfeval', '--evaluation-regions', 'evaluation.bed', '--sample', sample, '--all-records', '--ref-overlap', '--output-mode', 'split', '--no-roc', '--sample-ploidy', '2', '--threads', '2'])
             for kind in counts:
                 counts[kind] = partition_counts(task / f'vcfeval/{kind}.vcf.gz', seqs, sample)
         output.mkdir(parents=True)

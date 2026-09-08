@@ -136,6 +136,13 @@
       "evidence_sha": null,
       "command": "complete installed-wheel suite; targeted environment/version retries; nf-test; lint; contracts; build; pre-commit",
       "detail": "264 unique Python tests and 17 unique nf-tests resolved; 5 Explorer tests passed. Exact initial failures and focused retries retained in m5-local-verification.json. Actual M5 engines and Nextflow resume remain unobserved."
+    },
+    {
+      "name": "M5 continuation and approved domain",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "installed-wheel full unittest suite; M5 nf-tests; pinned-input coding-domain verification",
+      "detail": "274 full Python tests,4 M5 nf-tests,4 domain microtests passed; all3 approved domain hashes reproduced; actual M5 engine/cache evidence pending CI."
     }
   ],
   "ci": [
@@ -153,6 +160,17 @@
         "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477158",
         "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477215",
         "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102100375843"
+      ]
+    },
+    {
+      "name": "M5 initial PR CI",
+      "required": true,
+      "status": "failure",
+      "repository": "jcollins-bioinfo/giab-wes-nextflow",
+      "evidence_sha": "829f3d7ff16f367bfc75e87fd52f4ee15f45bd4e",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34266895406",
+      "job_urls": [
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34266895406/job/102198399188"
       ]
     }
   ],
@@ -258,7 +276,10 @@
       "docs/orchestration/evidence/colab-capability-observed-20260908.json",
       "docs/orchestration/evidence/colab-capability-assessment.json",
       "docs/orchestration/evidence/m4-verified-main-34237377774.json",
-      "docs/orchestration/evidence/m5-local-verification.json"
+      "docs/orchestration/evidence/m5-local-verification.json",
+      "docs/orchestration/evidence/m5-ci-attempt-1.json",
+      "docs/orchestration/evidence/coding-domain-reproduced.json",
+      "docs/orchestration/evidence/m5-continuation-local.json"
     ]
   },
   "external_blockers": [
@@ -269,6 +290,6 @@
       "owner_action": "Do not retry index construction on this allocation. Await a qualified reusable-index handoff or a sufficient Colab allocation; container isolation needs independent qualification."
     }
   ],
-  "next_safe_action": "Inspect the single draft-PR CI run and its M5 evidence; do not mark M5 verified before actual tool acceptance. Nextflow M5 cache/equivalence qualification, duplicate manifest-key gate, coding-domain constructor and reusable-index handoff remain follow-up.",
+  "next_safe_action": "Inspect new M5 CI before asserting engine/cache qualification; original counts remain strict. Approved coding-domain hashes reproduced. Implement and test restart-safe reusable-index Colab handoff next; canonical execution remains blocked.",
   "observed_at": "2026-09-08T19:04:01.980925+00:00"
 }

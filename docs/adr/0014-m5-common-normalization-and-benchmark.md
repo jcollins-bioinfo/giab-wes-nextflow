@@ -62,3 +62,21 @@ unchanged. Actual M4 output integration qualifies only its SNV interface.
 Primary method and immutable-manifest observations are in
 [the focused source record](../m5-primary-sources.json). No image layers or genomic
 artifacts were retrieved during method selection. Actual execution belongs to CI.
+
+## Representation-overlap repair, 2026-09-08
+
+CI34266895406 executed both tools successfully but rejected SNP counts3/3/3
+against the unchanged4 TP,2 FP,2 FN oracle. The failed artifact preserved
+summary hashes but omitted the actual partitions; locus attribution is therefore
+a documentation-supported diagnosis pending direct partition confirmation.
+BCFtools decomposition creates two heterozygous records at the same position.
+RTG's default treats each reference allele as a no-change assertion, preventing
+both split records from being selected together. Its documented `--ref-overlap`
+mode admits reference-overlapping split representations while retaining diploid
+matching. Use it symmetrically for query and truth. Keep the original fixture,
+counts, genotype-mismatch FP/FN, confidence boundary, and indel oracle unchanged.
+Do not use `--squash-ploidy`. Retain complete bounded synthetic partitions even
+on failure so the next run can confirm this diagnosis.
+
+Source: [RTG3.13 vcfeval overlap semantics](https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html#vcfeval),
+accessed2026-09-08. This repair is not an observed engine pass.

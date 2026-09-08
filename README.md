@@ -198,5 +198,20 @@ synthetic-only downstream workflow; truth stays outside normalization. Actual
 engine qualification uses the bounded driver in the existing M4 CI job.
 Until that run is observed, M5 is implemented with local checks, not marked
 synthetically verified. Canonical HG001 accuracy, cost and clinical/generalization
-claims remain unavailable. Optional coding-domain construction and reusable-index
-qualification remain deferred; the observed Colab allocation is still unqualified.
+claims remain unavailable. Approved coding-domain construction is locally reproduced as described below;
+reusable-index qualification remains deferred and Colab is still unqualified.
+
+### M5 continuation
+
+CI34266895406 passed M4 caller execution but rejected M5 SNP counts. The repair
+adds RTG reference-overlap handling for decomposed records while preserving the
+4TP/2FP/2FN oracle and diploid genotype mismatch tests. Duplicate JSON keys now
+fail before task launch. The actual Nextflow independent/both/resume qualification
+helper is connected to the synthetic driver; its engine/cache pass remains
+pending CI.
+
+The package-owned `python -m giab_wes_nextflow.coding_domain` constructor reproduced
+all three ADR0013 domain hashes from the exact pinned inputs in memory. Its
+optional output writes verified BEDs and a completion record last. It does not
+qualify reference bases, a Colab runtime or canonical execution. The restart-safe
+reusable-index notebook remains deferred.

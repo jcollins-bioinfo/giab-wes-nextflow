@@ -119,3 +119,13 @@ resume acceptance remain an explicit follow-up, although all three selections
 are wired and stub-tested. The M5 JSON launcher also relies on Nextflow's
 JsonSlurper manifest parsing; duplicate manifest-key rejection is an open
 hardening item, distinct from strict duplicate rejection in package evidence JSON.
+
+### Continuation qualification
+
+The earlier M5 resume and duplicate-key gaps above describe the initial delivery.
+Duplicate-key rejection is now implemented and its negative nf-test passes.
+Six helper/manifest tests cover duplicate/invalid JSON, exact task identity and
+cache regressions. The real Nextflow helper is connected to the driver and must
+pass on Linux before cache qualification is claimed. Four coordinate/pin tests
+protect the approved constructor, and an in-memory real-input run reproduced all
+three fixed domain hashes. CI34266895406 remains a failed historical M5 attempt.

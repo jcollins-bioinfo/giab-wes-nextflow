@@ -103,7 +103,7 @@ class M5Tests(unittest.TestCase):
         normdir = self.root/'norm'; normdir.mkdir()
         norm = m5.publish('normalization',normdir,self.normalization_data())
         lock = m5.load_json(m5.config_path('m5-tools.json'))['tools']; item=m5.identity(self.root/'reference.fa')
-        command=self.command('rtg',['vcfeval','-b','truth.vcf.gz','-c','query.vcf.gz','-t','reference.sdf','-o','vcfeval','--evaluation-regions','evaluation.bed','--sample',SAMPLE,'--all-records','--output-mode','split','--no-roc','--sample-ploidy','2','--threads','2'])
+        command=self.command('rtg',['vcfeval','-b','truth.vcf.gz','-c','query.vcf.gz','-t','reference.sdf','-o','vcfeval','--evaluation-regions','evaluation.bed','--sample',SAMPLE,'--all-records', '--ref-overlap','--output-mode','split','--no-roc','--sample-ploidy','2','--threads','2'])
         record = m5.publish('benchmark',out,{'caller':'gatk','sample':SAMPLE,'domain_id':'full','status':'evaluated','evaluated_bases':350,'interval_count':1,
             'metrics':{t:m5.metrics(**counts) for t,counts in EXPECTED.items()},
             'inputs':{k:item for k in ['truth','truth_index','confidence','domain','reference','normalization']},

@@ -52,3 +52,11 @@ unresolved capture-design gate and historical source-cache evidence boundaries.
 
 - Milestone 1 foundation, executable contracts, synthetic validation, CI, and private-workspace publisher.
 - No biological processing or benchmark results.
+
+### M5 qualification continuation
+
+- Diagnose failed synthetic counts and add symmetric RTG reference-overlap handling
+  without changing the frozen oracle; retain full bounded failure evidence.
+- Reject duplicate manifest keys and wire actual Nextflow equivalence/resume proof.
+- Implement the approved coding-domain constructor and reproduce all fixed hashes.
+- Keep actual M5 engine qualification and reusable-index Colab handoff unresolved.

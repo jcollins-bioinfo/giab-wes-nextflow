@@ -10,6 +10,7 @@ import sys
 from typing import Any
 from giab_wes_nextflow.m5 import benchmark, identity, load_json, normalize, require, Runtime, vcf_rows
 from giab_wes_nextflow.runtime_identity import verify_install
+from m5_nextflow_qualification import qualify_nextflow
 from giab_wes_nextflow.m5_fixture import compress_inputs, EXPECTED, fixture, header, SAMPLE
 
 
@@ -86,7 +87,7 @@ def main() -> None:
     (root / 'evidence').mkdir()
     expected = fixture(root / 'fixture'); compress_inputs(root / 'fixture')
     outputs = evaluate(root / 'fixture', SAMPLE, {c: root / f'fixture/{c}.vcf.gz' for c in ('gatk', 'deepvariant')})
-    for result in outputs.values():
+    for caller, result in outputs.items():
         for kind, counts in EXPECTED.items():
             require({k: result['metrics'][kind][k] for k in counts} == counts, f'preregistered {kind} counts failed')
         require(result['evaluated_bases'] == 350 and result['interval_count'] == 1, 'domain denominator changed')
@@ -94,6 +95,12 @@ def main() -> None:
     _, rows = vcf_rows(root / 'fixture/normalized-gatk/normalized.vcf.gz', seqs, SAMPLE, split=True)
     require(any([r[0], int(r[1]), r[3], r[4]] == expected['left_aligned_insertion'] for r in rows), 'indel was not left aligned')
     base = root / 'fixture'
+    # Preserve the frozen locus-level explanation, not merely aggregate counts.
+    for caller in outputs:
+        for partition, positions in {'tp': [20, 60, 100, 100], 'tp-baseline': [20, 60, 100, 100], 'fp': [150, 250], 'fn': [150, 200]}.items():
+            _, partition_rows = vcf_rows(base / f'benchmark-{caller}/{partition}.vcf.gz', seqs, SAMPLE, split=True)
+            observed = sorted(int(r[1]) for r in partition_rows if len(r[3]) == len(r[4]) == 1)
+            require(observed == positions, f'{caller} {partition} frozen SNP loci failed')
     empty = benchmark(base / 'normalized-gatk', base / 'truth.vcf.gz', base / 'truth.vcf.gz.tbi', base / 'confidence.bed', base / 'empty.bed', base / 'reference.fa', base / 'reference.fa.fai', base / 'reference.dict', SAMPLE, 'gatk', 'empty', base / 'benchmark-empty')
     require(empty['status'] == 'not_evaluated' and empty['metrics']['SNP']['f1'] is None, 'empty domain missingness failed')
     m4 = None
@@ -102,6 +109,11 @@ def main() -> None:
         m4 = evaluate(root / 'm4-interface', sample, callers, contracts)
         for result in m4.values():
             require(result['metrics']['SNP']['tp_query'] == 2 and result['metrics']['SNP']['tp_truth'] == 2 and result['metrics']['SNP']['fp'] == result['metrics']['SNP']['fn'] == 0, 'accepted M4 SNV interface changed')
+    try:
+        nextflow_proof = qualify_nextflow(Path(__file__).resolve().parents[1], root / 'nextflow', root / 'fixture/m5-manifest.json')
+    finally:
+        if (root / 'nextflow/evidence').is_dir():
+            shutil.copytree(root / 'nextflow/evidence', root / 'evidence/nextflow')
     evidence = root / 'evidence'
     retain_evidence(root)
     for caller, result in outputs.items():
@@ -109,9 +121,9 @@ def main() -> None:
     proof = {'schema_version': '1.0.0', 'status': 'passed', 'synthetic': True, 'canonical': False,
              'installed_package': installed, 'repository_sha': args.expected_sha, 'fixture_oracle': expected, 'normalization_repeat_bytes_identical': True, 'expected_counts': EXPECTED,
              'empty_domain_missingness': True, 'm4_interface_accepted': m4 is not None,
-             'm4_benchmarks': m4, 'nextflow_resume_qualified': False,
+             'm4_benchmarks': m4, 'nextflow_resume_qualified': nextflow_proof['nextflow_resume_qualified'], 'nextflow': nextflow_proof,
              'retained_file_hashes': {p.relative_to(evidence).as_posix(): identity(p) for p in sorted(evidence.rglob('*')) if p.is_file()},
-             'execution_scope': 'Direct real-tool synthetic qualification; separate Nextflow evidence required for cache claims.'}
+             'execution_scope': 'Real-tool synthetic qualification plus observed independent/both/resume Nextflow proof.'}
     (evidence / 'integration-proof.json').write_text(json.dumps(proof, indent=2) + '\n')
     print(json.dumps({'status': 'passed', 'evidence': str(evidence), 'manifest': str(root / 'fixture/m5-manifest.json')}))
 
@@ -126,6 +138,7 @@ if __name__ == '__main__':
                 failure = {'schema_version': '1.0.0', 'status': 'failed', 'synthetic': True,
                            'canonical': False, 'error_type': type(error).__name__, 'message': str(error)[-1500:]}
                 (root / 'evidence/integration-proof.json').write_text(json.dumps(failure, indent=2) + '\n')
+                retain_evidence(root)
                 for p in sorted(root.glob('*/*/benchmark.json')):
                     if p.stat().st_size <= 100_000:
                         shutil.copyfile(p, root / 'evidence' / (p.parent.name + '.json'))

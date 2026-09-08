@@ -11,7 +11,12 @@ workflow {
     if (!params.m5_manifest) error 'M5 requires an explicit synthetic manifest'
     if (!(params.callers in ['gatk', 'deepvariant', 'both'])) error 'Unknown M5 caller selection'
     def manifest_file = file(params.m5_manifest, checkIfExists: true)
-    def manifest = new groovy.json.JsonSlurper().parseText(manifest_file.text)
+    // Validate once in the installed package; parse its canonical stdout, never reread
+    // an ambiguous source with JsonSlurper's last-key-wins behavior.
+    def manifest_check = new ProcessBuilder('python', '-m', 'giab_wes_nextflow.m5_manifest', manifest_file.toString()).redirectErrorStream(true).start()
+    def manifest_text = manifest_check.inputStream.text
+    if (manifest_check.waitFor() != 0) error "M5 manifest validation failed: ${manifest_text}"
+    def manifest = new groovy.json.JsonSlurper().parseText(manifest_text)
     def fields = ['synthetic', 'sample', 'domain_id', 'reference', 'fai', 'dictionary', 'truth', 'truth_index', 'confidence', 'domain', 'queries'] as Set
     if (manifest.keySet() != fields || manifest.synthetic != true) error 'M5 entry requires its closed synthetic manifest; canonical execution is not qualified'
     if (!(manifest.sample ==~ /[A-Za-z0-9][A-Za-z0-9._-]*/) || !(manifest.domain_id ==~ /[A-Za-z0-9][A-Za-z0-9._-]*/)) error 'Unsafe sample/domain identifier'

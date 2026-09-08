@@ -72,3 +72,12 @@ The observed allocation does not qualify index construction. GPUs/TPUs do not
 provide the CPU indexer's missing system RAM. More system RAM on a different
 Colab allocation or qualified index reuse are distinct routes; container
 isolation remains a separate gate. Never construct the index on the owner's Mac.
+
+## Current handoff boundary
+
+The approved coding-domain constructor has reproduced its fixed hashes from
+pinned existing inputs; this does not qualify the reusable index. No owner Colab
+execution is requested until the restart-safe index qualification notebook is
+implemented and synthetically tested. It remains deferred within the continuation
+usage budget. The observed 50.99GiB allocation and missing container isolation
+remain blockers; preserve /content active work and private Drive durable storage.

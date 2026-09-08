@@ -165,3 +165,10 @@ exercise the new driver after the existing M4 job. No local expensive M3/M4
 Docker rerun or genomic download is needed. Coding-domain constructor and
 reusable-index qualification handoff are deferred to preserve the owner's usage
 budget. They remain prerequisites, not completed canonical-readiness claims.
+
+Continuation: the coding-domain constructor is now implemented and all approved
+hashes reproduced. M5 duplicate-key gate and actual equivalence/cache helper are
+implemented; the CI count repair preserves all frozen SNP/indel oracles and now
+checks SNP partition loci explicitly. Actual engine/cache acceptance remains
+pending. The reusable-index Colab notebook remains deferred under the5-point
+continuation budget. No canonical execution is authorized on the observed host.
