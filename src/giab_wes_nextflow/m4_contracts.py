@@ -226,7 +226,8 @@ def _native_records(path: str | Path) -> tuple[str, dict[str, int], list[dict[st
                     raise ValueError("ambiguous native VCF FORMAT fields")
                 if qual != "." and (not math.isfinite(float(qual)) or float(qual) < 0):
                     raise ValueError("native VCF QUAL must be finite and nonnegative")
-                genotype = dict(zip(format_keys, values)).get("GT")
+                call_fields = dict(zip(format_keys, values))
+                genotype = call_fields.get("GT")
                 if genotype is None or not re.fullmatch(r"(?:[0-9]+|\.)[/|](?:[0-9]+|\.)", genotype):
                     raise ValueError("native VCF requires a diploid genotype")
                 end_match = re.search(r"(?:^|;)END=([0-9]+)(?:;|$)", info)
@@ -234,10 +235,63 @@ def _native_records(path: str | Path) -> tuple[str, dict[str, int], list[dict[st
                 if not position <= end <= contigs[name]:
                     raise ValueError("native VCF end coordinate is out of bounds")
                 records.append({"contig": name, "position": position, "end": end, "ref": ref,
-                                "alt": alt.split(","), "genotype": genotype.replace("|", "/"), "filter": filter_value})
+                                "alt": alt.split(","), "genotype": genotype.replace("|", "/"), "filter": filter_value,
+                                "diagnostic_format": {key: call_fields.get(key) for key in ("GQ", "DP", "AD", "PL")}})
     if not sample:
         raise ValueError("missing native VCF header")
     return sample, contigs, records
+
+
+def _native_site_diagnostic(path: str | Path) -> dict[str, Any]:
+    """Describe frozen synthetic loci with bounded values, never arbitrary VCF text.
+
+    This failure-only evidence is not acceptance. Require the registered sample
+    and dictionary; expose only SNV/known symbolic alleles, short numeric GTs and
+    known filters. Hash other strings, omit paths, and cap rows and ALT entries.
+    """
+    expected = fixture_contract("m4-snv-positive").expectations
+    sample, contigs, records = _native_records(path)
+    if sample != expected["sample"] or list(contigs.items()) != list(expected["contigs"].items()):
+        raise ValueError("native diagnostics require the registered synthetic sample/reference")
+
+    def bounded(value: str, kind: str) -> str | dict[str, Any]:
+        """Keep only closed safe vocabularies and hash every other source string."""
+        allowed = ((kind == "allele" and (re.fullmatch("[ACGTN]", value) is not None
+                    or value in {".", "*", "<NON_REF>", "<*>"}))
+                   or (kind == "genotype" and len(value) <= 16
+                       and re.fullmatch(r"(?:[0-9]+|\.)/(?:[0-9]+|\.)", value) is not None)
+                   or (kind == "filter" and value in {"PASS", ".", "RefCall", "LowQual"}))
+        return value if allowed else {"length": len(value), "sha256": hashlib.sha256(value.encode()).hexdigest()}
+
+    def numeric(value: str | None, *, array: bool) -> Any:
+        """Expose short nonnegative numeric fields or null; hash other FORMAT text."""
+        if value is None or value == ".":
+            return None
+        parts = value.split(",") if array else [value]
+        if len(parts) <= 8 and all(len(part) <= 16 and re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", part) for part in parts):
+            numbers = [float(part) if "." in part else int(part) for part in parts]
+            return numbers if array else numbers[0]
+        return {"length": len(value), "sha256": hashlib.sha256(value.encode()).hexdigest()}
+
+    sites = []
+    for site in expected["variant_sites"]:
+        rows = [item for item in records if item["contig"] == site["contig"]
+                and item["position"] <= site["position_1based"] <= item["end"]]
+        sites.append({"contig": site["contig"], "position_1based": site["position_1based"],
+                      "expected": {key: site[key] for key in ("ref", "alt", "genotype")},
+                      "overlapping_record_count": len(rows), "rows_truncated": len(rows) > 4,
+                      "rows": [{"position_1based": item["position"], "end_1based": item["end"],
+                                "ref": bounded(item["ref"], "allele"),
+                                "alt": [bounded(value, "allele") for value in item["alt"][:4]],
+                                "alt_count": len(item["alt"]), "alts_truncated": len(item["alt"]) > 4,
+                                "genotype": bounded(item["genotype"], "genotype"),
+                                "filter": bounded(item["filter"], "filter"),
+                                "format": {key: numeric(item["diagnostic_format"][key], array=key in {"AD", "PL"})
+                                           for key in ("GQ", "DP", "AD", "PL")}} for item in rows[:4]]})
+    source = checked_file(path)
+    return {"schema_version": "1.0.0", "fixture_id": "m4-snv-positive", "acceptance": False,
+            "file_bytes": source.stat().st_size, "file_sha256": checksum(source),
+            "record_count": len(records), "sites": sites}
 
 
 def validate_native_calls(vcf_path: str | Path, *, caller: str,
@@ -279,7 +333,12 @@ def validate_native_calls(vcf_path: str | Path, *, caller: str,
                 if sorted(alleles[int(value)] for value in gt) == wanted and item["filter"] in {"PASS", "."}:
                     valid.append(item)
         if len(valid) != 1:
-            raise ValueError("native caller failed a frozen positive SNV genotype")
+            try:
+                diagnostic = _native_site_diagnostic(vcf_path)
+            except (ValueError, OSError, UnicodeError, EOFError):
+                diagnostic = {"acceptance": False, "status": "unavailable_or_invalid_synthetic_vcf"}
+            raise ValueError("native caller failed a frozen positive SNV genotype; synthetic_native_diagnostic="
+                             + json.dumps(diagnostic, sort_keys=True, separators=(",", ":")))
         accepted.append({"contig": site["contig"], "position_1based": site["position_1based"], "ref": site["ref"],
                          "alt": site["alt"], "genotype": site["genotype"]})
     for control in expected["reference_controls"]:
@@ -460,7 +519,17 @@ def collect_caller(caller: str, inputs: str | Path, vcf: str | Path, vcf_index: 
         raise ValueError("unknown M4 caller")
     source = validate_caller_inputs(inputs)
     tool = load_json(config_path("m4-tools.json"))["tools"][caller]
-    summary = validate_native_calls(vcf, caller=caller)
+    try:
+        summary = validate_native_calls(vcf, caller=caller)
+    except ValueError as error:
+        if caller != "deepvariant" or gvcf is None or not str(error).startswith("native caller failed a frozen positive SNV genotype;"):
+            raise
+        try:
+            diagnostic = _native_site_diagnostic(gvcf)
+        except (ValueError, OSError, UnicodeError, EOFError):
+            diagnostic = {"acceptance": False, "status": "unavailable_or_invalid_synthetic_gvcf"}
+        raise ValueError(str(error) + "; synthetic_gvcf_diagnostic="
+                         + json.dumps(diagnostic, sort_keys=True, separators=(",", ":"))) from None
     outputs = {"vcf": _file(vcf), "vcf_index": _file(vcf_index), "gvcf": None, "gvcf_index": None}
     if outputs["vcf_index"]["bytes"] <= 0:
         raise ValueError("native VCF index is empty")

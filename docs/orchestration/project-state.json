@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "project_state",
   "milestone": "M4",
-  "phase": "repair physical prediction shard filename after actual DeepVariant inference",
+  "phase": "diagnose native DeepVariant acceptance after completed prediction inspection",
   "state": "implemented",
   "version": "0.4.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/m4-dual-callers",
-      "evidence_sha": "7d1ca90bfc9aeb87bf0b17a64ad4e3ed39272d2c",
+      "evidence_sha": "a5fb7d8dd3e22f3f94f2259ae6626e35da4d1039",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -172,6 +172,13 @@
       "evidence_sha": null,
       "command": "nextflow lint .; git diff --check",
       "detail": "Pinned primary writer and shard utility plus actual one-writer log establish exact filename; one inspector input literal changed, with no caller parameter, fixture, tool identity or acceptance relaxation. Actual CI rerun required."
+    },
+    {
+      "name": "Bounded native-call failure diagnostics",
+      "status": "passed",
+      "evidence_sha": null,
+      "command": "python -m unittest discover -s tests/unit; python -I -m unittest discover -s <repository>/tests/unit -p test_m4*.py",
+      "detail": "236 tests passed on Python3.12/3.13;56 M4 tests passed from exact-source isolated rebuilt wheel. Independent AST review preserves acceptance and success paths. Failure-only observations are bounded to registered synthetic loci."
     }
   ],
   "ci": [
@@ -180,15 +187,15 @@
       "required": true,
       "status": "failure",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "7d1ca90bfc9aeb87bf0b17a64ad4e3ed39272d2c",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618",
+      "evidence_sha": "a5fb7d8dd3e22f3f94f2259ae6626e35da4d1039",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/job/101706720181",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/job/101706720207",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/job/101706720267",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/job/101706720361",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/job/101706720446",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34110920618/job/101708063292"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106801",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106899",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106948",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106972",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106977",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101717548124"
       ]
     }
   ],
@@ -225,6 +232,17 @@
       "evidence_artifacts": [
         "docs/orchestration/evidence/m4-ci-attempt-3.json"
       ]
+    },
+    {
+      "id": "linux-x86-64-m4-attempt-4",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34113889045-m4-attempt-4",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m4-ci-attempt-4.json"
+      ]
     }
   ],
   "publication": {
@@ -242,7 +260,8 @@
       "docs/orchestration/evidence/m3-checkpoint-ci-repaired.json",
       "docs/orchestration/evidence/m4-ci-attempt-1.json",
       "docs/orchestration/evidence/m4-ci-attempt-2.json",
-      "docs/orchestration/evidence/m4-ci-attempt-3.json"
+      "docs/orchestration/evidence/m4-ci-attempt-3.json",
+      "docs/orchestration/evidence/m4-ci-attempt-4.json"
     ]
   },
   "external_blockers": [
@@ -253,6 +272,6 @@
       "owner_action": "At the canonical gate, provide stronger per-library assignment or approve an explicit domain and its limited estimand after reviewing the investigation."
     }
   ],
-  "next_safe_action": "Re-run required CI with the exact physical single-writer prediction filename. GATK native output and isolated inputs passed independent acceptance; actual DeepVariant predictions were logged, but independent probability/candidate-lineage/native validation, both mode and final resume remain unverified.",
-  "observed_at": "2026-09-07T10:53:58.659046+00:00"
+  "next_safe_action": "Re-run unchanged biological execution with bounded native VCF/gVCF failure diagnostics. DeepVariant and its strict TFRecord inspector completed; native expected-site acceptance failed, and absent diagnostic rows prevent distinguishing missing locus, genotype, filter or duplicate acceptance. Preserve all gates; no M5 implementation yet.",
+  "observed_at": "2026-09-08T08:03:25.319372+00:00"
 }

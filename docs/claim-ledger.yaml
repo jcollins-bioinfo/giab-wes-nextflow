@@ -30,7 +30,7 @@ claims:
     classification: locally-tested
     statement: Selectable caller contracts, positive synthetic fixture, guarded evidence publication and local framework/cache behavior are implemented and tested.
     evidence: docs/orchestration/checkpoints/M4.json
-    limitation: Actual Linux Docker callers and positive DeepVariant inference remain pending; no M4 verification or canonical HG001 result is claimed.
+    limitation: Actual Linux Docker GATK acceptance passed and DeepVariant plus its prediction inspector completed, but native DeepVariant acceptance failed; no complete M4 verification or canonical HG001 result is claimed. See the preserved CI attempts.
   - id: capture-design
     classification: unresolved
     statement: Exact deposited Expanded Exome target bytes and dataset association are established; unique NIST7035 assay assignment remains unresolved.

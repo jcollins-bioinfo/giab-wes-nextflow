@@ -110,6 +110,14 @@ not a canonical HG001 resource estimate. Local macOS/ARM tests qualify Python
 and framework behavior; real DeepVariant execution there remains unsupported
 by this project. M4 is not verified until required Linux Docker CI passes.
 
+The [fourth actual CI attempt](docs/orchestration/evidence/m4-ci-attempt-4.json)
+passed GATK's native-call, shared-BAM and isolation checks. DeepVariant and its
+strict prediction inspector completed, then its native expected-site gate
+failed. The retained artifact lacks the site rows needed to distinguish a
+missing call, filter, genotype or ambiguous accepted record. Bounded diagnostic
+collection is being added without changing the frozen fixture or acceptance
+rules. Both-mode and final resume acceptance remain unverified.
+
 Each selected caller emits a versioned pre-normalization JSON contract, with
 input/output hashes, image/version/model identity, exact parameters and task
 resources. Only validated small JSON contracts enter the guarded

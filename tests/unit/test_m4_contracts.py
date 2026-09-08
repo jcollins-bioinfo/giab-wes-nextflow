@@ -125,6 +125,100 @@ class ContractTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     contracts.validate_native_calls(path, caller="gatk")
 
+    def test_native_failures_report_both_frozen_sites_without_acceptance(self) -> None:
+        """Wrong GT, filtering and absent loci remain failures with distinct evidence."""
+        source = self.root / "source/gatk/SYNTHETIC01.gatk.native.vcf.gz"
+        text = gzip.decompress(source.read_bytes()).decode()
+        cases = {"wrong_gt": text.replace("GT\t0/1", "GT\t1/1"),
+                 "low_qual": text.replace("\tPASS\t", "\tLowQual\t", 1),
+                 "missing": "\n".join(line for line in text.splitlines() if "3151" not in line) + "\n"}
+        for caller in contracts.CALLERS:
+            for kind, changed in cases.items():
+                with self.subTest(caller=caller, kind=kind):
+                    path = self.root / "native-failure.vcf"
+                    path.write_text(changed)
+                    with self.assertRaisesRegex(ValueError, "native caller failed a frozen positive SNV genotype") as caught:
+                        contracts.validate_native_calls(path, caller=caller)
+                    evidence = json.loads(str(caught.exception).split("synthetic_native_diagnostic=", 1)[1])
+                    self.assertFalse(evidence["acceptance"])
+                    self.assertEqual(evidence["file_sha256"], checksum(path))
+                    self.assertEqual([site["position_1based"] for site in evidence["sites"]], [3151, 7101])
+                    rows = evidence["sites"][0]["rows"]
+                    if kind == "wrong_gt":
+                        self.assertEqual(rows[0]["genotype"], "1/1")
+                    elif kind == "low_qual":
+                        self.assertEqual(rows[0]["filter"], "LowQual")
+                    else:
+                        self.assertEqual(rows, [])
+                    self.assertNotIn(str(self.root), str(caught.exception))
+
+    def test_native_diagnostics_bound_and_redact_untrusted_fields(self) -> None:
+        """Only safe alleles/GT/filters and capped rows enter synthetic diagnostics."""
+        source = self.root / "source/gatk/SYNTHETIC01.gatk.native.vcf.gz"
+        header = "\n".join(line for line in gzip.decompress(source.read_bytes()).decode().splitlines()
+                           if line.startswith("#")) + "\n"
+        secret = "sensitive-source-field-" * 100
+        rows = [f"chrSYN1\t3151\t.\t{'T' * 1000}\t{secret}{index},A,<NON_REF>,*,N\t1\t{secret}\t.\tGT:GQ:DP:AD:PL\t0/1:{secret}:80:40,40:0,1,2,3,4,5,6,7,8\n"
+                for index in range(12)]
+        path = self.root / "private-source-name.vcf"
+        path.write_text(header + "".join(rows))
+        evidence = contracts._native_site_diagnostic(path)
+        site = evidence["sites"][0]
+        self.assertEqual(site["overlapping_record_count"], 12)
+        self.assertEqual(len(site["rows"]), 4)
+        self.assertTrue(site["rows_truncated"])
+        self.assertEqual(site["rows"][0]["alt_count"], 5)
+        self.assertTrue(site["rows"][0]["alts_truncated"])
+        self.assertEqual(site["rows"][0]["ref"]["length"], 1000)
+        self.assertEqual(site["rows"][0]["format"]["DP"], 80)
+        self.assertEqual(site["rows"][0]["format"]["AD"], [40, 40])
+        self.assertEqual(site["rows"][0]["format"]["GQ"]["length"], len(secret))
+        self.assertIn("sha256", site["rows"][0]["format"]["PL"])
+        serialized = json.dumps(evidence)
+        self.assertNotIn(secret, serialized)
+        self.assertNotIn(path.name, serialized)
+        self.assertNotIn("T" * 1000, serialized)
+        self.assertLess(len(serialized), 6000)
+        path.write_text((header + "".join(rows)).replace("SYNTHETIC01", "UNREGISTERED"))
+        with self.assertRaisesRegex(ValueError, "registered synthetic"):
+            contracts._native_site_diagnostic(path)
+
+    def test_failed_collector_adds_gvcf_context_only_after_synthetic_input_gate(self) -> None:
+        """Rejected native sites include bounded reference blocks without a marker."""
+        directory = self.root / "source/deepvariant"
+        vcf = directory / "SYNTHETIC01.deepvariant.native.vcf.gz"
+        gvcf = directory / "SYNTHETIC01.deepvariant.native.g.vcf.gz"
+        text = gzip.decompress(vcf.read_bytes()).decode()
+        vcf.write_bytes(gzip.compress("\n".join(line for line in text.splitlines() if "3151" not in line).encode() + b"\n"))
+        gvcf.write_bytes(gzip.compress(text.replace("3151\t.\tT\tA\t99\tPASS\t.\tGT\t0/1",
+            "3151\t.\tT\t<NON_REF>\t0\t.\tEND=3250\tGT:GQ:DP:AD:PL\t0/0:12:80:40,40:0,12,100").encode()))
+        output = self.root / "failed-caller.json"
+        args = ("deepvariant", self.root / "source/caller-inputs", vcf, Path(str(vcf) + ".tbi"),
+                directory / "version.txt", directory / "command.sh", directory / "resources.json", output)
+        with self.assertRaisesRegex(ValueError, "native caller failed") as caught:
+            contracts.collect_caller(*args, gvcf=gvcf)
+        evidence = json.loads(str(caught.exception).split("synthetic_gvcf_diagnostic=", 1)[1])
+        row = evidence["sites"][0]["rows"][0]
+        self.assertEqual((row["genotype"], row["end_1based"], row["alt"]), ("0/0", 3250, ["<NON_REF>"]))
+        self.assertEqual(row["format"], {"GQ": 12, "DP": 80, "AD": [40, 40], "PL": [0, 12, 100]})
+        self.assertEqual(evidence["sites"][1]["rows"][0]["format"], {"GQ": None, "DP": None, "AD": None, "PL": None})
+        self.assertFalse(output.exists())
+        gvcf.write_bytes(gzip.compress(text.replace("SYNTHETIC01", "UNREGISTERED").encode()))
+        with self.assertRaises(ValueError) as caught:
+            contracts.collect_caller(*args, gvcf=gvcf)
+        self.assertIn("unavailable_or_invalid_synthetic_gvcf", str(caught.exception))
+        self.assertNotIn("UNREGISTERED", str(caught.exception))
+        inputs = self.root / "source/caller-inputs"
+        (inputs / "shared.bam").write_bytes(b"unaccepted source")
+        with patch.object(contracts, "_native_site_diagnostic") as diagnostic:
+            with self.assertRaises(ValueError):
+                contracts.collect_caller(*args, gvcf=gvcf)
+            diagnostic.assert_not_called()
+            with self.assertRaisesRegex(ValueError, "unregistered"):
+                contracts.validate_native_calls(vcf, caller="deepvariant", fixture_id="unregistered")
+            diagnostic.assert_not_called()
+        self.assertFalse(output.exists())
+
     def test_rehashed_tool_parameter_oracle_and_lineage_forgery(self) -> None:
         """Self-consistent JSON hashes do not bypass frozen scientific identities."""
         mutations = [

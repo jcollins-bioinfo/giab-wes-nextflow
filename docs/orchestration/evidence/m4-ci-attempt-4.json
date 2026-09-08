@@ -1,0 +1,228 @@
+{
+  "allele_assertions": {
+    "all_mapped_cigars_150M": true,
+    "sites": [
+      {
+        "contig": "chrSYN1",
+        "fragment_counts": {
+          "A": 40,
+          "T": 40
+        },
+        "position_1based": 3151
+      },
+      {
+        "contig": "chrSYN2",
+        "fragment_counts": {
+          "A": 80
+        },
+        "position_1based": 7101
+      },
+      {
+        "contig": "chrSYN1",
+        "fragment_counts": {
+          "G": 80
+        },
+        "position_1based": 5401
+      }
+    ]
+  },
+  "artifact": {
+    "all_member_hashes_verified": true,
+    "bytes": 1265429,
+    "id": 10015620065,
+    "integration_proof_sha256": "aca496c0228b310a50070632799126c94e4efaf93c3186d553034742c8f6cee5",
+    "name": "m4-synthetic-docker-evidence",
+    "sha256": "bb01216bbf96e84fa509413d0ad3efa5df0900fa4caa4809d95ad658528f5d80",
+    "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/artifacts/10015620065",
+    "verified_evidence_members": 59
+  },
+  "attempt": 4,
+  "bam_assertions": {
+    "bai_sha256": "79b7333d41cb658a7b87006409a146e2732920234559965d56be4f79ac65dd80",
+    "bam_sha256": "27ae79e78f8e7f3c6da4d8aa7f67586ca49e1865c4e951d7593d10f2a724e237",
+    "coordinate_sorted": true,
+    "duplicate_reads": 4,
+    "exact_synthetic_alignments": true,
+    "indexed_region_queries_valid": true,
+    "mapped_reads": 524,
+    "oq_on_all_primary_reads": true,
+    "primary_reads": 528,
+    "read_groups": 2,
+    "reference_dictionary_identical": true,
+    "samtools_version": "samtools 1.24",
+    "unmapped_reads": 4
+  },
+  "canonical": false,
+  "execution_scope": {
+    "biological_processing_validated": false,
+    "both_and_final_resume_phases_reached": false,
+    "deepvariant_native_collector_accepted": false,
+    "deepvariant_native_driver_oracle_index_mount_checks_completed": false,
+    "deepvariant_task_completed": true,
+    "deepvariant_task_exit": 0,
+    "deepvariant_task_hash": "08/757581",
+    "gatk_caller_collector_bundle_accepted": true,
+    "gatk_native_snvs_oracle_index_mount_verified": true,
+    "inspector_result_json_independently_retrieved": false,
+    "phase_trace_counts": {
+      "deepvariant": {
+        "CACHED": 23,
+        "COMPLETED": 1,
+        "FAILED": 1
+      },
+      "gatk": {
+        "COMPLETED": 26
+      }
+    },
+    "strict_inspector_returned_success_in_actual_task": true
+  },
+  "fixture": {
+    "manifest_sha256": "e31ffa05a94f540e563f56d4dc3990ec0c8fa803cdccb7c3c8fe40a16a0348ad",
+    "recipe_version": "1.0.0",
+    "sample": "SYNTHETIC01"
+  },
+  "frozen_oracle_sha256": "c971c2bac375dbffc37608b6cde4ec4d9b72a9f094dba446d8fe6e9032566d4f",
+  "gatk_caller_isolation": {
+    "gatk": {
+      "mounts": [
+        "task"
+      ],
+      "mounts_within_task_only": true,
+      "network": "none",
+      "staged_input_identity": {
+        "actual_bytes_match_accepted_contract": true,
+        "exact_seven_regular_inputs": true,
+        "files": [
+          {
+            "bytes": 388,
+            "filename": "reference.dict",
+            "sha256": "12d06321d96ad9b1a7662a742529b8d92a7ddca632ae1bdb17a5f844f403e0ab"
+          },
+          {
+            "bytes": 20352,
+            "filename": "reference.fa",
+            "sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454"
+          },
+          {
+            "bytes": 47,
+            "filename": "reference.fa.fai",
+            "sha256": "495e967f24a319fec0ee13c6e7c729f39e491431a2bf8f123afb0eb49da62267"
+          },
+          {
+            "bytes": 31,
+            "filename": "regions.bed",
+            "sha256": "c3dc1442e95a7409413eaebe354771c881caeffbc37bbcf50a7f556ee764ca9a"
+          },
+          {
+            "bytes": 18508,
+            "filename": "shared.bam",
+            "sha256": "27ae79e78f8e7f3c6da4d8aa7f67586ca49e1865c4e951d7593d10f2a724e237"
+          },
+          {
+            "bytes": 176,
+            "filename": "shared.bam.bai",
+            "sha256": "79b7333d41cb658a7b87006409a146e2732920234559965d56be4f79ac65dd80"
+          }
+        ],
+        "metadata_sha256": "f32c5a1881823c439c77e6712b9f41df46d377ad716c675cdf02f956bf640765"
+      }
+    }
+  },
+  "gatk_native_assertions": {
+    "gatk:gatk": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    }
+  },
+  "gatk_native_index_assertions": {
+    "gatk": {
+      "files": [
+        {
+          "filename": "SYNTHETIC01.gatk.native.vcf.gz",
+          "index_query_matches_sequential_records": true,
+          "records": 2
+        }
+      ],
+      "fixed_full_reference_domain": "chrSYN1:1-12000,chrSYN2:1-8000",
+      "reader_image": "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    }
+  },
+  "head_sha": "a5fb7d8dd3e22f3f94f2259ae6626e35da4d1039",
+  "image": {
+    "Architecture": "amd64",
+    "Id": "sha256:96e40015101d9178131fe129456345a225c0bd3c3dfe6c7da79a8355b3710506",
+    "Os": "linux",
+    "RepoDigests": [
+      "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    ],
+    "Size": 4914595016
+  },
+  "installed_package": {
+    "files": 42,
+    "package_inventory_sha256": "4afb2bb8aee3a009c2bfc1dded9f08cd34f32fab0714541709b67e796af6691b",
+    "repository_sha": "adb3a6fdbbd7f0c3589b5bdd1bf697da0bc9ff0b",
+    "version": "0.4.0-dev.1"
+  },
+  "job_conclusions": [
+    {
+      "conclusion": "failure",
+      "id": 101716106801,
+      "name": "m4-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101716106899,
+      "name": "nextflow",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101716106948,
+      "name": "m3-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101716106972,
+      "name": "python (3.12)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101716106977,
+      "name": "python (3.13)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "id": 101717548124,
+      "name": "required",
+      "status": "completed"
+    }
+  ],
+  "job_id": 101716106801,
+  "job_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34113889045/job/101716106801",
+  "m4_failure": {
+    "diagnostic_limit": "Native call rows and DeepVariant model/inference JSON were not archived before collection failed. Existing evidence cannot distinguish missing site, discordant allele/GT, rejected filter, or ambiguous records.",
+    "error_type": "ValueError",
+    "message": "native caller failed a frozen positive SNV genotype",
+    "observed_failing_site": null,
+    "observed_filter": null,
+    "observed_genotype": null,
+    "phase": "M4_COLLECT_DEEPVARIANT native SNV acceptance after successful DeepVariant task and independent inspector",
+    "report_script_sha256": "9db75c81e4e230a159edb982f8de2db0244a408eeb272e19c384245651fd8682",
+    "root_cause_resolved": false,
+    "source": "src/giab_wes_nextflow/m4_contracts.py:282 via collect_caller at line463"
+  },
+  "milestone": "M4",
+  "pull_request": 21,
+  "repository": "jcollins-bioinfo/giab-wes-nextflow",
+  "run_id": 34113889045,
+  "schema_version": "1.0.0",
+  "scientific_acceptance_changed": false,
+  "status": "failed",
+  "synthetic": true,
+  "tested_merge_sha": "adb3a6fdbbd7f0c3589b5bdd1bf697da0bc9ff0b"
+}
