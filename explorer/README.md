@@ -8,14 +8,24 @@ The overview renders the verified M3 synthetic 48-read preprocessing run,
 22 completed tasks and 22 cached tasks on resume. The execution view filters
 the original trace, retaining milliseconds, CPU percentage and RSS bytes.
 The provenance view lists immutable source hashes and downloads a fixed,
-validated JSON snapshot. A package-owned loader validates the four-file inventory
+validated JSON snapshot. A package-owned loader validates the five-file inventory
 before rendering; callbacks only select views or validated observations.
 
-Caller qualification uses the separate M4 fixture and records its actual failure:
-DeepVariant returned `0/0`/`RefCall` at the expected heterozygote, with AD `[40,40]`.
-Its other expected site returned `1/1`/`PASS`. No cause is inferred. Both-mode and
-final resume acceptance remain unverified. HG001 accuracy and comparative costs
-are null, with explicit missing reasons. Synthetic timings do not estimate WES cost.
+Caller qualification now records the passed synthetic M4 run on main
+[`f29ed262`](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774).
+The package bundles the concise [verified record](../docs/orchestration/evidence/m4-verified-main-34237377774.json),
+bound to its downloaded artifact, all 93 verified evidence members, source tree,
+fixture and tool identities. Recipe 1.1.0 passed both native SNV genotypes and its
+reference control, two DeepVariant candidate/inference records, independent
+caller modes, both-mode and full resume. This qualifies synthetic SNV integration.
+
+The original `m4-attempt.json` remains unchanged as historical recipe 1.0.0 failure
+evidence: its expected heterozygote returned `0/0`/`RefCall`. The current passed
+record does not archive individual native VCF rows, so the UI does not infer
+per-site FILTER, AD or GQ from the successful acceptance assertions. HG001 accuracy
+and comparative costs remain null, with explicit missing reasons. Synthetic
+timings do not estimate WES cost; indel and canonical HG001 qualification remain
+unavailable.
 
 ## Run locally
 

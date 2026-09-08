@@ -2,10 +2,10 @@
 
 ## [0.4.0-dev.1] - 2026-09-07
 
-M4 implementation in progress: separately registered positive SNV fixture,
+M4 implementation subsequently verified on merged main f29ed262b886ba4afe18cf9cc6455edcf13df808 by CI34237377774 (2026-09-08): separately registered positive SNV fixture,
 shared accepted preprocessing inputs, independent/both GATK and DeepVariant WES
 caller contracts and actual Linux/x86_64 qualification. Execution status is
-owned by the M4 checkpoint; a version declaration is not a passing run.
+owned by the M4 checkpoint; historical failures remain retained. Reconcile the owner-supplied Colab observation and stale Explorer state without claiming new execution.
 
 
 ## [0.3.0-dev.1] - 2026-09-07

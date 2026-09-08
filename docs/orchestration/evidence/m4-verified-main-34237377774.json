@@ -1,0 +1,610 @@
+{
+  "allele_assertions": {
+    "all_mapped_cigars_150M": true,
+    "sites": [
+      {
+        "contig": "chrSYN1",
+        "fragment_counts": {
+          "A": 40,
+          "T": 40
+        },
+        "position_1based": 3151
+      },
+      {
+        "contig": "chrSYN2",
+        "fragment_counts": {
+          "A": 80
+        },
+        "position_1based": 7101
+      },
+      {
+        "contig": "chrSYN1",
+        "fragment_counts": {
+          "G": 80
+        },
+        "position_1based": 5401
+      }
+    ]
+  },
+  "artifact": {
+    "all_member_hashes_verified": true,
+    "archive_members": 94,
+    "bytes": 2530018,
+    "id": 10060655762,
+    "integration_proof_bytes": 49112,
+    "integration_proof_sha256": "fee5e704cf1d25cc81f8db4531e0ef4696f7ffb687e24b7546c9548b618258a3",
+    "name": "m4-synthetic-docker-evidence",
+    "published_digest_matches_download": true,
+    "sha256": "f591ea3d7a949c4e5384921e553a359ffd6ff1c9da0f7ab21bdd73673a961da6",
+    "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/artifacts/10060655762",
+    "verified_evidence_members": 93
+  },
+  "bam_assertions": {
+    "bai_sha256": "986f0b1b8d506016f56935fe9ce7f3160f8da1fb9a04e51f8795a61031e4fc89",
+    "bam_sha256": "7e52b2f5739477f9b6a47aa38d76d19e9641c71b09745582c3adab3acb83615a",
+    "coordinate_sorted": true,
+    "duplicate_reads": 4,
+    "exact_synthetic_alignments": true,
+    "indexed_region_queries_valid": true,
+    "mapped_reads": 524,
+    "oq_on_all_primary_reads": true,
+    "primary_reads": 528,
+    "read_groups": 2,
+    "reference_dictionary_identical": true,
+    "samtools_version": "samtools 1.24",
+    "unmapped_reads": 4
+  },
+  "branch": "main",
+  "caller_isolation": {
+    "deepvariant": {
+      "mounts": [
+        "task"
+      ],
+      "mounts_within_task_only": true,
+      "network": "none",
+      "staged_input_identity": {
+        "actual_bytes_match_accepted_contract": true,
+        "exact_seven_regular_inputs": true,
+        "files": [
+          {
+            "bytes": 388,
+            "filename": "reference.dict",
+            "sha256": "2c5acbe4edbfd102c9336097b36482815ad70219036b701cd830895b61339cbf"
+          },
+          {
+            "bytes": 20352,
+            "filename": "reference.fa",
+            "sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454"
+          },
+          {
+            "bytes": 47,
+            "filename": "reference.fa.fai",
+            "sha256": "495e967f24a319fec0ee13c6e7c729f39e491431a2bf8f123afb0eb49da62267"
+          },
+          {
+            "bytes": 31,
+            "filename": "regions.bed",
+            "sha256": "c3dc1442e95a7409413eaebe354771c881caeffbc37bbcf50a7f556ee764ca9a"
+          },
+          {
+            "bytes": 19016,
+            "filename": "shared.bam",
+            "sha256": "7e52b2f5739477f9b6a47aa38d76d19e9641c71b09745582c3adab3acb83615a"
+          },
+          {
+            "bytes": 176,
+            "filename": "shared.bam.bai",
+            "sha256": "986f0b1b8d506016f56935fe9ce7f3160f8da1fb9a04e51f8795a61031e4fc89"
+          }
+        ],
+        "metadata_sha256": "197507ba9ccbda4ce978392e4befe3b3717d4733a309f4b79a001b7e9a8931fa"
+      }
+    },
+    "gatk": {
+      "mounts": [
+        "task"
+      ],
+      "mounts_within_task_only": true,
+      "network": "none",
+      "staged_input_identity": {
+        "actual_bytes_match_accepted_contract": true,
+        "exact_seven_regular_inputs": true,
+        "files": [
+          {
+            "bytes": 388,
+            "filename": "reference.dict",
+            "sha256": "2c5acbe4edbfd102c9336097b36482815ad70219036b701cd830895b61339cbf"
+          },
+          {
+            "bytes": 20352,
+            "filename": "reference.fa",
+            "sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454"
+          },
+          {
+            "bytes": 47,
+            "filename": "reference.fa.fai",
+            "sha256": "495e967f24a319fec0ee13c6e7c729f39e491431a2bf8f123afb0eb49da62267"
+          },
+          {
+            "bytes": 31,
+            "filename": "regions.bed",
+            "sha256": "c3dc1442e95a7409413eaebe354771c881caeffbc37bbcf50a7f556ee764ca9a"
+          },
+          {
+            "bytes": 19016,
+            "filename": "shared.bam",
+            "sha256": "7e52b2f5739477f9b6a47aa38d76d19e9641c71b09745582c3adab3acb83615a"
+          },
+          {
+            "bytes": 176,
+            "filename": "shared.bam.bai",
+            "sha256": "986f0b1b8d506016f56935fe9ce7f3160f8da1fb9a04e51f8795a61031e4fc89"
+          }
+        ],
+        "metadata_sha256": "197507ba9ccbda4ce978392e4befe3b3717d4733a309f4b79a001b7e9a8931fa"
+      }
+    }
+  },
+  "canonical": false,
+  "deepvariant_inference": {
+    "all_probabilities_valid": true,
+    "call_variants_files": [
+      {
+        "bytes": 228,
+        "filename": "call_variants_output-00000-of-00001.tfrecord.gz",
+        "sha256": "6e92b87a4b338c537cf2b09a577e3e0d7ea46eca0e59a8bc4500d38e3611d384"
+      }
+    ],
+    "call_variants_record_count": 2,
+    "example_files": [
+      {
+        "bytes": 17885,
+        "filename": "make_examples.tfrecord-00000-of-00001.gz",
+        "sha256": "8b15d8a99dfc11790218cfe07e7635cc394eff45f748ba3ec8811ffe662ab653"
+      }
+    ],
+    "example_record_count": 2,
+    "kind": "m4_deepvariant_inference",
+    "model_files": [
+      {
+        "bytes": 99,
+        "filename": "fingerprint.pb",
+        "sha256": "4a52ce788db7c83f053eb7e13c63cc51ea5ce57ee1027bcf854773508569a14a"
+      },
+      {
+        "bytes": 4508419,
+        "filename": "saved_model.pb",
+        "sha256": "5180f0ee66667eac5bd00383789a51b682294c1fafa7ba0232f90a4a9f9980e6"
+      },
+      {
+        "bytes": 250,
+        "filename": "model.example_info.json",
+        "sha256": "10a47721a3ea86f6c25bcabda3af5c31a936a3183847ac8a25857a709359187a"
+      },
+      {
+        "bytes": 87491787,
+        "filename": "variables/variables.data-00000-of-00001",
+        "sha256": "639dadabf0483b67d8b7f12d18e3e309854a37ead6bdc16cc701417732b99167"
+      },
+      {
+        "bytes": 6661,
+        "filename": "variables/variables.index",
+        "sha256": "f24f29408744c08eb620d05db517c74ae64c21853b57b3bc6c43b365f3a3d55a"
+      }
+    ],
+    "model_type": "WES",
+    "pre_inference_model_hashes_identical": true,
+    "probability_tolerance": 1e-05,
+    "schema_version": "1.0.0",
+    "variant_contigs": [
+      "chrSYN1",
+      "chrSYN2"
+    ]
+  },
+  "evidence_limits": {
+    "canonical_benchmark_metrics": null,
+    "comparative_caller_cost": null,
+    "fixture_repair_scope": "Recipe 1.1.0 interleaves heterozygous REF/ALT fragments within each lane and mate orientation; the expected loci, alleles, genotypes, fragment counts and strict acceptance requirements remain. The oracle file digest changes because it binds the repaired fixture manifest.",
+    "historical_failures": "m4-ci-attempt-1.json through m4-ci-attempt-5.json remain historical failed-run records; this successful run supersedes their current-state status only.",
+    "indel_qualification": false,
+    "observation_basis": "Downloaded CI artifact ZIP and all 93 inventoried members hash-verified; observations transcribed from actual integration proof and caller contracts. Tree resolved locally at the tested main SHA; jobs and artifact metadata read live from GitHub.",
+    "population_generalization": false,
+    "raw_native_call_rows": null,
+    "raw_native_call_rows_reason": "Successful artifact records accepted site/genotype assertions and native output hashes; individual native VCF rows are not archived. No per-site AD, GQ or FILTER value is invented."
+  },
+  "execution_environment": {
+    "architecture": "x86_64",
+    "deepvariant_image": {
+      "Architecture": "amd64",
+      "Id": "sha256:96e40015101d9178131fe129456345a225c0bd3c3dfe6c7da79a8355b3710506",
+      "Os": "linux",
+      "RepoDigests": [
+        "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+      ],
+      "Size": 4914595016
+    },
+    "docker": {
+      "Architecture": "x86_64",
+      "MemTotal": 16766406656,
+      "NCPU": 4,
+      "OSType": "linux",
+      "ServerVersion": "28.0.4"
+    },
+    "os": "Linux",
+    "required_cpu_flags_observed": [
+      "sse4_1",
+      "sse4_2",
+      "avx"
+    ]
+  },
+  "execution_scope": {
+    "biological_processing_validated": true,
+    "both_and_resume_accepted": true,
+    "canonical_hg001_executed": false,
+    "deepvariant_and_prediction_inspector_completed": true,
+    "deepvariant_native_acceptance": true,
+    "gatk_native_acceptance": true,
+    "qualification": "invented SNV integration only"
+  },
+  "fixture": {
+    "fixture_id": "m4-snv-positive",
+    "inventory_path": "tests/data/m4/expected-hashes.json",
+    "inventory_sha256": "926719a329838a0269d9ad2e738b79f2f3af22718131fff9e06435defa445024",
+    "known_sites_sha256": "1d186908d513980e73b91dadd1470b780d05a952c7c927c363ee30be58713f9d",
+    "manifest_sha256": "c54c4d5a7dd0b758dcbe38d3091676a45fbf9f1729cc6d1d852bb9593e17be38",
+    "recipe_version": "1.1.0",
+    "reference_sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454",
+    "sample": "SYNTHETIC01"
+  },
+  "frozen_oracle_sha256": "1ef37c7067e2c8b5cb96d2ef74ad99459c0df9bd996beade05dd541264187539",
+  "frozen_oracle_sites": [
+    {
+      "alt": "A",
+      "alt_fragments": 40,
+      "contig": "chrSYN1",
+      "genotype": "0/1",
+      "position_1based": 3151,
+      "ref": "T",
+      "ref_fragments": 40
+    },
+    {
+      "alt": "A",
+      "alt_fragments": 80,
+      "contig": "chrSYN2",
+      "genotype": "1/1",
+      "position_1based": 7101,
+      "ref": "T",
+      "ref_fragments": 0
+    },
+    {
+      "alt": null,
+      "alt_fragments": 0,
+      "contig": "chrSYN1",
+      "genotype": "0/0",
+      "position_1based": 5401,
+      "ref": "G",
+      "ref_fragments": 80
+    }
+  ],
+  "head_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
+  "installed_package": {
+    "files": 43,
+    "package_inventory_sha256": "721fca0036a7cfc4f9bce04a86e94a2918bb544c0f173b7eb3374ba83a609971",
+    "repository_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
+    "version": "0.4.0-dev.1"
+  },
+  "job_conclusions": [
+    {
+      "conclusion": "success",
+      "id": 102098476873,
+      "name": "m3-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 102098477130,
+      "name": "m4-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 102098477151,
+      "name": "python (3.13)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 102098477158,
+      "name": "python (3.12)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 102098477215,
+      "name": "nextflow",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 102100375843,
+      "name": "required",
+      "status": "completed"
+    }
+  ],
+  "job_id": 102098477130,
+  "job_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477130",
+  "milestone": "M4",
+  "mode_and_resume_assertions": {
+    "both_callers_executed": true,
+    "both_mode_resume_all_cached": true,
+    "modes": {
+      "both": {
+        "CACHED": 27,
+        "COMPLETED": 1
+      },
+      "deepvariant": {
+        "CACHED": 23,
+        "COMPLETED": 3
+      },
+      "gatk": {
+        "COMPLETED": 26
+      },
+      "resume": {
+        "CACHED": 28
+      }
+    },
+    "prior_task_hashes_reused": true,
+    "upstream_tasks_per_mode": 22
+  },
+  "native_assertions": {
+    "both:deepvariant": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    },
+    "both:gatk": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    },
+    "deepvariant:deepvariant": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    },
+    "gatk:gatk": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    },
+    "resume:deepvariant": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    },
+    "resume:gatk": {
+      "expected_native_snvs_valid": true,
+      "reference_control_nonvariant": true,
+      "sample": "SYNTHETIC01"
+    }
+  },
+  "native_hashes": {
+    "deepvariant": {
+      "gvcf": "0f8a29db2fe7e06b2a35ed53e532ee33c46993b0f49eb4d334a3d0fd868f3634",
+      "gvcf_index": "7882dc5e2259ae1118316091c6abe3f0316cf61c04a1edb39ecd05a1b8694d95",
+      "index": "f478fd3fbec736d18be1f8b7a704dc1268b777747c69625ad6b8b5e952abcbf4",
+      "vcf": "c6d146e8398f7ad63da08eb0fb9e027f1c3d37c66c4e45e69956d06d3b731230"
+    },
+    "gatk": {
+      "index": "34cc5752ea98e86d586cbe4220d02af74f8d385c74d4f0d18e93b3c7fadd7aa3",
+      "vcf": "68e27354c83b803428449c4df2a87a1d5cec98c5d3598f2cdd502324e49e02dc"
+    }
+  },
+  "native_index_assertions": {
+    "deepvariant": {
+      "files": [
+        {
+          "filename": "SYNTHETIC01.deepvariant.native.vcf.gz",
+          "index_query_matches_sequential_records": true,
+          "records": 2
+        },
+        {
+          "filename": "SYNTHETIC01.deepvariant.native.g.vcf.gz",
+          "index_query_matches_sequential_records": true,
+          "records": 196
+        }
+      ],
+      "fixed_full_reference_domain": "chrSYN1:1-12000,chrSYN2:1-8000",
+      "reader_image": "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    },
+    "gatk": {
+      "files": [
+        {
+          "filename": "SYNTHETIC01.gatk.native.vcf.gz",
+          "index_query_matches_sequential_records": true,
+          "records": 2
+        }
+      ],
+      "fixed_full_reference_domain": "chrSYN1:1-12000,chrSYN2:1-8000",
+      "reader_image": "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    }
+  },
+  "observed_at": "2026-09-08T18:40:15.886527+00:00",
+  "observed_tools": {
+    "deepvariant": {
+      "contract_member": "contracts/deepvariant/m4-deepvariant.json",
+      "contract_sha256": "ba651daf648445407eee05d2cfdd309ab3eebe6d420bcecb65e477dd762f0793",
+      "declared_version": "1.10.0",
+      "image": "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6",
+      "native_acceptance": {
+        "acceptance": "invented_integration_only",
+        "expected_positive_sites": [
+          {
+            "alt": "A",
+            "contig": "chrSYN1",
+            "genotype": "0/1",
+            "position_1based": 3151,
+            "ref": "T"
+          },
+          {
+            "alt": "A",
+            "contig": "chrSYN2",
+            "genotype": "1/1",
+            "position_1based": 7101,
+            "ref": "T"
+          }
+        ],
+        "record_count": 2,
+        "reference_control_nonreference_calls": 0
+      },
+      "observed_parameters": {
+        "model_type": "WES",
+        "num_shards": 1,
+        "postprocess_cpus": 0,
+        "use_original_quality_scores": true
+      },
+      "observed_version": "1.10.0",
+      "outputs": {
+        "gvcf": {
+          "bytes": 2538,
+          "filename": "SYNTHETIC01.deepvariant.native.g.vcf.gz",
+          "sha256": "0f8a29db2fe7e06b2a35ed53e532ee33c46993b0f49eb4d334a3d0fd868f3634"
+        },
+        "gvcf_index": {
+          "bytes": 130,
+          "filename": "SYNTHETIC01.deepvariant.native.g.vcf.gz.tbi",
+          "sha256": "7882dc5e2259ae1118316091c6abe3f0316cf61c04a1edb39ecd05a1b8694d95"
+        },
+        "vcf": {
+          "bytes": 908,
+          "filename": "SYNTHETIC01.deepvariant.native.vcf.gz",
+          "sha256": "c6d146e8398f7ad63da08eb0fb9e027f1c3d37c66c4e45e69956d06d3b731230"
+        },
+        "vcf_index": {
+          "bytes": 128,
+          "filename": "SYNTHETIC01.deepvariant.native.vcf.gz.tbi",
+          "sha256": "f478fd3fbec736d18be1f8b7a704dc1268b777747c69625ad6b8b5e952abcbf4"
+        }
+      },
+      "quality_source": "OQ",
+      "version_observation_basis": "version string in hash-verified caller contract"
+    },
+    "gatk": {
+      "contract_member": "contracts/gatk/m4-gatk.json",
+      "contract_sha256": "d539c797c347831270468e13644814fce1c5218cf1bfe0e8db6a3098f7837791",
+      "declared_version": "4.7.0.0",
+      "image": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+      "native_acceptance": {
+        "acceptance": "invented_integration_only",
+        "expected_positive_sites": [
+          {
+            "alt": "A",
+            "contig": "chrSYN1",
+            "genotype": "0/1",
+            "position_1based": 3151,
+            "ref": "T"
+          },
+          {
+            "alt": "A",
+            "contig": "chrSYN2",
+            "genotype": "1/1",
+            "position_1based": 7101,
+            "ref": "T"
+          }
+        ],
+        "record_count": 2,
+        "reference_control_nonreference_calls": 0
+      },
+      "observed_parameters": {
+        "emit_ref_confidence": "NONE",
+        "native_pair_hmm_threads": 2,
+        "standard_min_confidence_threshold_for_calling": 30.0
+      },
+      "observed_version": "4.7.0.0",
+      "outputs": {
+        "gvcf": null,
+        "gvcf_index": null,
+        "vcf": {
+          "bytes": 4240,
+          "filename": "SYNTHETIC01.gatk.native.vcf.gz",
+          "sha256": "68e27354c83b803428449c4df2a87a1d5cec98c5d3598f2cdd502324e49e02dc"
+        },
+        "vcf_index": {
+          "bytes": 123,
+          "filename": "SYNTHETIC01.gatk.native.vcf.gz.tbi",
+          "sha256": "34cc5752ea98e86d586cbe4220d02af74f8d385c74d4f0d18e93b3c7fadd7aa3"
+        }
+      },
+      "quality_source": "QUAL",
+      "version_observation_basis": "version string in hash-verified caller contract"
+    }
+  },
+  "per_caller_contracts_identical_across_modes": true,
+  "repository": "jcollins-bioinfo/giab-wes-nextflow",
+  "run_id": 34237377774,
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774",
+  "schema_version": "1.0.0",
+  "shared_input_contract": {
+    "bqsr_policy": "shared_accepted_BaseRecalibrator_ApplyBQSR_emit_OQ",
+    "calling_regions": [
+      {
+        "contig": "chrSYN1",
+        "end": 12000,
+        "start": 0
+      },
+      {
+        "contig": "chrSYN2",
+        "end": 8000,
+        "start": 0
+      }
+    ],
+    "files": [
+      {
+        "bytes": 19016,
+        "filename": "shared.bam",
+        "sha256": "7e52b2f5739477f9b6a47aa38d76d19e9641c71b09745582c3adab3acb83615a"
+      },
+      {
+        "bytes": 176,
+        "filename": "shared.bam.bai",
+        "sha256": "986f0b1b8d506016f56935fe9ce7f3160f8da1fb9a04e51f8795a61031e4fc89"
+      },
+      {
+        "bytes": 20352,
+        "filename": "reference.fa",
+        "sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454"
+      },
+      {
+        "bytes": 47,
+        "filename": "reference.fa.fai",
+        "sha256": "495e967f24a319fec0ee13c6e7c729f39e491431a2bf8f123afb0eb49da62267"
+      },
+      {
+        "bytes": 388,
+        "filename": "reference.dict",
+        "sha256": "2c5acbe4edbfd102c9336097b36482815ad70219036b701cd830895b61339cbf"
+      },
+      {
+        "bytes": 31,
+        "filename": "regions.bed",
+        "sha256": "c3dc1442e95a7409413eaebe354771c881caeffbc37bbcf50a7f556ee764ca9a"
+      }
+    ],
+    "fixture_id": "m4-snv-positive",
+    "fixture_manifest_sha256": "c54c4d5a7dd0b758dcbe38d3091676a45fbf9f1729cc6d1d852bb9593e17be38",
+    "known_sites_sha256": "1d186908d513980e73b91dadd1470b780d05a952c7c927c363ee30be58713f9d",
+    "preprocessing_manifest_sha256": "bec663e69d2457f91da3395e56b56a2826842959d30fffba2aaf879196fe2130",
+    "preprocessing_payload_sha256": "cc13c64e8e82caa266877704b51f672aebd01bb9276a1f454163b9c305b28283",
+    "quality_policy": {
+      "deepvariant": "OQ",
+      "gatk": "QUAL"
+    },
+    "repository_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
+    "sample": "SYNTHETIC01"
+  },
+  "state": "verified",
+  "status": "passed",
+  "synthetic": true,
+  "tool_lock_sha256": "be32c936c2f4371920da5cb786bf5eb4f69d45672043256ff066eeae1206f2e3",
+  "tree_sha": "74162d467ab8c87fb1d1f39c1e4f1b0e3d85747a"
+}

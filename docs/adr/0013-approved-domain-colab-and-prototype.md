@@ -37,6 +37,14 @@ in the permitted private Google Drive project hierarchy. See
 [the compute/storage handoff](../canonical-colab.md). No index construction on
 the owner's Mac is authorized by this plan.
 
-M4 remains implemented, not verified: actual CI 34202569517 completed DeepVariant
-inference and prediction inspection, then failed frozen native genotype/filter
-acceptance. The oracle, gates and original M3 fixture remain unchanged.
+M4 synthetic SNV execution is now verified on main by
+[CI34237377774 and its hash-verified artifact](../orchestration/evidence/m4-verified-main-34237377774.json).
+Recipe 1.1.0 repairs allele/fragment-position coupling while preserving the frozen
+loci, allele balances, native genotypes and strict acceptance requirements.
+Independent callers, both-mode, positive DeepVariant inference and full resume
+passed. Canonical HG001 and indel qualification remain unestablished.
+
+Historical CI34202569517 completed DeepVariant inference and prediction inspection,
+then failed frozen native genotype/filter acceptance on recipe 1.0.0. Its failed
+record remains unchanged. The early Explorer now renders the current synthetic
+pass and retains that historical diagnostic in its hash-locked evidence bundle.

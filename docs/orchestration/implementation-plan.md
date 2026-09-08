@@ -4,7 +4,14 @@ Author: John Patrick Collins. Observed baseline: 2026-09-07.
 
 ## Current owner-directed continuation (2026-09-08)
 
-Owner merged PR 19 into main (15188236b786dd36f65dbf966d75a245ef52a8b1) and PR 20 into the recovery branch (f16670452736def68d3329d61c72524641ab9a00). PR 21 remains draft and M4 failed native acceptance. ADR 0013 records approved fixed coding-domain selection, early synthetic Dash prototype, Colab compute and Drive durable storage. Prioritize the prototype and capability handoff while preserving real-execution gates. The following baseline is historical.
+Remote main `f29ed262b886ba4afe18cf9cc6455edcf13df808` and existing CI34237377774
+were verified: Python 3.12/3.13, Nextflow, M3 Docker, M4 Docker and required all
+passed. PRs 21, 22 and 24 are merged; no open PRs remain. M3/M4 are verified
+within their synthetic envelopes; prior M4 failures below are historical.
+The owner Colab capability report is now observed and consistency-checked:
+50.99 GiB with High-RAM enabled, no Docker; no canonical execution. This task
+closes stale provenance, then implements M5 under a 10-percentage-point budget,
+one branch, at most three commits and one new full CI run. M6–M9 are out of scope.
 
 ## Historical baseline and dependency
 
@@ -22,7 +29,7 @@ install a different checkout from its recorded requested ref. Publication also
 requires independent Gate B and destination-integrity checks. M3 depends on
 repairing these contracts and observing green required CI for the repair.
 
-## Current implementation
+## Historical recovery implementation
 
 1. Repair acquisition path containment and validated cache recovery. Reuse bytes
    only after source-manifest binding and destination checksums pass; retain
@@ -41,7 +48,7 @@ repairing these contracts and observing green required CI for the repair.
 6. Run Python 3.12/3.13, clean-wheel/outside-checkout, schema, notebook, hygiene,
    formatting and remote CI checks. Preserve exact logs and hashes.
 
-## Branch strategy and continuation
+## Historical branch strategy and continuation
 
 Recovery branch: `codex/m2.1.1-provenance-recovery`, based on the verified main
 commit. Maintain a draft PR; never merge or enable auto-merge. Once required

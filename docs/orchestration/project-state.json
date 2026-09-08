@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "project_state",
   "milestone": "M4",
-  "phase": "M4 native failure identified; owner-approved synthetic explorer and Colab capability handoff",
-  "state": "implemented",
+  "phase": "M4 verified on merged main; M5 implementation now permitted",
+  "state": "verified",
   "version": "0.4.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/evidence-explorer-prototype",
-      "evidence_sha": "99a5b061675304158f85819f4ca0327fdec5da3c",
+      "branch": "main",
+      "evidence_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -108,19 +108,19 @@
       "id": "m3-tool-lock",
       "status": "declared",
       "sha256": "f3e5d99044b597d08df2ea6d7809940d93d327bb64a74705d6eab584e759141a",
-      "reason": "Same M3 scientific tool identities; current project-version metadata advanced to 0.4.0-dev.1. Historical actual acceptance remains at c3426d3; new M4 regression execution pending."
+      "reason": "Pinned actual Linux/x86_64 tool execution passed merged-main CI34237377774; no canonical HG001 execution."
     },
     {
       "id": "m4-caller-tool-lock",
       "status": "declared",
       "sha256": "be32c936c2f4371920da5cb786bf5eb4f69d45672043256ff066eeae1206f2e3",
-      "reason": "Pinned CPU WES execution and prediction inspection completed in CI34202569517; native heterozygote acceptance failed."
+      "reason": "Pinned actual Linux/x86_64 tool execution passed merged-main CI34237377774; no canonical HG001 execution."
     },
     {
       "id": "invented-m4-fixture-expectations",
       "status": "verified",
-      "sha256": "e31ffa05a94f540e563f56d4dc3990ec0c8fa803cdccb7c3c8fe40a16a0348ad",
-      "reason": "Frozen separately versioned 264-pair invented recipe; exact generation/unit checks passed, actual caller acceptance pending."
+      "sha256": "c54c4d5a7dd0b758dcbe38d3091676a45fbf9f1729cc6d1d852bb9593e17be38",
+      "reason": "Accepted separately versioned 264-pair SNV fixture; staggered support and process-name parser repairs preserve strict allele/genotype oracle. See actual green-main M4 proof."
     },
     {
       "id": "owner-approved-fixed-coding-domain",
@@ -189,19 +189,19 @@
   ],
   "ci": [
     {
-      "name": "required M4 CI including m4-docker",
+      "name": "required merged-main synthetic M3/M4 CI",
       "required": true,
-      "status": "failure",
+      "status": "success",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
-      "evidence_sha": "99a5b061675304158f85819f4ca0327fdec5da3c",
-      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517",
+      "evidence_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774",
       "job_urls": [
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526495",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526694",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526771",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526823",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101984526831",
-        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34202569517/job/101986088007"
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098476873",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477130",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477151",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477158",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477215",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102100375843"
       ]
     }
   ],
@@ -260,6 +260,29 @@
       "evidence_artifacts": [
         "docs/orchestration/evidence/m4-ci-attempt-5.json"
       ]
+    },
+    {
+      "id": "linux-x86-64-m4-merged-main",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34237377774",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/main-ci-34237377774.json"
+      ]
+    },
+    {
+      "id": "owner-colab-20260908",
+      "status": "observed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "owner-capability-20260908",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/colab-capability-observed-20260908.json",
+        "docs/orchestration/evidence/colab-capability-assessment.json"
+      ]
     }
   ],
   "publication": {
@@ -279,17 +302,21 @@
       "docs/orchestration/evidence/m4-ci-attempt-2.json",
       "docs/orchestration/evidence/m4-ci-attempt-3.json",
       "docs/orchestration/evidence/m4-ci-attempt-4.json",
-      "docs/orchestration/evidence/m4-ci-attempt-5.json"
+      "docs/orchestration/evidence/m4-ci-attempt-5.json",
+      "docs/orchestration/evidence/main-ci-34237377774.json",
+      "docs/orchestration/evidence/colab-capability-observed-20260908.json",
+      "docs/orchestration/evidence/colab-capability-assessment.json",
+      "docs/orchestration/evidence/m4-verified-main-34237377774.json"
     ]
   },
   "external_blockers": [
     {
-      "id": "owner-colab-capability",
-      "gate": "real HG001 execution",
-      "reason": "Actual Colab allocation, memory, disk and container capabilities have not been observed.",
-      "owner_action": "Run the pinned capability notebook and return canonical-host-capability.json. Index construction must use Colab CPU/RAM; durable large files belong in the permitted Drive project folders."
+      "id": "colab-memory-and-container",
+      "gate": "canonical HG001 execution",
+      "reason": "Owner report: High-RAM enabled, 50.99 GiB RAM versus 80.84 GiB index-build estimate before headroom; Docker absent. Candidate reusable index not yet reference/reader qualified.",
+      "owner_action": "Do not retry index construction on this allocation. Await a qualified reusable-index handoff or a sufficient Colab allocation; container isolation needs independent qualification."
     }
   ],
-  "next_safe_action": "Obtain owner Colab capability observation. Resolve unchanged M4 native heterozygote acceptance; validate approved domain, independent BQSR resources, reference/index and canonical interfaces before real HG001 execution. Synthetic explorer is an approved early prototype, not M8 completion.",
-  "observed_at": "2026-09-08T08:35:12.376669+00:00"
+  "next_safe_action": "Implement and synthetically qualify M5 common normalization, authoritative benchmarking and resource attribution. Preserve canonical domain, reference/BQSR, reusable-index and runtime gates.",
+  "observed_at": "2026-09-08T18:40:36.841119+00:00"
 }

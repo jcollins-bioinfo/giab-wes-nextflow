@@ -26,11 +26,11 @@ claims:
     evidence: docs/orchestration/checkpoints/M3.json
     repository_sha: c3426d3d4578ec6e66a6494c09fde983a7e4f3cd
     limitation: Invented 20 kb fixture only; 48 reads and real BQSR wiring do not establish calibration performance, canonical HG001 processing or caller execution.
-  - id: m4-local-implementation
-    classification: locally-tested
-    statement: Selectable caller contracts, positive synthetic fixture, guarded evidence publication and local framework/cache behavior are implemented and tested.
+  - id: m4-synthetic-verification
+    classification: CI-tested
+    statement: Merged main f29ed262b886ba4afe18cf9cc6455edcf13df808 passed actual M4 Linux/x86_64 Docker and required CI34237377774.
     evidence: docs/orchestration/checkpoints/M4.json
-    limitation: Actual Linux Docker GATK acceptance passed and DeepVariant plus its prediction inspector completed, but native DeepVariant acceptance failed; no complete M4 verification or canonical HG001 result is claimed. See the preserved CI attempts.
+    limitation: Synthetic SNV execution, independent/both equivalence and resume only; no indel accuracy, canonical HG001, empirical cost or generalization. Failed attempts remain historical.
   - id: capture-design
     classification: unresolved
     statement: Exact deposited Expanded Exome target bytes and dataset association are established; unique NIST7035 assay assignment remains unresolved.
@@ -54,9 +54,9 @@ claims:
     limitation: No canonical results, caller winner, production deployment or M8 completion.
   - id: colab-capability-launcher
     classification: locally-tested
-    statement: A package-owned capability probe has local mocked tests and a thin Colab launcher.
+    statement: The owner supplied a Colab runtime report from commit 676718ed6c02c3076a26b48fb82d684251fb7892; its 43-file package inventory was consistency-checked.
     evidence: docs/canonical-colab.md
-    limitation: No observation of the owner runtime, index construction or new Drive publication.
+    limitation: Owner-supplied report, not cryptographic remote attestation; 50.99 GiB RAM and absent Docker do not qualify index construction or canonical execution.
 forbidden_without_new_evidence:
   - historical professional Nextflow tenure
   - clinical-grade or patient-care validation

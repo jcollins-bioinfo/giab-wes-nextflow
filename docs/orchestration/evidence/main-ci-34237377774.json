@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "repository_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774",
+  "status": "success",
+  "jobs": [
+    {
+      "id": 102098476873,
+      "name": "m3-docker",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098476873"
+    },
+    {
+      "id": 102098477130,
+      "name": "m4-docker",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477130"
+    },
+    {
+      "id": 102098477151,
+      "name": "python (3.13)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477151"
+    },
+    {
+      "id": 102098477158,
+      "name": "python (3.12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477158"
+    },
+    {
+      "id": 102098477215,
+      "name": "nextflow",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102098477215"
+    },
+    {
+      "id": 102100375843,
+      "name": "required",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34237377774/job/102100375843"
+    }
+  ],
+  "scope": "Observed existing merged main CI; no new biological execution performed by reconciliation"
+}

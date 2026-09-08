@@ -14,8 +14,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-MANIFEST_SHA256 = "bcc8b5d44dc82140787e08e97442d5fdcf02fb7d85719177142b325f47cce8d7"
-FILES = {"m3-proof.json", "m3-first.trace.tsv", "m4-attempt.json", "domain-approval.json"}
+MANIFEST_SHA256 = "16562b8a15532af0658cca562897a28ea0e2f575c50e97598b03ea5b41750daf"
+FILES = {"m3-proof.json", "m3-first.trace.tsv", "m4-attempt.json", "domain-approval.json",
+         "m4-verified-main-34237377774.json"}
 REPO = "https://github.com/jcollins-bioinfo/giab-wes-nextflow"
 
 
@@ -77,12 +78,22 @@ def load_snapshot(directory: Path | None = None) -> Snapshot:
     for name, raw in payloads.items():
         require(hashlib.sha256(raw).hexdigest() == manifest[name], "evidence member hash mismatch")
     m3 = json.loads(payloads["m3-proof.json"])
-    m4 = json.loads(payloads["m4-attempt.json"])
+    m4 = json.loads(payloads["m4-verified-main-34237377774.json"])
+    historical_m4 = json.loads(payloads["m4-attempt.json"])
     domain = json.loads(payloads["domain-approval.json"])
     require(m3["synthetic"] is True and m3["canonical"] is False and m3["status"] == "passed"
             and m3["biological_processing_validated"] is True, "M3 is not accepted synthetic evidence")
-    require(m4["synthetic"] is True and m4["canonical"] is False and m4["status"] == "failed",
-            "M4 prototype source must preserve its failed acceptance state")
+    require(m4["synthetic"] is True and m4["canonical"] is False and m4["status"] == "passed"
+            and m4["execution_scope"]["biological_processing_validated"] is True
+            and m4["execution_scope"]["both_and_resume_accepted"] is True
+            and m4["deepvariant_inference"]["example_record_count"] > 0
+            and m4["deepvariant_inference"]["call_variants_record_count"] > 0
+            and m4["deepvariant_inference"]["all_probabilities_valid"] is True,
+            "M4 is not accepted synthetic SNV evidence")
+    require(all(item["expected_native_snvs_valid"] is True and item["reference_control_nonvariant"] is True
+                for item in m4["native_assertions"].values()), "M4 native acceptance is incomplete")
+    require(historical_m4["status"] == "failed" and historical_m4["canonical"] is False,
+            "historical M4 attempt must preserve its failed acceptance state")
     require(domain["decision"] == "approve_fixed_coding_domain_alternative"
             and domain["canonical_execution"] is False, "domain decision cannot claim execution")
     bam = m3["bam_assertions"]
@@ -100,14 +111,12 @@ def load_snapshot(directory: Path | None = None) -> Snapshot:
     public = {"schema_version": "1.0.0", "scope": "synthetic_prototype", "canonical": False,
               "manifest_sha256": MANIFEST_SHA256, "source_hashes": manifest,
               "m3": {"repository": m3["repository"], "bam_assertions": bam, "resume_assertions": resume},
-              "m4": {"run_id": m4["run_id"], "head_sha": m4["head_sha"], "status": m4["status"],
-                     "execution_scope": m4["execution_scope"], "native_diagnostic": m4["native_diagnostic"]}, "domain_decision": domain,
+              "m4": m4, "m4_historical_attempt": historical_m4, "domain_decision": domain,
               "benchmark_metrics": None, "comparative_cost": None,
               "missing_reason": "No canonical HG001 benchmark or fair caller-cost experiment exists."}
-    observations = []
-    for site in m4["native_diagnostic"]["sites"]:
-        row = site["rows"][0]
-        observations.append(f"{site['contig']}:{site['position_1based']} — expected {site['expected']['genotype']}; observed {row['genotype']}, {row['filter']}, AD={row['format']['AD']}.")
+    observations = [f"{site['contig']}:{site['position_1based']} — native {site['genotype']} accepted by both callers."
+                    for site in m4["frozen_oracle_sites"] if site["alt"] is not None]
+    observations.append("The reference control passed. DeepVariant produced two candidate examples and two inference records with valid probabilities.")
     return Snapshot(*(bam[k] for k in ("primary_reads", "mapped_reads", "unmapped_reads", "duplicate_reads", "read_groups")),
                     resume["first_executed_tasks"], resume["resumed_cached_tasks"], m3["repository"]["sha"],
                     bam["bam_sha256"], bam["bai_sha256"], m4["run_id"], m4["head_sha"], tasks,
