@@ -1,14 +1,15 @@
-# Pipeline Evidence Explorer — synthetic prototype
+# Pipeline Evidence Explorer
 
 Version `0.1.0.dev1`. The owner approved this early prototype on 2026-09-08.
-It is a separate Python distribution; pipeline version remains `0.4.0-dev.1`.
-This is not canonical M8 completion or a deployed service.
+It is a separate Python distribution. Install the pipeline package alongside it
+to enable the canonical result consumer. Canonical execution and public deployment
+remain unavailable; this does not establish M8 completion.
 
 The overview renders the verified M3 synthetic 48-read preprocessing run,
 22 completed tasks and 22 cached tasks on resume. The execution view filters
 the original trace, retaining milliseconds, CPU percentage and RSS bytes.
 The provenance view lists immutable source hashes and downloads a fixed,
-validated JSON snapshot. A package-owned loader validates the five-file inventory
+validated JSON snapshot. A package-owned loader validates the six-file inventory
 before rendering; callbacks only select views or validated observations.
 
 Caller qualification now records the passed synthetic M4 run on main
@@ -27,12 +28,17 @@ and comparative costs remain null, with explicit missing reasons. Synthetic
 timings do not estimate WES cost; indel and canonical HG001 qualification remain
 unavailable.
 
+The synthetic M5 panel records retained CI `34270789172`: pinned BCFtools 1.24
+and RTG Tools 3.13, strict invented SNP/indel representations, accepted M4
+SNV interfaces, independent/both execution and actual cached resume. Its
+metrics qualify that fixture only; they are not HG001 accuracy measurements.
+
 ## Run locally
 
 From the repository root in a Python 3.12 or 3.13 virtual environment:
 
 ```bash
-python -m pip install ./explorer
+python -m pip install . ./explorer
 gunicorn pipeline_evidence_explorer.wsgi:server --bind 127.0.0.1:8050 --workers 1 --no-control-socket
 ```
 
@@ -47,16 +53,38 @@ reports `canonical: false`; `evidence.json` accepts no user-selected file path.
 Invalid evidence returns readiness/download 503. Responses include same-origin
 CSP, no-store, nosniff, no-referrer and same-origin framing headers.
 
+## Canonical consumer and exports
+
+The default Canonical tab reports unavailable. To load a reviewed, public-safe
+bundle, configure both `EXPLORER_CANONICAL_BUNDLE` (local directory) and
+`EXPLORER_CANONICAL_MANIFEST_SHA256` (externally reviewed manifest digest).
+The pipeline-owned `load_canonical_bundle` validates the closed schema, exact
+inventory, hashes, domain, shared caller inputs, metric arithmetic, qualification
+receipts and missingness before the UI can render results. See
+[the result contract](../docs/canonical-results-contract.md). An internal
+self-consistent manifest is insufficient without the external trust pin.
+
+Under the configured route prefix, `canonical/readyz` returns 503 when absent
+or invalid. Valid bundles expose fixed `canonical/evidence.json`,
+`canonical/metrics.tsv` and `canonical/resources.tsv` downloads. The synthetic
+`evidence.json` and readiness remain distinct. Canonical views show caller
+metrics, resource groups, coverage availability, environment qualification,
+artifact lineage and mandatory scientific limitations. Plotting performs no
+scientific calculation in callbacks.
+
 ## Verification
 
 ```bash
 python -I -m unittest discover -s explorer/tests -v
 ```
 
-Five tests cover known observations, missing metrics, source corruption and
-symlinks, actual HTTP/callback behavior, fixed downloads, invalid readiness and
-prefix rejection. The installed wheel passed locally on Python 3.13. Browser
-checks covered all three views, a real process-filter interaction, provenance,
-desktop and 390-pixel layouts, and no console errors/warnings. Native radio
-navigation exposes named controls and visible focus; this is not an accessibility
-certification. CI additionally exercises Python 3.12 and 3.13.
+Eight current tests cover bundled observations, source corruption, symlinks,
+HTTP/callback behavior, fixed downloads, readiness, prefix rejection and
+canonical unavailable/valid exports. Five pipeline model tests additionally
+cover schema, inventory, unsafe content, metric arithmetic and missingness.
+Current source tests passed locally with both package dependencies available.
+Earlier prototype browser checks covered its original three views at desktop
+and 390-pixel widths. The new canonical view has HTTP/callback coverage but
+current visual, responsive and accessibility browser qualification is pending;
+these earlier checks do not qualify the new view. Public hosting and an actual
+canonical bundle are still required for operational M8 completion.

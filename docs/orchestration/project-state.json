@@ -9,12 +9,12 @@
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/canonical-analysis-m6-m9",
-      "evidence_sha": "4553d907c950a9948156f5117836c7ad92865d0b",
+      "evidence_sha": "2d89ecfc5f196c8d91960fcf4823dd90393b6be9",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
       "full_name": "jcollins-bioinfo/john-collins-bioinformatics",
-      "branch": "main",
+      "branch": "codex/giab-wes-showcase",
       "evidence_sha": "d933578401d305bc8504e584f2aaa5f484085e18",
       "evidence_scope": "observed_prior_commit"
     }
@@ -39,7 +39,15 @@
       "reason": "Executable qualification and canonical workflow implemented; actual Colab runtime/reference/index/BQSR/source/output receipts are required."
     }
   ],
-  "local_tests": [],
+  "local_tests": [
+    {
+      "name": "canonical-clean-clone-local-validation",
+      "status": "passed",
+      "evidence_sha": "2d89ecfc5f196c8d91960fcf4823dd90393b6be9",
+      "command": "Clean-clone Python3.12/3.13 matrix, installed wheel, Nextflow lint/nf-test, package/schema/hygiene checks; affected isolated-package tests rechecked after task-environment repair.",
+      "detail": "docs/orchestration/evidence/canonical-local-2d89ecf.json; initial failures preserved and explained. No canonical or browser execution."
+    }
+  ],
   "ci": [],
   "execution_environments": [],
   "publication": {
@@ -59,5 +67,5 @@
     }
   ],
   "next_safe_action": "Finish code validation, execute the pinned canonical Colab notebook, validate its returned evidence, and complete downstream publication without revisiting settled M5/domain decisions.",
-  "observed_at": "2026-09-08T20:55:16.033997+00:00"
+  "observed_at": "2026-09-08T21:08:00.666041+00:00"
 }

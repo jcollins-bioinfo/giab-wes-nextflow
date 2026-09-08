@@ -1,8 +1,8 @@
 """Load one immutable evidence snapshot; no benchmark science lives in the UI.
 
-This initial model admits only the bundled, hash-pinned synthetic observations.
-Missing HG001 metrics remain absent. A future canonical result model requires
-its own validated contract rather than changing a label on this snapshot.
+This model admits only the bundled, hash-pinned synthetic observations.
+Missing HG001 metrics remain absent. The separate pipeline canonical_results
+model validates canonical bundles without relabeling this synthetic snapshot.
 """
 from __future__ import annotations
 

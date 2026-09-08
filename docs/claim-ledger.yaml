@@ -70,6 +70,22 @@ claims:
     evidence: docs/orchestration/evidence/coding-domain-reproduced.json
     limitation: In-memory coordinate verification only; no reference-base, index, runtime or canonical processing qualification.
 
+  - id: canonical-colab-interface
+    classification: locally-tested
+    statement: Exact-SHA Colab launch, full-reference classic BWA fallback, independent BQSR qualification, gated caller comparison and durable restart are implemented.
+    evidence: docs/canonical-analysis.md
+    limitation: Local tests use invented data and mocked execution where stated; real Colab reference/index/runtime/HG001 execution remains unqualified.
+  - id: canonical-public-consumer
+    classification: locally-tested
+    statement: Canonical result model verifies external manifest identity, exact file inventory, domain, arithmetic, comparison symmetry and required receipts; Dash exposes the validated view and safe exports.
+    evidence: docs/canonical-results-contract.md
+    limitation: Model-valid declarations do not independently attest execution; a trusted reviewed manifest from a completed real run is still required.
+  - id: canonical-cloud-profiles
+    classification: configured_only
+    statement: Colab, Apptainer, Docker, SLURM, AWS Batch and Wave configuration interfaces exist and parse.
+    evidence: docs/canonical-runtime.md
+    limitation: No canonical cloud execution, paid compute or public deployment is inferred from configuration.
+
 forbidden_without_new_evidence:
   - historical professional Nextflow tenure
   - clinical-grade or patient-care validation
