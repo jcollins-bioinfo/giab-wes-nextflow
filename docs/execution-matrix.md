@@ -13,6 +13,7 @@
 | DeepVariant GPU, native Apple Silicon, emulation | No immutable execution record | Not executed or qualified |
 | Colab capability | Owner-supplied 2026-09-08 report, 43-file code inventory consistency checked | Linux/x86_64, 8 CPUs, 50.99 GiB, no Docker; not remote attestation or canonical runtime qualification |
 | Colab real pipeline, Apptainer, SLURM, AWS, Seqera/Wave | None | Configured/planned only; paid infrastructure requires owner authorization |
+| M5 BCFtools 1.24 / RTG 3.13, Linux/x86_64 Docker | [Retained CI34270789172](orchestration/evidence/m5-verified-34270789172.json), identical-tree main CI34272289311 | Frozen SNP/indel representations, exact counts, isolation, independent/both/resume and typed raw-trace parsing; no HG001 or canonical cost |
 | Explorer/site deployment | Existing website baseline build metadata only | No GIAB Explorer or project result page deployed |
 
 A supporting platform declared by an image manifest does not establish execution.

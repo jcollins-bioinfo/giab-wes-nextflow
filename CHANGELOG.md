@@ -1,6 +1,15 @@
 # Changelog
 
-## 0.5.0-dev.1 — M5 implementation
+## Unreleased canonical execution interface
+
+- Add full-reference classic BWA fallback, independently pinned Broad known-sites, no-Docker runtime qualification and strict Colab execution.
+- Add exact-SHA Run-all notebook generation, five-stage Nextflow composition, private completed-stage recovery and fixed-domain coverage.
+- Add canonical result/manifest validation, Dash consumer and safe exports; real HG001 evidence remains pending.
+- Reconcile retained M5 synthetic evidence and prepare M6–M9 operational/release/showcase work without claiming completion.
+
+## 0.5.0-dev.1 — M5 synthetic qualification
+
+- Reconcile retained successful CI34270789172 and identical-tree post-merge main CI34272289311; all122 artifact member hashes and seven benchmark/eight normalization records independently validated. Preserve initial failed attempt. No HG001 run or new biological execution occurs during reconciliation.
 
 - Add preregistered common normalization and RTG benchmark contracts with Python metrics.
 - Add typed trace/resource attribution and separate synthetic downstream workflow.
@@ -59,4 +68,4 @@ unresolved capture-design gate and historical source-cache evidence boundaries.
   without changing the frozen oracle; retain full bounded failure evidence.
 - Reject duplicate manifest keys and wire actual Nextflow equivalence/resume proof.
 - Implement the approved coding-domain constructor and reproduce all fixed hashes.
-- Keep actual M5 engine qualification and reusable-index Colab handoff unresolved.
+- Historical continuation initially left engine qualification pending; CI34270789172 subsequently passed actual matching, isolation and independent/both/resume. Reusable-index Colab execution remained unresolved.

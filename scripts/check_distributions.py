@@ -18,7 +18,8 @@ FORBIDDEN_PARTS = {".git", ".nf-test", ".nextflow", "__pycache__", ".pytest_cach
                    ".venv", "dist", "inputs", "references", "private-workspace"}
 FORBIDDEN_SUFFIXES = (".pyc", ".bam", ".bai", ".sam", ".cram", ".crai", ".vcf",
                       ".vcf.gz", ".bcf", ".fastq.gz", ".fq.gz", ".fa", ".fasta",
-                      ".fai", ".dict", ".tbi", ".gzi", ".part", ".incomplete")
+                      ".fai", ".dict", ".tbi", ".gzi", ".part", ".incomplete",
+                      ".fastq", ".fq", ".fna", ".fna.gz", ".fa.gz", ".fasta.gz", ".bwt", ".pac", ".sa", ".ann", ".amb")
 
 
 def validate_member(name: str, size: int, *, linked: bool, regular: bool) -> None:

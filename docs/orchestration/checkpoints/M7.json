@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M7",
-  "phase": "awaiting prerequisite milestone",
-  "state": "not_started",
-  "version": "0.2.0-dev.4",
+  "phase": "Release-readiness and privacy/package QA preparation; canonical evidence and release authorization pending",
+  "state": "in_progress",
+  "version": "0.5.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/m2.1.1-provenance-recovery",
-      "evidence_sha": "d9a9d700ab5603b693468d22b4fd66ed96348881",
+      "branch": "codex/canonical-analysis-m6-m9",
+      "evidence_sha": "4553d907c950a9948156f5117836c7ad92865d0b",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -21,76 +21,22 @@
   },
   "required_inputs": [
     {
-      "id": "current-source-manifest",
-      "status": "declared",
-      "sha256": "673f96c3e1a5b29405a12d8ce835814844d0592bb404c496ee8fa59aa73e257c",
-      "reason": "Manifest bytes in this working tree; real objects need fresh hydration validation."
+      "id": "retained-M5-synthetic-proof",
+      "status": "verified",
+      "sha256": "cfda401c9504600d71f264452ad6b2f9cf858a6696a7636b6e22453283dd3533",
+      "reason": "Retained Actions archive rehashed; original counts, partitions, isolation and Nextflow equivalence/resume verified. No HG001 metric."
     },
     {
-      "id": "exact-capture-design",
+      "id": "approved-coding-domain",
+      "status": "verified",
+      "sha256": "7730c4303e03fef74d2c22193102845e369e04ac81fabb7f41fae1374be65d00",
+      "reason": "Owner-approved fixed chr20\u201322 coding/confidence intersection reproduced; execution still pending."
+    },
+    {
+      "id": "canonical-assets-runtime-results",
       "status": "blocked",
       "sha256": null,
-      "reason": "Exact sample-to-kit target-file identity remains unresolved; canonical domains fail closed."
-    },
-    {
-      "id": "giab_garvan_sequence_index",
-      "status": "declared",
-      "sha256": "c160cb67bc1e5fa68bc48daa8100d354454a91aacab79465309e67c2fa934424",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "hg001_nist7035_l001_r1",
-      "status": "declared",
-      "sha256": "e55206fdaece7f13d793c43a7728f7bfcb83279b0d0b554cd6b848e8813271d4",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "hg001_nist7035_l001_r2",
-      "status": "declared",
-      "sha256": "55a0e7068f804870ed9f19d4eb9a7a914c6ef70898160b1477323c279069900d",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "grch38_no_alt_fasta_gz",
-      "status": "declared",
-      "sha256": "3c8def6d325c5d1e934b2dd530c4d1709f027677a15859467071fddf3fff2026",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "grch38_compressed_fai",
-      "status": "declared",
-      "sha256": "502a1b8fb73ccd53285c28a0f12df90c818b4fe3de1e862ef47c593ef1a0a4b4",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "grch38_compressed_gzi",
-      "status": "declared",
-      "sha256": "aea5e0202577678b72ab195aa66138a7cdcb8408b4a36a7b3740b6edc2253745",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "hg001_v421_truth_vcf",
-      "status": "declared",
-      "sha256": "93bc4c2c696eaf13515ab058caecc064bfed704f85bac7482330ca91bc730daa",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "hg001_v421_truth_tbi",
-      "status": "declared",
-      "sha256": "68a91b78042e66ed9a53ae4069ac7686abf02ea9a1f88da00e0054a7db06dccc",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "hg001_v421_high_confidence_bed",
-      "status": "declared",
-      "sha256": "dc3485e60447a3e863c34dfc063c3710ea5ed5efae50855c5197ba62538263b9",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
-    },
-    {
-      "id": "ucsc_hg19_to_hg38_chain",
-      "status": "declared",
-      "sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
-      "reason": "Historical mirror attestation plus current Drive size/name metadata only; no fresh object rehash in this audit."
+      "reason": "Executable qualification and canonical workflow implemented; actual Colab runtime/reference/index/BQSR/source/output receipts are required."
     }
   ],
   "local_tests": [],
@@ -106,12 +52,12 @@
   },
   "external_blockers": [
     {
-      "id": "capture-design",
-      "gate": "canonical target-aware execution and publication",
-      "reason": "Exact capture target identity unresolved. Does not block synthetic M3 implementation once M2 is repaired.",
-      "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
+      "id": "canonical-Colab-execution",
+      "gate": "canonical HG001 results and M6\u2013M9 completion",
+      "reason": "Actual owner Colab execution and returned validated evidence are not yet observed. Scientific approval and public download authorization already exist.",
+      "owner_action": "Run the exact pinned canonical notebook with normal Drive authorization if browser execution requires owner interaction; return the public bundle and manifest pin."
     }
   ],
-  "next_safe_action": "Wait for M6 continuation gate; do not infer implementation from this checkpoint.",
-  "observed_at": "2026-09-07T06:55:06.840463+00:00"
+  "next_safe_action": "Finish code validation, execute the pinned canonical Colab notebook, validate its returned evidence, and complete downstream publication without revisiting settled M5/domain decisions.",
+  "observed_at": "2026-09-08T20:55:16.035165+00:00"
 }

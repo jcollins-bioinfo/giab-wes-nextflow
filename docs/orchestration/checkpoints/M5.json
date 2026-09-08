@@ -2,14 +2,14 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M5",
-  "phase": "M5 common normalization, authoritative benchmarking and resource attribution",
-  "state": "implemented",
+  "phase": "Retained M5 synthetic tool, representation, isolation and Nextflow equivalence/resume gate verified; canonical HG001 unavailable",
+  "state": "synthetically_verified",
   "version": "0.5.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/m5-benchmark-and-canonical-readiness",
-      "evidence_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
+      "branch": "main",
+      "evidence_sha": "4553d907c950a9948156f5117836c7ad92865d0b",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -30,7 +30,7 @@
       "id": "exact-capture-design",
       "status": "declared",
       "sha256": "7ce7a9f769e51ecb8ab5588c6bc7c24d19e25b2bd6c1b958415b7b16987f01b8",
-      "reason": "Physical kit identity remains uncertain; owner approved fixed coding-domain alternative in ADR 0013. Package-owned canonical domain implementation remains unvalidated."
+      "reason": "Owner-approved fixed GENCODE v50 coding-domain hashes reproduced by package constructor; exact physical kit remains uncertain. Domain-coordinate reproduction does not establish canonical execution."
     },
     {
       "id": "giab_garvan_sequence_index",
@@ -126,7 +126,7 @@
       "id": "owner-approved-fixed-coding-domain",
       "status": "declared",
       "sha256": "9c270a2c46c2e83ae0d35e5ceaa75e4b77918924bf7443d4fffe467cd9b950d4",
-      "reason": "Owner explicitly approved proposal on 2026-09-08; 33,567,783 confident autosomal coding bases. Approval is not validated canonical implementation."
+      "reason": "Owner-approved fixed GENCODE v50 coding-domain hashes reproduced by package constructor; exact physical kit remains uncertain. Domain-coordinate reproduction does not establish canonical execution."
     }
   ],
   "local_tests": [
@@ -135,20 +135,27 @@
       "status": "passed",
       "evidence_sha": null,
       "command": "complete installed-wheel suite; targeted environment/version retries; nf-test; lint; contracts; build; pre-commit",
-      "detail": "264 unique Python tests and 17 unique nf-tests resolved; 5 Explorer tests passed. Exact initial failures and focused retries retained in m5-local-verification.json. Actual M5 engines and Nextflow resume remain unobserved."
+      "detail": "264 unique Python tests and 17 unique nf-tests resolved; 5 Explorer tests passed. Exact initial failures and focused retries retained in m5-local-verification.json. This historical local pass predates the now-retained successful CI proof."
     },
     {
       "name": "M5 continuation and approved domain",
       "status": "passed",
       "evidence_sha": null,
       "command": "installed-wheel full unittest suite; M5 nf-tests; pinned-input coding-domain verification",
-      "detail": "274 full Python tests,4 M5 nf-tests,4 domain microtests passed; all3 approved domain hashes reproduced; actual M5 engine/cache evidence pending CI."
+      "detail": "274 full Python tests,4 M5 nf-tests,4 domain microtests passed; all3 approved domain hashes reproduced; actual engine/cache acceptance is now separately established by retained CI34270789172."
+    },
+    {
+      "name": "Retained M5 artifact independent validation",
+      "status": "passed",
+      "evidence_sha": "4553d907c950a9948156f5117836c7ad92865d0b",
+      "command": "validate retained ZIP digest, all member identities, M5 schemas/arithmetic and typed Nextflow traces",
+      "detail": "133764-byte archive,123 members/122 recorded hashes,7 benchmark and8 normalization records,4 real traces; actual observed pass, no expensive execution repeated. Identical tree binds PR-tested merge8ebe43dc to merged main4553d907."
     }
   ],
   "ci": [
     {
-      "name": "required merged-main synthetic M3/M4 CI",
-      "required": true,
+      "name": "Historical required merged-main synthetic M3/M4 CI",
+      "required": false,
       "status": "success",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
       "evidence_sha": "f29ed262b886ba4afe18cf9cc6455edcf13df808",
@@ -163,14 +170,30 @@
       ]
     },
     {
-      "name": "M5 initial PR CI",
-      "required": true,
+      "name": "Historical M5 initial PR CI",
+      "required": false,
       "status": "failure",
       "repository": "jcollins-bioinfo/giab-wes-nextflow",
       "evidence_sha": "829f3d7ff16f367bfc75e87fd52f4ee15f45bd4e",
       "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34266895406",
       "job_urls": [
         "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34266895406/job/102198399188"
+      ]
+    },
+    {
+      "name": "required post-merge main M3-M5 CI",
+      "required": true,
+      "status": "success",
+      "repository": "jcollins-bioinfo/giab-wes-nextflow",
+      "evidence_sha": "4553d907c950a9948156f5117836c7ad92865d0b",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34272289311",
+      "job_urls": [
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34272289311/job/102216605711",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34272289311/job/102216605897",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34272289311/job/102216605932",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34272289311/job/102216606085",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34272289311/job/102216606107",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34272289311/job/102218857837"
       ]
     }
   ],
@@ -252,6 +275,17 @@
         "docs/orchestration/evidence/colab-capability-observed-20260908.json",
         "docs/orchestration/evidence/colab-capability-assessment.json"
       ]
+    },
+    {
+      "id": "linux-x86-64-m5-verified",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "CI34270789172",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/m5-verified-34270789172.json"
+      ]
     }
   ],
   "publication": {
@@ -279,7 +313,8 @@
       "docs/orchestration/evidence/m5-local-verification.json",
       "docs/orchestration/evidence/m5-ci-attempt-1.json",
       "docs/orchestration/evidence/coding-domain-reproduced.json",
-      "docs/orchestration/evidence/m5-continuation-local.json"
+      "docs/orchestration/evidence/m5-continuation-local.json",
+      "docs/orchestration/evidence/m5-verified-34270789172.json"
     ]
   },
   "external_blockers": [
@@ -290,6 +325,6 @@
       "owner_action": "Do not retry index construction on this allocation. Await a qualified reusable-index handoff or a sufficient Colab allocation; container isolation needs independent qualification."
     }
   ],
-  "next_safe_action": "Inspect new M5 CI before asserting engine/cache qualification; original counts remain strict. Approved coding-domain hashes reproduced. Implement and test restart-safe reusable-index Colab handoff next; canonical execution remains blocked.",
-  "observed_at": "2026-09-08T19:04:01.980925+00:00"
+  "next_safe_action": "Implement and qualify restart-safe canonical Colab execution and reusable full-reference index; preserve approved domain, shared BAM and truth-isolation gates. Canonical results remain unavailable until real execution evidence passes.",
+  "observed_at": "2026-09-08T20:25:53.428449+00:00"
 }

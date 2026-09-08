@@ -1,7 +1,17 @@
 [![CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml/badge.svg)](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml)
 # GIAB¹ HG001 WES: Dual-caller Benchmark and Evidence Explorer
 
-> **Synthetic Dash prototype available; real HG001 results pending.** The owner approved the fixed GENCODE v50 coding-domain alternative and early synthetic prototype (ADR 0013). M3 synthetic preprocessing is verified. M4 is synthetically verified on merged main `f29ed262b886ba4afe18cf9cc6455edcf13df808`: CI 34237377774 passed actual GATK/DeepVariant execution, independent/both equivalence and resume. The prior RefCall failure is historical. [Run the explorer](explorer/README.md) and [prepare the Colab capability observation](docs/canonical-colab.md). Index construction will use Colab CPU/RAM with durable large storage in the permitted private Drive hierarchy. No canonical run or public deployment is claimed.
+Canonical continuation now has an exact-SHA Colab Run-all launcher, full-reference
+classic BWA0.7.17 fallback, independent Broad BQSR assets, gated GATK/DeepVariant
+execution, common benchmarking, fixed-domain coverage, durable restart, and a
+validated canonical Explorer interface. **Real HG001 chr20–22 results remain
+pending actual Colab qualification and execution.** M5 is synthetically verified.
+See [canonical execution](docs/canonical-analysis.md), [notebooks](notebooks/README.md)
+and [release readiness](docs/release-candidate-readiness.md). No release or new
+public deployment is claimed.
+
+
+> **Synthetic Dash prototype available; real HG001 results pending.** The owner approved the fixed GENCODE v50 coding-domain alternative and early synthetic prototype (ADR 0013). M3 synthetic preprocessing and M5 common benchmarking are synthetically verified; M5 retained CI34270789172 and post-merge CI34272289311 passed. M4 is synthetically verified on merged main `f29ed262b886ba4afe18cf9cc6455edcf13df808`: CI 34237377774 passed actual GATK/DeepVariant execution, independent/both equivalence and resume. The prior RefCall failure is historical. [Run the explorer](explorer/README.md) and [prepare the Colab capability observation](docs/canonical-colab.md). Index construction will use Colab CPU/RAM with durable large storage in the permitted private Drive hierarchy. No canonical run or public deployment is claimed.
 >
 > ¹ <sub>See: **NIST GIAB ([*Genome in a Bottle*](https://www.nist.gov/programs-projects/genome-bottle))</sub>**
 
@@ -186,9 +196,9 @@ Use the [notebook launch center](notebooks/README.md) or open M2 directly:
 
 Version `0.2.0-dev.3` established `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
 
-Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact deposited target bytes are now recorded; their unique per-library assay assignment remains unresolved; canonical analysis instead uses the approved coding-domain alternative once its implementation is validated. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is synthetically verified after the recovery gate. M4 is synthetically verified on merged main; M5 and canonical execution retain their own gates.
+Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact deposited target bytes are now recorded; their unique per-library assay assignment remains unresolved; canonical analysis instead uses the approved coding-domain alternative once its implementation is validated. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is synthetically verified after the recovery gate. M4 is synthetically verified on merged main; M5 is synthetically verified from retained CI; canonical execution retains its own gates.
 
-## M5 implementation under qualification
+## M5 synthetically verified
 
 Version `0.5.0-dev.1` adds common BCFtools normalization, direct RTG vcfeval
 benchmarking, schema-validated Python count/metric artifacts and typed resource
@@ -196,8 +206,10 @@ attribution. [ADR 0014](docs/adr/0014-m5-common-normalization-and-benchmark.md)
 preregisters the policy and immutable tools. `m5.nf -profile m5_test` is a
 synthetic-only downstream workflow; truth stays outside normalization. Actual
 engine qualification uses the bounded driver in the existing M4 CI job.
-Until that run is observed, M5 is implemented with local checks, not marked
-synthetically verified. Canonical HG001 accuracy, cost and clinical/generalization
+Retained [CI34270789172 evidence](docs/orchestration/evidence/m5-verified-34270789172.json)
+qualifies actual BCFtools 1.24/RTG 3.13 execution, split representations, isolation,
+independent/both equivalence and full resume. Post-merge main CI34272289311 passed
+on the identical tested source tree. M5 is synthetically verified. Canonical HG001 accuracy, cost and clinical/generalization
 claims remain unavailable. Approved coding-domain construction is locally reproduced as described below;
 reusable-index qualification remains deferred and Colab is still unqualified.
 
@@ -207,8 +219,10 @@ CI34266895406 passed M4 caller execution but rejected M5 SNP counts. The repair
 adds RTG reference-overlap handling for decomposed records while preserving the
 4TP/2FP/2FN oracle and diploid genotype mismatch tests. Duplicate JSON keys now
 fail before task launch. The actual Nextflow independent/both/resume qualification
-helper is connected to the synthetic driver; its engine/cache pass remains
-pending CI.
+helper passed in CI34270789172: independent GATK and DeepVariant modes each
+executed two tasks; both-mode and resume each reused four. Both queries match
+the frozen SNP4TP/2FP/2FN and indel1TP/0FP/0FN expectations. Retained traces
+qualify resource parsing and cache attribution, not canonical caller cost.
 
 The package-owned `python -m giab_wes_nextflow.coding_domain` constructor reproduced
 all three ADR0013 domain hashes from the exact pinned inputs in memory. Its

@@ -56,6 +56,7 @@
         "blocked",
         "implemented",
         "verified",
+        "synthetically_verified",
         "canonically_executed",
         "released"
       ]

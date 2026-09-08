@@ -31,7 +31,46 @@ def task_table(snapshot: Snapshot, selection: str) -> Any:
                                    task.peak_rss, task.task_hash)]) for task in tasks])])
 
 
-def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) -> Dash:
+def canonical_view(data: Any, missing_reason: str, prefix: str) -> Any:
+    """Render only validated package observations and precomputed exports."""
+    if data is None:
+        return html.Section([html.H2("Canonical results unavailable"), html.P(missing_reason),
+            html.P("No HG001 accuracy, resource result, or canonical completion is inferred from the synthetic qualification panels."),
+            html.P("The canonical notebook must return a complete, validated public bundle and its independently reviewed manifest SHA-256.")], className="panel")
+    record = data.record
+    label = "HG001 chr20–22 coding-domain benchmark" if record["scope"] == "hg001_chr20_22_coding" else "HG001 full coding-domain benchmark"
+    columns = ("Caller", "Variant", "TP query", "TP truth", "FP", "FN", "Precision", "Recall", "F1")
+    rows = []
+    for caller, value in record["callers"].items():
+        for kind, metrics in value["metrics"].items():
+            row = [caller, kind] + [metrics[k] if metrics[k] is not None else "Unavailable" for k in ("tp_query", "tp_truth", "fp", "fn", "precision", "recall", "f1")]
+            rows.append(html.Tr([html.Td(x) for x in row]))
+    chart = go.Figure()
+    for caller in ("gatk", "deepvariant"):
+        resource = record["resources"][caller]; accuracy = record["callers"][caller]["metrics"]["SNP"]["f1"]
+        if resource["wall_seconds"] is not None and accuracy is not None:
+            chart.add_trace(go.Scatter(x=[resource["wall_seconds"]], y=[accuracy], mode="markers+text", name=caller,
+                text=[caller], textposition="top center", hovertemplate="%{text}: %{x} seconds, SNP F1 %{y}<extra></extra>"))
+    chart.update_layout(template="plotly_white", xaxis_title="Observed caller wall time (seconds)", yaxis_title="SNP F1", height=320)
+    resource_rows = [html.Tr([html.Td(group)] + [html.Td(value[k] if value[k] is not None else "Unavailable") for k in ("wall_seconds", "cpu_seconds", "peak_rss_bytes")]) for group,value in record["resources"].items()]
+    coverage = record["coverage"]
+    return html.Section([html.Div("VALIDATED CANONICAL EVIDENCE", className="scope"), html.H2(label),
+        html.P(f"Run {record['run_id']} · sample {record['sample']} · pipeline {record['package_version']}"),
+        html.P(f"Evaluation: {record['domain']['bases']:,} bases in {record['domain']['interval_count']:,} fixed intervals."),
+        html.P("Coverage unavailable: " + record["coverage_missing_reason"] if coverage is None else f"Coverage: {coverage['covered_bases']:,} evaluated bases covered; {coverage['definition']}"),
+        html.Div(html.Table([html.Thead(html.Tr([html.Th(x, scope="col") for x in columns])),html.Tbody(rows)]),className="table-wrap"),
+        html.H3("Accuracy and observed resources"), dcc.Graph(figure=chart, config={"displayModeBar":False}, responsive=True) if chart.data else html.P("No complete wall-time/SNP-F1 pair is available for plotting."),
+        html.Div(html.Table([html.Thead(html.Tr([html.Th(x,scope="col") for x in ("Attribution", "Wall seconds", "CPU seconds", "Peak RSS bytes")])),html.Tbody(resource_rows)]),className="table-wrap"),
+        html.P(record["uncertainty"]),html.Ul([html.Li(x) for x in record["limitations"]]),
+        html.H3("Tested versus configured environments"),html.Ul([html.Li(f"{x['name']}: {x['status']}") for x in record["environments"]]),
+        html.H3("Provenance and artifact lineage"),html.P(["Pipeline SHA: ",html.Code(record["repository_sha"])]),
+        html.P(["Reviewed public manifest: ",html.Code(data.manifest_sha256)]),
+        html.Ul([html.Li([name, " · ",html.Code(sha)]) for name,sha in data.artifact_inventory]),
+        html.Div([html.A(label,href=prefix+"canonical/"+name,className="button") for name,label in (("evidence.json","Validated JSON"),("metrics.tsv","Metric TSV"),("resources.tsv","Resource TSV"))])],className="panel")
+
+
+def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
+               canonical_dir: Path | None = None, canonical_manifest_sha256: str | None = None) -> Dash:
     """Create an isolated Flask/Dash app, failing readiness on invalid evidence."""
     if not re.fullmatch(r"/(?:[A-Za-z0-9_-]+/)*", prefix):
         raise ValueError("invalid application prefix")
@@ -40,6 +79,18 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
         snapshot = load_snapshot(bundle_dir)
     except (ValueError, OSError, KeyError, TypeError):
         pass
+    canonical_data = None
+    canonical_error = "No reviewed canonical evidence bundle has been supplied."
+    configured_dir = canonical_dir or (Path(os.environ["EXPLORER_CANONICAL_BUNDLE"]) if os.environ.get("EXPLORER_CANONICAL_BUNDLE") else None)
+    configured_pin = canonical_manifest_sha256 or os.environ.get("EXPLORER_CANONICAL_MANIFEST_SHA256")
+    if configured_dir or configured_pin:
+        try:
+            from giab_wes_nextflow.canonical_results import load_canonical_bundle
+            if configured_dir is None or configured_pin is None:
+                raise ValueError("canonical directory and trusted manifest pin are both required")
+            canonical_data = load_canonical_bundle(configured_dir, configured_pin)
+        except (ValueError, OSError, KeyError, TypeError, ImportError):
+            canonical_error = "Canonical evidence failed validation or its installed result model is unavailable."
     app = Dash(__name__, requests_pathname_prefix=prefix, routes_pathname_prefix=prefix,
                title="Pipeline Evidence Explorer", update_title=None,
                assets_folder=str(Path(__file__).parent / "assets"))
@@ -62,6 +113,26 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
         return Response(snapshot.public_json if snapshot else '{"error":"invalid_evidence"}',
                         status=200 if snapshot else 503, mimetype="application/json",
                         headers={"Content-Disposition": 'attachment; filename="synthetic-evidence.json"'})
+
+    @app.server.get(prefix + "canonical/readyz")
+    def canonical_readiness() -> tuple[dict[str, Any], int]:
+        """Keep canonical readiness distinct from the synthetic prototype."""
+        return {"status": "canonical_ready" if canonical_data else "canonical_unavailable",
+                "canonical": bool(canonical_data), "scope": canonical_data.record["scope"] if canonical_data else None,
+                "manifest_sha256": canonical_data.manifest_sha256 if canonical_data else None}, 200 if canonical_data else 503
+
+    @app.server.get(prefix + "canonical/<download>")
+    def canonical_download(download: str) -> Response:
+        """Serve fixed prevalidated exports; no client-selected filesystem path."""
+        if canonical_data is None:
+            return Response('{"error":"canonical_unavailable"}', status=503, mimetype="application/json")
+        exports = {"evidence.json": (canonical_data.public_json, "application/json"),
+                   "metrics.tsv": (canonical_data.metrics_tsv, "text/tab-separated-values"),
+                   "resources.tsv": (canonical_data.resources_tsv, "text/tab-separated-values")}
+        if download not in exports:
+            return Response('{"error":"unknown_export"}', status=404, mimetype="application/json")
+        body, mime = exports[download]
+        return Response(body, mimetype=mime, headers={"Content-Disposition": f'attachment; filename="canonical-{download}"'})
 
     @app.server.after_request
     def secure_response(response: Response) -> Response:
@@ -100,6 +171,8 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
                 html.P("Independent callers, both-mode and final resume passed on main. This qualifies invented SNV integration; indel and canonical HG001 qualification remain unavailable."),
                 html.P("M4 recipe 1.1.0 has 528 primary reads. Its caller observations are separate from the 48-read M3 run plotted here. Earlier recipe 1.0.0 failures remain in the evidence download as historical attempts.", className="note"),
                 html.A("Inspect the recorded caller run ↗", href=f"{REPO}/actions/runs/{data.m4_run_id}")], className="panel")], className="columns"),
+        html.Section([html.H2("Synthetic M5 benchmark qualification"), html.P(data.m5_observation),
+            html.A("Inspect retained M5 CI evidence ↗", href=f"{REPO}/actions/runs/{data.m5_run_id}")], className="panel"),
         html.Section([html.H2("Primary HG001 results"), html.P("Awaiting real execution and common benchmarking."),
             html.Div([card("SNP precision / recall / F1", "Unavailable", "No canonical SNP counts"),
                       card("Indel precision / recall / F1", "Unavailable", "No canonical indel counts"),
@@ -119,6 +192,7 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
         html.H3("Verified source inventory"), html.Ul([html.Li([html.Strong(name), html.Br(), html.Code(sha)]) for name, sha in data.sources]),
         html.A("Download validated evidence JSON", href=prefix + "evidence.json", className="button"),
         html.H3("Field ownership"), html.P("Read/QC cards: m3-proof.json → bam_assertions. Execution cards: resume_assertions. Task table: m3-first.trace.tsv. Current caller status: m4-verified-main-34237377774.json → execution_scope. Historical failure: m4-attempt.json. Domain decision: domain-approval.json. Benchmark metrics are null, with an explicit missing reason.")], className="panel")
+    canonical_panel = canonical_view(canonical_data, canonical_error, prefix)
     app.layout = html.Div([html.Header([html.A("JPC / RESEARCH", href=REPO, className="brand"),
         html.Span(f"EXPLORER {__version__}", className="version")]), html.Main([
         html.Div("SYNTHETIC EVIDENCE PROTOTYPE", className="scope"), html.H1("Pipeline Evidence Explorer"),
@@ -126,18 +200,19 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
         html.P("GIAB HG001 WES project · John Patrick Collins · Public engineering work, 2026", className="byline"),
         html.Div("This preview contains invented test data and recorded qualification outcomes. It does not report HG001 accuracy or a caller winner.", className="notice", role="note"),
         html.Fieldset([html.Legend("Choose evidence view", className="sr-only"),
-            dcc.RadioItems(id="view", options=[{"label": x.title(), "value": x} for x in ("overview", "execution", "provenance")],
+            dcc.RadioItems(id="view", options=[{"label": x.title(), "value": x} for x in ("overview", "execution", "provenance", "canonical")],
                            value="overview", inline=True, className="section-nav")]),
         html.Div(overview, id="overview-panel"), html.Div(execution, id="execution-panel", style={"display": "none"}),
-        html.Div(provenance, id="provenance-panel", style={"display": "none"})]),
+        html.Div(provenance, id="provenance-panel", style={"display": "none"}),
+        html.Div(canonical_panel, id="canonical-panel", style={"display": "none"})]),
         html.Footer(["Source-owned measurements. Explicit limitations. ", html.A("View repository ↗", href=REPO)])])
 
     @app.callback(Output("overview-panel", "style"), Output("execution-panel", "style"),
-                  Output("provenance-panel", "style"), Input("view", "value"))
+                  Output("provenance-panel", "style"), Output("canonical-panel", "style"), Input("view", "value"))
     def choose_view(selection: str) -> tuple[dict[str, str], ...]:
         """Switch panels with keyboard-accessible native radio controls."""
         return tuple({"display": "block" if selection == name else "none"}
-                     for name in ("overview", "execution", "provenance"))
+                     for name in ("overview", "execution", "provenance", "canonical"))
 
     @app.callback(Output("task-table", "children"), Input("process", "value"))
     def filter_tasks(selection: str) -> Any:
@@ -148,6 +223,7 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
             return html.P("Choose a process from the list.")
 
     app.server.config["EXPLORER_SNAPSHOT"] = data
+    app.server.config["CANONICAL_RESULTS"] = canonical_data
     return app
 
 

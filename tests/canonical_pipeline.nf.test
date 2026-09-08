@@ -1,0 +1,38 @@
+nextflow_pipeline {
+    name 'Canonical execution gate and five-stage composition'
+    script '../canonical.nf'
+    tag 'canonical'
+    options '-stub-run'
+    profile 'canonical_colab'
+    test('canonical remains blocked without its explicit gate') {
+        when { params { outdir = "$outputDir" } }
+        then {
+            assert !workflow.success
+            assert workflow.trace.succeeded().size() == 0
+            assert workflow.stdout.join('\n').contains('runtime qualification')
+        }
+    }
+    test('five stages compose and expose only unmistakable noncanonical stubs') {
+        when {
+            params {
+                canonical_ready = true
+                canonical_max_cpus = 1
+                canonical_max_memory = '1 GB'
+                preprocess_spec = "$projectDir/tests/data/canonical-stub.json"
+                benchmark_spec = "$projectDir/tests/data/canonical-stub.json"
+                runtime_spec = "$projectDir/tests/data/canonical-stub.json"
+                outdir = "$outputDir"
+            }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 5
+            assert path("$outputDir/canonical/shared/preprocessed/receipt.json").json.status == 'stub_only'
+            for (caller in ['gatk', 'deepvariant']) {
+                def result = path("$outputDir/canonical/$caller/benchmark/benchmarked/receipt.json").json
+                assert result.status == 'stub_only' && result.synthetic && !result.canonical
+                assert path("$outputDir/canonical/$caller/native/called/receipt.json").json.status == 'stub_only'
+            }
+        }
+    }
+}

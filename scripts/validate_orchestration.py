@@ -21,7 +21,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = Path("docs/orchestration/project-state.schema.json")
-COMPLETE_STATES = {"verified", "canonically_executed", "released"}
+COMPLETE_STATES = {"verified", "synthetically_verified", "canonically_executed", "released"}
 
 
 def _unique_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
