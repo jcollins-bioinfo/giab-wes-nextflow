@@ -26,6 +26,8 @@ jobs:
         run: python -m pip install -r requirements-dev.txt
       - name: Build sdist and wheel
         run: python -m build
+      - name: Inspect distribution members without extracting generated data
+        run: python scripts/check_distributions.py dist/*.tar.gz dist/*.whl
       - name: Test installed wheel outside checkout
         run: |
           python -m venv /tmp/wheel-venv
@@ -33,6 +35,9 @@ jobs:
           cd /tmp
           /tmp/wheel-venv/bin/python -c "import giab_wes_nextflow; from giab_wes_nextflow.resources import config_path,schema_path; assert config_path('m2-resources.json').is_file(); assert schema_path('m2-source-manifest.schema.json').is_file(); print(giab_wes_nextflow.__version__)"
           for command in acquire prepare validate publish mirror; do /tmp/wheel-venv/bin/giab-wes-${command}-m2 --help >/dev/null; done
+          /tmp/wheel-venv/bin/giab-wes-m3 --help >/dev/null
+          /tmp/wheel-venv/bin/python -m giab_wes_nextflow.m3_publication --help >/dev/null
+          /tmp/wheel-venv/bin/python -m giab_wes_nextflow.m4_cli --help >/dev/null
           before=$(find /tmp -maxdepth 1 -name m2-stage -print)
           /tmp/wheel-venv/bin/giab-wes-acquire-m2 --workspace /tmp/m2-stage --preflight-only >/dev/null
           test "$before" = "$(find /tmp -maxdepth 1 -name m2-stage -print)"
@@ -78,7 +83,10 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with: {python-version: '3.12'}
       - run: python -m pip install nf-core==4.1.0
+      - run: python -m pip install .
       - run: python tests/data/generate_fixture.py
+      - run: python tests/data/generate_m3_fixture.py --output tests/data/m3-generated
+      - run: python -m giab_wes_nextflow.m4_fixture --output tests/data/m4-generated
       - run: nextflow -version
       - run: nextflow lint -o concise .
       - run: nf-core pipelines schema lint
@@ -88,9 +96,61 @@ jobs:
       - if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with: {name: failure-nextflow-26.04.6, path: ".nextflow.log*", include-hidden-files: true}
+  m3-docker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with: {python-version: '3.12'}
+      - name: Select Java 17
+        run: |
+          test -x "$JAVA_HOME_17_X64/bin/java"
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          "$JAVA_HOME_17_X64/bin/java" -version
+      - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3.0.1
+        with: {version: "26.04.6"}
+      - name: Clean-clone synthetic preprocessing and resume verification
+        run: |
+          python scripts/run_m3_synthetic.py --output-root "$RUNNER_TEMP/m3-integration" --expected-sha "$(git rev-parse HEAD)" --mode docker
+      - name: Preserve small synthetic evidence only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: m3-synthetic-docker-evidence
+          path: ${{ runner.temp }}/m3-integration/evidence/
+          if-no-files-found: warn
+          retention-days: 30
+  m4-docker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with: {python-version: '3.12'}
+      - name: Select Java 17
+        run: |
+          test -x "$JAVA_HOME_17_X64/bin/java"
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          "$JAVA_HOME_17_X64/bin/java" -version
+      - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3.0.1
+        with: {version: "26.04.6"}
+      - name: Actual shared-BAM callers, positive inference, selection and resume
+        run: |
+          python scripts/run_m4_synthetic.py --output-root "$RUNNER_TEMP/m4-integration" --expected-sha "$(git rev-parse HEAD)" --mode docker
+      - name: Preserve small synthetic caller evidence only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: m4-synthetic-docker-evidence
+          path: ${{ runner.temp }}/m4-integration/evidence/
+          if-no-files-found: warn
+          retention-days: 30
   required:
     if: always()
-    needs: [python, nextflow]
+    needs: [python, nextflow, m3-docker, m4-docker]
     runs-on: ubuntu-24.04
     steps:
-      - run: test '${{ needs.python.result }}' = success && test '${{ needs.nextflow.result }}' = success
+      - run: test '${{ needs.python.result }}' = success && test '${{ needs.nextflow.result }}' = success && test '${{ needs.m3-docker.result }}' = success && test '${{ needs.m4-docker.result }}' = success

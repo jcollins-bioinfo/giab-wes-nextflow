@@ -1,0 +1,187 @@
+{
+  "artifact": {
+    "all_member_hashes_verified": true,
+    "bytes": 635896,
+    "id": 10013987944,
+    "integration_proof_sha256": "6d9f45b6d1e6415eab2bbc32f157cbaf26bd67a721df27479e13db61f2a2888c",
+    "name": "m4-synthetic-docker-evidence",
+    "sha256": "b3995a09a9ced190b49af9fa4955fe1fa853814db32eddb8ac8b6ee6932ac37d",
+    "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/artifacts/10013987944",
+    "verified_evidence_members": 38
+  },
+  "attempt": 2,
+  "canonical": false,
+  "execution_scope": {
+    "biological_processing_validated": false,
+    "deepvariant_executed": false,
+    "gatk_bundle_completed": false,
+    "gatk_caller_completed": true,
+    "gatk_collector_accepted": false,
+    "gatk_exit": 0,
+    "gatk_task_hash": "81/3fa33a",
+    "independent_driver_bam_oracle_index_mount_checks_reached": false,
+    "m3_preprocessing_tasks_completed": 22,
+    "m4_prepare_inputs_completed": true,
+    "mode_resume_checks_reached": false,
+    "positive_inference_observed": false,
+    "trace_counts": {
+      "COMPLETED": 24,
+      "FAILED": 1
+    }
+  },
+  "fixture": {
+    "manifest_sha256": "e31ffa05a94f540e563f56d4dc3990ec0c8fa803cdccb7c3c8fe40a16a0348ad",
+    "recipe_version": "1.0.0",
+    "sample": "SYNTHETIC01"
+  },
+  "frozen_oracle_sha256": "c971c2bac375dbffc37608b6cde4ec4d9b72a9f094dba446d8fe6e9032566d4f",
+  "head_sha": "cfce0ef3243291970a83d49f690cb985f7ef2b85",
+  "image": {
+    "Architecture": "amd64",
+    "Id": "sha256:96e40015101d9178131fe129456345a225c0bd3c3dfe6c7da79a8355b3710506",
+    "Os": "linux",
+    "RepoDigests": [
+      "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    ],
+    "Size": 4914595016
+  },
+  "installed_package": {
+    "files": 42,
+    "package_inventory_sha256": "e548e8486182986a530a965e0ab27f904ee3af4739f06c929c0c95661f9310a1",
+    "repository_sha": "dd9021c4132d8b5166e8ae9facabbd783d67ddf1",
+    "version": "0.4.0-dev.1"
+  },
+  "job_conclusions": [
+    {
+      "conclusion": "success",
+      "id": 101703087818,
+      "name": "nextflow",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "id": 101703088132,
+      "name": "m4-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101703088179,
+      "name": "python (3.12)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101703088284,
+      "name": "python (3.13)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 101703088301,
+      "name": "m3-docker",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "id": 101704303004,
+      "name": "required",
+      "status": "completed"
+    }
+  ],
+  "job_id": 101703088132,
+  "job_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34109783721/job/101703088132",
+  "m4_failure": {
+    "cause": "Physical-line shlex splitting attempts to parse a multiline single-quoted printf argument independently.",
+    "error_type": "ValueError",
+    "message": "No closing quotation",
+    "phase": "first gatk mode, M4_COLLECT_GATK command-provenance parsing",
+    "report_script": {
+      "bytes": 909,
+      "extraction": "Decode window.data.trace JavaScript object without evaluation; normalize escaped single quotes for JSON parsing, select M4_HAPLOTYPECALLER.script.",
+      "scope": "Actual report script body, not byte identity of the full copied gatk.command.sh wrapper; wrapper file was not separately archived.",
+      "sha256": "563091871fc6be42d2fafb25293bd92da6ab0b11f17d3c04211a9a94fe9c64fd",
+      "source_member": "gatk.report.html",
+      "source_member_sha256": "fc0d7f5e54d96f952341419dc0eba4eb135f3fdeb2b9baaf3b110bbc62f01bf8"
+    },
+    "source": "src/giab_wes_nextflow/m4_contracts.py:297",
+    "structural_reproduction": "A single-quoted printf format contains a literal newline before the valid one-line HaplotypeCaller invocation."
+  },
+  "milestone": "M4",
+  "native_index_reader": {
+    "declared_conda_selector": "bioconda::bcftools=1.15",
+    "expected_reported_htslib_version": "1.21",
+    "expected_reported_version": "1.15.1",
+    "image": "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6",
+    "observed_htslib_version": "1.21",
+    "observed_text_sha256": "ac3714859d2260e77f6d8a4b1d73d5d4401d7907ea1dac8897bee1d325611205",
+    "observed_version": "1.15.1"
+  },
+  "pull_request": 21,
+  "repository": "jcollins-bioinfo/giab-wes-nextflow",
+  "run_id": 34109783721,
+  "schema_version": "1.0.0",
+  "status": "failed",
+  "synthetic": true,
+  "tested_merge_sha": "dd9021c4132d8b5166e8ae9facabbd783d67ddf1",
+  "repair": {
+    "description": "Parse logical shell command lines with quoted newlines and comments intact; identify exactly one literal scientific invocation, preserving all existing option/identity checks.",
+    "caller_parameters_changed": false,
+    "fixture_or_images_changed": false,
+    "source": {
+      "filename": "m4_contracts.py",
+      "bytes": 33522,
+      "sha256": "7624796701ce87479cab99806840b3a879f75b6f8f91d4d20b48b2fba80824c0"
+    },
+    "tests": [
+      {
+        "filename": "m4-parser-fix-full-python312.log",
+        "bytes": 2410,
+        "sha256": "f1e5d1ecb84a505f619738526cc6eb00704c395013ecab10e32d7c6a5921360d",
+        "python": "3.12",
+        "count": 233,
+        "seconds": 26.935,
+        "status": "passed"
+      },
+      {
+        "filename": "m4-parser-fix-full-python313.log",
+        "bytes": 1048,
+        "sha256": "4c102943ef8f942f37265eaca1e48cdc51ba088c2896db8b708247429c9fdc31",
+        "python": "3.13",
+        "count": 233,
+        "seconds": 23.507,
+        "status": "passed"
+      },
+      {
+        "filename": "m4-parser-installed-wheel-tests.log",
+        "bytes": 403,
+        "sha256": "f6b647c0083680eaa0a31b377d74bb4cf99d66279bf6b4bb5e00ff6267c5e582",
+        "python": "3.13 isolated wheel M4 tests",
+        "count": 53,
+        "seconds": 11.09,
+        "status": "passed"
+      }
+    ],
+    "actual_report_script_replay": {
+      "source": "Exact script body serialized in actual GATK Nextflow report; not the full .command.sh wrapper",
+      "artifact_run": 34109783721,
+      "script_sha256": "563091871fc6be42d2fafb25293bd92da6ab0b11f17d3c04211a9a94fe9c64fd",
+      "parameters": {
+        "native_pair_hmm_threads": 2,
+        "standard_min_confidence_threshold_for_calling": 30.0,
+        "emit_ref_confidence": "NONE"
+      },
+      "match_unchanged_lock": true
+    },
+    "independent_review": {
+      "filename": "m4-command-parser-independent-review.json",
+      "bytes": 4446,
+      "sha256": "9d571fbfd4f5332432053e9e6e37df56235626263ad946cd47be98d5b6f14432"
+    },
+    "installed_wheel": {
+      "filename": "giab_wes_nextflow-0.4.0.dev1-py3-none-any.whl",
+      "bytes": 104923,
+      "sha256": "2fbb09d1f30071a84f384632b993f343dd51a0e65527245a0100f3660f1df2a7"
+    }
+  }
+}

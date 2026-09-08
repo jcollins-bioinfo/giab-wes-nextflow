@@ -1,0 +1,118 @@
+{
+  "research_only": true,
+  "m4_implemented": false,
+  "deepvariant_executed": false,
+  "human_genomic_bytes_downloaded": false,
+  "container_layers_downloaded": false,
+  "model_weights_downloaded": false,
+  "deepvariant_release": "1.10.0",
+  "deepvariant_commit": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+  "sources": [
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "README.md",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/README.md",
+      "git_blob_sha": "157bc079462ecbab21ff48fea78eeaa4ccc56949"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "LICENSE",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/LICENSE",
+      "git_blob_sha": "7f6763f05c080dda9ebe25bd62b4296fd266a52d"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "docs/deepvariant-details.md",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-details.md",
+      "git_blob_sha": "7b5f006516afec4aa7954d40cf1ec1d221493762"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "docs/deepvariant-quick-start.md",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-quick-start.md",
+      "git_blob_sha": "2316d880a9a5dbe8ce8c0889b06c3d2c070ef759"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "docs/FAQ.md",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/FAQ.md",
+      "git_blob_sha": "31101089e669692e372227dc877f623feff7daf6"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "Dockerfile",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/Dockerfile",
+      "git_blob_sha": "0d3c449ddd589314fc1cb6118a8f465adff5542f"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "scripts/run_deepvariant.py",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/scripts/run_deepvariant.py",
+      "git_blob_sha": "b6e9c07b3afa014ef087fd04dd37983aef1511ed"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "docs/deepvariant-details-training-data.md",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-details-training-data.md",
+      "git_blob_sha": "0bd8db658c111b77ddb12f601c8928697f6c3444"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "docs/deepvariant-small-model-details.md",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-small-model-details.md",
+      "git_blob_sha": "a844fdc8e5896af8a875c01a6b857315c2ec2df5"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "docs/deepvariant-build-test.md",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-build-test.md",
+      "git_blob_sha": "5b6e35a0e09f763a8624de71c15e744a186df47e"
+    },
+    {
+      "repository": "google/deepvariant",
+      "ref": "d6b15e21323d9d15b347083f1d256ad62998c4cf",
+      "path": "deepvariant/make_examples_options.py",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/deepvariant/make_examples_options.py",
+      "git_blob_sha": "f84a2c75efdcce977000ddf5206ed745f58731d0"
+    }
+  ],
+  "external_sources": [
+    {
+      "url": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+      "supports": "Standard public Ubuntu x64 runners declared4vCPU,16GB RAM,14GB SSD; actual runtime capacities and CPU flags must be observed."
+    }
+  ],
+  "conclusions": {
+    "image_cpu_architecture": "linux/amd64",
+    "cpu_instruction_requirements": [
+      "SSE4",
+      "AVX"
+    ],
+    "default_model": "/opt/models/wes",
+    "model_argument": "--model_type=WES",
+    "original_quality_argument": "--make_examples_extra_args=use_original_quality_scores=true",
+    "official_quickstart_human_data": true,
+    "standalone_tiny_WES_test_model": "No supported standalone tiny WES model found in inspected release docs/source. Official small-model acceleration is distinct from a test model.",
+    "wes_small_model_default": "Pinned runner enables small model only if metadata has trained_small_model_path (absent in current WES metadata) or customized small model supplied.",
+    "source_license": "BSD-3-Clause in pinned repository LICENSE; image bundles third-party licenses.zip; no separate weight-specific license found in inspected WES metadata.",
+    "hg001_wes_training_replicates": 57,
+    "documented_training_excluded_chromosomes": [
+      "chr20",
+      "chr21",
+      "chr22"
+    ],
+    "scientific_interpretation": "Full HG001 autosomal comparison is descriptive/in-sample. chr20–22 is same-individual locus-held-out sensitivity, not independent-individual generalization.",
+    "github_cpu_CI": "Plausible candidate environment for a bounded synthetic actual dual-caller test, contingent on observed AVX/SSE4, RAM/disk and successful executable inference. Metadata alone is not qualification.",
+    "M4_verified_gate": "Actual GATK and pinned WES DeepVariant execution on identical BAM/BAI/reference/source identities, validated outputs and repeat evidence; help/version/stub/empty-candidate-only checks do not establish model inference."
+  }
+}

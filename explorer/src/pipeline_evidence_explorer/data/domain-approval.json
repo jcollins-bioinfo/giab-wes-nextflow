@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "owner_scientific_decision",
+  "decision": "approve_fixed_coding_domain_alternative",
+  "authorization": "User explicitly answered Approve the fixed coding-domain alternative on 2026-09-08.",
+  "proposal_markdown_sha256": "8d99fb51393ffd01146ebfefaf22d163aff7c26ea3ad045d6026547156a762d7",
+  "proposal_json_sha256": "2ca6096939550af845fa34ea8a3211be77f9761bc41aa1a8d1430bb65679303f",
+  "R_call_sha256": "521a5c1140953bb516f36d28486767f49284a071a851331ce8d14f320d7ff728",
+  "R_eval_full_sha256": "9c270a2c46c2e83ae0d35e5ceaa75e4b77918924bf7443d4fffe467cd9b950d4",
+  "R_eval_holdout_sha256": "7730c4303e03fef74d2c22193102845e369e04ac81fabb7f41fae1374be65d00",
+  "canonical_execution": false,
+  "implementation_validated": false,
+  "observed_at": "2026-09-08T08:07:40.582160+00:00"
+}

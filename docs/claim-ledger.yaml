@@ -1,6 +1,6 @@
 schema_version: '1.0.0'
 author: John Patrick Collins
-observed_at: '2026-09-07'
+observed_at: '2026-09-08'
 scope: GIAB HG001 Illumina WES; nonclinical single-sample engineering project
 claims:
   - id: m2-baseline-ci
@@ -16,21 +16,47 @@ claims:
     evidence: docs/orchestration/evidence/source-cache-metadata.json
     limitation: Size/name matching is not fresh byte verification; architecture is producer-reported; preparation and canonical execution are unverified.
   - id: m2-recovery
-    classification: implemented
-    statement: M2.1.1 recovery contracts are under implementation and validation.
-    evidence: docs/orchestration/project-state.json
-    limitation: No green repair CI or completed M3 work is implied by an implementation record.
+    classification: CI-tested
+    statement: M2.1.1 recovery passed required CI and 104-test Python and clean-wheel suites.
+    evidence: docs/orchestration/evidence/m2.1.1-verified.json
+    limitation: Recovery evidence is at commit 22d01b202e15bb098e9d42d0ad4a98606e78c2c2; no completed M3 or canonical execution is implied.
+  - id: m3-shared-preprocessing
+    classification: CI-tested
+    statement: Shared preprocessing passed real Linux/x86_64 synthetic Docker execution, independent BAM and original-quality checks, and complete 22-task resume reuse.
+    evidence: docs/orchestration/checkpoints/M3.json
+    repository_sha: c3426d3d4578ec6e66a6494c09fde983a7e4f3cd
+    limitation: Invented 20 kb fixture only; 48 reads and real BQSR wiring do not establish calibration performance, canonical HG001 processing or caller execution.
+  - id: m4-local-implementation
+    classification: locally-tested
+    statement: Selectable caller contracts, positive synthetic fixture, guarded evidence publication and local framework/cache behavior are implemented and tested.
+    evidence: docs/orchestration/checkpoints/M4.json
+    limitation: Actual Linux Docker GATK acceptance passed and DeepVariant plus its prediction inspector completed, but native DeepVariant acceptance failed; no complete M4 verification or canonical HG001 result is claimed. See the preserved CI attempts.
   - id: capture-design
     classification: unresolved
-    statement: Exact capture-design byte identity remains unresolved.
-    evidence: config/m2-target-design.json
-    limitation: Canonical capture-dependent domains, target-aware acceptance and publication remain fail-closed.
+    statement: Exact deposited Expanded Exome target bytes and dataset association are established; unique NIST7035 assay assignment remains unresolved.
+    evidence: docs/orchestration/evidence/capture-design-investigation.json
+    limitation: The owner approved a fixed coding-domain alternative in ADR 0013; its canonical implementation and execution remain unvalidated.
   - id: website-baseline
     classification: configured_only
     statement: The existing vinext Cloudflare website is configured with both named custom domains.
     repository_sha: d933578401d305bc8504e584f2aaa5f484085e18
     evidence: docs/orchestration/evidence/baseline-website.json
     limitation: No GIAB page/Explorer or current public HTTP verification is established.
+  - id: approved-coding-domain
+    classification: inferred
+    statement: Owner approval selected the fixed GENCODE v50 coding-domain estimand on 2026-09-08.
+    evidence: docs/adr/0013-approved-domain-colab-and-prototype.md
+    limitation: Approval records intent; canonical materialization, real HG001 execution and benchmarking remain unverified.
+  - id: synthetic-explorer
+    classification: locally-tested
+    statement: The separately packaged synthetic explorer passed installed-wheel tests and browser checks.
+    evidence: explorer/README.md
+    limitation: No canonical results, caller winner, production deployment or M8 completion.
+  - id: colab-capability-launcher
+    classification: locally-tested
+    statement: A package-owned capability probe has local mocked tests and a thin Colab launcher.
+    evidence: docs/canonical-colab.md
+    limitation: No observation of the owner runtime, index construction or new Drive publication.
 forbidden_without_new_evidence:
   - historical professional Nextflow tenure
   - clinical-grade or patient-care validation

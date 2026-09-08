@@ -1,0 +1,119 @@
+{
+  "biological_processing": false,
+  "cache_policy": "M3 tiny files use deep content caching; references/indexes cross channels as leaf file lists, not directory identities.",
+  "canonical": false,
+  "clean_checkout": false,
+  "limitations": [
+    "These are working-tree scaffold tests, not clean-checkout CI or BAM acceptance.",
+    "Real pinned-container execution and measured task resources require Linux Docker CI."
+  ],
+  "nextflow_version": "26.04.6",
+  "nf_test_version": "0.9.5",
+  "observed_at": "2026-09-07T07:56:32.948637+00:00",
+  "qualification": "local_working_tree_stub_only",
+  "real_genomics_tool_execution": false,
+  "repository_head": "22d01b202e15bb098e9d42d0ad4a98606e78c2c2",
+  "resume": {
+    "first": {
+      "relative_path": "m3-stub-files-first.trace.tsv",
+      "sha256": "ad0a2ccf45c23b8012573d76c98b5c6157eca30c89f15bda7b5e46d0ee3d0f45",
+      "statuses": {
+        "COMPLETED": 22
+      },
+      "task_hashes": {
+        "M3_SHARED_PREPROCESSING:M3_ALIGN (SYN_L001)": "d2/67a850",
+        "M3_SHARED_PREPROCESSING:M3_ALIGN (SYN_L002)": "cc/3c4075",
+        "M3_SHARED_PREPROCESSING:M3_APPLY_BQSR (SYNTHETIC01)": "0f/1dd811",
+        "M3_SHARED_PREPROCESSING:M3_BAM_SUMMARY (SYNTHETIC01)": "a2/76bdd6",
+        "M3_SHARED_PREPROCESSING:M3_BWA_INDEX (stage)": "2a/09117c",
+        "M3_SHARED_PREPROCESSING:M3_COLLECT (SYNTHETIC01)": "d2/b42c9e",
+        "M3_SHARED_PREPROCESSING:M3_FASTQC (SYN_L001)": "7d/f5bffa",
+        "M3_SHARED_PREPROCESSING:M3_FASTQC (SYN_L002)": "89/91c2f5",
+        "M3_SHARED_PREPROCESSING:M3_FASTQ_VALIDATE (SYN_L001)": "83/ca7825",
+        "M3_SHARED_PREPROCESSING:M3_FASTQ_VALIDATE (SYN_L002)": "67/64259e",
+        "M3_SHARED_PREPROCESSING:M3_MARKDUP (SYNTHETIC01)": "30/4bb430",
+        "M3_SHARED_PREPROCESSING:M3_MERGE (SYNTHETIC01)": "bf/97b929",
+        "M3_SHARED_PREPROCESSING:M3_MOSDEPTH (SYNTHETIC01)": "d0/f6bfe0",
+        "M3_SHARED_PREPROCESSING:M3_MULTIQC (stage)": "bd/afece2",
+        "M3_SHARED_PREPROCESSING:M3_PICARD_QC (SYNTHETIC01)": "bf/1c772f",
+        "M3_SHARED_PREPROCESSING:M3_PREFLIGHT (synthetic_source_gate)": "c9/00e643",
+        "M3_SHARED_PREPROCESSING:M3_PRE_BQSR (SYNTHETIC01)": "7c/5e9374",
+        "M3_SHARED_PREPROCESSING:M3_RECALIBRATE (SYNTHETIC01)": "5a/28e8ec",
+        "M3_SHARED_PREPROCESSING:M3_REFERENCE_FAIDX (synthetic_reference)": "6f/c2ec12",
+        "M3_SHARED_PREPROCESSING:M3_REFERENCE_METADATA (synthetic_reference)": "46/0ef35a",
+        "M3_SHARED_PREPROCESSING:M3_SORT (SYN_L001)": "db/1f9b2c",
+        "M3_SHARED_PREPROCESSING:M3_SORT (SYN_L002)": "de/dcd5e3"
+      },
+      "tasks": 22
+    },
+    "resume": {
+      "relative_path": "m3-stub-files-resume.trace.tsv",
+      "sha256": "5b285cda44796bffcc91d34c7f4fd36fd888d3f2801e7b0aeb40746ecebc8ac2",
+      "statuses": {
+        "CACHED": 22
+      },
+      "task_hashes": {
+        "M3_SHARED_PREPROCESSING:M3_ALIGN (SYN_L001)": "d2/67a850",
+        "M3_SHARED_PREPROCESSING:M3_ALIGN (SYN_L002)": "cc/3c4075",
+        "M3_SHARED_PREPROCESSING:M3_APPLY_BQSR (SYNTHETIC01)": "0f/1dd811",
+        "M3_SHARED_PREPROCESSING:M3_BAM_SUMMARY (SYNTHETIC01)": "a2/76bdd6",
+        "M3_SHARED_PREPROCESSING:M3_BWA_INDEX (stage)": "2a/09117c",
+        "M3_SHARED_PREPROCESSING:M3_COLLECT (SYNTHETIC01)": "d2/b42c9e",
+        "M3_SHARED_PREPROCESSING:M3_FASTQC (SYN_L001)": "7d/f5bffa",
+        "M3_SHARED_PREPROCESSING:M3_FASTQC (SYN_L002)": "89/91c2f5",
+        "M3_SHARED_PREPROCESSING:M3_FASTQ_VALIDATE (SYN_L001)": "83/ca7825",
+        "M3_SHARED_PREPROCESSING:M3_FASTQ_VALIDATE (SYN_L002)": "67/64259e",
+        "M3_SHARED_PREPROCESSING:M3_MARKDUP (SYNTHETIC01)": "30/4bb430",
+        "M3_SHARED_PREPROCESSING:M3_MERGE (SYNTHETIC01)": "bf/97b929",
+        "M3_SHARED_PREPROCESSING:M3_MOSDEPTH (SYNTHETIC01)": "d0/f6bfe0",
+        "M3_SHARED_PREPROCESSING:M3_MULTIQC (stage)": "bd/afece2",
+        "M3_SHARED_PREPROCESSING:M3_PICARD_QC (SYNTHETIC01)": "bf/1c772f",
+        "M3_SHARED_PREPROCESSING:M3_PREFLIGHT (synthetic_source_gate)": "c9/00e643",
+        "M3_SHARED_PREPROCESSING:M3_PRE_BQSR (SYNTHETIC01)": "7c/5e9374",
+        "M3_SHARED_PREPROCESSING:M3_RECALIBRATE (SYNTHETIC01)": "5a/28e8ec",
+        "M3_SHARED_PREPROCESSING:M3_REFERENCE_FAIDX (synthetic_reference)": "6f/c2ec12",
+        "M3_SHARED_PREPROCESSING:M3_REFERENCE_METADATA (synthetic_reference)": "46/0ef35a",
+        "M3_SHARED_PREPROCESSING:M3_SORT (SYN_L001)": "db/1f9b2c",
+        "M3_SHARED_PREPROCESSING:M3_SORT (SYN_L002)": "de/dcd5e3"
+      },
+      "tasks": 22
+    }
+  },
+  "schema_version": "1.0.0",
+  "source_files_sha256": {
+    "conf/m3_test.config": "68b1cbf973023ad2907fabf0178ff9d3af25d55a123432d1537c3eba99e0eeff",
+    "main.nf": "d1559a58a23c664a08855c3a83d57313cc00cba37f27a597c71d7ec318053adc",
+    "modules/local/m3_align/main.nf": "371ed7afe9b8df2ef5833f42640ed719df71f7bf0261c0f1a990969f2b33840c",
+    "modules/local/m3_apply_bqsr/main.nf": "f89697763f3a0bd3c36cf5f81b546252f7e8d3ec612ed070b43c534cd51f840d",
+    "modules/local/m3_bam_summary/main.nf": "8e54cd82eb1ebd056c91e6c3ab07aa648a66b8ddf233711ce00bb2d27a66a93d",
+    "modules/local/m3_bwa_index/main.nf": "250a926b8e11ac1e7d0e2d80a1335738a77a4a0f1b70731b2377e79394b011b0",
+    "modules/local/m3_collect/main.nf": "39bc6eb49cc9ef45867f11b174136d54e20177a7fab14876e5059144488889df",
+    "modules/local/m3_fastq_validate/main.nf": "fd35681269174f8988a1853950514f82f7b5915c069c7bda0286d9625b0ea6cf",
+    "modules/local/m3_fastqc/main.nf": "fc5a236adaa28d28318ccffd58f7d2f4f313519862922f54e8198263a444030d",
+    "modules/local/m3_markdup/main.nf": "edce2b1fa48094c7bba05b76691f228c3ad96c7031349b1758bd9742be4ef67b",
+    "modules/local/m3_merge/main.nf": "f030cf17e0719949800e64c21bc2d955156be6ae597c4cbb08b209b370810b65",
+    "modules/local/m3_mosdepth/main.nf": "138ebf116d61b6b8283150584ab80846454ce5998de05542dc8ae2923a39fbe0",
+    "modules/local/m3_multiqc/main.nf": "4bb4463b7926dd4b160b804aa17c084bd8d1c9302b7a45e891f1f6687817a812",
+    "modules/local/m3_picard_qc/main.nf": "68e10c60bb53aca24d395542d6e4f17aef1222613fb877a87e71911e7c8d3a09",
+    "modules/local/m3_pre_bqsr/main.nf": "a8ffd0e8d410ae3852c8ccbd12f032fbdb5aac8491a41daa0880c88971dcf2b1",
+    "modules/local/m3_preflight/main.nf": "82d8f0a212c3fcf6a7adf535f4d81e0509bf77e5eff9d95ddedacc7cbc5f970d",
+    "modules/local/m3_recalibrate/main.nf": "93c2fdfd79f27299a2d6cce385ae9ca13e49a061f6c7df8b6993192bf1be9cb5",
+    "modules/local/m3_reference_faidx/main.nf": "f225efee91b830061113bfb239f2eb3bd4fd23e14d25d89567a31852c1433f38",
+    "modules/local/m3_reference_metadata/main.nf": "010c8bba5f455ff984c6d0caa951f24876939f91ee0e7549c0295f85beffa786",
+    "modules/local/m3_sort/main.nf": "98402d37ef32157c6da0116acdaad74cfc9192a861389d79e0d0f93d44d6ceca",
+    "nextflow.config": "f15734f58437322552bcbc20b154e38582d5f067cc23148fb696b9ac5f3eebf6",
+    "subworkflows/local/m3_shared_preprocessing/main.nf": "215d3a1225fa410340c628d08fb373edeee5b4f22db9716ec9c5cfa6db9336b5",
+    "tests/m3_bwa_index.nf.test": "1df13459a2316562318bd6668487ba390b9a6677629484da4d0e65673958f350",
+    "tests/m3_gates.nf.test": "ff2311f323e8cdf320bd620e4ad2e1bf67662a49795bbf7f4b1a38253d6cdc96",
+    "tests/m3_preflight.nf.test": "c728b654d2967fdc01b2fba42d8a1a9acda155fcef9a4e5f41115c95140c6824",
+    "tests/m3_subworkflow.nf.test": "593ef667ea74039080043c98ff125d3e9c31f0dc169f1d2b9cdc72b8edfec5c5"
+  },
+  "stub_manifest": {
+    "biological_processing": false,
+    "canonical": false,
+    "schema_version": "1.0.0",
+    "status": "stub_only",
+    "synthetic": true,
+    "validation_status": "not_validated"
+  }
+}

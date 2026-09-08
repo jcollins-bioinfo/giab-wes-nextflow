@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "observed_m3_ci_attempt",
+  "head_sha": "0f258bea9cbf60f978ced4b7be506f275268d19d",
+  "tested_merge_sha": "40078d3d5f2687a3715e00eb26706c2687b296e0",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128",
+  "jobs": [
+    {
+      "name": "python (3.12)",
+      "id": 101678215226,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128/job/101678215226",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "python (3.13)",
+      "id": 101678215445,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128/job/101678215445",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "m3-docker",
+      "id": 101678215450,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128/job/101678215450",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "nextflow",
+      "id": 101678215647,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128/job/101678215647",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "required",
+      "id": 101679061162,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34101964128/job/101679061162",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "issues": [
+    {
+      "component": "M3_COLLECT tool version contract",
+      "cause": "The pinned BWA-MEM2 2.3 distribution actually reports executable version 2.2.1, matching its source release archive fallback. The existing strict check rejected the mismatch.",
+      "correction": "Separate distribution release identity from the exact expected executable report, preserve the image digest, and requalify every gate in actual Docker execution."
+    }
+  ],
+  "docker_evidence": {
+    "schema_version": "1.0.0",
+    "run_id": 34101964128,
+    "job_id": 101678215450,
+    "head_sha": "0f258bea9cbf60f978ced4b7be506f275268d19d",
+    "tested_repository_sha": "40078d3d5f2687a3715e00eb26706c2687b296e0",
+    "installed_repository_sha": "40078d3d5f2687a3715e00eb26706c2687b296e0",
+    "artifact_id": 10010921650,
+    "artifact_name": "m3-synthetic-docker-evidence",
+    "artifact_bytes": 631641,
+    "artifact_sha256": "42f4a0a40136e9a64305afc5d49fa973090d6f33da503e900bfea88d05ea4de1",
+    "artifact_member_hashes_verified": true,
+    "first_trace_status_counts": {
+      "COMPLETED": 21,
+      "FAILED": 1
+    },
+    "failed_tasks": [
+      {
+        "name": "M3_SHARED_PREPROCESSING:M3_COLLECT (SYNTHETIC01)",
+        "status": "FAILED",
+        "exit": "1",
+        "hash": "04/9fc827"
+      }
+    ],
+    "observed_bwa_version": "2.2.1",
+    "locked_bwa_version": "2.3",
+    "failure": "ValueError: observed tool version does not match lock: bwa-mem2",
+    "failure_location": "m3_collect.py:209 (_tool_inventory)",
+    "proof_status": "failed",
+    "biological_processing_validated": false,
+    "canonical": false,
+    "resume_executed": false,
+    "ownership_acceptance_recorded": false,
+    "full_bundle_acceptance_recorded": false,
+    "notes": [
+      "M3_COLLECT script rendered and real installed Python collector executed.",
+      "BWA runtime2.2.1 conflicts with lock2.3; strict gate intentionally unchanged.",
+      "Upstream task completion is not complete BAM/OQ/index/ownership/resume acceptance."
+    ]
+  },
+  "bwa_source_evidence": {
+    "url": "https://github.com/bwa-mem2/bwa-mem2/releases/download/v2.3/Source_code_including_submodules.tar.gz",
+    "bytes": 3715291,
+    "sha256": "0c48a1ea800af499ae7264b4c8908c4ca35fbe5a7df2ad6106c79aa94bb49cbb",
+    "member": "bwa-mem2-2.3/src/main.cpp",
+    "version_lines": [
+      "#ifndef PACKAGE_VERSION",
+      "#define PACKAGE_VERSION \"2.2.1\"",
+      "        ksprintf(&pg, \"@PG\\tID:bwa-mem2\\tPN:bwa-mem2\\tVN:%s\\tCL:%s\", PACKAGE_VERSION, argv[0]);",
+      "        puts(PACKAGE_VERSION);"
+    ],
+    "claim": "source release asset inspection only; actual container executable version still requires execution evidence"
+  },
+  "scope": "Python and Nextflow jobs passed. Real collector executed and rejected version mismatch; full bundle, independent BAM/ownership and resume acceptance remain unverified.",
+  "repair_local_validation": {
+    "python312_tests": 179,
+    "python313_tests": 179,
+    "nf_tests": 7,
+    "source_files_sha256": {
+      "config/m3-tools.json": "429e5a393aff9776f1fe6ec8015f202598d45d3e92b60b3354b8ec1eceaf3b5f",
+      "schemas/m3-provenance.schema.json": "be5ab002d037dbd11bf2d7603c70a58a4f67ca73481bf9417d748ef924a149c0",
+      "src/giab_wes_nextflow/m3.py": "e390cb40e66da7631531f0c55b5accd8d026e1023594f7fca4ae213f0a0ecdc9",
+      "src/giab_wes_nextflow/m3_collect.py": "80dbe11f4d7cb470b7be117dfd3bd37a8445d443b6e99b90e39faf0d7f950ee8",
+      "scripts/run_m3_synthetic.py": "9a04a6b70985b806179bb352495d8dfb1ea009446ee4ba099a4cb2b9c14f4eaa",
+      "tests/unit/test_m3_support.py": "32917ada4bd077d5e4526ba41f21d8abd339c176322159e41f76b28e8502ecfc",
+      "tests/unit/test_m3_tool_versions.py": "db268351df27ba663e118bdccac925e6e298e6179d43599a031be5ccecfee996",
+      "tests/unit/test_m3_integration_driver.py": "a851b4e3d52a81d049decda5c64c5fb1ce0b18527e9871481233bde734364efa"
+    },
+    "log_sha256": {
+      "m3-bwa-version-fix-python312.log": "1faa7892fdce93c36ab89039a4f14c76879958912ed4bf0c708ba361cceb2390",
+      "m3-bwa-version-fix-python313.log": "f0b9bebf39909330b7138eb5bc84321d710364aecf7c2374913632e3eafb4e65",
+      "m3-version-nftest.log": "5557dfde9a5a032c9b78070e6d7b9e3611f3fd8183f242f73d71a86d76733b7e"
+    },
+    "wheel_smoke": {
+      "schema_version": "1.0.0",
+      "working_directory": "outside_repository",
+      "isolated_python": true,
+      "import_from_installed_wheel": true,
+      "tool_lock_sha256": "429e5a393aff9776f1fe6ec8015f202598d45d3e92b60b3354b8ec1eceaf3b5f",
+      "m3_collect_module_sha256": "80dbe11f4d7cb470b7be117dfd3bd37a8445d443b6e99b90e39faf0d7f950ee8",
+      "tool_inventory_count": 6,
+      "input_scope": "invented version strings only",
+      "real_tool_execution": false,
+      "status": "passed"
+    },
+    "wheel_sha256": "f190111c5e33002645b6357dcab48d850c82596c735e69a0f2229b1342c5f890",
+    "source_archive_safety_members": 231,
+    "wheel_safety_members": 37,
+    "source_archive_scope": "Built and audited before final evidence-only metadata update; no self-referential archive hash claim.",
+    "driver_test_annotations_behavior_preserved": true,
+    "remote_repair_qualification": "not_run"
+  }
+}

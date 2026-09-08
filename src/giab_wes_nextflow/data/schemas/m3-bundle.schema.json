@@ -1,0 +1,205 @@
+{
+  "$id": "https://raw.githubusercontent.com/jcollins-bioinfo/giab-wes-nextflow/main/schemas/m3-bundle.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "bundle"
+    },
+    "canonical": {
+      "const": false
+    },
+    "data": {
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "artifact_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "artifact_type": {
+                "enum": [
+                  "alignment",
+                  "qc",
+                  "coverage",
+                  "resources",
+                  "provenance"
+                ]
+              },
+              "bytes": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "filename": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "payload_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "record_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "role": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "artifact_id",
+              "filename",
+              "role",
+              "sha256",
+              "bytes",
+              "artifact_type",
+              "payload_sha256"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "reference_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "repository_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "shared_bam_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifacts",
+        "reference_sha256",
+        "shared_bam_sha256",
+        "repository_sha"
+      ],
+      "type": "object"
+    },
+    "input_artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "bytes": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "filename": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "record_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "role": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "filename",
+          "role",
+          "sha256",
+          "bytes"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "missingness": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer": {
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "package": {
+          "const": "giab-wes-nextflow"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "package",
+        "version",
+        "module"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "type": "string"
+    },
+    "runtime_architecture": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "units": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "validation_status": {
+      "const": "validated_synthetic"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "run_id",
+    "producer",
+    "synthetic",
+    "canonical",
+    "validation_status",
+    "runtime_architecture",
+    "input_artifacts",
+    "units",
+    "missingness",
+    "data",
+    "payload_sha256"
+  ],
+  "type": "object"
+}

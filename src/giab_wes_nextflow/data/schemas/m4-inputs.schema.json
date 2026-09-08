@@ -1,0 +1,180 @@
+{
+  "$id": "https://jcollins-bioinfo.github.io/giab-wes-nextflow/schemas/m4-inputs.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "inputs"
+    },
+    "canonical": {
+      "const": false
+    },
+    "data": {
+      "additionalProperties": false,
+      "properties": {
+        "bqsr_policy": {
+          "const": "shared_accepted_BaseRecalibrator_ApplyBQSR_emit_OQ"
+        },
+        "calling_regions": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "contig": {
+                "enum": [
+                  "chrSYN1",
+                  "chrSYN2"
+                ]
+              },
+              "end": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "start": {
+                "const": 0
+              }
+            },
+            "required": [
+              "contig",
+              "start",
+              "end"
+            ],
+            "type": "object"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "files": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "bytes": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "filename": {
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "filename",
+              "bytes",
+              "sha256"
+            ],
+            "type": "object"
+          },
+          "maxItems": 6,
+          "minItems": 6,
+          "type": "array"
+        },
+        "fixture_id": {
+          "const": "m4-snv-positive"
+        },
+        "fixture_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "known_sites_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "preprocessing_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "preprocessing_payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "quality_policy": {
+          "additionalProperties": false,
+          "properties": {
+            "deepvariant": {
+              "const": "OQ"
+            },
+            "gatk": {
+              "const": "QUAL"
+            }
+          },
+          "required": [
+            "gatk",
+            "deepvariant"
+          ],
+          "type": "object"
+        },
+        "repository_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "sample": {
+          "const": "SYNTHETIC01"
+        }
+      },
+      "required": [
+        "repository_sha",
+        "sample",
+        "fixture_id",
+        "fixture_manifest_sha256",
+        "preprocessing_manifest_sha256",
+        "preprocessing_payload_sha256",
+        "known_sites_sha256",
+        "calling_regions",
+        "quality_policy",
+        "bqsr_policy",
+        "files"
+      ],
+      "type": "object"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer": {
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "const": "giab_wes_nextflow.m4_contracts"
+        },
+        "package": {
+          "const": "giab-wes-nextflow"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "package",
+        "version",
+        "module"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,119}$",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "run_id",
+    "producer",
+    "synthetic",
+    "canonical",
+    "payload_sha256",
+    "data"
+  ],
+  "type": "object"
+}

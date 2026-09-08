@@ -1,0 +1,339 @@
+{
+  "schema_version": "1.0.0",
+  "observed_at": "2026-09-07T09:55:39.003756+00:00",
+  "scope": "Uncommitted M4 implementation on verified M3 parent; Python and framework/stub qualification only. Actual Linux caller execution pending.",
+  "parent_sha": "23b939efeb2b7b01403dab3124b5a7c6a57f6290",
+  "version": "0.4.0-dev.1",
+  "host": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "docker_executed": false
+  },
+  "python": [
+    {
+      "name": "m4-final-current-python312.log",
+      "bytes": 2404,
+      "sha256": "3ec02387da0306ddb308155d3b89bb183ebea45fd5db11ced2d517a743c10c34",
+      "tests": 227,
+      "seconds": 24.863,
+      "status": "passed"
+    },
+    {
+      "name": "m4-clean-wheel-tests-final.log",
+      "bytes": 46133,
+      "sha256": "f931c2443432b47a11ca50e76dae9274dabce643dfbf2cc01553c1841137871b",
+      "tests": 227,
+      "seconds": 21.842,
+      "status": "passed"
+    }
+  ],
+  "framework": {
+    "nextflow": "26.04.6",
+    "nf_test": "0.9.5",
+    "passed": 14,
+    "lint_errors": 0,
+    "inherited_lint_warnings": 2,
+    "completed_cached": [
+      [
+        26,
+        0
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        1,
+        27
+      ],
+      [
+        0,
+        28
+      ]
+    ],
+    "original_record": {
+      "name": "m4-local-framework-evidence.json",
+      "bytes": 24687,
+      "sha256": "ab3e6ff89e458726b360085220ed9d721a0da0b329d529519fc5afc0012301d2"
+    },
+    "checks": [
+      {
+        "exit_code": 0,
+        "log": {
+          "bytes": 2275,
+          "path": "m4-all-nftest-final.txt",
+          "sha256": "ad38b03c388c88ced3511adaf4dcdafc3ec6d8f1f9cb81c3db0a40e9f082ffb6"
+        },
+        "name": "nf-test"
+      },
+      {
+        "exit_code": 0,
+        "log": {
+          "bytes": 2005,
+          "path": "m4-nextflow-lint-final.txt",
+          "sha256": "001db99d0206fed905c947351f8352793c1d3a1edd753db3026cfd382bc08d03"
+        },
+        "name": "nextflow-lint"
+      },
+      {
+        "exit_code": 0,
+        "log": {
+          "bytes": 0,
+          "path": "m4-diff-check-final.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "name": "git-diff-check"
+      }
+    ]
+  },
+  "independent_reviews": [
+    {
+      "name": "m4-driver-independent-review.json",
+      "bytes": 2538,
+      "sha256": "f0ba1f80605641b78e176f073667c6d0802c683e6218561ee1fe1f63486514ed"
+    },
+    {
+      "name": "m4-package-independent-review.json",
+      "bytes": 8058,
+      "sha256": "3c9821196b33dda08c24439c5be0eab473959eaec8fbce7632d26d215f531160"
+    },
+    {
+      "name": "m4-package-freeze-audit.json",
+      "bytes": 3698,
+      "sha256": "2027e7599195ad59e55dace1c1a2edf4f957667fd87dc045d5c0e50bfd8ea1f2"
+    }
+  ],
+  "installed_wheel": {
+    "mode": "Python -I outside checkout in fresh task-local venv; all 227 tests passed",
+    "file": {
+      "name": "giab_wes_nextflow-0.4.0.dev1-py3-none-any.whl",
+      "bytes": 104430,
+      "sha256": "3d8158525bb8d84473916958dae306b391ae23a7d8da2e0903468745973cb868"
+    },
+    "source_matches": [
+      {
+        "path": "__init__.py",
+        "bytes": 68,
+        "sha256": "d3006dbfc9b8177b2d3f6701b7f22a192bfb7522239e3f0f8ed9e115014a76dc"
+      },
+      {
+        "path": "acquisition.py",
+        "bytes": 21692,
+        "sha256": "3c9d0cbf15bcd67078114fbe0313adcc7a4cc7e3d792a35172583998c7249f20"
+      },
+      {
+        "path": "data/config/m2-resources.json",
+        "bytes": 8719,
+        "sha256": "db201581f1360b4ebec741a62e61821d3f94f0236a0cc53f6782e91b015ddfe4"
+      },
+      {
+        "path": "data/config/m2-target-design.json",
+        "bytes": 2038,
+        "sha256": "3cb54cd1cbeebfba2c93c54525e265fb2130428c4ddb7e301f863ca5d6bf37d6"
+      },
+      {
+        "path": "data/config/m3-tools.json",
+        "bytes": 7606,
+        "sha256": "f3e5d99044b597d08df2ea6d7809940d93d327bb64a74705d6eab584e759141a"
+      },
+      {
+        "path": "data/config/m4-tools.json",
+        "bytes": 3515,
+        "sha256": "be32c936c2f4371920da5cb786bf5eb4f69d45672043256ff066eeae1206f2e3"
+      },
+      {
+        "path": "data/schemas/m2-acquisition.schema.json",
+        "bytes": 1157,
+        "sha256": "34e65754e3e8a28dc434e57c2f69b739cac62724b3e7e894c30b5f60f75c8c1d"
+      },
+      {
+        "path": "data/schemas/m2-completion.schema.json",
+        "bytes": 493,
+        "sha256": "492c1a433f40fce387dbd0e4243f2816908f67e359ed83e2f4e7dbebb51b947e"
+      },
+      {
+        "path": "data/schemas/m2-domain.schema.json",
+        "bytes": 881,
+        "sha256": "a86de1cfd287699beb256ec9d7580809010916f951d48d0249c3b18826b6c4a9"
+      },
+      {
+        "path": "data/schemas/m2-provenance.schema.json",
+        "bytes": 1179,
+        "sha256": "f63a33557557dd400379120201ff627997f4485f02ebcd3f9d654f095325bb6c"
+      },
+      {
+        "path": "data/schemas/m2-source-hydration.schema.json",
+        "bytes": 2155,
+        "sha256": "f0bd7c95e792a2e48115387bc37cc47bbacee565e4e580ed90a34a08ff080c57"
+      },
+      {
+        "path": "data/schemas/m2-source-manifest.schema.json",
+        "bytes": 1561,
+        "sha256": "22bacae645d26ab4a0b069611169661f61f8ac2879862b30ad9f2f0d7421a1b7"
+      },
+      {
+        "path": "data/schemas/m2-source-mirror.schema.json",
+        "bytes": 2073,
+        "sha256": "e4ba4acf256cfc20bfa42c0cfc554cd346e7208178305e62462773af95cfca51"
+      },
+      {
+        "path": "data/schemas/m3-alignment.schema.json",
+        "bytes": 8921,
+        "sha256": "2b6b4ec415ff457db8c98c2052c795f62a484a3cadfcd93423522ecb03bcde31"
+      },
+      {
+        "path": "data/schemas/m3-bundle.schema.json",
+        "bytes": 4701,
+        "sha256": "0669cdb7db3b3b212006b7c1ba7def2d36345b77b598d8dfea45362b367db9fe"
+      },
+      {
+        "path": "data/schemas/m3-coverage.schema.json",
+        "bytes": 4080,
+        "sha256": "29584a1d6180c5bf8694400d3053507aaac4faa7a3084863d895c6d249a30325"
+      },
+      {
+        "path": "data/schemas/m3-fastq.schema.json",
+        "bytes": 8833,
+        "sha256": "ec443239207082574c918186b4f8921ddd4bb60216572f0c32ec1eee709b0dd3"
+      },
+      {
+        "path": "data/schemas/m3-preflight.schema.json",
+        "bytes": 11897,
+        "sha256": "225b7063474941373bc7e79135585cff2731a17cffc9ee29edafb13544766a9b"
+      },
+      {
+        "path": "data/schemas/m3-provenance.schema.json",
+        "bytes": 10735,
+        "sha256": "be5ab002d037dbd11bf2d7603c70a58a4f67ca73481bf9417d748ef924a149c0"
+      },
+      {
+        "path": "data/schemas/m3-publication.schema.json",
+        "bytes": 2442,
+        "sha256": "d2bba6a3bb21bfd7cd0e4c1f403e0889b156a559a004798a9b32089cb52a227e"
+      },
+      {
+        "path": "data/schemas/m3-qc.schema.json",
+        "bytes": 6599,
+        "sha256": "7e4fea2fe0d60ec91dc9b896c92d39b7679c3ccf88c101f0184a9a4b6929e7d1"
+      },
+      {
+        "path": "data/schemas/m3-resources.schema.json",
+        "bytes": 6119,
+        "sha256": "e3775221508cf4c4926ec031f4098c6fb6a8c4408e4a15550df50415894b6dbc"
+      },
+      {
+        "path": "data/schemas/m4-bundle.schema.json",
+        "bytes": 3178,
+        "sha256": "0d48ae352ab89879d1d00b0fd6a2880fb2e7c30cae2e668dd4de12f64dc18837"
+      },
+      {
+        "path": "data/schemas/m4-caller.schema.json",
+        "bytes": 28102,
+        "sha256": "d0ad8fb8b9cc51567678b24d3ee6bf62be99c5f4a7188ac5d83e9618e2a8886c"
+      },
+      {
+        "path": "data/schemas/m4-inputs.schema.json",
+        "bytes": 4303,
+        "sha256": "bd3959a53393f0e76b32355adb6987967fd68121dec231f9e3b2a429594b6b26"
+      },
+      {
+        "path": "data/schemas/m4-publication.schema.json",
+        "bytes": 2502,
+        "sha256": "ef23d5f177922cf04030270d37fd5724ac1a1d613cbc4eeb63a81ef3eb2a072c"
+      },
+      {
+        "path": "m3.py",
+        "bytes": 17010,
+        "sha256": "a8b660eaae7ff5c4f5b51695f837a581c777b98b285a2fde4522d8cc357c78eb"
+      },
+      {
+        "path": "m3_cli.py",
+        "bytes": 4023,
+        "sha256": "e23c7531933450fb1b68f30847ea8b93a042f83e2f10096b42a898578b1c13f0"
+      },
+      {
+        "path": "m3_collect.py",
+        "bytes": 34417,
+        "sha256": "fd98ec5fe0b0ca1049d5306250e7f46df3dc30af4e8b00bce598918b6630fe5d"
+      },
+      {
+        "path": "m3_fixture.py",
+        "bytes": 8551,
+        "sha256": "9b6ce767f9326ed6e4382d4f512fcf46cd580bda0643d98c0f58340319a27a7d"
+      },
+      {
+        "path": "m3_publication.py",
+        "bytes": 12807,
+        "sha256": "5eea766804d7b33a10cb6a0213db8eb2550aa8b938e6e0c6df1115f416f189cf"
+      },
+      {
+        "path": "m4_cli.py",
+        "bytes": 2376,
+        "sha256": "c6035f5b9c7dfdc17bd9eeca9a64af3b80e7cf099106921ee4d684d185195b3e"
+      },
+      {
+        "path": "m4_contracts.py",
+        "bytes": 31794,
+        "sha256": "1674999580d1a2f38f4b054ba076f84026b65563080fcfaa016fc3ced3bd218e"
+      },
+      {
+        "path": "m4_fixture.py",
+        "bytes": 5693,
+        "sha256": "e855bc3a4bd45fa44cbec65b53f7bc10b5a9305792f159ff53d9ab99f405e97c"
+      },
+      {
+        "path": "m4_publication.py",
+        "bytes": 14241,
+        "sha256": "94051f14e57efeda931a1f8287f61df1546fbe64adce3aa561d66573f60cdacb"
+      },
+      {
+        "path": "mirror.py",
+        "bytes": 13924,
+        "sha256": "814402e850e010a1db56a5475a2a3494c18405741e34fef8639f6bb7463554ce"
+      },
+      {
+        "path": "preparation.py",
+        "bytes": 9509,
+        "sha256": "08415537b2a5439107b1cf8ec9d346b536f27e9c2b7b90eed1808d1e52caa732"
+      },
+      {
+        "path": "publication.py",
+        "bytes": 26581,
+        "sha256": "615266fc485586ae9c0d2e698a9def798eb8339a55c9900272ac772050a19ac7"
+      },
+      {
+        "path": "resources.py",
+        "bytes": 315,
+        "sha256": "134e79a3ea1a41c2425751a6addcd91c9fae730cc5e0db948c7fe0bb66f3104d"
+      },
+      {
+        "path": "runtime_identity.py",
+        "bytes": 2742,
+        "sha256": "4d68fd79f596cfbccf070660243a93fb34c79107b438d302b42e426bed9bd512"
+      },
+      {
+        "path": "synthetic_fixtures.py",
+        "bytes": 1574,
+        "sha256": "223e652b3809c3344af73e8862e89d99256e21953b25788267598b63e4d0629a"
+      },
+      {
+        "path": "validation.py",
+        "bytes": 5096,
+        "sha256": "8634bd5e798dd361adcc6439d34abf7318c1f1e8d830766a56f87b0f25560f32"
+      }
+    ]
+  },
+  "negative_attempts": [
+    {
+      "file": {
+        "name": "m4-clean-wheel-tests.log",
+        "bytes": 47858,
+        "sha256": "b2f33d92a9ab1075223b27aa4829c6fd524fb7b6e7c492cb3add5e97c2cb47d5"
+      },
+      "reason": "One legacy notebook test used cwd-relative path. Corrected to repository-relative path from __file__, then all227 passed."
+    }
+  ],
+  "original_m3_fixture_unchanged": true,
+  "actual_callers_verified": false,
+  "canonical_execution": false
+}

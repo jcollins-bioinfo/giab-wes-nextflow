@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "project_version": "0.4.0-dev.1",
+  "kind": "m4_immutable_caller_contracts",
+  "tools": {
+    "gatk": {
+      "version": "4.7.0.0",
+      "expected_reported_version": "4.7.0.0",
+      "image": "registry-1.docker.io/broadinstitute/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891",
+      "mode": "direct_vcf",
+      "quality_source": "QUAL",
+      "parameters": {
+        "native_pair_hmm_threads": 2,
+        "standard_min_confidence_threshold_for_calling": 30.0,
+        "emit_ref_confidence": "NONE"
+      },
+      "sources": [
+        "https://github.com/broadinstitute/gatk/blob/0cde69eed30339f5978cbb1ac6e5cf3662f9e1f8/src/main/java/org/broadinstitute/hellbender/tools/walkers/haplotypecaller/HaplotypeCaller.java"
+      ]
+    },
+    "deepvariant": {
+      "version": "1.10.0",
+      "expected_reported_version": "1.10.0",
+      "image": "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6",
+      "architecture": "amd64",
+      "os": "linux",
+      "cpu_required_flags": [
+        "sse4_1",
+        "sse4_2",
+        "avx"
+      ],
+      "execution_mode": "cpu",
+      "quality_source": "OQ",
+      "parameters": {
+        "model_type": "WES",
+        "num_shards": 1,
+        "postprocess_cpus": 0,
+        "use_original_quality_scores": true
+      },
+      "model": {
+        "path": "/opt/models/wes",
+        "identity_basis": "pinned_image_digest_and_runtime_file_inventory",
+        "example_info_sha256": "10a47721a3ea86f6c25bcabda3af5c31a936a3183847ac8a25857a709359187a",
+        "example_info_bytes": 250,
+        "metadata": {
+          "channels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            19
+          ],
+          "flags_for_calling": {
+            "pileup_image_height": 100,
+            "pileup_image_width": 221
+          },
+          "flags_for_postprocessing": {
+            "multiallelic_mode": "min"
+          },
+          "shape": [
+            100,
+            221,
+            7
+          ],
+          "version": "1.10.0"
+        }
+      },
+      "sources": [
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/README.md",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/LICENSE",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-details.md",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-quick-start.md",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/FAQ.md",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/Dockerfile",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/scripts/run_deepvariant.py",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-details-training-data.md",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-small-model-details.md",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/docs/deepvariant-build-test.md",
+        "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/deepvariant/make_examples_options.py"
+      ]
+    }
+  }
+}

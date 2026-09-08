@@ -1,0 +1,136 @@
+{
+  "$id": "https://jcollins-bioinfo.github.io/giab-wes-nextflow/schemas/m4-bundle.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "bundle"
+    },
+    "canonical": {
+      "const": false
+    },
+    "data": {
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "artifact_id": {
+                "enum": [
+                  "inputs",
+                  "gatk",
+                  "deepvariant"
+                ]
+              },
+              "bytes": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "filename": {
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "payload_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "filename",
+              "bytes",
+              "sha256",
+              "artifact_id",
+              "payload_sha256"
+            ],
+            "type": "object"
+          },
+          "maxItems": 3,
+          "minItems": 2,
+          "type": "array"
+        },
+        "inputs_payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "repository_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "sample": {
+          "const": "SYNTHETIC01"
+        },
+        "selected_callers": {
+          "items": {
+            "enum": [
+              "gatk",
+              "deepvariant"
+            ]
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "repository_sha",
+        "sample",
+        "selected_callers",
+        "inputs_payload_sha256",
+        "artifacts"
+      ],
+      "type": "object"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer": {
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "const": "giab_wes_nextflow.m4_contracts"
+        },
+        "package": {
+          "const": "giab-wes-nextflow"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "package",
+        "version",
+        "module"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,119}$",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "synthetic": {
+      "const": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "run_id",
+    "producer",
+    "synthetic",
+    "canonical",
+    "payload_sha256",
+    "data"
+  ],
+  "type": "object"
+}

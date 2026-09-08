@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "observed_m3_ci_attempt",
+  "head_sha": "fb6276b33e423cc68f4e878fe69000baabcbe829",
+  "tested_merge_sha": "4e70000a74c88408f6920a789eddda8e0bdf88d8",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766",
+  "jobs": [
+    {
+      "name": "python (3.12)",
+      "id": 101667151472,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766/job/101667151472",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "python (3.13)",
+      "id": 101667151635,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766/job/101667151635",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "m3-docker",
+      "id": 101667151743,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766/job/101667151743",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "nextflow",
+      "id": 101667151839,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766/job/101667151839",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "required",
+      "id": 101667809978,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34098432766/job/101667809978",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "issues": [
+    {
+      "component": "nf-core template_strings",
+      "cause": "Legitimate Docker Go-format placeholders were misidentified as unresolved project templates.",
+      "correction": "Construct the equivalent five-field format without literal project-template tokens; retain the lint check and restricted daemon output."
+    },
+    {
+      "component": "M3_MULTIQC",
+      "cause": "Pinned image default user could not create .command.trace in the mounted task directory.",
+      "observed_error": "touch: cannot touch '.command.trace': Permission denied",
+      "correction": "Apply a Docker-only process-specific runtime UID/GID mapping; requalify by actual CI."
+    }
+  ],
+  "docker_evidence": {
+    "architecture": "x86_64",
+    "os": "linux",
+    "engine_version": "28.0.4",
+    "completed_tasks": 20,
+    "failed_tasks": 1,
+    "artifact_id": 10009573704,
+    "artifact_sha256": "e4e56d996ce2adf7ab1ed53b926edfccba919094bfd1bdafcdea5a1fcae2af31",
+    "biological_processing_validated": false,
+    "canonical": false
+  },
+  "scope": "Python jobs passed; required M3 CI failed; no final BAM/collector/resume qualification established.",
+  "repair_local_validation": {
+    "python312_tests": 168,
+    "python313_tests": 168,
+    "python312_log_sha256": "fd81914e62add6a74348ceb2a85621660a1072cde9b79e2e60ec65f87d5fb1bd",
+    "python313_log_sha256": "d102b906a44fb7f0979bbe361892af9e32224eb8451892442a53eb212cc32789",
+    "source_files_sha256": {
+      "modules/local/m3_multiqc/main.nf": "684c472883bdeeb878a2f1fdcd37efde7e7fc0db895d1d1d6efa910140f2c7d1",
+      "scripts/run_m3_synthetic.py": "e20afd3065211746edf0b4096c995dafc9e9eec17f116577f75364f5b18bce7f",
+      "tests/unit/test_m3_integration_driver.py": "37bbc1fb9c9fcf425d62099b54556bffbab8d4c6cbe0d9d7b55fcb09892669e8"
+    },
+    "wrapper_render_and_stub": "passed; Docker unavailable locally",
+    "remote_repair_qualification": "not_run"
+  }
+}

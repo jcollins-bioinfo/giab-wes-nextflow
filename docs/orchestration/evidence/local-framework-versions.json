@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "observed_at": "2026-09-07T07:20:21.011443+00:00",
+  "run_id": "local-tooling-versions-20260907",
+  "kind": "tool_version_commands_only",
+  "host": {
+    "system": "Darwin",
+    "release": "25.6.0",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O"
+  },
+  "versions": {
+    "java": "Temurin 17.0.20.1+1",
+    "nextflow": "26.04.6 build12646",
+    "nf_test": "0.9.5"
+  },
+  "raw_private_record_sha256": "13e3b2bd5e4a23949fcc8cbbfe2818fa57e1a9940b3b7a0f039c300f58185786",
+  "asset_sha256": {
+    "java": "196d13ba5f10414bef7f6a05a9b3f00edacb18ebacef2b99485db9e2ee18f0e8",
+    "nextflow": "182a63c74074e2dc7956ffa3c8cd59de952ed2c44394e21faf5e1736b945444c",
+    "nf_test": "b7679eb90cdc9642bfa89e9634db02ce6e699de53ad35ef0e2f4847634fc1641"
+  },
+  "pipeline_executed": false,
+  "biological_tools_executed": false,
+  "docker_available": false,
+  "installation_scope": "task-local paths and child-process environment only; no system or shell configuration changed"
+}

@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "record_type": "checkpoint",
   "milestone": "M8",
-  "phase": "awaiting prerequisite milestone",
+  "phase": "owner-approved synthetic prototype implemented; canonical M8 prerequisites pending",
   "state": "not_started",
   "version": "0.2.0-dev.4",
   "repositories": {
@@ -112,6 +112,6 @@
       "owner_action": "Supply exact authoritative sample-to-target artifact evidence or approve a separately proposed alternative estimand."
     }
   ],
-  "next_safe_action": "Wait for M7 continuation gate; do not infer implementation from this checkpoint.",
-  "observed_at": "2026-09-07T06:55:06.840463+00:00"
+  "next_safe_action": "Use the separately packaged explorer prototype under ADR 0013. Preserve canonical M8 gate until canonical evidence and remaining deployment/validation requirements exist.",
+  "observed_at": "2026-09-08T08:35:12.377921+00:00"
 }

@@ -1,0 +1,92 @@
+{
+  "artifact_type": "bundle",
+  "canonical": false,
+  "data": {
+    "artifacts": [
+      {
+        "artifact_id": "alignment",
+        "artifact_type": "alignment",
+        "bytes": 3286,
+        "filename": "m3-alignment.json",
+        "payload_sha256": "38e604b3a0fa6b497257079f6dc8af553a56350fc0903b05aa63f1067da0d1fc",
+        "role": "immutable_m3_result",
+        "sha256": "c0c67848f922e863836e467892a41b1323acc2854590ed9ba5642f269efa682d"
+      },
+      {
+        "artifact_id": "qc",
+        "artifact_type": "qc",
+        "bytes": 14250,
+        "filename": "m3-qc.json",
+        "payload_sha256": "254722a0b044859531ed649955b14e7743b7f8a5107dc422345a609b9d3b74b2",
+        "role": "immutable_m3_result",
+        "sha256": "edfcf72a90b730aedc572a36b2df55fc69c475626278890f7ad5532899d2b6df"
+      },
+      {
+        "artifact_id": "coverage",
+        "artifact_type": "coverage",
+        "bytes": 2273,
+        "filename": "m3-coverage.json",
+        "payload_sha256": "dfb3903876954d7ad8b141e51a80406a565e02d8ba88879a9dd9a25a13fc4b11",
+        "role": "immutable_m3_result",
+        "sha256": "fc25ab71ac9a99d80c3f91fa54aefd070222a51aa6ac79a3764f6301b62411e3"
+      },
+      {
+        "artifact_id": "resources",
+        "artifact_type": "resources",
+        "bytes": 19594,
+        "filename": "m3-resources.json",
+        "payload_sha256": "ee6e42f5de66b1fca215ac9129cb023699975ba23b7d327f0a968b88092d7345",
+        "role": "immutable_m3_result",
+        "sha256": "69f376f4ff00e2221df231547be3a5438fab40ec75686ba4147ba7a5cf21a49d"
+      },
+      {
+        "artifact_id": "provenance",
+        "artifact_type": "provenance",
+        "bytes": 17350,
+        "filename": "m3-provenance.json",
+        "payload_sha256": "99eb55a93783c448c02e7ead3ca70c317401fdcf7bbf50b22886a5b81737be15",
+        "role": "immutable_m3_result",
+        "sha256": "177fd376da16e2052c0e21ba3aa4c4f7f10ebea6cc888f24abae01eaad9b42ff"
+      }
+    ],
+    "reference_sha256": "f026a6bf067f2f1964aa607181d0258d61a07c2ec9cd16c1cddfc2f7c52d1454",
+    "repository_sha": "c929718a76b51e48bea6c4b9ebcb451a9d94574c",
+    "shared_bam_sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8"
+  },
+  "input_artifacts": [
+    {
+      "artifact_id": "source_preflight",
+      "bytes": 4549,
+      "filename": "m3-preflight.json",
+      "role": "validated_source_contract",
+      "sha256": "76fb0ebe0e7b0d2fa30d7561e1dbf31f8ef37efe7b59f1fea3fa1ac6d99e20f0"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bam",
+      "bytes": 5099,
+      "filename": "SYNTHETIC01.analysis-ready.bam",
+      "role": "shared_caller_input",
+      "sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8"
+    },
+    {
+      "artifact_id": "shared_analysis_ready_bai",
+      "bytes": 176,
+      "filename": "SYNTHETIC01.analysis-ready.bam.bai",
+      "role": "shared_caller_input_index",
+      "sha256": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80"
+    }
+  ],
+  "missingness": {},
+  "payload_sha256": "6bcba768e4be005ff74ffa743e67aae69558a287747d558f22265d5fa527c75d",
+  "producer": {
+    "module": "giab_wes_nextflow.m3",
+    "package": "giab-wes-nextflow",
+    "version": "0.3.0-dev.1"
+  },
+  "run_id": "m3-ci-c929718a76b5",
+  "runtime_architecture": "x86_64",
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "units": {},
+  "validation_status": "validated_synthetic"
+}

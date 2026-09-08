@@ -1,0 +1,93 @@
+{
+  "architecture": "amd64",
+  "cmd": [
+    "/opt/deepvariant/bin/run_deepvariant",
+    "--help"
+  ],
+  "compressed_layers_total_bytes": 2105718981,
+  "compressed_layers_total_gib": 1.9611036228016019,
+  "config_bytes": 8517,
+  "config_digest": "sha256:96e40015101d9178131fe129456345a225c0bd3c3dfe6c7da79a8355b3710506",
+  "declared_index_platforms": [],
+  "entrypoint": null,
+  "image_user": "",
+  "image_user_semantics": "empty means default root",
+  "layer_count": 13,
+  "layers_metadata_only": [
+    {
+      "digest": "sha256:d45e3714a306a8c3d8043ac2f45a9bdea70e74845be9f270b8acd40d0c0d70ed",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 30448878
+    },
+    {
+      "digest": "sha256:5fa6ed97ef0f2e07cea3a43660c04ded4e73c8beb4ec6d14921f26898956146d",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 152956359
+    },
+    {
+      "digest": "sha256:47d73dd2ff1074d46954ee6856cfd99fb7aa5c0e547b6a16e719cf202369fcb1",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 5316830
+    },
+    {
+      "digest": "sha256:f1f92f23f4ac1d23da0a757eca30772fd924fb474be82ac88b213996bf538c47",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 47135462
+    },
+    {
+      "digest": "sha256:8edd9ccf4fe6dfe97d05ac4e61ca306b616c030320baedf1292a0f8630cb1c1c",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 186
+    },
+    {
+      "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 32
+    },
+    {
+      "digest": "sha256:ae39c36c16e7c7186df14d1959ee846c75e37a22a2f0f228ff0e4dfb0cb22d3b",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 1096711476
+    },
+    {
+      "digest": "sha256:55a3616c646419fc4bac8a8b5d8155882327e43d2925839b85f4ab2a2b78731e",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 22512
+    },
+    {
+      "digest": "sha256:98c764835f8caae01be1e9e600864385367f1c8e28ecabad1c2d38bfc8a89e48",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 98827675
+    },
+    {
+      "digest": "sha256:dfbefc5c2c08b87de390d52ea044fb6edbd2bf7f5ac2f9213d90e582c126a36a",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 98633734
+    },
+    {
+      "digest": "sha256:df1e30dbf1ad798d173165ee89e0bbc17dd38edbb8cbe98ef24f3ac812471637",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 564688597
+    },
+    {
+      "digest": "sha256:aacae13e0a405ddc96ddbb231fea724f7370f1558e99f44c7454da7d3493b333",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 10977208
+    },
+    {
+      "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "media_type": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+      "size": 32
+    }
+  ],
+  "manifest_and_config_sha256_verified": true,
+  "no_layer_blobs_requested": true,
+  "observed_utc": "2026-09-07T08:19:41.112003+00:00",
+  "os": "linux",
+  "repository": "google/deepvariant",
+  "selected_manifest_digest": "sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6",
+  "source": "public Docker Registry V2 manifest/config metadata only",
+  "tag": "1.10.0",
+  "tag_manifest_digest": "sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6",
+  "working_directory": "/opt/deepvariant"
+}

@@ -1,0 +1,55 @@
+nextflow_process {
+    name 'M3 collector real command boundary'
+    script '../modules/local/m3_collect/main.nf'
+    process 'M3_COLLECT'
+    tag 'm3'
+    profile 'm3_test'
+    test('renders staged lock inputs and executes the installed validator without admitting invalid evidence') {
+        when {
+            process {
+                """
+                // These are deliberately invalid evidence inputs, not stand-in BAM validation.
+                def invalid = { name ->
+                    def target = file("${outputDir}/invalid-inputs/" + name)
+                    target.parent.mkdirs()
+                    target.text = '{}'
+                    target
+                }
+                input[0] = tuple([sample:'SYNTHETIC01'], invalid.call('final.bam'), invalid.call('final.bam.bai'),
+                    invalid.call('final.sam'), invalid.call('header.sam'), invalid.call('flagstat.json'), invalid.call('idxstats.txt'), invalid.call('stats.txt'))
+                input[1] = invalid.call('before.sam')
+                input[2] = invalid.call('duplicates.txt')
+                input[3] = invalid.call('coverage.txt')
+                input[4] = invalid.call('preflight.json')
+                input[5] = file("${projectDir}/tests/data/m3-generated/fixture-expectations.json")
+                input[6] = [invalid.call('merged.bam')]
+                input[7] = ['merged']
+                input[8] = [invalid.call('lane.json')]
+                input[9] = [invalid.call('samtools.txt')]
+                input[10] = ['samtools']
+                input[11] = [invalid.call('resources.json')]
+                input[12] = [invalid.call('command.sh')]
+                input[13] = [invalid.call('report.html')]
+                input[14] = ['invalid_qc']
+                input[15] = file("${projectDir}/config/m3-tools.json")
+                input[16] = new groovy.json.JsonSlurper().parseText(input[15].text).tools.collectEntries { name, declaration ->
+                    [(name.toString()): declaration.image.toString()]
+                }
+                input[17] = 'm3-preprocessing'
+                """
+            }
+        }
+        then {
+            assert process.failed
+            assert process.trace.failed().size() == 1
+            assert process.trace.succeeded().isEmpty()
+            assert process.errorReport.contains('ValueError: unknown M3 evidence artifact type')
+            assert !process.errorReport.contains('ProviderMismatchException')
+            assert process.errorReport.contains('--artifact "immutable_tool_lock=m3-tools.json"')
+            def tools = path("${projectDir}/config/m3-tools.json").json.tools
+            tools.each { name, declaration ->
+                assert process.errorReport.contains("--container '${name}=${declaration.image}'")
+            }
+        }
+    }
+}

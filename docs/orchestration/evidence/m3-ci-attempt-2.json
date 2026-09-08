@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "observed_m3_ci_attempt",
+  "head_sha": "e4a6e4d3c73d40923e632e3293b2dc9800a50326",
+  "tested_merge_sha": "cd5a63baf740e9eef977653237df674f7c694099",
+  "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146",
+  "jobs": [
+    {
+      "name": "python (3.13)",
+      "id": 101670814587,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146/job/101670814587",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "m3-docker",
+      "id": 101670814843,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146/job/101670814843",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "python (3.12)",
+      "id": 101670814850,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146/job/101670814850",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "nextflow",
+      "id": 101670814868,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146/job/101670814868",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "required",
+      "id": 101671578291,
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34099623146/job/101671578291",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "issues": [
+    {
+      "component": "M3_MULTIQC",
+      "cause": "MultiQC 1.35 exited zero but generated multiqc_report_data while the module required multiqc_data.",
+      "correction": "Explicitly configure the required MultiQC data directory while retaining output validation."
+    }
+  ],
+  "docker_evidence": {
+    "artifact_id": 10010014997,
+    "artifact_sha256": "bb3b8542aa8d80165b0fcc7bdb4fdccd535ed033bd1879050586f801c61dc6f7",
+    "biological_processing_validated": false,
+    "failed_proof_sha256": "bdbcd5c7eb96e4b8686556143472debd2ed1ff62ffcf515104bd783c7909f7fd",
+    "failure_phase": "Nextflow output validation after successful MultiQC tool execution",
+    "failure_process": "M3_MULTIQC",
+    "job_id": 101670814843,
+    "job_status": "failed",
+    "observed_error": "Missing output file(s) multiqc_data; tool actually wrote multiqc_report_data",
+    "process_exit_code": 0,
+    "pull_request_head_sha": "e4a6e4d3c73d40923e632e3293b2dc9800a50326",
+    "tested_merge_sha": "cd5a63baf740e9eef977653237df674f7c694099",
+    "trace_counts": {
+      "COMPLETED": 20,
+      "FAILED": 1
+    },
+    "workflow_run_id": 34099623146
+  },
+  "scope": "Python and Nextflow framework jobs passed; required CI failed. No collector, independent BAM, ownership or resume acceptance established."
+}

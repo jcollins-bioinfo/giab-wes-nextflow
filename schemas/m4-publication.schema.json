@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/schemas/m4-publication.schema.json",
+  "title": "Completed small M4 synthetic evidence publication",
+  "description": "Identical immutable registry and last-written completion marker. Selected JSON evidence only; excludes genomic files and Nextflow work. Bytes and SHA-256 identities are exact. Caller selection distinguishes independent runs with the same run ID.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "bundle_sha256",
+    "repository_sha",
+    "producer_version",
+    "publisher_version",
+    "publisher_architecture",
+    "created_utc",
+    "synthetic",
+    "canonical",
+    "artifacts",
+    "selection"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "kind": {
+      "const": "m4-synthetic-evidence-publication"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "bundle_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repository_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "producer_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher_architecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "canonical": {
+      "const": false
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "filename": {
+            "enum": [
+              "m4-inputs.json",
+              "m4-gatk.json",
+              "m4-deepvariant.json",
+              "m4-manifest.json"
+            ]
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2097152
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "selection": {
+      "enum": [
+        "gatk",
+        "deepvariant",
+        "both"
+      ]
+    }
+  }
+}

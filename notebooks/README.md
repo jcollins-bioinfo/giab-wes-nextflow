@@ -1,5 +1,15 @@
 # Notebook launch center
 
+## Owner Colab capability check (2026-09-08)
+
+[Open the capability notebook](canonical_capability_colab.ipynb). It is pre-pinned to implementation commit `676718ed6c02c3076a26b48fb82d684251fb7892`; no ref editing is needed. This exception to the older empty-ref launchers below is deliberate. Mount the existing project Drive folder and return the downloaded `canonical-host-capability.json`. The notebook has not been executed in the owner's Colab session.
+
+| Purpose | Inputs | Outputs | Compute/storage | Gate status |
+|---|---|---|---|---|
+| Inspect allocated runtime | Colab Pro session; exact reviewed code SHA; permitted existing Drive root | Selected CPU/RAM/disk/container observations plus installed-code identity | Small code installation and host observation on Colab; no genomic acquisition/index build | Noncanonical observation; real-run gates remain closed |
+
+Index construction must use Colab CPU/RAM. Durable large files belong under the permitted private Drive hierarchy; temporary active work stays in `/content`. See [the storage contract](../docs/canonical-colab.md).
+
 All notebooks are thin launch/inspection surfaces. They clone the named GitHub
 repository, require a reviewed 40-character SHA, verify origin and a clean
 checkout, install with `sys.executable -m pip`, import `giab_wes_nextflow` and
@@ -35,5 +45,4 @@ redownload large files merely to create new evidence when validated reuse works.
 The latest observed mirror reports 10 objects and 4,900,011,445 bytes; this audit
 inspected control records and metadata only. No prepared reference or canonical
 completion marker was observed. Gate A source readiness requires fresh verified
-bytes. Gate B additionally requires confirmed capture-design identity and
-canonical materialized domains. A mirror never completes Gate B.
+bytes. Under ADR 0013, Gate B requires validated materialization of the owner-approved fixed coding domain instead of unresolved physical capture-kit adoption. A mirror never completes Gate B.

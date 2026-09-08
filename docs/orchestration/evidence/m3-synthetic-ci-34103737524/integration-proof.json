@@ -1,0 +1,621 @@
+{
+  "bam_assertions": {
+    "bai_sha256": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80",
+    "bam_sha256": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8",
+    "coordinate_sorted": true,
+    "duplicate_reads": 4,
+    "exact_synthetic_alignments": true,
+    "indexed_region_queries_valid": true,
+    "mapped_reads": 44,
+    "oq_on_all_primary_reads": true,
+    "primary_reads": 48,
+    "read_groups": 2,
+    "reference_dictionary_identical": true,
+    "samtools_version": "samtools 1.24",
+    "unmapped_reads": 4
+  },
+  "biological_processing_validated": true,
+  "canonical": false,
+  "commands": [
+    {
+      "argv": [
+        "nextflow",
+        "-version"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "nextflow-version"
+    },
+    {
+      "argv": [
+        "docker",
+        "info",
+        "--format",
+        "{\"OSType\":{{json .OSType}},\"Architecture\":{{json .Architecture}},\"ServerVersion\":{{json .ServerVersion}},\"NCPU\":{{json .NCPU}},\"MemTotal\":{{json .MemTotal}}}"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "docker-info"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "clone",
+        "--no-local",
+        "--no-hardlinks",
+        "$USER_HOME/work/giab-wes-nextflow/giab-wes-nextflow",
+        "$INTEGRATION_ROOT/checkout"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "clean-clone"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "checkout",
+        "--detach",
+        "c929718a76b51e48bea6c4b9ebcb451a9d94574c"
+      ],
+      "cwd": "$INTEGRATION_ROOT/checkout",
+      "exit_code": 0,
+      "name": "checkout-exact-sha"
+    },
+    {
+      "argv": [
+        "git",
+        "remote",
+        "set-url",
+        "origin",
+        "https://github.com/jcollins-bioinfo/giab-wes-nextflow"
+      ],
+      "cwd": "$INTEGRATION_ROOT/checkout",
+      "exit_code": 0,
+      "name": "clone-origin"
+    },
+    {
+      "argv": [
+        "$INTEGRATION_ROOT/package-venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "install",
+        "--disable-pip-version-check",
+        "-r",
+        "$INTEGRATION_ROOT/checkout/requirements-dev.txt"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "install-pinned-dependencies"
+    },
+    {
+      "argv": [
+        "$INTEGRATION_ROOT/package-venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "install",
+        "--disable-pip-version-check",
+        "--no-deps",
+        "--force-reinstall",
+        "$INTEGRATION_ROOT/checkout"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "install-cloned-package"
+    },
+    {
+      "argv": [
+        "$INTEGRATION_ROOT/package-venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "freeze",
+        "--all",
+        "--exclude-editable"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "installed-dependency-versions"
+    },
+    {
+      "argv": [
+        "$INTEGRATION_ROOT/package-venv/bin/python",
+        "-I",
+        "-m",
+        "giab_wes_nextflow.runtime_identity",
+        "--source-root",
+        "$INTEGRATION_ROOT/checkout",
+        "--expected-sha",
+        "c929718a76b51e48bea6c4b9ebcb451a9d94574c"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "installed-package-identity"
+    },
+    {
+      "argv": [
+        "$INTEGRATION_ROOT/package-venv/bin/python",
+        "-I",
+        "-c",
+        "import giab_wes_nextflow; print(giab_wes_nextflow.__file__)"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "isolated-wheel-location"
+    },
+    {
+      "argv": [
+        "$INTEGRATION_ROOT/package-venv/bin/python",
+        "-I",
+        "$INTEGRATION_ROOT/checkout/tests/data/generate_m3_fixture.py",
+        "--output",
+        "$INTEGRATION_ROOT/checkout/tests/data/m3-generated"
+      ],
+      "cwd": "$INTEGRATION_ROOT/checkout",
+      "exit_code": 0,
+      "name": "generate-invented-fixture"
+    },
+    {
+      "argv": [
+        "nextflow",
+        "-log",
+        "$INTEGRATION_ROOT/raw-execution/first.nextflow.log",
+        "run",
+        "$INTEGRATION_ROOT/checkout",
+        "-profile",
+        "m3_test,docker",
+        "--m3_repository_sha",
+        "c929718a76b51e48bea6c4b9ebcb451a9d94574c",
+        "--m3_run_id",
+        "m3-ci-c929718a76b5",
+        "--outdir",
+        "$INTEGRATION_ROOT/published",
+        "-work-dir",
+        "$INTEGRATION_ROOT/nextflow-work",
+        "-with-trace",
+        "$INTEGRATION_ROOT/raw-execution/first.trace.tsv",
+        "-with-report",
+        "$INTEGRATION_ROOT/raw-execution/first.report.html",
+        "-with-timeline",
+        "$INTEGRATION_ROOT/raw-execution/first.timeline.html",
+        "-with-dag",
+        "$INTEGRATION_ROOT/raw-execution/first.dag.html"
+      ],
+      "cwd": "$INTEGRATION_ROOT/checkout",
+      "exit_code": 0,
+      "name": "first"
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--platform",
+        "linux/amd64",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=64m",
+        "--volume",
+        "$INTEGRATION_ROOT/published/m3:/data:ro",
+        "--entrypoint",
+        "samtools",
+        "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "quickcheck",
+        "-v",
+        "/data/SYNTHETIC01.analysis-ready.bam"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "samtools-quickcheck"
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--platform",
+        "linux/amd64",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=64m",
+        "--volume",
+        "$INTEGRATION_ROOT/published/m3:/data:ro",
+        "--entrypoint",
+        "samtools",
+        "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "view",
+        "-h",
+        "/data/SYNTHETIC01.analysis-ready.bam"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "samtools-view"
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--platform",
+        "linux/amd64",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=64m",
+        "--volume",
+        "$INTEGRATION_ROOT/published/m3:/data:ro",
+        "--entrypoint",
+        "samtools",
+        "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "view",
+        "-c",
+        "/data/SYNTHETIC01.analysis-ready.bam",
+        "chrSYN1:1-12000"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "indexed-query-chrSYN1"
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--platform",
+        "linux/amd64",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=64m",
+        "--volume",
+        "$INTEGRATION_ROOT/published/m3:/data:ro",
+        "--entrypoint",
+        "samtools",
+        "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "view",
+        "-c",
+        "/data/SYNTHETIC01.analysis-ready.bam",
+        "chrSYN2:1-8000"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "indexed-query-chrSYN2"
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--platform",
+        "linux/amd64",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=64m",
+        "--volume",
+        "$INTEGRATION_ROOT/published/m3:/data:ro",
+        "--entrypoint",
+        "samtools",
+        "quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561",
+        "--version"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "samtools-version"
+    },
+    {
+      "argv": [
+        "$INTEGRATION_ROOT/package-venv/bin/python",
+        "-I",
+        "-m",
+        "giab_wes_nextflow.m3_cli",
+        "validate-bundle",
+        "--bundle",
+        "$INTEGRATION_ROOT/published/m3/contracts"
+      ],
+      "cwd": "$INTEGRATION_ROOT",
+      "exit_code": 0,
+      "name": "validate-result-bundle"
+    },
+    {
+      "argv": [
+        "nextflow",
+        "-log",
+        "$INTEGRATION_ROOT/raw-execution/resume.nextflow.log",
+        "run",
+        "$INTEGRATION_ROOT/checkout",
+        "-profile",
+        "m3_test,docker",
+        "--m3_repository_sha",
+        "c929718a76b51e48bea6c4b9ebcb451a9d94574c",
+        "--m3_run_id",
+        "m3-ci-c929718a76b5",
+        "--outdir",
+        "$INTEGRATION_ROOT/published",
+        "-work-dir",
+        "$INTEGRATION_ROOT/nextflow-work",
+        "-with-trace",
+        "$INTEGRATION_ROOT/raw-execution/resume.trace.tsv",
+        "-with-report",
+        "$INTEGRATION_ROOT/raw-execution/resume.report.html",
+        "-with-timeline",
+        "$INTEGRATION_ROOT/raw-execution/resume.timeline.html",
+        "-with-dag",
+        "$INTEGRATION_ROOT/raw-execution/resume.dag.html",
+        "-resume"
+      ],
+      "cwd": "$INTEGRATION_ROOT/checkout",
+      "exit_code": 0,
+      "name": "resume"
+    }
+  ],
+  "docker": {
+    "Architecture": "x86_64",
+    "MemTotal": 16766414848,
+    "NCPU": 4,
+    "OSType": "linux",
+    "ServerVersion": "28.0.4"
+  },
+  "evidence_hashes": {
+    "checkout-exact-sha.stderr.txt": "31fe3833b2351992849207c3f90963b639bc2ea6d391723220c445bfce816947",
+    "checkout-exact-sha.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clean-clone.stderr.txt": "a48542db4f369d51534c6b57102d0305c38bfad8ec1060531352feae04e02658",
+    "clean-clone.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clone-origin.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clone-origin.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "contracts/m3-alignment.json": "c0c67848f922e863836e467892a41b1323acc2854590ed9ba5642f269efa682d",
+    "contracts/m3-coverage.json": "fc25ab71ac9a99d80c3f91fa54aefd070222a51aa6ac79a3764f6301b62411e3",
+    "contracts/m3-manifest.json": "acfe43f4375449bf438204bc2e9fb0a82154096cff337cd5d9d34c1293a5b9a8",
+    "contracts/m3-provenance.json": "177fd376da16e2052c0e21ba3aa4c4f7f10ebea6cc888f24abae01eaad9b42ff",
+    "contracts/m3-qc.json": "edfcf72a90b730aedc572a36b2df55fc69c475626278890f7ad5532899d2b6df",
+    "contracts/m3-resources.json": "69f376f4ff00e2221df231547be3a5438fab40ec75686ba4147ba7a5cf21a49d",
+    "docker-info.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docker-info.stdout.txt": "2d3523f86a670a0bd50322a5a6fc5c58f67f0e1e61f2f1fe1d81066af12d37ae",
+    "first.dag.html": "eed6f75002360a5bf14fcf579310f501ea33dddeccf1b6800d6c321ad56ab166",
+    "first.nextflow.log": "916e651b21d1823a163d7bfed6f8b97f861ffa93553471118f472db2c24566a6",
+    "first.report.html": "892f89726e3da3cb58cf1b57709aa01469066dab44e1830cc3a9c8fdc6d28cae",
+    "first.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "first.stdout.txt": "4fa2d824da23dde79a644b881f1974112293f359bfd32e4601039ad812d0308f",
+    "first.timeline.html": "7e5c0c3ce0c1902cc43574195801a4ea4009943710d39c0cee3c7229fee27bfa",
+    "first.trace.tsv": "cc43489ed176797ed5d08d098331f5bb6b2511b2a975dee169b56e70c9b91cc8",
+    "generate-invented-fixture.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "generate-invented-fixture.stdout.txt": "972920b6884af27b100c697c40da96e3daccec7ec6a46156e666f4d214d6b7a9",
+    "indexed-query-chrSYN1.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "indexed-query-chrSYN1.stdout.txt": "20d2add851bf39edcc6b5e830930f962db7e19dffa2cab8610eed551eda6c302",
+    "indexed-query-chrSYN2.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "indexed-query-chrSYN2.stdout.txt": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+    "install-cloned-package.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-cloned-package.stdout.txt": "81bb817745c0f3cd5ee13c92db528ed2c6ed1eb814744139a18253b8e7956e45",
+    "install-pinned-dependencies.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-pinned-dependencies.stdout.txt": "140c8122fb449306960f8b95786c518b105c39bf7ae45c17b58445c5ce950d17",
+    "installed-dependency-versions.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "installed-dependency-versions.stdout.txt": "23d3b780185b6a0fe56a0758d835f5f74122a4a5e07a9380d42868051daad669",
+    "installed-package-identity.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "installed-package-identity.stdout.txt": "18e3cfdf5a48362b11366816a971269ac72a61467ab74ba389415491f21bc593",
+    "isolated-wheel-location.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "isolated-wheel-location.stdout.txt": "5c9f0416a104c7799c8825fb1f10b1e8975e212056f7d063ae1a20ccabb23912",
+    "nextflow-version.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "nextflow-version.stdout.txt": "8c04b15850e33302860fd27b9041b7f36843061f155bf1f055f6544693345c61",
+    "resume.dag.html": "eed6f75002360a5bf14fcf579310f501ea33dddeccf1b6800d6c321ad56ab166",
+    "resume.nextflow.log": "c0b53c94b9a7380e933e990ada9cf82c5c8f296bc7ee294be6b46f781788550c",
+    "resume.report.html": "8e9735aaf78256da256001bafb6b55e16c788f648d0dc434e95a766d73b496bd",
+    "resume.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "resume.stdout.txt": "772a57d3f3c797e92ee35845c86315035ca4cb2a0e9327b6a1289fa3e6caf30f",
+    "resume.timeline.html": "54ad041c936013240e25b48d588aa5107179b15211c6be87b2dfa35ebf4e47c8",
+    "resume.trace.tsv": "01032ab473f567d1f4670c1a67de069f8c2b32d8b1c298776a906bf72db304d9",
+    "samtools-quickcheck.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "samtools-quickcheck.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "samtools-version.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "samtools-version.stdout.txt": "3928137782978a7716589ae7a87968892a0f0a1e0d7a80419711e1a56591138a",
+    "validate-result-bundle.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "validate-result-bundle.stdout.txt": "4f8f03387da2170fbaa4e3b82dc72f580b9f1ae3071978a65bfbfd095afff7e4"
+  },
+  "execution_reports": {
+    "first.dag.html": {
+      "raw_sha256": "eed6f75002360a5bf14fcf579310f501ea33dddeccf1b6800d6c321ad56ab166",
+      "redacted_copy": false,
+      "uploaded_sha256": "eed6f75002360a5bf14fcf579310f501ea33dddeccf1b6800d6c321ad56ab166"
+    },
+    "first.nextflow.log": {
+      "raw_sha256": "456c8f39a2264f2bed951d09b49828bbe3b8699182a73baec19241ca91f277c5",
+      "redacted_copy": true,
+      "uploaded_sha256": "916e651b21d1823a163d7bfed6f8b97f861ffa93553471118f472db2c24566a6"
+    },
+    "first.report.html": {
+      "raw_sha256": "3749e98241023cb18fd025c8f62bf3ff0f529cb02d39b2a185f69c961631c8fa",
+      "redacted_copy": true,
+      "uploaded_sha256": "892f89726e3da3cb58cf1b57709aa01469066dab44e1830cc3a9c8fdc6d28cae"
+    },
+    "first.timeline.html": {
+      "raw_sha256": "7e5c0c3ce0c1902cc43574195801a4ea4009943710d39c0cee3c7229fee27bfa",
+      "redacted_copy": false,
+      "uploaded_sha256": "7e5c0c3ce0c1902cc43574195801a4ea4009943710d39c0cee3c7229fee27bfa"
+    },
+    "first.trace.tsv": {
+      "raw_sha256": "cc43489ed176797ed5d08d098331f5bb6b2511b2a975dee169b56e70c9b91cc8",
+      "redacted_copy": false,
+      "uploaded_sha256": "cc43489ed176797ed5d08d098331f5bb6b2511b2a975dee169b56e70c9b91cc8"
+    },
+    "resume.dag.html": {
+      "raw_sha256": "eed6f75002360a5bf14fcf579310f501ea33dddeccf1b6800d6c321ad56ab166",
+      "redacted_copy": false,
+      "uploaded_sha256": "eed6f75002360a5bf14fcf579310f501ea33dddeccf1b6800d6c321ad56ab166"
+    },
+    "resume.nextflow.log": {
+      "raw_sha256": "23024ff2e193a3d483d2bc89d04be4e2caae9bce55d3a51b1221bbe461f56a53",
+      "redacted_copy": true,
+      "uploaded_sha256": "c0b53c94b9a7380e933e990ada9cf82c5c8f296bc7ee294be6b46f781788550c"
+    },
+    "resume.report.html": {
+      "raw_sha256": "a6934f3134a2c65e3080f6b4767336899bc0c71f9e398a26d5dffa195097fd75",
+      "redacted_copy": true,
+      "uploaded_sha256": "8e9735aaf78256da256001bafb6b55e16c788f648d0dc434e95a766d73b496bd"
+    },
+    "resume.timeline.html": {
+      "raw_sha256": "54ad041c936013240e25b48d588aa5107179b15211c6be87b2dfa35ebf4e47c8",
+      "redacted_copy": false,
+      "uploaded_sha256": "54ad041c936013240e25b48d588aa5107179b15211c6be87b2dfa35ebf4e47c8"
+    },
+    "resume.trace.tsv": {
+      "raw_sha256": "01032ab473f567d1f4670c1a67de069f8c2b32d8b1c298776a906bf72db304d9",
+      "redacted_copy": false,
+      "uploaded_sha256": "01032ab473f567d1f4670c1a67de069f8c2b32d8b1c298776a906bf72db304d9"
+    }
+  },
+  "fixture": {
+    "canonical": false,
+    "manifest_sha256": "d8f87a4eddd93eebd1cee5c9d77bfa1b8093714a8b3c2edc434742a3f3e16c1d",
+    "recipe_version": "1.0.0",
+    "sample": "SYNTHETIC01"
+  },
+  "host": {
+    "architecture": "x86_64",
+    "system": "Linux"
+  },
+  "installed_dependency_versions": [
+    "attrs==26.1.0",
+    "build==1.3.0",
+    "cfgv==3.5.0",
+    "distlib==0.4.3",
+    "filelock==3.32.5",
+    "giab-wes-nextflow @ file://$INTEGRATION_ROOT/checkout",
+    "identify==2.6.19",
+    "iniconfig==2.3.0",
+    "jsonschema==4.25.1",
+    "jsonschema-specifications==2025.9.1",
+    "nodeenv==1.10.0",
+    "packaging==26.3",
+    "pip==25.0.1",
+    "platformdirs==4.11.7",
+    "pluggy==1.6.0",
+    "pre_commit==4.3.0",
+    "Pygments==2.21.0",
+    "pyproject_hooks==1.2.0",
+    "pytest==8.4.2",
+    "python-discovery==1.6.0",
+    "PyYAML==6.0.3",
+    "referencing==0.37.0",
+    "rpds-py==2026.6.3",
+    "typing_extensions==4.16.0",
+    "virtualenv==21.7.8"
+  ],
+  "installed_package": {
+    "files": 32,
+    "package_inventory_sha256": "c424fcc396d523776b18dd9f190a0945a832c6a76ba0d83f5c503a26838b19d1",
+    "repository_sha": "c929718a76b51e48bea6c4b9ebcb451a9d94574c",
+    "version": "0.3.0-dev.1"
+  },
+  "kind": "m3-synthetic-integration-proof",
+  "mode": "docker",
+  "multiqc_permission_assertions": {
+    "host_gid": 1001,
+    "host_uid": 1001,
+    "published_bytes_match_task_report": true,
+    "report_sha256": "a6e644f1e7c8f7bfd103b69056eb45b5f00624c6cf32352434069a29c59d179d",
+    "task_report_gid": 1001,
+    "task_report_owned_by_host_user_and_group": true,
+    "task_report_uid": 1001
+  },
+  "nextflow_version": "N E X T F L O W\n      version 26.04.6 build 12646\n      created 09-07-2026 18:49 UTC \n      cite doi:10.1038/nbt.3820\n      http://nextflow.io",
+  "published_artifact_hashes": {
+    "SYNTHETIC01.analysis-ready.bam": "175c951275fb02ad6378de941fa12d54d3e8d1acfabbf7aba6604e6b5afacff8",
+    "SYNTHETIC01.analysis-ready.bam.bai": "6a45ece709068c7560dc8bfe991018297585fbe623455478686bda80fbff4d80",
+    "SYNTHETIC01.final.sam": "c886695b0e0d242dfc871b94b234704dd10cd187088bcb8e0268f046c179284b",
+    "SYNTHETIC01.pre-bqsr.sam": "b2685c161da77581a04975f4a3efcf02a4680a6aea41b6037d061f96509f5532",
+    "contracts/m3-alignment.json": "c0c67848f922e863836e467892a41b1323acc2854590ed9ba5642f269efa682d",
+    "contracts/m3-coverage.json": "fc25ab71ac9a99d80c3f91fa54aefd070222a51aa6ac79a3764f6301b62411e3",
+    "contracts/m3-manifest.json": "acfe43f4375449bf438204bc2e9fb0a82154096cff337cd5d9d34c1293a5b9a8",
+    "contracts/m3-provenance.json": "177fd376da16e2052c0e21ba3aa4c4f7f10ebea6cc888f24abae01eaad9b42ff",
+    "contracts/m3-qc.json": "edfcf72a90b730aedc572a36b2df55fc69c475626278890f7ad5532899d2b6df",
+    "contracts/m3-resources.json": "69f376f4ff00e2221df231547be3a5438fab40ec75686ba4147ba7a5cf21a49d",
+    "multiqc_data/fastqc-status-check-heatmap.txt": "7f6a7c49fbe4b7f212c1b1b01651569074d8e96bba76d7fc5d833da7927c45bb",
+    "multiqc_data/fastqc_overrepresented_sequences_plot.txt": "c178df5842a0662e5e2c854cbf9a384e4f0f1a1092aa28bdb98a9184faa0b4ab",
+    "multiqc_data/fastqc_per_base_n_content_plot.txt": "e964c47b84f0bc9ac8870e9d6e1da6776e16d9a97cb0b1d24e9d9097216e1178",
+    "multiqc_data/fastqc_per_base_sequence_quality_plot.txt": "b9be9ac0d1f77e148c0dd7e0ae28668e2b77d7622c842f9e09116937c2077f7f",
+    "multiqc_data/fastqc_per_sequence_gc_content_plot_Counts.txt": "163ec4b2c50525ec683cd2f863422fcb95eec928213823f782cd96168aa1ef7e",
+    "multiqc_data/fastqc_per_sequence_gc_content_plot_Percentages.txt": "ddc22c6f3739a342920147fe8fccbcc180a8335b4482aecde54c465bb5673ecb",
+    "multiqc_data/fastqc_per_sequence_quality_scores_plot.txt": "5ca2ed30e06b41387fc5a95eb56b03d52cd0d81d625fa880753045ef533a0360",
+    "multiqc_data/fastqc_sequence_counts_plot.txt": "ca3729ff5f85ba0a0b0adc61232244c3152ca0b5830ef7c2fc7a890b95ab23b3",
+    "multiqc_data/fastqc_sequence_duplication_levels_plot.txt": "f2609760107f2d115fee9ff399fcfe81df710482640e2bf5dd953f9e93e8ded3",
+    "multiqc_data/fastqc_top_overrepresented_sequences_table.txt": "fa9810bfc76f768a47f6a0ca3e9c4ba42ef20d207a4eb9c330280a80b883059f",
+    "multiqc_data/llms-full.txt": "54074707ef31f38414311377746cebb48b2b56aed78cb74d5d3438af2b2954e4",
+    "multiqc_data/mosdepth-coverage-per-contig-multi.txt": "ae136768030c61f97513213d08bca9abc10029ee1a913f81ca7ce245759dab84",
+    "multiqc_data/mosdepth-cumcoverage-dist-id.txt": "4ef877e0a0db37283419ce06c69b2a242101ae3bdcacbf238b7f682df5607d19",
+    "multiqc_data/mosdepth_cov_dist.txt": "bdf97d007141f415403565da86c2fb37670975d48cfcdef0081f93b86706b0c0",
+    "multiqc_data/mosdepth_cumcov_dist.txt": "bdf97d007141f415403565da86c2fb37670975d48cfcdef0081f93b86706b0c0",
+    "multiqc_data/mosdepth_perchrom.txt": "7689c2769f0d04c85a8dd244e9b71d8580f93ef6adf76b1e9570fa7c37a5e8a3",
+    "multiqc_data/multiqc.log": "8834c5a2cd766cb4dbb80ffe67d99a18b740466a5cef2c1b8807792fcd82da7a",
+    "multiqc_data/multiqc.parquet": "4abf35a5532b24e91922c3d889cd04568af7db14d03f44edf12e978fdd37b9c1",
+    "multiqc_data/multiqc_citations.txt": "a1424623290a6ec4a1d6ab74557571dff92dd449c03f7acc024e9d559020fc3a",
+    "multiqc_data/multiqc_data.json": "2a1f7e74d11818a9aa28d0d54401bc9c0cf784e9e6d181228118475123fe8cfb",
+    "multiqc_data/multiqc_fastqc.txt": "7fe92ed64c5037d37cb8db1351e6ae18466cb19417f6d1fdf550b77ff65f140c",
+    "multiqc_data/multiqc_general_stats.txt": "4c69943e64b257bfdeefa65177a5101d970c9a223a45cffebd9b530835db70b2",
+    "multiqc_data/multiqc_picard_AlignmentSummaryMetrics.txt": "0ae2557985711c81ce16d7b9c659aefdb2f2b671b512b9ee46373ab2fdd64372",
+    "multiqc_data/multiqc_picard_dups.txt": "db26148a89bcea458410b2044d3cedcc5475abd358d44601cebf9b799b128eda",
+    "multiqc_data/multiqc_samtools_stats.txt": "b1a599aee5508fe6e0508d7ff576348cb83ffbdc2cf153ddcff2d9f00eb40312",
+    "multiqc_data/multiqc_software_versions.txt": "2ff3f26680a9e617190656c5ba56d5867e3ad71eb6ec059224902e7d46b5af61",
+    "multiqc_data/multiqc_sources.txt": "6eb675a9a3de1249612801ccff110b542b2397bc576eba774acb379f131dc60d",
+    "multiqc_data/picard_MarkIlluminaAdapters_histogram.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "multiqc_data/picard_MeanQualityByCycle_histogram.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "multiqc_data/picard_MeanQualityByCycle_histogram_1.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "multiqc_data/picard_QualityScoreDistribution_histogram.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "multiqc_data/picard_alignment_readlength_plot.txt": "e1bf0f3129f15ffef162b85875d5a2823addfbfbeb7f5d7951b93d7631e3e736",
+    "multiqc_data/picard_alignment_summary_Aligned_Bases.txt": "79da28ce2dfa9c338ad87cc82440e5255b5f54d190d45a5fa59c55312c216e44",
+    "multiqc_data/picard_alignment_summary_Aligned_Reads.txt": "0db4efd243b8e0526bb5b99379665fd2fe96bb1d2ed375f91ae6221706b206f3",
+    "multiqc_data/picard_deduplication.txt": "ee83213c074e61a056bfd27e6e4be94d9d240de4a448ecf5c37ee93de47395c6",
+    "multiqc_data/samtools-stats-dp.txt": "f77875cffe17431725f3cb1dec2e8c9d9871b92e2513ebd0f4a1a72d3f3b50e7",
+    "multiqc_data/samtools_alignment_plot.txt": "890c911c5ae3e0ff2405d07ecfef2dd38284c9d2e3270a4861a02bab6756eefb",
+    "multiqc_data/samtools_insert_size.txt": "2ce3e38350401755dc8e71d848929372a33be21ea549424c66fefec1648b3117",
+    "multiqc_report.html": "a6e644f1e7c8f7bfd103b69056eb45b5f00624c6cf32352434069a29c59d179d",
+    "qc_reports/SYNTHETIC01.alignment_summary_metrics.txt": "89a75f0a1b74e6fd2fc85ee5c885ac93f512488587af362fb1a819a8a44526c5",
+    "qc_reports/SYNTHETIC01.duplicates.txt": "f25e7bd919183cd2391698af2eaf0b3d3bf189a633b1f2a4feee46aeb77fdb0f",
+    "qc_reports/SYNTHETIC01.flagstat.json": "3f6351760740bd88b54bd6507f366b7f2dac295ccafb603b5840c19d87cc0ca8",
+    "qc_reports/SYNTHETIC01.mosdepth.global.dist.txt": "35816ba4fa582b32b232c7d402dab3ff7f308184641f13d7dd403513f8afe997",
+    "qc_reports/SYNTHETIC01.mosdepth.region.dist.txt": "01ff866ad7d3b731d27099f00ac013050bff37bf0fd2efd9e9e5a3c1c273250d",
+    "qc_reports/SYNTHETIC01.mosdepth.summary.txt": "439b1aff407866c7d2772fbcc3db597b55f618c94a908ecc89b56715fc7e82c0",
+    "qc_reports/SYNTHETIC01.stats.txt": "dd1bdf436d120881f44a558f9db01292b4362572e05797549599ece2486efbfc",
+    "qc_reports/reads_1_fastqc.html": "5c60b3d5b2852b11a575debce389571dc7cae59401f27fe90193dc4896e80078",
+    "qc_reports/reads_1_fastqc.zip": "03ef6c3515102865599bbb1e712aca1907cb3fc7c6c527efbb04deb81e15a56c",
+    "qc_reports/reads_2_fastqc.html": "92a792880599becbccb2f62aedea26a8b15d26a53c32b8c21992284ce21a5d7e",
+    "qc_reports/reads_2_fastqc.zip": "8111c995c42b8e517fb37d63e03fa8c6010e6e39a30eef99e0d8b847d1b38c56",
+    "qc_reports/reads_lane2_1_fastqc.html": "0050fddd6bc2d798a0625d538b10e77237404e746a7551d72533f143e8e4a98f",
+    "qc_reports/reads_lane2_1_fastqc.zip": "7d8b8cc9860229f1d71e895c85735328c5ac93328baba2a07db37e4eace6379d",
+    "qc_reports/reads_lane2_2_fastqc.html": "e743c4a5a92b7f6d7b8210a365a062c1451c41bbefb3791c8d8a9ed22badddeb",
+    "qc_reports/reads_lane2_2_fastqc.zip": "52e3b81ee6245f0944b6d269f9a1533d496365f6adef6ac072b4c828ee079efa"
+  },
+  "repository": {
+    "origin": "https://github.com/jcollins-bioinfo/giab-wes-nextflow",
+    "repository": "jcollins-bioinfo/giab-wes-nextflow",
+    "sha": "c929718a76b51e48bea6c4b9ebcb451a9d94574c"
+  },
+  "resume_assertions": {
+    "all_expected_processes_present": true,
+    "contract_semantics_identical": true,
+    "first_executed_tasks": 22,
+    "pinned_containers_identical": true,
+    "published_hashes_identical": true,
+    "resumed_cached_tasks": 22,
+    "task_hashes_identical": true
+  },
+  "schema_version": "1.0.0",
+  "status": "passed",
+  "storage": {
+    "free_bytes": 92395798528,
+    "meets_synthetic_minimum": true,
+    "minimum_free_bytes": 10737418240,
+    "total_bytes": 154894188544
+  },
+  "synthetic": true
+}

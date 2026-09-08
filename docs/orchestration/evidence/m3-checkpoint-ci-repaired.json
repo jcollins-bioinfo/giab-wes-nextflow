@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": 34106269114,
+  "head_sha": "23b939efeb2b7b01403dab3124b5a7c6a57f6290",
+  "tested_merge_sha": "42e7f284c5a1c94e2970d4ddf27868f398e110b6",
+  "required_conclusion": "success",
+  "jobs": [
+    {
+      "name": "m3-docker",
+      "id": 101691894227,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34106269114/job/101691894227"
+    },
+    {
+      "name": "python (3.12)",
+      "id": 101691894596,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34106269114/job/101691894596"
+    },
+    {
+      "name": "nextflow",
+      "id": 101691894650,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34106269114/job/101691894650"
+    },
+    {
+      "name": "python (3.13)",
+      "id": 101691894873,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34106269114/job/101691894873"
+    },
+    {
+      "name": "required",
+      "id": 101692964667,
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34106269114/job/101692964667"
+    }
+  ],
+  "scope": "Scoped archival template-lint repair passed full required CI; actual verified preprocessing source and exact original evidence retained.",
+  "tested_merge_sha_source": "Correlated PR merge ref at completed-run observation; original installed package/proof identities remain in m3-verified.json."
+}

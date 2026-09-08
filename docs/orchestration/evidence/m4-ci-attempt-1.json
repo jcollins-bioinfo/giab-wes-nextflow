@@ -1,0 +1,156 @@
+{
+  "artifact": {
+    "all_member_hashes_verified": true,
+    "bytes": 12314,
+    "id": 10013513831,
+    "integration_proof_sha256": "8c106b724f6ca173ac7ff20b9d8901cbfeed6fd6802e9a81ce3af4625189f134",
+    "name": "m4-synthetic-docker-evidence",
+    "sha256": "4e0c6c39c77400ad139dd5894f6123c505bc546f35e2de9bafe2d895c0be119c",
+    "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/artifacts/10013513831",
+    "verified_evidence_members": 28
+  },
+  "attempt": 1,
+  "canonical": false,
+  "head_sha": "1682c983fe287e1b0dac680e2b52f8cace066018",
+  "image": {
+    "Architecture": "amd64",
+    "Id": "sha256:96e40015101d9178131fe129456345a225c0bd3c3dfe6c7da79a8355b3710506",
+    "Os": "linux",
+    "RepoDigests": [
+      "registry-1.docker.io/google/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    ],
+    "Size": 4914595016
+  },
+  "installed_package": {
+    "files": 42,
+    "package_inventory_sha256": "e548e8486182986a530a965e0ab27f904ee3af4739f06c929c0c95661f9310a1",
+    "repository_sha": "195164dd00dcfb25073cfe9bea3ad7ac47bcd54d",
+    "version": "0.4.0-dev.1"
+  },
+  "job_id": 101699974586,
+  "job_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974586",
+  "m4_failure": {
+    "biological_processing_validated": false,
+    "caller_executed": false,
+    "declared_conda_selector": "bioconda::bcftools=1.15",
+    "incorrect_driver_expectation": "bcftools 1.15",
+    "message": "native index reader differs from the pinned image's declared build",
+    "nextflow_workflow_launched": false,
+    "observed_bcftools": "1.15.1",
+    "observed_htslib": "1.21",
+    "phase": "native-index-reader preflight before fixture generation or workflow launch",
+    "positive_inference_observed": false,
+    "stdout_first_lines": [
+      "bcftools 1.15.1",
+      "Using htslib 1.21"
+    ],
+    "stdout_sha256": "ac3714859d2260e77f6d8a4b1d73d5d4401d7907ea1dac8897bee1d325611205"
+  },
+  "milestone": "M4",
+  "primary_sources": [
+    {
+      "observation": "Dockerfile uses bioconda::bcftools=1.15 and copies the Conda environment into the final image",
+      "sha256": "1b73d32d2c5055bffbe4b3f364ff895ec85d7e3658f5d098ab995090606e92be",
+      "url": "https://github.com/google/deepvariant/blob/d6b15e21323d9d15b347083f1d256ad62998c4cf/Dockerfile#L18-L35"
+    },
+    {
+      "observation": "A single-equals version selector is a fuzzy prefix constraint; it is distinct from exact reported executable identity",
+      "url": "https://docs.conda.io/projects/conda/en/stable/user-guide/concepts/pkg-specs.html"
+    }
+  ],
+  "pull_request": 21,
+  "qualified_preflight": {
+    "actual_image_linux_x86_64": true,
+    "actual_image_sse4_1_sse4_2_avx": true,
+    "docker": {
+      "Architecture": "x86_64",
+      "MemTotal": 16766414848,
+      "NCPU": 4,
+      "OSType": "linux",
+      "ServerVersion": "28.0.4"
+    },
+    "free_bytes_before_image": 92395139072
+  },
+  "repository": "jcollins-bioinfo/giab-wes-nextflow",
+  "run_id": 34108811427,
+  "schema_version": "1.0.0",
+  "status": "failed",
+  "synthetic": true,
+  "tested_merge_sha": "195164dd00dcfb25073cfe9bea3ad7ac47bcd54d",
+  "all_jobs": [
+    {
+      "id": 101699974346,
+      "name": "nextflow",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974346"
+    },
+    {
+      "id": 101699974532,
+      "name": "python (3.12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974532"
+    },
+    {
+      "id": 101699974576,
+      "name": "python (3.13)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974576"
+    },
+    {
+      "id": 101699974586,
+      "name": "m4-docker",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974586"
+    },
+    {
+      "id": 101699974632,
+      "name": "m3-docker",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974632"
+    },
+    {
+      "id": 101700843030,
+      "name": "required",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101700843030"
+    }
+  ],
+  "framework_failure": {
+    "job_id": 101699974346,
+    "job_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34108811427/job/101699974346",
+    "reason": "New M4 fixture was not generated before nf-test in the fresh CI checkout; main rejected missing samplesheet before execution.",
+    "tests_passed": 13,
+    "tests_failed": 1,
+    "stdout_log_sha256": "bdc25a0d6f2f18f3be67af6200bc37b80a0484562791bf19baaa1a7ccf60d458",
+    "repair": "Generate all three deterministic fixture families after package installation and before nf-test.",
+    "local_recheck": {
+      "status": "passed",
+      "command": "python -m giab_wes_nextflow.m4_fixture --output tests/data/m4-generated; nf-test test tests/m4_pipeline.nf.test --ci",
+      "scope": "Moved preexisting generated M4 fixture out of checkout before regeneration; previously failing full pipeline stub test passed.",
+      "log_sha256": "4ddac8a7ad72183a11890ac2a991d70d60b535a7e1835f74ccc5e3cf9ed191bb"
+    }
+  },
+  "index_reader_repair": {
+    "scope": "Exact reported bcftools1.15.1 and HTSlib1.21 tied to unchanged pinned image; upstream Conda selector retained.",
+    "focused_tests": [
+      {
+        "python": "3.12",
+        "tests_passed": 17,
+        "log_sha256": "b78abd631688e3600da7b70be7000ec74df61144405ea765124a701636d8b97d"
+      },
+      {
+        "python": "3.13",
+        "tests_passed": 17,
+        "log_sha256": "2d40a383b5a8b5384d90f2c8e739ea7d30ab4a1f5c4874126a460ca60f133d88"
+      }
+    ],
+    "root_recheck_sha256": "6ba1c7a1bd6cec5691882bdc0200895c0c850e3c4840721eef2a6e6b7cb58664",
+    "independent_review_tests_sha256": "1bea61f0a2936708ef9eb0162057b4897a2a01040a4f21a66c479f07b5d413b0"
+  }
+}

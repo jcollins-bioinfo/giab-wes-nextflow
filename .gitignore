@@ -2,6 +2,7 @@
 work/
 results/
 .nf-test/
+.nf-test.log*
 __pycache__/
 *.pyc
 .pytest_cache/
@@ -46,3 +47,8 @@ build/
 *.fq.gz
 *.part
 *.incomplete
+
+# M3 fixtures/results are generated from an invented deterministic recipe.
+tests/data/m3-generated/
+tests/data/m4-generated/
+m3-test-results/
