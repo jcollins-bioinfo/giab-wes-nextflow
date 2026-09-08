@@ -62,6 +62,17 @@ def mode_traces() -> tuple[dict[str, list[dict[str, str]]], dict[str, Any], dict
 class ModeReuseTest(unittest.TestCase):
     """Independent modes must execute once and share accepted preprocessing thereafter."""
 
+    def test_process_name_ignores_colons_inside_nextflow_display_tags(self) -> None:
+        """A caller/sample tag is metadata and cannot replace the process identity."""
+        self.assertEqual(
+            DRIVER.shared.process_name("M4_DUAL_CALLERS:M4_COLLECT_GATK (gatk:SYNTHETIC01)"),
+            "M4_COLLECT_GATK",
+        )
+        self.assertEqual(
+            DRIVER.shared.process_name("M4_DUAL_CALLERS:M4_COLLECT_DEEPVARIANT (deepvariant:SYNTHETIC01)"),
+            "M4_COLLECT_DEEPVARIANT",
+        )
+
     def test_real_modes_and_identical_cached_repeat_are_required(self) -> None:
         """Initial execution and later complete reuse are both necessary observations."""
         traces, m3, m4 = mode_traces()

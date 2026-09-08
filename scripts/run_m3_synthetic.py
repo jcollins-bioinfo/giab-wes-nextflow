@@ -214,7 +214,10 @@ def parse_trace(text: str) -> list[dict[str, str]]:
 
 def process_name(name: str) -> str:
     """Remove Nextflow workflow scope and display tag from a task name."""
-    return name.rsplit(":", 1)[-1].split(" (", 1)[0]
+    # Display tags may themselves contain a colon (for example
+    # ``M4_COLLECT_GATK (gatk:SYNTHETIC01)``). Remove the complete display tag
+    # before splitting workflow scope so tag content cannot become a process.
+    return name.split(" (", 1)[0].rsplit(":", 1)[-1]
 
 
 def validate_resume(first: list[dict[str, str]], repeated: list[dict[str, str]],
