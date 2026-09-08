@@ -1,0 +1,39 @@
+{
+  "classification": "locally-tested",
+  "canonical": false,
+  "source_parent": "2b35289db743c99a19f58e7b3d365297aa795584",
+  "initial_ci": {
+    "run_id": 34278960439,
+    "status": "success",
+    "jobs": [
+      "python3.12",
+      "python3.13",
+      "nextflow",
+      "m3-docker",
+      "m4-docker",
+      "required"
+    ]
+  },
+  "reason": "Independent post-CI review found undefined EXPECTED/stage_file names in late driver paths and interrupted-copy/publication restart gaps outside prior mocks.",
+  "correction": "Resolve imports; pin Pyflakes3.4.0 and run it in CI; atomic staging/hydration; duplicate-key checkpoint rejection; pinned public candidate promotion; recover completed private/public evidence before repeating runtime qualification.",
+  "targeted_tests": {
+    "python3.12": 71,
+    "python3.13": 71,
+    "status": "passed"
+  },
+  "static_canonical_names": "passed",
+  "limitations": [
+    "Actual Colab runtime and canonical execution remain unobserved.",
+    "Corrected source requires its one permitted corrective CI run."
+  ],
+  "logs": {
+    "canonical-corrective-final-312.log": {
+      "bytes": 17115,
+      "sha256": "4d80f7df4600032f068ee8864653801f9a52e3fc830af576bbb42bb4cc5da149"
+    },
+    "canonical-corrective-final-313.log": {
+      "bytes": 15753,
+      "sha256": "1359cd19bc98f85a0b7e92c28a2a0db189fd9caa2556433c0954bad6debb0177"
+    }
+  }
+}

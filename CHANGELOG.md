@@ -2,6 +2,8 @@
 
 ## Unreleased canonical execution interface
 
+- Correct late-stage driver imports; add canonical static name checks and interruption-safe staging, hydration and private/public publication recovery.
+
 - Add full-reference classic BWA fallback, independently pinned Broad known-sites, no-Docker runtime qualification and strict Colab execution.
 - Add exact-SHA Run-all notebook generation, five-stage Nextflow composition, private completed-stage recovery and fixed-domain coverage.
 - Add canonical result/manifest validation, Dash consumer and safe exports; real HG001 evidence remains pending.

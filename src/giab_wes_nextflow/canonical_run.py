@@ -13,7 +13,6 @@ import json
 import os
 from pathlib import Path
 import re
-import shutil
 import subprocess
 import time
 from typing import Any
@@ -21,7 +20,8 @@ import zipfile
 
 from . import __version__
 from .acquisition import acquire, checksum, destination, load_manifest, safe_root, validate_source_bytes
-from .canonical_science import file_id, write_json
+from .canonical_science import file_id, stage_file, write_json
+from .coding_domain import EXPECTED
 from .m5_manifest import read_manifest as load_json
 from .m5 import require
 from .runtime_identity import verify_install
@@ -228,18 +228,97 @@ def collect(stage: Path, published: Path, run_id: str, identity: dict[str, Any],
               'qualification': {role: {'artifact': role + '.json', 'sha256': hashlib.sha256((json.dumps(receipt, sort_keys=True, indent=2, allow_nan=False) + '\n').encode()).hexdigest()} for role, receipt in receipts.items() if role != 'coverage'}, 'environments': [{'name': 'Colab', 'status': 'executed', 'evidence': 'runtime.json'}, *[{'name': x, 'status': 'configured_only', 'evidence': None} for x in ('SLURM', 'AWS Batch', 'Seqera/Wave')]],
               'limitations': [*REQUIRED_LIMITATIONS, 'This is the HG001 chr20–22 coding-domain benchmark, not a whole-exome result.', 'Uncovered and uncaptured coding loci remain in the approved recall denominator.', 'One execution does not establish stable comparative cost.'],
               'uncertainty': 'One sample, one platform and one execution; no population uncertainty interval, causal claim, or scalar winner is supported.'}
-    output = stage / 'public-evidence'
+    from .canonical_results import load_canonical_bundle
+    output = destination(stage, 'public-evidence')
+    proof_path = destination(stage, 'public-evidence-proof.json')
+    payloads = {role + '.json': receipt for role, receipt in receipts.items()}
+    # A retry can observe cache reuse and a different wall interval. Preserve the
+    # first complete observation, requiring every scientific/code/gate binding
+    # and every other resource value to remain identical.
+    stable = json.loads(json.dumps(result))
+    stable['qualification'].pop('resume')
+    stable['resources']['total'].pop('wall_seconds')
+    stable['resources']['total']['missing_reasons'].pop('wall_seconds', None)
+    scientific_pin = hashlib.sha256(json.dumps(
+        {'result': stable, 'receipts': {k: v for k, v in payloads.items() if k != 'resume.json'}},
+        sort_keys=True, allow_nan=False).encode()).hexdigest()
+    proof = {'kind': 'canonical_collection_proof', 'run_id': run_id,
+             'repository_sha': identity['repository_sha'], 'scientific_sha256': scientific_pin}
+    if output.exists() and (output / 'manifest.json').exists():
+        require(proof_path.is_file(), 'completed public evidence has no independent collection proof')
+        saved = load_json(proof_path)
+        require({k: v for k, v in saved.items() if k != 'manifest_sha256'} == proof,
+                'completed public evidence run/code/scientific proof differs')
+        pin = saved['manifest_sha256']
+        load_canonical_bundle(output, pin)
+        return output, pin
     if output.exists():
-        raise FileExistsError('public evidence already exists; validate/reuse the existing completed run')
-    pin = write_public_bundle(output, result, {role + '.json': receipt for role, receipt in receipts.items()})
+        # Retain interrupted legacy output for inspection, never overwrite it.
+        os.rename(output, destination(stage, 'public-evidence.incomplete-' + str(time.time_ns())))
+    candidate = destination(stage, 'public-evidence.build-' + str(time.time_ns()))
+    pin = write_public_bundle(candidate, result, payloads)
+    partial_proof = destination(stage, 'public-evidence-proof.json.incomplete')
+    write_json(partial_proof, {**proof, 'manifest_sha256': pin})
+    os.replace(partial_proof, proof_path)
+    os.rename(candidate, output)
     return output, pin
+
+
+def finish_evidence(stage: Path, public: Path, pin: str, run_id: str, repository_sha: str) -> Path:
+    """Validate and atomically write the small return bundle; completion is last."""
+    from .canonical_results import load_canonical_bundle
+    model = load_canonical_bundle(public, pin)
+    require(model.record['repository_sha'] == repository_sha and model.record['run_id'] == run_id,
+            'completed public evidence code/run identity differs')
+    bundle = destination(stage, 'canonical-hg001-evidence.zip')
+    partial = destination(stage, 'canonical-hg001-evidence.zip.incomplete')
+    with zipfile.ZipFile(partial, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(public.iterdir()):
+            archive.write(path, path.name)
+    os.replace(partial, bundle)
+    marker = destination(stage, 'canonical-complete.json.incomplete')
+    write_json(marker, {'run_id': run_id, 'repository_sha': repository_sha, 'manifest_sha256': pin,
+                        'bundle': file_id(bundle), 'canonical': True})
+    os.replace(marker, destination(stage, 'canonical-complete.json'))
+    return bundle
+
+
+def restore_completed_run(stage: Path, drive: Path, run_id: str, repository_sha: str) -> Path | None:
+    """Recover a completed durable result before repeating runtime qualification."""
+    from .canonical_checkpoint import completed, hydrate, publish
+    from .canonical_asset_reference import digest_json
+    public = destination(drive, f'runs/{run_id}/completed-stages/public-evidence')
+    marker = destination(public, 'stage-complete.json')
+    # Private provenance must have completed before the final public checkpoint.
+    private = destination(drive, f'runs/{run_id}/completed-stages/private-provenance')
+    private_marker = destination(private, 'stage-complete.json')
+    if not marker.exists() and not private_marker.exists():
+        return None
+    private_record = load_json(private_marker)
+    completed(private, digest_json(private_record['files']))
+    proof = load_json(destination(private, 'public-evidence-proof.json'))
+    require(proof['repository_sha'] == repository_sha and proof['run_id'] == run_id,
+            'completed private evidence code/run identity differs')
+    pin = proof['manifest_sha256']
+    local = destination(stage, 'public-evidence')
+    if marker.exists():
+        hydrate(public, local, pin)
+    else:
+        # Private completion includes the exact small public inventory, so an
+        # interruption between the two durable markers needs no recomputation.
+        for path in destination(private, 'public-evidence').iterdir():
+            stage_file(path, destination(local, path.name))
+        from .canonical_results import load_canonical_bundle
+        load_canonical_bundle(local, pin)
+        publish(local, drive, run_id, 'public-evidence', pin)
+    return finish_evidence(stage, local, pin, run_id, repository_sha)
 
 
 def run(source_root: Path, expected_sha: str, stage: Path, drive: Path, *, allow_large_downloads: bool, preflight_only: bool = False) -> Path:
     """Execute the complete gated Colab path, with rehashed durable restart state."""
     from .canonical_host import probe
     from .canonical_assets import prepare_reference, build_index, prepare_known_sites, publish_assets, acquire_known_sites
-    from .canonical_asset_reference import validate_reference, digest_json
+    from .canonical_asset_reference import digest_json
     from .canonical_runtime import Runtime
     from .canonical_smoke import qualify
     from .canonical_checkpoint import publish
@@ -279,6 +358,10 @@ def run(source_root: Path, expected_sha: str, stage: Path, drive: Path, *, allow
         progress('preflight', 'passed host gate; assets and runtime remain unqualified')
         return stage / 'host.json'
     run_id = 'hg001-chr20-22-' + expected_sha[:12]
+    recovered = restore_completed_run(stage, drive, run_id, expected_sha)
+    if recovered is not None:
+        progress('completed', 'durable public evidence and private provenance revalidated; return evidence bundle')
+        return recovered
     config = {'scratch': str(stage / 'runtime'), 'backend': 'auto', 'cpus': min(8, host['logical_cpus']),
               'memory_bytes': min(44 * 1024**3, int(host['memory']['effective_ceiling_bytes'] * 0.85)), 'allow_install': allow_large_downloads}
     runtime = Runtime(**config)
@@ -287,9 +370,7 @@ def run(source_root: Path, expected_sha: str, stage: Path, drive: Path, *, allow
     if runtime.state['status'] != 'qualified_representative_callers':
         progress('runtime', 'execute independent invented GATK and DeepVariant positive probes')
         smoke_dir = stage / ('runtime-smoke-' + str(time.time_ns()))
-        qualification = qualify(runtime, smoke_dir)
-    else:
-        qualification = runtime.state['qualification']
+        qualify(runtime, smoke_dir)
     require(runtime.state['status'] == 'qualified_representative_callers', 'canonical execution blocked: representative callers unqualified')
     runtime_receipt = runtime.write_state()
     progress('sources', 'hydrate verified private source cache')
@@ -325,7 +406,7 @@ def run(source_root: Path, expected_sha: str, stage: Path, drive: Path, *, allow
         known = prepare_known_sites(known_sources, reference_dir, known_dir, runner)
         publish_assets(known_dir, drive, run_id, expected_sha, kind='canonical_bqsr_asset')
     domains = stage / 'domains'
-    domain = prepare_domains(sources, domains)
+    prepare_domains(sources, domains)
     regions = domains / 'R_call_chr20_22.bed'
     text = ''.join(line for line in (domains / 'R_call.bed').read_text().splitlines(keepends=True) if line.split('\t')[0] in ('chr20', 'chr21', 'chr22'))
     require(bool(text), 'empty preregistered calling regions')
@@ -386,21 +467,20 @@ def run(source_root: Path, expected_sha: str, stage: Path, drive: Path, *, allow
     resume['durable_stage_reuse_observations'] = len(reused)
     complete_wall = wall if not reused and not coverage_reused and all(r['status'] == 'COMPLETED' for r in first_rows) else None
     public, pin = collect(stage, published, run_id, identity, gates, resume, complete_wall)
-    publish(public, drive, run_id, 'public-evidence', pin)
     # Retain private machine-readable execution provenance and bounded logs.
     private = stage / 'private-provenance'; private.mkdir(exist_ok=True)
     for path in (stage / 'host.json', stage / 'sources.json', runtime_receipt):
         stage_file(path, private / path.name)
+    stage_file(stage / 'public-evidence-proof.json', private / 'public-evidence-proof.json')
+    for path in public.iterdir():
+        stage_file(path, private / 'public-evidence' / path.name)
     audit = private / 'audit'; audit.mkdir(exist_ok=True)
     for path in sorted((stage / 'runtime/audit').iterdir()):
         if path.is_file() and path.stat().st_size <= 1_000_000:
             stage_file(path, audit / path.name)
     publish(private, drive, run_id, 'private-provenance', digest_json(inventory(private)))
-    bundle = stage / 'canonical-hg001-evidence.zip'
-    with zipfile.ZipFile(bundle, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
-        for p in sorted(public.iterdir()):
-            archive.write(p, p.name)
-    write_json(stage / 'canonical-complete.json', {'run_id': run_id, 'repository_sha': expected_sha, 'manifest_sha256': pin, 'bundle': file_id(bundle), 'canonical': True})
+    publish(public, drive, run_id, 'public-evidence', pin)
+    bundle = finish_evidence(stage, public, pin, run_id, expected_sha)
     progress('completed', f'public manifest SHA256={pin}; return canonical-hg001-evidence.zip')
     return bundle
 

@@ -1,7 +1,6 @@
 """Restart-safe private completed-stage publication; never persist Nextflow work."""
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
 import shutil
@@ -9,6 +8,7 @@ from typing import Any
 
 from .acquisition import checksum, destination, safe_root, validate_run_id
 from .canonical_science import file_id, write_json
+from .m4_contracts import load_json
 from .m5 import require
 
 
@@ -28,7 +28,7 @@ def inventory(root: Path) -> dict[str, Any]:
 def completed(root: Path, key: str) -> dict[str, Any]:
     """Rehash every byte before considering a completed stage reusable."""
     marker = destination(root, "stage-complete.json")
-    record = json.loads(marker.read_text())
+    record = load_json(marker)
     require(record.get("kind") == "canonical_completed_stage" and record.get("key") == key, "checkpoint identity mismatch")
     require(record["files"] == inventory(root), "checkpoint inventory or byte mismatch")
     return record
@@ -68,7 +68,10 @@ def hydrate(source: Path, target: Path, key: str) -> dict[str, Any]:
         if final.exists():
             require(file_id(final) == expected, "scratch restart conflict")
         else:
-            shutil.copyfile(source / name, final)
-            require(file_id(final) == expected, "scratch hydration mismatch")
+            partial = destination(target, name + ".incomplete")
+            if not partial.exists() or file_id(partial) != expected:
+                shutil.copyfile(source / name, partial)
+            require(file_id(partial) == expected, "scratch hydration mismatch")
+            os.replace(partial, final)
     require(inventory(target) == record["files"], "hydrated inventory mismatch")
     return {"status": "reused", "marker_sha256": checksum(source / "stage-complete.json"), "files": len(record["files"])}

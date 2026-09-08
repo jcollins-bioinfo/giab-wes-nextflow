@@ -21,6 +21,10 @@ from .canonical_host import memory_limits
 from .canonical_asset_reference import (Runner, active, digest_json, identity, load_assets, prepare_known_sites,
                                         prepare_reference, reference_slice, regular, scan_reference, validate_reference)
 
+__all__ = ['prepare_reference', 'prepare_known_sites', 'build_index', 'acquire_known_sites',
+           'publish_assets', 'hydrate_assets', 'validate_asset', 'copy_verified', 'identity',
+           'asset_contract_sha256', 'extract_archive']
+
 INDEX_SUFFIXES = ('amb', 'ann', 'bwt', 'pac', 'sa')
 DRIVE_ROOT = '/content/drive/MyDrive/giab-wes-nextflow-private'
 MANIFESTS = {'canonical_reference_asset': 'reference-manifest.json', 'canonical_bwa_index_asset': 'index-manifest.json',

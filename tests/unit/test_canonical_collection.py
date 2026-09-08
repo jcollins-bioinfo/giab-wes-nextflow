@@ -3,12 +3,18 @@ from __future__ import annotations
 
 import copy
 import json
+import shutil
+import zipfile
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
+from unittest.mock import patch
 
 from giab_wes_nextflow.canonical_results import DOMAINS, load_canonical_bundle
-from giab_wes_nextflow.canonical_run import collect
+from giab_wes_nextflow.canonical_run import collect, restore_completed_run
+from giab_wes_nextflow.canonical_checkpoint import inventory
+from giab_wes_nextflow.canonical_asset_reference import digest_json
 from giab_wes_nextflow.canonical_science import file_id, write_json
 from giab_wes_nextflow.m5 import metrics
 
@@ -81,6 +87,58 @@ class CanonicalCollectionTests(unittest.TestCase):
         self.assertTrue((directory / 'coverage.json').is_file())
         self.assertTrue(json.loads((directory / 'sources.json').read_text())['test_only'])
 
+    def test_completed_collection_reused_after_resume_without_rewriting(self) -> None:
+        """A retry retains the first observation while rechecking scientific proof."""
+        directory, pin = self.execute()
+        before = {path.name: path.read_bytes() for path in directory.iterdir()}
+        resumed = {**self.resume, 'cached_tasks': 6}
+        self.assertEqual(collect(self.stage, self.published, self.run_id, self.identity, self.gates, resumed, None), (directory, pin))
+        self.assertEqual(before, {path.name: path.read_bytes() for path in directory.iterdir()})
+
+    def test_completed_collection_rejects_changed_evidence_and_code(self) -> None:
+        """An existing completion cannot authorize a different code or gate proof."""
+        self.execute()
+        for identity, gates in [({'repository_sha': 'a' * 40}, self.gates),
+                                (self.identity, {**self.gates, 'runtime': {'test_only': True, 'changed': True}})]:
+            with self.subTest(identity=identity, gates=gates), self.assertRaisesRegex(ValueError, 'proof differs'):
+                collect(self.stage, self.published, self.run_id, identity, gates, self.resume, None)
+        output = self.stage / 'public-evidence/result.json'
+        output.write_bytes(output.read_bytes() + b' ')
+        with self.assertRaisesRegex(ValueError, 'hash or size mismatch'):
+            self.execute()
+
+    def test_interrupted_collection_leaves_only_preserved_candidate(self) -> None:
+        """A partial writer never publishes its directory as completed evidence."""
+        def interrupted(directory, result, receipts):
+            directory.mkdir(); (directory / 'result.json').write_text('interrupted test-only bytes')
+            raise OSError('invented interruption')
+        with patch('giab_wes_nextflow.canonical_results.write_public_bundle', side_effect=interrupted):
+            with self.assertRaisesRegex(OSError, 'invented interruption'):
+                self.execute()
+        self.assertFalse((self.stage / 'public-evidence').exists())
+        candidates = list(self.stage.glob('public-evidence.build-*'))
+        self.assertEqual(len(candidates), 1)
+        self.execute()
+        self.assertTrue((candidates[0] / 'result.json').exists())
+
+    def test_legacy_incomplete_collection_is_preserved_on_retry(self) -> None:
+        """Interrupted older output without a completion manifest is recoverable."""
+        output = self.stage / 'public-evidence'; output.mkdir()
+        (output / 'partial.json').write_text('invented partial metadata')
+        directory, pin = self.execute()
+        load_canonical_bundle(directory, pin)
+        preserved = list(self.stage.glob('public-evidence.incomplete-*'))
+        self.assertEqual((preserved[0] / 'partial.json').read_text(), 'invented partial metadata')
+
+    def test_complete_collection_requires_separate_trusted_pin(self) -> None:
+        """Never treat a manifest's self-derived hash as independent evidence."""
+        directory, _ = self.execute()
+        original = (directory / 'manifest.json').read_bytes()
+        (self.stage / 'public-evidence-proof.json').unlink()
+        with self.assertRaisesRegex(ValueError, 'no independent collection proof'):
+            self.execute()
+        self.assertEqual((directory / 'manifest.json').read_bytes(), original)
+
     def test_changed_published_bytes_rejected(self) -> None:
         """Declared output hashes cannot survive mutation of the actual artifact."""
         path = self.receipt('gatk', 'native').parent / 'raw.vcf.gz'
@@ -88,6 +146,40 @@ class CanonicalCollectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'differs from receipt'):
             self.execute()
         self.assertFalse((self.stage / 'public-evidence/manifest.json').exists())
+
+    def test_completed_durable_bundle_restores_without_runtime_or_tools(self) -> None:
+        """A reset recovers verified public bytes only after private provenance exists."""
+        public, pin = self.execute()
+        drive = self.stage / 'fake-drive'
+        root = drive / f'runs/{self.run_id}/completed-stages'
+        durable = root / 'public-evidence'; shutil.copytree(public, durable)
+        write_json(durable / 'stage-complete.json', {'kind': 'canonical_completed_stage', 'key': pin, 'files': inventory(durable)})
+        fresh = self.stage / 'fresh'; fresh.mkdir()
+        with self.assertRaises(FileNotFoundError):
+            restore_completed_run(fresh, drive, self.run_id, self.identity['repository_sha'])
+        private = root / 'private-provenance'; private.mkdir()
+        (private / 'receipt.json').write_text('{"test_only":true}')
+        shutil.copytree(public, private / 'public-evidence')
+        shutil.copyfile(self.stage / 'public-evidence-proof.json', private / 'public-evidence-proof.json')
+        files = inventory(private)
+        write_json(private / 'stage-complete.json', {'kind': 'canonical_completed_stage', 'key': digest_json(files), 'files': files})
+        bundle = restore_completed_run(fresh, drive, self.run_id, self.identity['repository_sha'])
+        record = json.loads((fresh / 'canonical-complete.json').read_text())
+        self.assertEqual(record['manifest_sha256'], pin)
+        self.assertEqual(record['bundle'], file_id(bundle))
+        with zipfile.ZipFile(bundle) as archive:
+            self.assertEqual(sorted(archive.namelist()), sorted(p.name for p in public.iterdir()))
+        with self.assertRaisesRegex(ValueError, 'code/run identity'):
+            restore_completed_run(fresh, drive, self.run_id, 'd' * 40)
+        (durable / 'stage-complete.json').unlink()
+        resumed = self.stage / 'private-only-recovery'; resumed.mkdir()
+        with patch('giab_wes_nextflow.canonical_checkpoint.publish') as publish:
+            restored = restore_completed_run(resumed, drive, self.run_id, self.identity['repository_sha'])
+            self.assertTrue(restored.is_file())
+            publish.assert_called_once_with(resumed / 'public-evidence', drive, self.run_id, 'public-evidence', pin)
+        (private / 'receipt.json').write_text('changed')
+        with self.assertRaisesRegex(ValueError, 'checkpoint inventory'):
+            restore_completed_run(fresh, drive, self.run_id, self.identity['repository_sha'])
 
     def test_caller_input_asymmetry_rejected(self) -> None:
         """Per-caller physical identities must match the shared preprocessing output."""

@@ -47,8 +47,11 @@ def stage_file(source: Path, target: Path) -> None:
         require(file_id(target) == expected, "staged input conflict")
         return
     # Independent copies prevent an executed caller from mutating another branch.
-    shutil.copyfile(source, target)
-    require(file_id(target) == expected, "staging copy mismatch")
+    temporary = target.with_name(target.name + '.incomplete')
+    if not temporary.exists() or file_id(temporary) != expected:
+        shutil.copyfile(source, temporary)
+    require(file_id(temporary) == expected, "staging copy mismatch")
+    os.replace(temporary, target)
 
 
 class IndexedSequence:

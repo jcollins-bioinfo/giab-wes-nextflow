@@ -54,6 +54,8 @@ jobs:
           python scripts/validate_orchestration.py
       - name: Complete Python unit and negative suite
         run: python -m unittest discover -s tests/unit -v
+      - name: Check canonical orchestration for undefined names
+        run: python -m pyflakes src/giab_wes_nextflow/canonical*.py
       - name: Generate deterministic fixture before samplesheet validation
         run: |
           python tests/data/generate_fixture.py
