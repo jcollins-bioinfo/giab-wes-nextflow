@@ -95,10 +95,10 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
             html.P(f"{data.duplicate_reads} marked duplicate reads are retained within the read totals; {data.read_groups} read groups.", className="note")], className="panel"),
             html.Section([html.H2("Caller qualification"), html.Div([html.Strong("GATK HaplotypeCaller"),
                 html.Span("Accepted in synthetic test", className="badge success")], className="caller"),
-                html.Div([html.Strong("DeepVariant WES"), html.Span("Native-call gate failed", className="badge pending")], className="caller"),
+                html.Div([html.Strong("DeepVariant WES"), html.Span("Accepted in synthetic test", className="badge success")], className="caller"),
                 html.P(data.caller_observation),
-                html.P("DeepVariant and its prediction inspector completed. Both-mode and final resume qualification remain open."),
-                html.P("The M4 fixture has 528 primary reads. Its caller observations are separate from the 48-read M3 run plotted here.", className="note"),
+                html.P("Independent callers, both-mode and final resume passed on main. This qualifies invented SNV integration; indel and canonical HG001 qualification remain unavailable."),
+                html.P("M4 recipe 1.1.0 has 528 primary reads. Its caller observations are separate from the 48-read M3 run plotted here. Earlier recipe 1.0.0 failures remain in the evidence download as historical attempts.", className="note"),
                 html.A("Inspect the recorded caller run ↗", href=f"{REPO}/actions/runs/{data.m4_run_id}")], className="panel")], className="columns"),
         html.Section([html.H2("Primary HG001 results"), html.P("Awaiting real execution and common benchmarking."),
             html.Div([card("SNP precision / recall / F1", "Unavailable", "No canonical SNP counts"),
@@ -112,13 +112,13 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX) 
         html.Div(task_table(data, "all"), id="task-table", className="table-wrap", **{"aria-live": "polite"})], className="panel")
     provenance = html.Div([html.H2("Trace every observation"), html.P("This app loads immutable source files and verifies their hashes before rendering."),
         html.Dl([html.Dt("Actual M3 tested pipeline SHA"), html.Dd(html.Code(data.pipeline_sha)),
-                 html.Dt("M4 diagnostic source SHA"), html.Dd(html.Code(data.m4_sha)),
+                 html.Dt("Actual M4 passed main SHA"), html.Dd(html.Code(data.m4_sha)),
                  html.Dt("Shared M3 BAM SHA-256"), html.Dd(html.Code(data.bam_sha256)),
                  html.Dt("Shared M3 BAI SHA-256"), html.Dd(html.Code(data.bai_sha256)),
                  html.Dt("Explorer evidence manifest SHA-256"), html.Dd(html.Code(MANIFEST_SHA256))]),
         html.H3("Verified source inventory"), html.Ul([html.Li([html.Strong(name), html.Br(), html.Code(sha)]) for name, sha in data.sources]),
         html.A("Download validated evidence JSON", href=prefix + "evidence.json", className="button"),
-        html.H3("Field ownership"), html.P("Read/QC cards: m3-proof.json → bam_assertions. Execution cards: resume_assertions. Task table: m3-first.trace.tsv. Caller status: m4-attempt.json → execution_scope. Domain decision: domain-approval.json. Benchmark metrics are null, with an explicit missing reason.")], className="panel")
+        html.H3("Field ownership"), html.P("Read/QC cards: m3-proof.json → bam_assertions. Execution cards: resume_assertions. Task table: m3-first.trace.tsv. Current caller status: m4-verified-main-34237377774.json → execution_scope. Historical failure: m4-attempt.json. Domain decision: domain-approval.json. Benchmark metrics are null, with an explicit missing reason.")], className="panel")
     app.layout = html.Div([html.Header([html.A("JPC / RESEARCH", href=REPO, className="brand"),
         html.Span(f"EXPLORER {__version__}", className="version")]), html.Main([
         html.Div("SYNTHETIC EVIDENCE PROTOTYPE", className="scope"), html.H1("Pipeline Evidence Explorer"),

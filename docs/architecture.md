@@ -23,3 +23,22 @@ collector has no observed cost measurement. The integration driver owns exact
 checkout/runtime qualification and real/resume acceptance. A separate guarded
 publisher revalidates small synthetic evidence and writes completion markers
 last; it does not publish work directories or confer canonical readiness.
+
+## M5 downstream boundary
+
+`m5.nf` is a separate synthetic-only downstream entry. Both callers traverse
+`M5_COMMON_BENCHMARK` and the same `M5_NORMALIZE`/`M5_BENCHMARK` modules.
+Normalization receives only native query/index and reference/FAI/dictionary;
+truth, confidence and evaluation BED enter only the benchmark process. Host
+Python launches the pinned, network-disabled tool containers with explicit
+mounts. This entry does not repeat preprocessing or execute either caller.
+The package owns reference/index validation, immutable lineage, RTG partition
+parsing and metric arithmetic. Resource collection runs after Nextflow exits.
+Dash continues consuming its verified synthetic prototype; it is not a metric
+calculator or a claim of canonical results.
+
+The M5 driver now calls `m5_nextflow_qualification.py` after direct engine and M4
+interface acceptance. Four phases share one Nextflow cache and must yield
+2/0,2/0,0/4,0/4 completed/cached tasks. Canonical JSON from the strict package
+manifest reader is parsed once before task creation. The coding-domain constructor
+is independent of query, truth VCF, reads, alignments and coverage.

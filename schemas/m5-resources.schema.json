@@ -1,0 +1,863 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/schemas/m5-resources.schema.json",
+  "title": "M5 raw Nextflow resource evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "package_version",
+    "trace_sha256",
+    "trace_units",
+    "runtime",
+    "runtime_provenance",
+    "elapsed_wall_seconds",
+    "timing_source",
+    "started_at",
+    "ended_at",
+    "tasks",
+    "groups",
+    "end_to_end",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "artifact_type": {
+      "const": "m5-resources"
+    },
+    "package_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trace_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "trace_units": {
+      "const": "nextflow-raw-ms-bytes"
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "architecture",
+        "accelerator",
+        "input_bytes",
+        "evaluated_bases"
+      ],
+      "properties": {
+        "architecture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "reason"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "value": {
+                    "type": "null"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "reason": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "accelerator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "reason"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "value": {
+                    "type": "null"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "reason": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "input_bytes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "reason"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "value": {
+                    "type": "null"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "reason": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "evaluated_bases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "reason"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "value": {
+                    "type": "null"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "reason": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "runtime_provenance": {
+      "const": "operator_supplied_not_attested"
+    },
+    "elapsed_wall_seconds": {
+      "$ref": "#/$defs/seconds"
+    },
+    "timing_source": {
+      "enum": [
+        "unavailable",
+        "provided_observation",
+        "provided_invocation_timestamps"
+      ]
+    },
+    "started_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ended_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "task_id",
+          "attempt",
+          "name",
+          "process",
+          "group",
+          "status",
+          "cached",
+          "task_hash",
+          "exit_code",
+          "metrics"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "attempt": {
+            "$ref": "#/$defs/attempt"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "process": {
+            "type": "string",
+            "minLength": 1
+          },
+          "group": {
+            "enum": [
+              "shared_preprocessing",
+              "gatk_incremental",
+              "deepvariant_incremental",
+              "common_normalization_benchmark"
+            ]
+          },
+          "status": {
+            "enum": [
+              "ABORTED",
+              "CACHED",
+              "COMPLETED",
+              "FAILED"
+            ]
+          },
+          "cached": {
+            "type": "boolean"
+          },
+          "task_hash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "exit_code": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "duration_seconds",
+              "realtime_seconds",
+              "cpu_percent",
+              "requested_cpus",
+              "requested_memory_bytes",
+              "peak_rss_bytes",
+              "peak_vmem_bytes",
+              "cpu_hours_estimated",
+              "cpu_hours_measured"
+            ],
+            "properties": {
+              "duration_seconds": {
+                "$ref": "#/$defs/seconds"
+              },
+              "realtime_seconds": {
+                "$ref": "#/$defs/seconds"
+              },
+              "cpu_percent": {
+                "$ref": "#/$defs/percent"
+              },
+              "requested_cpus": {
+                "$ref": "#/$defs/cpus"
+              },
+              "requested_memory_bytes": {
+                "$ref": "#/$defs/bytes"
+              },
+              "peak_rss_bytes": {
+                "$ref": "#/$defs/bytes"
+              },
+              "peak_vmem_bytes": {
+                "$ref": "#/$defs/bytes"
+              },
+              "cpu_hours_estimated": {
+                "$ref": "#/$defs/hours"
+              },
+              "cpu_hours_measured": {
+                "$ref": "#/$defs/hours"
+              }
+            }
+          }
+        }
+      }
+    },
+    "groups": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shared_preprocessing",
+        "gatk_incremental",
+        "deepvariant_incremental",
+        "common_normalization_benchmark"
+      ],
+      "properties": {
+        "shared_preprocessing": {
+          "$ref": "#/$defs/summary"
+        },
+        "gatk_incremental": {
+          "$ref": "#/$defs/summary"
+        },
+        "deepvariant_incremental": {
+          "$ref": "#/$defs/summary"
+        },
+        "common_normalization_benchmark": {
+          "$ref": "#/$defs/summary"
+        }
+      }
+    },
+    "end_to_end": {
+      "$ref": "#/$defs/summary"
+    },
+    "warnings": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "seconds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "reason"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unit": {
+          "const": "seconds"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "bytes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "reason"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unit": {
+          "const": "bytes"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "cpus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "reason"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unit": {
+          "const": "logical_cpus"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "percent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "reason"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unit": {
+          "const": "percent"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "hours": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "reason"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unit": {
+          "const": "cpu_hours"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "reason"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unit": {
+          "const": "attempt"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_attempt_count",
+        "status_counts",
+        "executed_attempts",
+        "cached_prior_attempts"
+      ],
+      "properties": {
+        "task_attempt_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ABORTED",
+            "CACHED",
+            "COMPLETED",
+            "FAILED"
+          ],
+          "properties": {
+            "ABORTED": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "CACHED": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "COMPLETED": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "FAILED": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "executed_attempts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "task_attempt_count",
+            "summed_task_duration_seconds",
+            "summed_task_realtime_seconds",
+            "summed_cpu_hours_estimated",
+            "summed_cpu_hours_measured",
+            "max_task_peak_rss_bytes",
+            "max_task_peak_vmem_bytes"
+          ],
+          "properties": {
+            "task_attempt_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "summed_task_duration_seconds": {
+              "$ref": "#/$defs/seconds"
+            },
+            "summed_task_realtime_seconds": {
+              "$ref": "#/$defs/seconds"
+            },
+            "summed_cpu_hours_estimated": {
+              "$ref": "#/$defs/hours"
+            },
+            "summed_cpu_hours_measured": {
+              "$ref": "#/$defs/hours"
+            },
+            "max_task_peak_rss_bytes": {
+              "$ref": "#/$defs/bytes"
+            },
+            "max_task_peak_vmem_bytes": {
+              "$ref": "#/$defs/bytes"
+            }
+          }
+        },
+        "cached_prior_attempts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "task_attempt_count",
+            "summed_task_duration_seconds",
+            "summed_task_realtime_seconds",
+            "summed_cpu_hours_estimated",
+            "summed_cpu_hours_measured",
+            "max_task_peak_rss_bytes",
+            "max_task_peak_vmem_bytes"
+          ],
+          "properties": {
+            "task_attempt_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "summed_task_duration_seconds": {
+              "$ref": "#/$defs/seconds"
+            },
+            "summed_task_realtime_seconds": {
+              "$ref": "#/$defs/seconds"
+            },
+            "summed_cpu_hours_estimated": {
+              "$ref": "#/$defs/hours"
+            },
+            "summed_cpu_hours_measured": {
+              "$ref": "#/$defs/hours"
+            },
+            "max_task_peak_rss_bytes": {
+              "$ref": "#/$defs/bytes"
+            },
+            "max_task_peak_vmem_bytes": {
+              "$ref": "#/$defs/bytes"
+            }
+          }
+        }
+      }
+    }
+  }
+}

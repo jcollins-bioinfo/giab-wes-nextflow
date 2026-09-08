@@ -1,11 +1,18 @@
 # Changelog
 
+## 0.5.0-dev.1 — M5 implementation
+
+- Add preregistered common normalization and RTG benchmark contracts with Python metrics.
+- Add typed trace/resource attribution and separate synthetic downstream workflow.
+- Extend the existing M4 CI job with bounded M5 qualification; no canonical execution.
+- Defer coding-domain constructor and index handoff within the owner usage budget.
+
 ## [0.4.0-dev.1] - 2026-09-07
 
-M4 implementation in progress: separately registered positive SNV fixture,
+M4 implementation subsequently verified on merged main f29ed262b886ba4afe18cf9cc6455edcf13df808 by CI34237377774 (2026-09-08): separately registered positive SNV fixture,
 shared accepted preprocessing inputs, independent/both GATK and DeepVariant WES
 caller contracts and actual Linux/x86_64 qualification. Execution status is
-owned by the M4 checkpoint; a version declaration is not a passing run.
+owned by the M4 checkpoint; historical failures remain retained. Reconcile the owner-supplied Colab observation and stale Explorer state without claiming new execution.
 
 
 ## [0.3.0-dev.1] - 2026-09-07
@@ -45,3 +52,11 @@ unresolved capture-design gate and historical source-cache evidence boundaries.
 
 - Milestone 1 foundation, executable contracts, synthetic validation, CI, and private-workspace publisher.
 - No biological processing or benchmark results.
+
+### M5 qualification continuation
+
+- Diagnose failed synthetic counts and add symmetric RTG reference-overlap handling
+  without changing the frozen oracle; retain full bounded failure evidence.
+- Reject duplicate manifest keys and wire actual Nextflow equivalence/resume proof.
+- Implement the approved coding-domain constructor and reproduce all fixed hashes.
+- Keep actual M5 engine qualification and reusable-index Colab handoff unresolved.

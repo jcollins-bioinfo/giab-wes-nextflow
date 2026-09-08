@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "research_pass": "one focused M5 method/runtime pass",
+  "observed_at": "2026-09-08",
+  "sources": [
+    {
+      "id": "rtg_manual",
+      "url": "https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html",
+      "sha256": "4db32f21fdfb299e5ff4aba7dee02448b662db779cfb83cc74f77b97d4aa69bf",
+      "bytes": 415046,
+      "accessed": "2026-09-08"
+    },
+    {
+      "id": "bcftools_manual",
+      "url": "https://raw.githubusercontent.com/samtools/bcftools/1.24/doc/bcftools.txt",
+      "sha256": "378bcf1f2faa5cef1f776c8cdcfdf096ad4b977a9e9d811a9c74d4d5830af0f7",
+      "bytes": 172137,
+      "accessed": "2026-09-08"
+    },
+    {
+      "id": "biocontainers/bcftools",
+      "url": "https://quay.io/v2/biocontainers/bcftools/manifests/sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3",
+      "sha256": "a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3",
+      "bytes": 752,
+      "accessed": "2026-09-08",
+      "scope": "manifest only; no image layers or execution"
+    },
+    {
+      "id": "realtimegenomics/rtg-tools",
+      "url": "https://registry-1.docker.io/v2/realtimegenomics/rtg-tools/manifests/sha256:b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790",
+      "sha256": "b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790",
+      "bytes": 1780,
+      "accessed": "2026-09-08",
+      "scope": "manifest only; no image layers or execution"
+    }
+  ],
+  "execution_qualified": false
+}

@@ -1,5 +1,7 @@
 # Capture-design investigation, 2026-09-07
 
+Current decision: ADR 0013 records owner approval of the fixed GENCODE v50 coding-domain alternative. Physical kit assignment remains unresolved; the historical capture investigation below does not override that approval. Canonical domain implementation/validation remains a separate gate.
+
 The exact deposited Expanded Exome target file and its association with the
 Garvan dataset are now established. The remaining uncertainty is narrower:
 the inspected primary sources do not uniquely assign library NIST7035 to the

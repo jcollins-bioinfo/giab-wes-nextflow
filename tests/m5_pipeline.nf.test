@@ -1,0 +1,56 @@
+nextflow_pipeline {
+    name 'M5 uses one downstream normalization and benchmark path'
+    script '../m5.nf'
+    tag 'm5'
+    options '-stub-run'
+    profile 'm5_test'
+    test('both selections produce explicit noncanonical stubs through the same modules') {
+        when {
+            params { callers = 'both'; outdir = "$outputDir" }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 4
+            for (caller in ['gatk', 'deepvariant']) {
+                assert path("$outputDir/m5/$caller/normalization/normalized/normalization.json").json.status == 'stub_only'
+                def result = path("$outputDir/m5/$caller/benchmark/benchmark/benchmark.json").json
+                assert result.status == 'stub_only' && !result.canonical && result.metrics == null
+            }
+        }
+    }
+    test('GATK selection invokes only the common two processes') {
+        when {
+            params { callers = 'gatk'; outdir = "$outputDir" }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 2
+            assert path("$outputDir/m5/gatk/benchmark/benchmark/benchmark.json").json.metrics == null
+            assert !path("$outputDir/m5/deepvariant").exists()
+        }
+    }
+    test('DeepVariant selection invokes only the common two processes') {
+        when {
+            params { callers = 'deepvariant'; outdir = "$outputDir" }
+        }
+        then {
+            assert workflow.success
+            assert workflow.trace.succeeded().size() == 2
+            assert path("$outputDir/m5/deepvariant/benchmark/benchmark/benchmark.json").json.metrics == null
+            assert !path("$outputDir/m5/gatk").exists()
+        }
+    }
+    test('duplicate manifest keys fail before any normalization task') {
+        when {
+            params {
+                m5_manifest = "$projectDir/tests/data/m5-duplicate-manifest.invalid-json.txt"
+                outdir = "$outputDir"
+            }
+        }
+        then {
+            assert !workflow.success
+            assert workflow.trace.succeeded().size() == 0
+            assert workflow.stdout.join('\n').contains('duplicate manifest key')
+        }
+    }
+}

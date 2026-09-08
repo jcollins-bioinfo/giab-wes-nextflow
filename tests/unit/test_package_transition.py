@@ -30,8 +30,8 @@ class PackageTransitionTest(unittest.TestCase):
             self.assertIs(wrapper.main,__import__(module,fromlist=['main']).main)
     def test_version_is_consistent(self) -> None:
         """Bind active package, Nextflow and manifest versions to this milestone."""
-        self.assertEqual(__version__,'0.4.0-dev.1')
-        self.assertIn("version = '0.4.0-dev.1'",(ROOT/'nextflow.config').read_text())
+        self.assertEqual(__version__,'0.5.0-dev.1')
+        self.assertIn("version = '0.5.0-dev.1'",(ROOT/'nextflow.config').read_text())
         self.assertEqual(json.loads((ROOT/'config/m2-resources.json').read_text())['project_version'],__version__)
     def test_launcher_orders_fixture_before_samplesheet_validation(self) -> None:
         """Generate synthetic files before validating the samplesheet and retain exact code identity."""

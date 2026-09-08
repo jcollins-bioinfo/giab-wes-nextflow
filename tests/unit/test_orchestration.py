@@ -96,6 +96,16 @@ class OrchestrationTests(unittest.TestCase):
     def test_verified_retains_independent_capture_gate(self) -> None:
         VALIDATOR.validate_document(verified_record(), SCHEMA)
 
+    def test_m4_verified_cannot_retain_failed_required_ci(self) -> None:
+        """An M4 label cannot override a failed or stale required-run identity."""
+        data = verified_record()
+        data["milestone"] = "M4"
+        VALIDATOR.validate_document(data, SCHEMA)
+        for status in ("failure", "pending", "not_run"):
+            data["ci"][0]["status"] = status
+            with self.subTest(status=status), self.assertRaisesRegex(ValueError, "required CI"):
+                VALIDATOR.validate_document(data, SCHEMA)
+
     def test_canonical_and_authorized_release(self) -> None:
         data = canonical_record()
         VALIDATOR.validate_document(data, SCHEMA)

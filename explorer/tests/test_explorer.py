@@ -20,6 +20,13 @@ class ExplorerTests(unittest.TestCase):
         self.assertIsNone(public["benchmark_metrics"])
         self.assertIsNone(public["comparative_cost"])
         self.assertFalse(public["canonical"])
+        self.assertEqual(public["m4"]["status"], "passed")
+        self.assertEqual(public["m4"]["run_id"], 34237377774)
+        self.assertTrue(public["m4"]["execution_scope"]["both_and_resume_accepted"])
+        self.assertEqual(public["m4"]["deepvariant_inference"]["call_variants_record_count"], 2)
+        self.assertEqual(public["m4_historical_attempt"]["status"], "failed")
+        self.assertEqual(public["m4_historical_attempt"]["run_id"], 34202569517)
+        self.assertIsNone(public["m4"]["evidence_limits"]["raw_native_call_rows"])
         self.assertEqual(len(model.select_tasks(data, "all")), 22)
         self.assertEqual(len(model.select_tasks(data, data.tasks[0].name)), 1)
         with self.assertRaises(ValueError):
@@ -49,6 +56,9 @@ class ExplorerTests(unittest.TestCase):
             self.assertEqual(response.status_code, 200, route)
             self.assertEqual(response.headers["X-Content-Type-Options"], "nosniff")
         self.assertFalse(client.get(DEFAULT_PREFIX + "readyz").json["canonical"])
+        layout = client.get(DEFAULT_PREFIX + "_dash-layout").get_data(as_text=True)
+        self.assertIn("Independent callers, both-mode and final resume passed on main", layout)
+        self.assertNotIn("Native-call gate failed", layout)
         payload = client.get(DEFAULT_PREFIX + "evidence.json").json
         self.assertEqual(payload["scope"], "synthetic_prototype")
         data = model.load_snapshot()

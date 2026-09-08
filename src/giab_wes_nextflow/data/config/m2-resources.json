@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/m2-source-manifest.schema.json",
   "schema_version": "1.0.0",
-  "project_version": "0.4.0-dev.1",
+  "project_version": "0.5.0-dev.1",
   "accessed_utc": "2026-09-03T00:00:00Z",
   "resources": [
     {"id":"giab_garvan_sequence_index","role":"identity_evidence","organization":"NIST/NCBI GIAB","url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data_indexes/NA12878/sequence.index.NA12878_Illumina_HiSeq_Exome_Garvan_fastq_09252015","destination":"config/sources/sequence.index.NA12878_Illumina_HiSeq_Exome_Garvan_fastq_09252015","filename":"sequence.index.NA12878_Illumina_HiSeq_Exome_Garvan_fastq_09252015","bytes":1439,"checksum":{"algorithm":"md5","expected":"d1c482bd202d7360cee8e62aa6e17e9d"},"reference_build":null,"contig_convention":null,"sample":{"id":"HG001","alternate_id":"NA12878","library":null,"lane":null},"license_note":"Public NIST/NCBI metadata; preserve source attribution.","evidence_url":"https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data_indexes/NA12878/sequence.index.NA12878_Illumina_HiSeq_Exome_Garvan_fastq_09252015","status":"declared","parents":[],"outputs":[]},

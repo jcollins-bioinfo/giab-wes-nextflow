@@ -1,6 +1,11 @@
 # ADR 0012: single-sample caller execution and positive qualification
 
-**Status:** accepted for M4 implementation, execution qualification pending (2026-09-07).
+**Status:** accepted; synthetic SNV execution verified on main (2026-09-08).
+Canonical HG001 execution remains unqualified. [CI34237377774 and its verified
+artifact record](../orchestration/evidence/m4-verified-main-34237377774.json)
+establish both native caller branches, positive DeepVariant inference, both-mode
+and full resume on the accepted recipe 1.1.0. Earlier failed attempts remain
+historical evidence; the strict oracle and caller contracts remain in force.
 
 M3 required CI34103737524 qualified the actual invented-input preprocessing
 workflow. Its accepted BAM/BAI and reference boundary is the sole upstream input

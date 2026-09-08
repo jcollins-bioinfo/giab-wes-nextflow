@@ -56,3 +56,23 @@ every selected record and shared input lineage. Publication accepts only the
 selected three or four JSON files, hashes destination bytes, writes an immutable
 registry and exposes the completion marker last. Recovery revalidates those
 records; it does not recover Nextflow work or qualify a new caller execution.
+
+## M5 common contracts
+
+`m5-normalization`, `m5-benchmark` and `m5-resources` are versioned package-owned
+schemas, mirrored byte-for-byte in the root schema directory. ADR 0014 defines
+symmetric fully-called diploid nonreference inclusion, native FILTER retention,
+strict REF validation, decomposition and RTG representation matching. Raw
+queries remain unchanged; normalization and engine outputs retain SHA-256 lineage.
+Truth-side and query-side TP counts are distinct. Precision uses query TP; recall
+uses truth TP; undefined denominators remain null with reasons. The fixed BED
+intersection supplies evaluated bases independently of query/depth/callability.
+Resource observations retain attempts, cached versus executed costs and units;
+summed task durations and maxima of individual task memory peaks are not whole-run
+wall time or concurrent run peak memory. See [resource semantics](m5-resources.md).
+
+M5 entry manifests now reject duplicate keys at every JSON depth before Nextflow
+resolves inputs. The qualification helper checks actual task inventories, cache
+status/hash continuity, immutable output identities and normalization staging.
+The approved-domain constructor accepts only the pinned GENCODE gzip, FAI and
+confidence BED; fixed output pins remain immutable and canonical readiness false.

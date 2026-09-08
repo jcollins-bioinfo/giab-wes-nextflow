@@ -1,0 +1,464 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "package_version",
+    "synthetic",
+    "canonical",
+    "caller",
+    "sample",
+    "payload_sha256",
+    "inputs",
+    "outputs",
+    "commands",
+    "tools",
+    "warnings",
+    "domain_id",
+    "status",
+    "evaluated_bases",
+    "interval_count",
+    "metrics",
+    "normalization_lineage",
+    "truth_normalization",
+    "canonical_metrics",
+    "comparative_cost",
+    "reference_sdf"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "kind": {
+      "const": "benchmark"
+    },
+    "package_version": {
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "canonical": {
+      "const": false
+    },
+    "caller": {
+      "enum": [
+        "gatk",
+        "deepvariant",
+        "truth"
+      ]
+    },
+    "sample": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "filename": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "required": [
+        "truth",
+        "truth_index",
+        "confidence",
+        "domain",
+        "reference",
+        "normalization"
+      ]
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "filename": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "required": [
+        "evaluation.bed"
+      ]
+    },
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool",
+          "image",
+          "argv",
+          "exit_code",
+          "stdout_sha256",
+          "stderr_sha256",
+          "network",
+          "mounts"
+        ],
+        "properties": {
+          "tool": {
+            "enum": [
+              "bcftools",
+              "rtg"
+            ]
+          },
+          "image": {
+            "type": "string"
+          },
+          "argv": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "exit_code": {
+            "const": 0
+          },
+          "stdout_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "stderr_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "network": {
+            "const": "none"
+          },
+          "mounts": {
+            "const": [
+              "task"
+            ]
+          }
+        }
+      }
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rtg"
+      ],
+      "properties": {
+        "rtg": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "declared",
+            "observed_version"
+          ],
+          "properties": {
+            "declared": {
+              "const": {
+                "version": "3.13",
+                "image": "registry-1.docker.io/realtimegenomics/rtg-tools@sha256:b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790"
+              }
+            },
+            "observed_version": {
+              "type": "string",
+              "minLength": 5
+            }
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "domain_id": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "evaluated",
+        "not_evaluated"
+      ]
+    },
+    "evaluated_bases": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "interval_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "SNP",
+        "INDEL",
+        "OTHER"
+      ],
+      "properties": {
+        "SNP": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tp_query",
+            "tp_truth",
+            "fp",
+            "fn",
+            "precision",
+            "recall",
+            "f1",
+            "missing_reasons"
+          ],
+          "properties": {
+            "tp_query": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "tp_truth": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fp": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fn": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "precision": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "recall": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "f1": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "missing_reasons": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "INDEL": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tp_query",
+            "tp_truth",
+            "fp",
+            "fn",
+            "precision",
+            "recall",
+            "f1",
+            "missing_reasons"
+          ],
+          "properties": {
+            "tp_query": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "tp_truth": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fp": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fn": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "precision": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "recall": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "f1": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "missing_reasons": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "OTHER": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tp_query",
+            "tp_truth",
+            "fp",
+            "fn",
+            "precision",
+            "recall",
+            "f1",
+            "missing_reasons"
+          ],
+          "properties": {
+            "tp_query": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "tp_truth": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fp": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fn": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "precision": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "recall": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "f1": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "missing_reasons": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "normalization_lineage": {
+      "type": "string"
+    },
+    "truth_normalization": {
+      "type": "object"
+    },
+    "canonical_metrics": {
+      "type": "null"
+    },
+    "comparative_cost": {
+      "type": "null"
+    },
+    "reference_sdf": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "filename": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

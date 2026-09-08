@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0.0",
+  "assessed_at": "2026-09-08T17:54:10.393086+00:00",
+  "source_report_sha256": "38b58f248e2bc165d7f665340bb4670ee1e8e8082af8594ecf5adc7cbf8cf5d2",
+  "source_report_bytes": 1836,
+  "reported_observation_time": "2026-09-08T17:45:32.487257+00:00",
+  "report_is_signed_remote_attestation": false,
+  "reported_code_identity_matches_git": true,
+  "verified_repository_sha": "676718ed6c02c3076a26b48fb82d684251fb7892",
+  "computed_package_inventory_sha256": "67df863540f9bb90b16481e420ae512fc1a3be8c005bb024e806382fa54c5a92",
+  "computed_package_files": 43,
+  "observed_system": {
+    "architecture": "x86_64",
+    "os": "Linux",
+    "logical_cpus": 8,
+    "cpu_features": {
+      "avx": true,
+      "sse4_1": true,
+      "sse4_2": true
+    },
+    "physical_ram_gib": 50.99028778076172,
+    "cgroup_limit_known": false,
+    "scratch_free_gib": 205.69124603271484,
+    "docker_executable_available": false,
+    "docker_daemon_reachable": false,
+    "high_ram_enabled_owner_confirmed": true
+  },
+  "index_build_decision": {
+    "qualified": false,
+    "documentation_estimate_gib": 80.83677957579494,
+    "shortfall_before_headroom_gib": 29.846491795033216,
+    "estimate_is_measured_rss": false,
+    "reason": "Observed physical RAM is below documented estimate before headroom; no index build attempted."
+  },
+  "canonical_runtime_qualified": false,
+  "drive_quota_verified": false,
+  "public_index_candidate": {
+    "provider_documentation": "https://nf-co.re/oncoanalyser/1.0.0/docs/usage/#reference-data-urls",
+    "reference_name": "GCA_000001405.15_GRCh38_no_alt_analysis_set.fna",
+    "index_label": "bwa-mem2_index/2.2.1.tar.gz",
+    "qualified": false,
+    "unverified": [
+      "full reference identity against authenticated GIAB FASTA",
+      "archive inventory and hashes",
+      "compatibility and actual smoke test using pinned BWA-MEM2 v2.3"
+    ],
+    "small_FAI_direct_fetch_status": "Succeeded with standard HTTP User-Agent after initial 403",
+    "large_assets_downloaded": false,
+    "FAI_validation": {
+      "bytes": 7804,
+      "sha256": "502a1b8fb73ccd53285c28a0f12df90c818b4fe3de1e862ef47c593ef1a0a4b4",
+      "exact_pinned_GIAB_FAI_byte_match": true,
+      "contigs": 195,
+      "bases": 3099922541,
+      "limitation": "Matching FAI metadata does not establish equality of reference bases or the BWA index."
+    },
+    "provider_metadata": {
+      "sequence_dictionary": {
+        "url": "https://pub-cf6ba01919994c3cbd354659947f74d8.r2.dev/genomes/GRCh38_hmf/24.0/samtools_index/1.16/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.dict",
+        "status": 200,
+        "content_length": "36113",
+        "etag": "\"35b684465a09fae6a4b82bb7d5d9cdbc\"",
+        "last_modified": "Wed, 24 Apr 2024 05:23:43 GMT",
+        "bytes": 36113,
+        "sha256": "2c61a18ed675639dfcba45b152313a0fcd58266df964559e436894441743c0d8",
+        "contigs": 195,
+        "all_contigs_have_M5": true
+      },
+      "index_archive_head": {
+        "url": "https://pub-cf6ba01919994c3cbd354659947f74d8.r2.dev/genomes/GRCh38_hmf/24.1/bwa-mem2_index/2.2.1.tar.gz",
+        "status": 200,
+        "content_length": "8797807834",
+        "etag": "\"11967fb9efa702abd81318d10c9658c6-1049\"",
+        "last_modified": "Thu, 16 May 2024 06:45:17 GMT"
+      }
+    }
+  },
+  "source_urls": [
+    "https://github.com/bwa-mem2/bwa-mem2/blob/v2.3/README.md",
+    "https://research.google.com/colaboratory/faq.html",
+    "https://github.com/google/deepvariant/blob/r1.10/docs/deepvariant-quick-start.md"
+  ],
+  "owner_question": "Answered: owner confirms High-RAM already enabled",
+  "scientific_gates_unchanged": [
+    "approved coding-domain implementation validation",
+    "independent BQSR resource verification",
+    "canonical interfaces and common benchmarking"
+  ],
+  "actions_taken": {
+    "index_construction": false,
+    "docker_installation": false,
+    "large_downloads": false,
+    "drive_writes": false,
+    "git_mutations": false,
+    "ci_reruns": false
+  },
+  "accelerators": {
+    "bwa_mem2_index": "Pinned v2.3 path uses CPU/system RAM; no GPU or TPU path configured",
+    "deepvariant": "v1.10 GPU image supports one GPU for call_variants only; make_examples and postprocess_variants remain CPU",
+    "tpu": "No execution path configured in this project",
+    "gpu_runtime_host_ram": "Must measure physical/system RAM separately from accelerator memory",
+    "existing_pipeline_gpu_qualified": false
+  },
+  "provenance_classification": "consistency-checked owner-supplied report, not cryptographic remote-host attestation",
+  "input_assessment_sha256": "7b8fd478b27e3b558222df6c55ed1d9982810de5cb578dea72fb789db7ccea7d",
+  "m4_reconciliation": "Existing merged main CI34237377774 subsequently verified strict synthetic M4; historical owner-report context is not current M4 failure evidence."
+}

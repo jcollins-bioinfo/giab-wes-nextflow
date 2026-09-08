@@ -1,0 +1,52 @@
+{
+  "architecture": "x86_64",
+  "canonical_ready": false,
+  "cpu_features": {
+    "avx": true,
+    "sse4_1": true,
+    "sse4_2": true
+  },
+  "docker": {
+    "architecture": null,
+    "daemon_reachable": false,
+    "executable_available": false,
+    "total_memory_bytes": null
+  },
+  "drive_filesystem_reported_free_bytes": 209816326144,
+  "drive_quota_verified": false,
+  "durable_layout": {
+    "reference_indexes": "cache/reference-assets/sha256/<reference-id>/<index-manifest-id>/",
+    "registries": "registry/runs/<run-id>/",
+    "source_cache": "cache/verified-sources/",
+    "validated_results": "runs/<run-id>/"
+  },
+  "index_build_documentation_estimate_bytes": 86797831148,
+  "index_estimate_fits_memory_before_headroom": false,
+  "index_estimate_is_measured_rss": false,
+  "kind": "canonical_host_capability_observation",
+  "logical_cpus": 8,
+  "memory": {
+    "cgroup_limit_bytes": null,
+    "effective_ceiling_bytes": 54750404608,
+    "physical_bytes": 54750404608
+  },
+  "observed_at": "2026-09-08T17:45:32.487257+00:00",
+  "publication_rule": "Stage locally; rehash durable destination; validate inventory and registry; completion marker last. Never publish Nextflow work.",
+  "required_before_execution": [
+    "qualify actual pinned containers and isolation",
+    "validate approved domain implementation",
+    "verify independent BQSR resources",
+    "rehash hydrated sources",
+    "verify reusable index or qualify index build",
+    "resolve M4 native synthetic acceptance failure"
+  ],
+  "runtime_identity": {
+    "files": 43,
+    "package_inventory_sha256": "67df863540f9bb90b16481e420ae512fc1a3be8c005bb024e806382fa54c5a92",
+    "repository_sha": "676718ed6c02c3076a26b48fb82d684251fb7892",
+    "version": "0.4.0-dev.1"
+  },
+  "schema_version": "1.0.0",
+  "scratch_free_bytes": 220859293696,
+  "system": "Linux"
+}
