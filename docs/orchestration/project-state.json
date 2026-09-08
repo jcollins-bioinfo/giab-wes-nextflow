@@ -9,7 +9,7 @@
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
       "branch": "codex/canonical-analysis-m6-m9",
-      "evidence_sha": "2d89ecfc5f196c8d91960fcf4823dd90393b6be9",
+      "evidence_sha": "667d6e7b4637269667445e9c00bc04ab209d4a4c",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
@@ -46,9 +46,26 @@
       "evidence_sha": "2d89ecfc5f196c8d91960fcf4823dd90393b6be9",
       "command": "Clean-clone Python3.12/3.13 matrix, installed wheel, Nextflow lint/nf-test, package/schema/hygiene checks; affected isolated-package tests rechecked after task-environment repair.",
       "detail": "docs/orchestration/evidence/canonical-local-2d89ecf.json; initial failures preserved and explained. No canonical or browser execution."
+    },
+    {
+      "name": "canonical-corrective-tests",
+      "status": "passed",
+      "evidence_sha": "667d6e7b4637269667445e9c00bc04ab209d4a4c",
+      "command": "canonical unit subset on Python3.12/3.13; pyflakes canonical*.py; rebuilt wheel identity and distribution inventory",
+      "detail": "71 tests pass on each version; driver import and interruption recovery corrections; canonical execution still pending. See canonical-corrective-validation.json."
     }
   ],
-  "ci": [],
+  "ci": [
+    {
+      "name": "initial-canonical-PR-CI",
+      "required": true,
+      "status": "success",
+      "repository": "jcollins-bioinfo/giab-wes-nextflow",
+      "evidence_sha": "2b35289db743c99a19f58e7b3d365297aa795584",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34278960439",
+      "job_urls": []
+    }
+  ],
   "execution_environments": [],
   "publication": {
     "drive": "not_published",

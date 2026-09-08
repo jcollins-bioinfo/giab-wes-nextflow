@@ -5,7 +5,7 @@
 [![Open canonical HG001 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jcollins-bioinfo/giab-wes-nextflow/blob/codex/canonical-analysis-m6-m9/notebooks/canonical_hg001_analysis_colab.ipynb)
 
 [Canonical Run-all notebook](canonical_hg001_analysis_colab.ipynb), pinned to
-implementation `2d89ecfc5f196c8d91960fcf4823dd90393b6be9`. Mount Drive normally,
+implementation `667d6e7b4637269667445e9c00bc04ab209d4a4c`. Mount Drive normally,
 then use Run all. Public downloads default to `ALLOW_LARGE_DOWNLOADS = True`
 under the owner's explicit authorization. Active work, construction, extraction,
 containers and Nextflow work stay in `/content`; durable verified sources/assets
