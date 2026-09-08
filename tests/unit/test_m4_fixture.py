@@ -8,7 +8,7 @@ import unittest
 
 from giab_wes_nextflow.m3 import require_fixture
 from giab_wes_nextflow.m3_collect import validate_bqsr_observations, validate_result_bundle
-from giab_wes_nextflow.m4_fixture import generate_m4_fixture
+from giab_wes_nextflow.m4_fixture import _uses_alternate_allele, generate_m4_fixture
 from giab_wes_nextflow.m3_fixture import sha256_bytes
 from giab_wes_nextflow.synthetic_fixtures import fixture_contract, fixture_contract_from_manifest_sha256
 from test_m3_support import make_unit_bundle
@@ -25,6 +25,20 @@ class M4FixtureTest(unittest.TestCase):
             self.assertEqual(original.payloads[name], positive.payloads[name])
         self.assertEqual(positive.expectations["primary_read_count"], 528)
         self.assertEqual(len(positive.expectations["read_expectations"]), 528)
+
+    def test_heterozygous_alleles_are_not_confounded_with_fixture_structure(self) -> None:
+        """Each lane and supporting mate independently receives 10 ALT and 10 REF fragments."""
+        patterns = []
+        for support_mate in (1, 2):
+            pattern = [_uses_alternate_allele("0/1", index, support_mate) for index in range(40)]
+            patterns.append(pattern)
+            self.assertEqual(sum(pattern), 20)
+            self.assertEqual(sum(pattern[0::2]), 10)
+            self.assertEqual(sum(pattern[1::2]), 10)
+            self.assertFalse(all(pattern[index] == pattern[index + 1] for index in range(19)))
+        self.assertNotEqual(patterns[0], patterns[1])
+        self.assertTrue(all(_uses_alternate_allele("1/1", index, 1) for index in range(40)))
+        self.assertFalse(any(_uses_alternate_allele("0/0", index, 1) for index in range(40)))
 
     def test_explicit_selection_and_immutable_repeat(self) -> None:
         """The default remains M3 and an explicit M4 selection repeats identical bytes."""

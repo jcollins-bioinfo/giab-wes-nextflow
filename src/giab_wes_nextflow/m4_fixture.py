@@ -11,12 +11,25 @@ from .acquisition import destination, safe_root
 from .m3_fixture import _gzip, fixture_payloads as m3_payloads, reverse_complement, sha256_bytes
 
 FIXTURE_ID = "m4-snv-positive"
-RECIPE_VERSION = "1.0.0"
+RECIPE_VERSION = "1.1.0"
 VARIANT_ORACLE = (
     ("chrSYN1", 3151, "T", "A", "0/1"),
     ("chrSYN2", 7101, "T", "A", "1/1"),
     ("chrSYN1", 5401, "G", "G", "0/0"),
 )
+
+
+def _uses_alternate_allele(genotype: str, index: int, support_mate: int) -> bool:
+    """Balance a heterozygous allele across lanes, starts, and supporting mates."""
+    if genotype == "1/1":
+        return True
+    if genotype != "0/1":
+        return False
+    # Multiplication by a value coprime to 40 permutes every fragment index.
+    # The mate-specific offset prevents the two supporting orientations from
+    # receiving the same allele pattern. Each mate and lane still has 10 ALT
+    # and 10 REF fragments, without coupling allele to a contiguous start band.
+    return ((17 * index + 11 * support_mate) % 40) < 20
 
 
 def fixture_payloads() -> tuple[dict[str, bytes], dict[str, Any]]:
@@ -47,7 +60,7 @@ def fixture_payloads() -> tuple[dict[str, bytes], dict[str, Any]]:
                 lane_counts[row["lane"]] += 1
                 number = lane_counts[row["lane"]]
                 qname = f"M4_SYN_{row['lane']}_{number:04d}"
-                use_alt = genotype == "1/1" or (genotype == "0/1" and index < 20)
+                use_alt = _uses_alternate_allele(genotype, index, support_mate)
                 for mate in (1, 2):
                     read_start = start if mate == 1 else start + 200
                     sequence = reference[contig][read_start:read_start + 150]
