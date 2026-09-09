@@ -55,3 +55,16 @@ m3-test-results/
 
 /tests/data/m5-generated/
 /m5-test-results/
+
+# Private canonical probe reads and full-reference BWA assets stay outside Git.
+*.fastq
+*.fq
+*.fna
+*.fna.gz
+*.fa.gz
+*.fasta.gz
+*.bwt
+*.pac
+*.sa
+*.ann
+*.amb

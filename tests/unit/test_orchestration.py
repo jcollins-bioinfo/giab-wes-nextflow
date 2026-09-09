@@ -106,6 +106,14 @@ class OrchestrationTests(unittest.TestCase):
             with self.subTest(status=status), self.assertRaisesRegex(ValueError, "required CI"):
                 VALIDATOR.validate_document(data, SCHEMA)
 
+    def test_m5_synthetic_verified_requires_current_green_ci(self) -> None:
+        """The explicit synthetic state inherits all current required-CI gates."""
+        data = verified_record(); data.update(milestone='M5', state='synthetically_verified')
+        VALIDATOR.validate_document(data, SCHEMA)
+        data['ci'][0]['status'] = 'failure'
+        with self.assertRaisesRegex(ValueError, 'required CI'):
+            VALIDATOR.validate_document(data, SCHEMA)
+
     def test_canonical_and_authorized_release(self) -> None:
         data = canonical_record()
         VALIDATOR.validate_document(data, SCHEMA)

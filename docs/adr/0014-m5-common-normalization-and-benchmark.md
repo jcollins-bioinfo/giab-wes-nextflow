@@ -80,3 +80,12 @@ on failure so the next run can confirm this diagnosis.
 
 Source: [RTG3.13 vcfeval overlap semantics](https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html#vcfeval),
 accessed2026-09-08. This repair is not an observed engine pass.
+
+## Retained execution qualification
+
+CI34270789172 passed the unchanged representation/genotype/count oracle and
+retained actual partitions, independent/both equivalence and full resume.
+[The verified record](../orchestration/evidence/m5-verified-34270789172.json)
+binds all122 retained file hashes and the identical tested/merged source tree.
+The earlier failed attempt remains historical. This establishes synthetic M5
+execution only, with no HG001 benchmark or native-caller indel accuracy claim.

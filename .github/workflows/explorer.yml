@@ -1,7 +1,7 @@
 name: Explorer prototype
 on:
   pull_request:
-    paths: ['explorer/**', 'src/giab_wes_nextflow/canonical_host.py', 'tests/unit/test_canonical_host.py', '.github/workflows/explorer.yml', 'notebooks/canonical_capability_colab.ipynb']
+    paths: ['explorer/**', 'src/giab_wes_nextflow/**', 'tests/unit/test_canonical_host.py', '.github/workflows/explorer.yml', 'notebooks/canonical_capability_colab.ipynb']
 permissions:
   contents: read
 jobs:

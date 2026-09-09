@@ -16,6 +16,7 @@ dependencies = ["jsonschema>=4.20"]
 dev = ["build==1.3.0", "pre-commit==4.3.0", "pytest==8.4.2"]
 
 [project.scripts]
+giab-wes-canonical = "giab_wes_nextflow.canonical_run:main"
 giab-wes-m5 = "giab_wes_nextflow.m5:main"
 giab-wes-m5-resources = "giab_wes_nextflow.m5_resources:main"
 giab-wes-m4 = "giab_wes_nextflow.m4_cli:main"
@@ -33,5 +34,5 @@ path = "src/giab_wes_nextflow/__init__.py"
 packages = ["src/giab_wes_nextflow"]
 
 [tool.hatch.build.targets.sdist]
-only-include = ["src", "scripts", "config", "schemas", "tests", "notebooks", "pyproject.toml", "README.md", "LICENSE", "main.nf", "m5.nf", "nextflow.config", "nextflow_schema.json", "workflows", "subworkflows", "modules", "conf", "assets", "docs", "CITATION.cff", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "requirements-dev.in", "requirements-dev.txt", "nf-test.config", ".nf-core.yml", ".pre-commit-config.yaml", ".gitignore", ".gitattributes"]
-exclude = ["**/__pycache__/**", "**/*.pyc", "/tests/data/m3-generated/**", "/tests/data/m4-generated/**", "/tests/data/m5-generated/**", "/tests/data/synthetic_nonhuman_R1.fastq.gz", "/tests/data/synthetic_nonhuman_R2.fastq.gz", "**/*.bam", "**/*.bai", "**/*.sam", "**/*.cram", "**/*.vcf", "**/*.vcf.gz", "**/*.fastq.gz", "**/*.fq.gz", "**/*.fa", "**/*.fasta", "**/*.fai", "**/*.dict", "**/*.tbi", "**/*.part", "**/*.incomplete"]
+only-include = ["src", "scripts", "config", "schemas", "tests", "notebooks", "pyproject.toml", "README.md", "LICENSE", "main.nf", "m5.nf", "canonical.nf", "nextflow.config", "nextflow_schema.json", "workflows", "subworkflows", "modules", "conf", "assets", "docs", "CITATION.cff", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "requirements-dev.in", "requirements-dev.txt", "nf-test.config", ".nf-core.yml", ".pre-commit-config.yaml", ".gitignore", ".gitattributes"]
+exclude = ["**/__pycache__/**", "**/*.pyc", "/tests/data/m3-generated/**", "/tests/data/m4-generated/**", "/tests/data/m5-generated/**", "/tests/data/synthetic_nonhuman_R1.fastq.gz", "/tests/data/synthetic_nonhuman_R2.fastq.gz", "**/*.bam", "**/*.bai", "**/*.sam", "**/*.cram", "**/*.vcf", "**/*.vcf.gz", "**/*.fastq.gz", "**/*.fq.gz", "**/*.fa", "**/*.fasta", "**/*.fai", "**/*.dict", "**/*.tbi", "**/*.part", "**/*.incomplete", "**/*.fastq", "**/*.fq", "**/*.fna", "**/*.fna.gz", "**/*.fa.gz", "**/*.fasta.gz", "**/*.bwt", "**/*.pac", "**/*.sa", "**/*.ann", "**/*.amb"]

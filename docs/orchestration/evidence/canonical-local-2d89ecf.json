@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0.0",
+  "classification": "locally-tested",
+  "canonical": false,
+  "repository_sha": "2d89ecfc5f196c8d91960fcf4823dd90393b6be9",
+  "package_version": "0.5.0-dev.1",
+  "installed_inventory": {
+    "files": 65,
+    "sha256": "94c49a3528122e5bd2e48ccf85dccfbe03a620ef5aeaa59b8440fc98c8e39f67"
+  },
+  "checks": {
+    "unit_matrix": {
+      "python": [
+        "3.12.2",
+        "3.13.15"
+      ],
+      "cases_each": 334,
+      "initial_passed_each": 330,
+      "initial_failed_each": 4,
+      "cause": "Four isolated-package tests found old editable installs in reused task-local virtual environments. No source change was needed.",
+      "correction": "Installed the freshly built reviewed wheel in both task-local environments.",
+      "targeted_recheck_cases_each": 13,
+      "targeted_recheck_status": "all_passed"
+    },
+    "nextflow": {
+      "version": "26.04.6",
+      "nf_test_version": "0.9.5",
+      "tests_passed": 20,
+      "lint_files": 51,
+      "lint_errors": 0,
+      "existing_lint_warnings": 2
+    },
+    "explorer_installed_wheel": {
+      "tests_passed": 8,
+      "browser_visual_qa": "not_executed"
+    },
+    "distributions": {
+      "sdist_safe_members": 380,
+      "wheel_safe_members": 70
+    },
+    "schemas_contracts_samplesheets": "passed",
+    "pre_commit": "passed",
+    "repository_hygiene": "passed",
+    "canonical_profiles_parse": [
+      "colab",
+      "apptainer",
+      "docker",
+      "slurm",
+      "awsbatch",
+      "wave"
+    ]
+  },
+  "limitations": [
+    "No real Colab or HG001 execution is established.",
+    "No canonical reference, index or runtime has been qualified by these local tests.",
+    "Container execution and nf-core CLI checks are deferred to the single PR CI.",
+    "Local resource assertions use invented fixtures or mocks; no canonical cost estimate."
+  ],
+  "logs": {
+    "canonical-build.log": {
+      "bytes": 257,
+      "sha256": "08f06191320d4b1c76e132d014484133a00ce2f5436ab9eb8423e8f005ff91c0"
+    },
+    "canonical-env-repair.log": {
+      "bytes": 2648,
+      "sha256": "b9adb33ce275173849720950dc25d4ed9806f4b1551b286c7e9a42dcf4af5d81"
+    },
+    "canonical-explorer-tests.log": {
+      "bytes": 1019,
+      "sha256": "71843a7997dd1e7d6e36106e9feabb665c62611962f1ca90b3a854d0cf68f6a1"
+    },
+    "canonical-nextflow-lint.log": {
+      "bytes": 2349,
+      "sha256": "f98be2d14636f4a51f4f4ac2319d76982b0b2a0e5e9ca2c2a461fc778177c0f8"
+    },
+    "canonical-nf-tests.log": {
+      "bytes": 3114,
+      "sha256": "43eb6a0b83782b02f8bc71542e416d2fe7cc87b82415ae6133326ebed3fc8209"
+    },
+    "canonical-targeted-recheck-312.log": {
+      "bytes": 5369,
+      "sha256": "15185d5c47c6eecc67d51f6d2c1c8707a5a33c9d3f3b67c4cc20077024fb533a"
+    },
+    "canonical-targeted-recheck-313.log": {
+      "bytes": 2645,
+      "sha256": "d1f41dea3669fbde80d971b541a9285d80b36f10c5196dc1a28c65f05e3e3ea4"
+    },
+    "canonical-validation-312.log": {
+      "bytes": 80363,
+      "sha256": "7cd752e94419db34696e69272f81a783e8eec34203cda73336b844f9231d199a"
+    },
+    "canonical-validation-313.log": {
+      "bytes": 75396,
+      "sha256": "cb14bd775b03470e7f8158fc3b55330ae0d852ae806fa45bb67c80fce6c8135f"
+    },
+    "canonical-wheel-install.log": {
+      "bytes": 9654,
+      "sha256": "f8edf2e17e1946c71f0986df238f6e86debe17bb1bfa5e19d7ca69eb4704067f"
+    }
+  }
+}

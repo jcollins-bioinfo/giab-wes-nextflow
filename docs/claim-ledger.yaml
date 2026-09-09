@@ -57,6 +57,35 @@ claims:
     statement: The owner supplied a Colab runtime report from commit 676718ed6c02c3076a26b48fb82d684251fb7892; its 43-file package inventory was consistency-checked.
     evidence: docs/canonical-colab.md
     limitation: Owner-supplied report, not cryptographic remote attestation; 50.99 GiB RAM and absent Docker do not qualify index construction or canonical execution.
+
+  - id: m5-synthetic-verification
+    classification: CI-tested
+    statement: Retained CI34270789172 and identical-tree post-merge CI34272289311 establish actual BCFtools/RTG normalization, representation matching, isolation, independent/both equivalence and resume.
+    evidence: docs/orchestration/evidence/m5-verified-34270789172.json
+    limitation: Invented M5 representations and accepted M4 SNV interface only; resource parsing and cache attribution are not canonical caller-cost estimates; HG001 metrics remain unavailable.
+
+  - id: approved-coding-domain-reproduced
+    classification: locally-tested
+    statement: Package constructor reproduced the three owner-approved domain hashes from exact pinned annotation, FAI and confidence inputs.
+    evidence: docs/orchestration/evidence/coding-domain-reproduced.json
+    limitation: In-memory coordinate verification only; no reference-base, index, runtime or canonical processing qualification.
+
+  - id: canonical-colab-interface
+    classification: locally-tested
+    statement: Exact-SHA Colab launch, full-reference classic BWA fallback, independent BQSR qualification, gated caller comparison and durable restart are implemented.
+    evidence: docs/canonical-analysis.md
+    limitation: Local tests use invented data and mocked execution where stated; real Colab reference/index/runtime/HG001 execution remains unqualified.
+  - id: canonical-public-consumer
+    classification: locally-tested
+    statement: Canonical result model verifies external manifest identity, exact file inventory, domain, arithmetic, comparison symmetry and required receipts; Dash exposes the validated view and safe exports.
+    evidence: docs/canonical-results-contract.md
+    limitation: Model-valid declarations do not independently attest execution; a trusted reviewed manifest from a completed real run is still required.
+  - id: canonical-cloud-profiles
+    classification: configured_only
+    statement: Colab, Apptainer, Docker, SLURM, AWS Batch and Wave configuration interfaces exist and parse.
+    evidence: docs/canonical-runtime.md
+    limitation: No canonical cloud execution, paid compute or public deployment is inferred from configuration.
+
 forbidden_without_new_evidence:
   - historical professional Nextflow tenure
   - clinical-grade or patient-care validation
@@ -74,15 +103,3 @@ claim_rules:
   - A public build check is not a public HTTP deployment test.
   - Full HG001 DeepVariant results require the documented training-overlap limitation.
   - Chr20–22 sensitivity is a same-individual locus analysis, not population generalization.
-
-  - id: m5-common-implementation
-    classification: implemented
-    statement: Package and downstream workflow implement symmetric normalization, pinned RTG benchmarking and typed resource attribution.
-    evidence: docs/adr/0014-m5-common-normalization-and-benchmark.md
-    limitation: Local unit and stub checks do not qualify actual container matching; canonical metrics and costs remain unavailable.
-
-  - id: approved-coding-domain-reproduced
-    classification: locally-tested
-    statement: Package constructor reproduced the three owner-approved domain hashes from exact pinned annotation, FAI and confidence inputs.
-    evidence: docs/orchestration/evidence/coding-domain-reproduced.json
-    limitation: In-memory coordinate verification only; no reference-base, index, runtime or canonical processing qualification.

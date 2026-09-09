@@ -1,5 +1,36 @@
 # Notebook launch center
 
+## Canonical HG001 analysis — Run all
+
+[![Open canonical HG001 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jcollins-bioinfo/giab-wes-nextflow/blob/codex/canonical-analysis-m6-m9/notebooks/canonical_hg001_analysis_colab.ipynb)
+
+[Canonical Run-all notebook](canonical_hg001_analysis_colab.ipynb), pinned to
+implementation `667d6e7b4637269667445e9c00bc04ab209d4a4c`. Mount Drive normally,
+then use Run all. Public downloads default to `ALLOW_LARGE_DOWNLOADS = True`
+under the owner's explicit authorization. Active work, construction, extraction,
+containers and Nextflow work stay in `/content`; durable verified sources/assets
+and completed outputs use only the private project root below.
+
+Inputs: original HG001 NIST7035 lane FASTQs, full authenticated GRCh38 no-alt
+reference, independent Broad BQSR masks, GENCODEv50 and GIABv4.2.1. Outputs:
+private reference/classic-BWA index/shared BAM/native and normalized VCFs/RTG
+partitions/coverage, plus small `canonical-hg001-evidence.zip` and
+`canonical-complete.json` for external validation. No metrics are claimed before
+actual execution. The first result is limited to the approved chr20–22 coding
+domain, with the same-individual DeepVariant training-overlap limitation.
+
+Allow roughly100GiB active scratch and60GiB durable capacity initially; the
+launcher checks real memory/free space and every incremental publication.
+Several hours is a planning allowance, not measured performance. Run all again
+after interruption: authenticated sources and marked-complete assets/stages are
+rehash-validated and reused. Do not delete caches to retry. See the
+[execution and incident runbook](../docs/canonical-analysis.md) and
+[runtime qualification limits](../docs/canonical-runtime.md).
+
+The earlier capability-only notebooks below are retained as historical tools.
+They are not the current canonical execution action.
+
+
 ## Owner Colab capability check (2026-09-08)
 
 [Open the capability notebook](canonical_capability_colab.ipynb). It is pre-pinned to implementation commit `676718ed6c02c3076a26b48fb82d684251fb7892`; no ref editing is needed. This exception to the older empty-ref launchers below is deliberate. Mount the existing project Drive folder and return the downloaded `canonical-host-capability.json`. The notebook has not been executed in the owner's Colab session.

@@ -3,7 +3,7 @@
 No package installation, image pull, index build, genomic acquisition, Drive
 publication, or system change is performed. Storage locations describe durable
 intent; active work stays on Colab /content scratch, not on the owner's Mac. Filesystem free space is not Drive
-account quota. The owner must return this report before an execution plan is set.
+account quota. The canonical launcher uses this observation before its separate execution gates.
 """
 from __future__ import annotations
 
@@ -87,7 +87,7 @@ def probe(drive_root: Path, scratch: Path) -> dict[str, Any]:
                 "validated_results": "runs/<run-id>/", "registries": "registry/runs/<run-id>/"},
             "required_before_execution": ["qualify actual pinned containers and isolation", "validate approved domain implementation",
                 "verify independent BQSR resources", "rehash hydrated sources", "verify reusable index or qualify index build",
-                "resolve M4 native synthetic acceptance failure"],
+                "verify actual canonical shared-BAM and caller execution"],
             "publication_rule": "Stage locally; rehash durable destination; validate inventory and registry; completion marker last. Never publish Nextflow work."}
 
 

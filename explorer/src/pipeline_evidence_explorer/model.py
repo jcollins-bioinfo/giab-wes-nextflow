@@ -1,8 +1,8 @@
 """Load one immutable evidence snapshot; no benchmark science lives in the UI.
 
-This initial model admits only the bundled, hash-pinned synthetic observations.
-Missing HG001 metrics remain absent. A future canonical result model requires
-its own validated contract rather than changing a label on this snapshot.
+This model admits only the bundled, hash-pinned synthetic observations.
+Missing HG001 metrics remain absent. The separate pipeline canonical_results
+model validates canonical bundles without relabeling this synthetic snapshot.
 """
 from __future__ import annotations
 
@@ -14,9 +14,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-MANIFEST_SHA256 = "16562b8a15532af0658cca562897a28ea0e2f575c50e97598b03ea5b41750daf"
+MANIFEST_SHA256 = "78505873dccb4610b261e77f16f02460d09db3391e41268322e9218eaf74390b"
 FILES = {"m3-proof.json", "m3-first.trace.tsv", "m4-attempt.json", "domain-approval.json",
-         "m4-verified-main-34237377774.json"}
+         "m4-verified-main-34237377774.json", "m5-verified-34270789172.json"}
 REPO = "https://github.com/jcollins-bioinfo/giab-wes-nextflow"
 
 
@@ -65,6 +65,8 @@ class Snapshot:
     sources: tuple[tuple[str, str], ...]
     public_json: str
     caller_observation: str
+    m5_run_id: int
+    m5_observation: str
 
 
 def load_snapshot(directory: Path | None = None) -> Snapshot:
@@ -81,6 +83,11 @@ def load_snapshot(directory: Path | None = None) -> Snapshot:
     m4 = json.loads(payloads["m4-verified-main-34237377774.json"])
     historical_m4 = json.loads(payloads["m4-attempt.json"])
     domain = json.loads(payloads["domain-approval.json"])
+    m5 = json.loads(payloads["m5-verified-34270789172.json"])
+    require(m5["status"] == "synthetically_verified" and m5["synthetic"] is True and m5["canonical"] is False
+            and m5["m4_interface_accepted"] is True and m5["normalization_staging_isolated"] is True
+            and m5["nextflow_modes"]["resume"]["statuses"] == {"COMPLETED": 0, "CACHED": 4},
+            "M5 is not qualified synthetic evidence")
     require(m3["synthetic"] is True and m3["canonical"] is False and m3["status"] == "passed"
             and m3["biological_processing_validated"] is True, "M3 is not accepted synthetic evidence")
     require(m4["synthetic"] is True and m4["canonical"] is False and m4["status"] == "passed"
@@ -111,7 +118,7 @@ def load_snapshot(directory: Path | None = None) -> Snapshot:
     public = {"schema_version": "1.0.0", "scope": "synthetic_prototype", "canonical": False,
               "manifest_sha256": MANIFEST_SHA256, "source_hashes": manifest,
               "m3": {"repository": m3["repository"], "bam_assertions": bam, "resume_assertions": resume},
-              "m4": m4, "m4_historical_attempt": historical_m4, "domain_decision": domain,
+              "m4": m4, "m4_historical_attempt": historical_m4, "m5_synthetic": m5, "domain_decision": domain,
               "benchmark_metrics": None, "comparative_cost": None,
               "missing_reason": "No canonical HG001 benchmark or fair caller-cost experiment exists."}
     observations = [f"{site['contig']}:{site['position_1based']} — native {site['genotype']} accepted by both callers."
@@ -120,7 +127,8 @@ def load_snapshot(directory: Path | None = None) -> Snapshot:
     return Snapshot(*(bam[k] for k in ("primary_reads", "mapped_reads", "unmapped_reads", "duplicate_reads", "read_groups")),
                     resume["first_executed_tasks"], resume["resumed_cached_tasks"], m3["repository"]["sha"],
                     bam["bam_sha256"], bam["bai_sha256"], m4["run_id"], m4["head_sha"], tasks,
-                    tuple(sorted(manifest.items())), json.dumps(public, sort_keys=True, indent=2), " ".join(observations))
+                    tuple(sorted(manifest.items())), json.dumps(public, sort_keys=True, indent=2), " ".join(observations), 34270789172,
+                    "BCFtools 1.24 and RTG 3.13 passed the invented representation fixture: each caller has 4 SNP TP, 2 FP and 2 FN; 1 indel TP, 0 FP and 0 FN. Independent modes executed two tasks each; both and resume reused four tasks each. These are qualification cases, not HG001 results or native-caller indel accuracy.")
 
 
 def select_tasks(snapshot: Snapshot, name: str) -> tuple[TaskObservation, ...]:

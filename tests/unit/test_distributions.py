@@ -26,6 +26,33 @@ class DistributionTest(unittest.TestCase):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 CHECK.validate_member(name, 20, linked=False, regular=True)
 
+    def test_plain_probe_reads_and_bwa_assets_fail_repository_and_archive_guards(self) -> None:
+        """Tiny genomic payloads must fail both guards even below the 100 KB threshold."""
+        script = Path(__file__).resolve().parents[2] / 'scripts/check_repository.py'
+        spec = importlib.util.spec_from_file_location('repository_hygiene', script)
+        repository = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(repository)
+        suffixes = ('.fastq', '.fastq.gz', '.fq', '.fq.gz', '.fna', '.fna.gz', '.fa.gz', '.fasta.gz', '.bwt', '.pac', '.sa', '.ann', '.amb')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for suffix in suffixes:
+                member = 'package/docs/private-probe' + suffix
+                self.assertTrue(repository.forbidden_path(member))
+                for archive_name in ('small.tar.gz', 'small.whl'):
+                    archive_path = root / archive_name
+                    if archive_name.endswith('.tar.gz'):
+                        with tarfile.open(archive_path, 'w:gz') as archive:
+                            item = tarfile.TarInfo(member)
+                            item.size = 1
+                            archive.addfile(item, io.BytesIO(b'x'))
+                    else:
+                        with zipfile.ZipFile(archive_path, 'w') as archive:
+                            archive.writestr(member, 'x')
+                    with self.subTest(suffix=suffix, archive=archive_name), self.assertRaisesRegex(ValueError, 'generated or prohibited'):
+                        CHECK.validate_archive(archive_path)
+        self.assertFalse(repository.forbidden_path('docs/canonical-assets.md'))
+        self.assertFalse(repository.forbidden_path('config/canonical-assets.json'))
+
     def test_tar_links_fail_without_extraction(self) -> None:
         """An absolute link cannot bypass output artifact path guards."""
         with tempfile.TemporaryDirectory() as directory:

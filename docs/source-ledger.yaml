@@ -139,3 +139,23 @@ contradictions:
     url: https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html#vcfeval
     access_date: 2026-09-08
     evidence: docs/orchestration/evidence/m5-ci-attempt-1.json
+
+canonical_sources:
+  - claim: "Classic BWA bwtsw supports complete human-genome indexing; actual resource acceptance remains measured per Colab allocation."
+    url: https://bio-bwa.sourceforge.net/bwa.shtml
+    evidence: config/canonical-assets.json
+    decision: docs/adr/0015-canonical-full-reference-assets.md
+    access_date: 2026-09-08
+  - claim: "Independent Broad GRCh38 BQSR masks are generation/checksum pinned and require full retained REF compatibility."
+    url: https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle
+    evidence: config/canonical-assets.json
+    access_date: 2026-09-08
+  - claim: "udocker provides user-space OCI execution; runtime discovery alone does not qualify representative callers."
+    url: https://github.com/indigo-dc/udocker
+    evidence: config/canonical-runtime.json
+    decision: docs/adr/0016-canonical-runtime-and-operational-guards.md
+    access_date: 2026-09-08
+  - claim: "Samtools1.24 depth supports zero-depth output, BED restriction, explicit base/mapping-quality and flag filters, and overlapping-mate removal."
+    url: https://www.htslib.org/doc/samtools-depth.html
+    evidence: src/giab_wes_nextflow/canonical_coverage.py
+    access_date: 2026-09-08

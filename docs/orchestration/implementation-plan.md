@@ -2,16 +2,27 @@
 
 Author: John Patrick Collins. Observed baseline: 2026-09-07.
 
-## Current owner-directed continuation (2026-09-08)
+## Current canonical continuation (2026-09-08)
 
-Remote main `f29ed262b886ba4afe18cf9cc6455edcf13df808` and existing CI34237377774
-were verified: Python 3.12/3.13, Nextflow, M3 Docker, M4 Docker and required all
-passed. PRs 21, 22 and 24 are merged; no open PRs remain. M3/M4 are verified
-within their synthetic envelopes; prior M4 failures below are historical.
-The owner Colab capability report is now observed and consistency-checked:
-50.99 GiB with High-RAM enabled, no Docker; no canonical execution. This task
-closes stale provenance, then implements M5 under a 10-percentage-point budget,
-one branch, at most three commits and one new full CI run. M6–M9 are out of scope.
+Merged main4553d907c950a9948156f5117836c7ad92865d0b, closed PR25 and
+post-merge CI34272289311 were verified. Retained M5 CI34270789172 establishes
+synthetic normalization/benchmark/isolation/equivalence/resume qualification;
+it supplies no HG001 result. Historical attempts below remain evidence history.
+
+The current branch is `codex/canonical-analysis-m6-m9`. The owner expanded scope
+to canonical Colab execution and maximum defensible M6–M9 progress within30
+percentage points (target27 plus3 reserve). Original HG001 source and approved
+fixed coding domain decisions remain settled. Public Colab downloads and classic
+BWA0.7.17 full-reference fallback are explicitly authorized. No Mac index build,
+paid cloud launch, automatic merge, final tag/release or DNS change is authorized.
+
+The implementation now provides a thin exact-SHA Run-all notebook, package-owned
+full-reference/reference-index/BQSR/runtime qualification, canonical Nextflow
+stages and durable completed-output restart, fixed-domain coverage, validated
+public evidence model, Dash consumer, and separate website showcase work. Actual
+canonical runtime/index and HG001 results remain unqualified until executed.
+See `docs/canonical-analysis.md`, the M6–M9 checkpoints and release-readiness
+checklist for the executable path and unresolved acceptance gates.
 
 ## Historical baseline and dependency
 
@@ -169,6 +180,16 @@ budget. They remain prerequisites, not completed canonical-readiness claims.
 Continuation: the coding-domain constructor is now implemented and all approved
 hashes reproduced. M5 duplicate-key gate and actual equivalence/cache helper are
 implemented; the CI count repair preserves all frozen SNP/indel oracles and now
-checks SNP partition loci explicitly. Actual engine/cache acceptance remains
-pending. The reusable-index Colab notebook remains deferred under the5-point
+checks SNP partition loci explicitly. Retained CI34270789172 now establishes actual engine/cache acceptance;
+post-merge main4553d907 has the identical tested tree and green CI34272289311. The reusable-index Colab notebook remains deferred under the5-point
 continuation budget. No canonical execution is authorized on the observed host.
+
+## M5 retained-evidence reconciliation
+
+M5 is synthetically_verified: 7 benchmark and 8 normalization records passed
+independent schema/semantic validation; 122 retained file hashes verified. Four
+Nextflow mode traces establish independent execution and both/resume cache reuse.
+The failed initial count attempt remains historical. Resource parsing and approved
+domain coordinate reproduction are supported within their documented boundaries.
+No canonical HG001 accuracy, native-caller indel accuracy, cost or runtime claim
+follows from this synthetic gate. Continue canonical M6–M9 work from merged main.
