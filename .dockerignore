@@ -1,0 +1,17 @@
+# Allow only package source and explicit build recipes into image contexts.
+**
+!pyproject.toml
+!README.md
+!LICENSE
+!src/
+!src/**
+!explorer/
+!explorer/pyproject.toml
+!explorer/requirements.lock
+!explorer/Dockerfile
+!explorer/src/
+!explorer/src/**
+!containers/
+!containers/**
+**/__pycache__/**
+**/*.pyc

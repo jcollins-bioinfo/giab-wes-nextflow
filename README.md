@@ -15,6 +15,17 @@ public deployment is claimed.
 >
 > ¹ <sub>See: **NIST GIAB ([*Genome in a Bottle*](https://www.nist.gov/programs-projects/genome-bottle))</sub>**
 
+## AWS cloud implementation
+
+A separate direct-container cloud DAG, quota-aware preflight, identity-bound
+HealthOmics packaging, bounded Terraform infrastructure and Explorer image are
+implemented. Cloud execution and canonical public-bundle qualification remain
+pending. HealthOmics currently documents Nextflow26.04.0, below this repository's
+26.04.6 minimum. Seven project service IAM roles were bootstrapped separately;
+compute, storage and serving infrastructure were not deployed. See the
+[AWS execution guide](docs/aws-cloud.md) for exact gates, authentication,
+Terraform imports, quota handling and the deployment sequence.
+
 ## Motivation and architecture
 
 The project preregisters a reproducible comparison of GATK HaplotypeCaller and DeepVariant WES from one analysis-ready BAM while keeping truth out of caller environments.
