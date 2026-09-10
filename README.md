@@ -1,242 +1,337 @@
 [![CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml/badge.svg)](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/ci.yml)
-# GIAB¹ HG001 WES: Dual-caller Benchmark and Evidence Explorer
+[![AWS cloud validation](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/aws-cloud.yml/badge.svg)](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/workflows/aws-cloud.yml)
 
-Canonical continuation now has an exact-SHA Colab Run-all launcher, full-reference
-classic BWA0.7.17 fallback, independent Broad BQSR assets, gated GATK/DeepVariant
-execution, common benchmarking, fixed-domain coverage, durable restart, and a
-validated canonical Explorer interface. **Real HG001 chr20–22 results remain
-pending actual Colab qualification and execution.** M5 is synthetically verified.
-See [canonical execution](docs/canonical-analysis.md), [notebooks](notebooks/README.md)
-and [release readiness](docs/release-candidate-readiness.md). No release or new
-public deployment is claimed.
+# GIAB HG001 WES: Dual-caller Benchmark and Evidence Explorer
 
+A reproducible, nonclinical comparison of **GATK HaplotypeCaller and DeepVariant
+WES** from one shared analysis-ready BAM, with authenticated inputs, fixed
+benchmarking domains, immutable execution evidence and a Plotly Dash viewer.
+[Genome in a Bottle (GIAB)](https://www.nist.gov/programs-projects/genome-bottle)
+provides the HG001 reference material and benchmark resources.
 
-> **Synthetic Dash prototype available; real HG001 results pending.** The owner approved the fixed GENCODE v50 coding-domain alternative and early synthetic prototype (ADR 0013). M3 synthetic preprocessing and M5 common benchmarking are synthetically verified; M5 retained CI34270789172 and post-merge CI34272289311 passed. M4 is synthetically verified on merged main `f29ed262b886ba4afe18cf9cc6455edcf13df808`: CI 34237377774 passed actual GATK/DeepVariant execution, independent/both equivalence and resume. The prior RefCall failure is historical. [Run the explorer](explorer/README.md) and [prepare the Colab capability observation](docs/canonical-colab.md). Index construction will use Colab CPU/RAM with durable large storage in the permitted private Drive hierarchy. No canonical run or public deployment is claimed.
->
-> ¹ <sub>See: **NIST GIAB ([*Genome in a Bottle*](https://www.nist.gov/programs-projects/genome-bottle))</sub>**
+**The first canonical result is the HG001 chr20–22 fixed coding-domain benchmark.
+That result has not yet been produced or accepted.** M3 preprocessing, M4 caller
+execution and M5 normalization/benchmarking have retained synthetic Linux/x86_64
+Docker qualification. Their results establish the tested synthetic behavior;
+they do not establish HG001 accuracy, comparative cost or clinical performance.
 
-## AWS cloud implementation
+The repository now includes an exact-SHA Colab canonical launcher and a separate
+cloud-native Nextflow path targeting AWS HealthOmics and AWS Batch, together with
+Terraform infrastructure and an Explorer container/serving definition. Cloud
+implementation is partial and remains gated. Seven AWS service IAM roles were
+created in a separately authorized bootstrap; no project compute, S3/ECR,
+HealthOmics workflow, Explorer service or DNS deployment is established.
 
-A separate direct-container cloud DAG, quota-aware preflight, identity-bound
-HealthOmics packaging, bounded Terraform infrastructure and Explorer image are
-implemented. Cloud execution and canonical public-bundle qualification remain
-pending. HealthOmics currently documents Nextflow26.04.0, below this repository's
-26.04.6 minimum. Seven project service IAM roles were bootstrapped separately;
-compute, storage and serving infrastructure were not deployed. See the
-[AWS execution guide](docs/aws-cloud.md) for exact gates, authentication,
-Terraform imports, quota handling and the deployment sequence.
+This is an independent, nf-core-inspired project, not an official nf-core
+pipeline or a Sarek replacement. ONT and somatic analysis are outside v1.
 
-## Motivation and architecture
+## Current readiness
 
-The project preregisters a reproducible comparison of GATK HaplotypeCaller and DeepVariant WES from one analysis-ready BAM while keeping truth out of caller environments.
+Snapshot: **2026-09-10**, development package `0.5.0-dev.1`. AWS work is under
+[draft PR #27](https://github.com/jcollins-bioinfo/giab-wes-nextflow/pull/27), branch
+`codex/aws-cloud-acceleration`, based on verified main
+`410cc78d46ed76a4be8911963d5af66b9c7382a0`. A draft implementation is not a merged
+release. Check the exact PR head and its live CI results before accepting the
+change; local checks and historical CI runs establish different evidence.
+
+| Path / capability | CODED | VALIDATED | DEPLOYED | EXECUTED |
+|---|---|---|---|---|
+| Historical M3–M5 synthetic Linux Docker workflows | Yes | Retained native-tool, isolation and resume evidence | CI environment only | Yes, invented fixtures |
+| Local Python / Explorer synthetic views | Yes | Unit, contract and source HTTP checks | Local development only | Yes, metadata/synthetic views |
+| Colab canonical HG001 workflow | Yes | Local guards, contracts, stubs and collector tests | Launcher available; runtime qualification pending | No accepted HG001 run |
+| AWS HealthOmics canonical path | Partial | Local packaging, contracts and configuration checks | No workflow/run/cache created | No cloud scientific run |
+| AWS Batch canonical path | Partial | Local contracts, job-definition checker and Terraform checks | No compute environment/queue/jobs created | No cloud scientific run |
+| AWS project IAM service roles | Yes | Trust and inline policies read back | Seven service roles created | No workload execution implied |
+| Explorer on ECS Fargate / ALB / ACM | Yes | Source HTTP/Terraform checks and initial image builds; final CI linked below | No | No hosted service |
+
+The cloud DAG runs scientific tools directly in their own task containers.
+Its collector currently emits **private `cloud_scientific_evidence` with
+`canonical: false`**, pending backend qualification and the canonical public-bundle
+adapter. Infrastructure code, a registered workflow, synthetic success and an
+accepted HG001 result are separate states. See [AWS readiness and operations](docs/aws-cloud.md)
+and [historical execution evidence](docs/execution-matrix.md).
+
+## Scientific design and interpretation
+
+The experiment is fixed before observing caller accuracy:
+
+- **Input:** original paired Garvan HiSeq 2500 `NIST7035_TAAGGCGA_L001` FASTQs
+  acquired directly from GIAB. SRR3197785/SRX1608029/SRP012400/PRJNA162355 are
+  lineage identifiers, not permission to substitute SRA-derived reads.
+- **Reference and alignment:** complete authenticated
+  `GCA_000001405.15_GRCh38_no_alt_analysis_set`, including all 195 declared contigs;
+  full-reference alignment with **classical BWA 0.7.17**. Historical M3 synthetic
+  BWA-MEM2 evidence remains unchanged and is a distinct implementation history.
+- **Shared preprocessing:** coordinate sort, duplicate marking with records
+  retained, BaseRecalibrator and ApplyBQSR using independent Broad known-sites
+  resources, retaining original qualities in OQ. GIAB truth is not a BQSR input.
+- **Caller symmetry:** both callers receive the same accepted physical BAM/BAI,
+  reference and calling-region byte identities. GATK uses recalibrated QUAL;
+  DeepVariant uses retained OQ with its pinned CPU WES model. Equal BAM bytes do
+  not mean identical effective quality inputs.
+- **Common downstream policy:** BCFtools normalization and shared inclusion
+  rules, followed by diploid genotype-aware RTG `vcfeval` against GIAB v4.2.1.
+  Both callers use the same fixed evaluation denominator. No accuracy-dependent
+  interval selection, parameter tuning, stopping rule or extra filter is allowed.
+
+The owner-approved alternative to unresolved physical capture-kit assignment is
+**GENCODE v50 Basic protein-coding CDS plus stop codon**. Its definitions are:
 
 ```text
-lane-aware FASTQs → shared BWA-MEM2/sort/markdup/BQSR BAM (+ OQ)
-                    ├─ GATK ───────┐
-                    └─ DeepVariant ├→ shared normalization → GIAB benchmarking
-Nextflow canonical run → immutable evidence → tested Python model → Dash renderer
+T_design       = fixed union of protein-coding CDS and stop-codon intervals
+R_call         = merge(pad(T_design, 100 bases)) ∩ chr1–22,X
+R_eval_full    = GIAB high-confidence regions ∩ T_design ∩ chr1–22
+R_eval_holdout = R_eval_full ∩ chr20–22
 ```
 
-Synthetic shared preprocessing and its typed Python evidence boundary passed local tests and actual Linux/x86_64 Docker CI. Caller branches passed actual Linux/x86_64 Docker synthetic qualification in M4; canonical benchmarking and completion of M8 require later gates; the owner-approved synthetic Dash prototype is available now. ONT and somatic workflows are outside v1.
+The first run uses the chr20–22 portion of `R_call` after full-reference alignment.
+`R_eval_holdout` contains **1,905,809 bases in 11,715 intervals**; the full approved
+coding domain contains **33,567,783 bases in 203,986 intervals**. The constructor
+has reproduced the approved hashes. Uncovered and uncaptured coding loci remain
+in the recall denominator; depth, callability, query variants and genotypes never
+choose that denominator. These are coding-domain results, not an assertion that
+every intended exome capture target was assayed.
 
-## Foundation quick start (synthetic, nonhuman fixture only)
+DeepVariant 1.10 WES training included HG001 replicates. Chr20–22 was excluded
+from documented training and provides **same-individual locus-held-out
+sensitivity**, not population generalization. Full-domain results would be
+separate, descriptive/in-sample evidence. There is no scalar winner, caller
+superiority or clinical claim. Read [scientific validity](docs/scientific-validity.md),
+[the approved domain decision](docs/adr/0013-approved-domain-colab-and-prototype.md),
+[OQ policy](docs/adr/0003-shared-bam-oq.md) and [the result contract](docs/canonical-results-contract.md).
+
+## Architecture
+
+**Terraform provisions infrastructure; Nextflow orchestrates scientific computation.**
+The Colab path retains its package-managed runtime and `/content` qualification.
+The cloud entrypoint decomposes execution into direct scientific task containers;
+it does not nest Docker, Apptainer, Podman or udocker inside AWS scientific tasks.
+
+```mermaid
+flowchart TB
+    inputs[Authenticated original HG001 FASTQs + complete GRCh38] --> auth[Input / reference / index / domain gates]
+    auth --> bwa[Classical BWA 0.7.17 full-reference alignment]
+    bwa --> sort[Coordinate sort]
+    sort --> mark[Mark duplicates; retain reads]
+    mark --> bqsr[Independent known-sites BQSR; retain OQ]
+    bqsr --> shared[One validated shared BAM + BAI]
+    shared --> gatk[GATK HaplotypeCaller: recalibrated QUAL]
+    shared --> dv[DeepVariant WES CPU: retained OQ]
+    gatk --> norm[Common normalization + inclusion]
+    dv --> norm
+    norm --> eval[Genotype-aware RTG vcfeval]
+    truth[GIAB v4.2.1 truth + fixed evaluation domain] --> eval
+    eval --> evidence[Immutable private execution evidence]
+    evidence --> accept[Qualification + canonical public-bundle validation]
+    accept --> explorer[Python evidence model → Dash renderer]
+    tf[Terraform: IAM / S3 / ECR / logs / budgets / optional serving] --> aws[HealthOmics or Batch execution]
+    nf[Nextflow cloud.nf] --> aws
+    aws --> s3[Private S3 durable inputs / outputs + separate work storage]
+    aws --> logs[CloudWatch execution evidence]
+    tls[apps.johnpatrickcollins.info → ACM / ALB] --> serving[ECS Fargate Explorer]
+    explorer --> serving
+```
+
+`canonical.nf` and `canonical_run.py` own the established Colab route. `cloud.nf`
+and `modules/cloud/` own the separate AWS route. Python validates identity,
+scientific contracts and evidence using shared tested functions; the Explorer
+only filters/renders validated observations and exports. Its callbacks do not
+recalculate biological metrics. [Architecture detail](docs/architecture.md)
+explains these responsibilities and their current qualification boundaries.
+
+## Start locally without AWS
+
+Use Python **3.12 or 3.13** for the tested development environments. Nextflow
+requires **>=26.04.6** and Java **>=17**. Native synthetic biological execution
+requires a qualified Linux/x86_64 Docker environment; DeepVariant CPU also
+requires SSE4.1, SSE4.2 and AVX. Python tests on Apple Silicon are not native
+DeepVariant qualification.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+python -m pip install -e '.[aws]' ./explorer
+python -m pytest -q tests/unit explorer/tests
+python scripts/validate_contracts.py
+```
+
+The AWS extra installs the SDK; it does not authenticate or contact AWS. To run
+the small nonhuman foundation fixture with a working Docker engine:
 
 ```bash
 python tests/data/generate_fixture.py
-python scripts/validate_contracts.py
 nextflow run . -profile test,docker
-python -m unittest discover -s tests/unit -v
 ```
 
-The samplesheet is lane-aware (`sample,library,lane,read_group_id,platform_unit,fastq_1,fastq_2`, optional `sequencing_center`); identifiers are URL-safe, IDs unique, mates distinct/readable gzip FASTQs, and platform is fixed to `ILLUMINA`. `--callers` accepts `gatk`, `deepvariant`, or `both` (default), but foundation and M3 preprocessing invoke neither.
+Foundation and M3 modes do not call GATK HaplotypeCaller or DeepVariant.
+Samplesheets are lane-aware, validate read-group/platform-unit uniqueness and
+mate identity, and fix the platform to `ILLUMINA`. `--callers gatk`, `deepvariant`
+and `both` select caller branches where that workflow implements them.
+See [testing](docs/testing.md) and [data contracts](docs/data-contracts.md).
 
-## M3 shared-preprocessing qualification
+## Canonical Colab execution and durable assets
 
-The synthetic mode validates the exact invented paired-read/reference/known-sites
-recipe, raw FastQC, lane-aware BWA-MEM2 alignment, coordinate sorting, sample
-merge, retained duplicate marking, BQSR with original OQ, final BAM/BAI acceptance,
-samtools/Picard summaries, fixed-window mosdepth coverage and explicit MultiQC
-aggregation. It produces one shared BAM at `<outdir>/m3/SYNTHETIC01.analysis-ready.bam`
-and six typed JSON evidence artifacts under `<outdir>/m3/contracts/`.
-The tiny BQSR fixture tests wiring and quality preservation, not empirical
-calibration performance. See [the M3 decision](docs/adr/0011-m3-synthetic-shared-preprocessing.md).
+Use the [notebook launch center](notebooks/README.md) and
+[canonical Run-all notebook](notebooks/canonical_hg001_analysis_colab.ipynb).
+The launcher binds installation to a reviewed implementation SHA, authenticates
+sources, checks the actual host, qualifies representative callers and validates
+the full reference, BWA index and independent BQSR resources before analysis.
+Reference base identity and sampled functional index probes are separate gates.
 
-Tool provenance separates the distribution release from the executable's actual
-version report. The pinned BWA-MEM2 2.3 distribution reports `2.2.1`, matching its
-release-source fallback; the collector requires that exact report and the
-unchanged image digest. Both identities and their evidence are retained in
-provenance schema 2.0.0. Older provenance is rejected rather than upgraded.
-See [data contracts](docs/data-contracts.md) and the
-[observed version discrepancy](docs/orchestration/evidence/m3-ci-attempt-4.json).
+Active scratch and Nextflow work stay under `/content`, outside Drive. Durable
+sources, qualified assets and completed stages use only the established private
+project root `/content/drive/MyDrive/giab-wes-nextflow-private`. Drive is never a
+Nextflow work directory. Planning allowances are approximately 100 GiB active
+scratch and 60 GiB durable capacity; actual free space and incremental copy
+requirements are checked. Several hours is an allowance, not a measurement.
 
-From a clean reviewed checkout on Linux/x86_64 with working Docker, Python and
-Nextflow 26.04.6/Java 17:
+Restart rehashes authenticated caches and completed stages before reuse. A changed
+source, reference, code, backend or relevant parameter invalidates its identity;
+cache reuse is not new uncached compute. Keep existing caches after interruption.
+See [canonical operations](docs/canonical-analysis.md), [asset provenance](docs/canonical-assets.md),
+[runtime qualification](docs/canonical-runtime.md) and [M2 recovery](docs/m2-recovery.md).
+The canonical Colab path is implemented but has no accepted real HG001 result.
 
-```bash
-python scripts/run_m3_synthetic.py --mode preflight \
-  --output-root /tmp/giab-m3-check --expected-sha "$(git rev-parse HEAD)"
-python scripts/run_m3_synthetic.py --mode docker \
-  --output-root /tmp/giab-m3-integration --expected-sha "$(git rev-parse HEAD)"
-```
+## AWS execution, infrastructure and authentication
 
-The driver makes a fresh clone, binds the installed package to the requested
-commit, generates invented inputs, runs real tools, validates actual BAM/index
-invariants, and requires a subsequent `-resume` run to reuse upstream tasks and
-preserve results. Its uploadable `evidence/` directory contains small reports;
-local generated genomic files and `work/` remain separate. `--mode stub` tests
-workflow wiring without establishing biological execution. See
-[testing](docs/testing.md), [execution matrix](docs/execution-matrix.md), and
-[publication/recovery](docs/m3-evidence-publication.md).
+The default region is **us-west-2**. HealthOmics provides managed genomics/Nextflow
+execution; Batch provides general-purpose cloud/HPC portability and explicit
+infrastructure control. They implement the same experiment and neither is
+scientifically superior. DNS setup is independent of scientific execution.
 
-The synthetic fixture is 24 pairs across two lanes and two invented contigs
-(20,000 bases). Tool images dominate storage, including about 2.49 GB compressed
-GATK layers; allow at least 10 GiB free for image/runtime/test headroom. This
-estimate is for the tiny integration test, not full-reference HG001 alignment.
-
-`--workflow_mode m3_canonical` fails closed. No exact real known-sites manifest,
-prepared reference or validated canonical domain implementation is established. The fixed coding-domain alternative is owner-approved under ADR 0013. Synthetic
-reference windows are QC intervals and cannot serve as the primary evaluation
-domain. Neither caller executes in M3. Future GATK consumes recalibrated QUAL;
-future DeepVariant consumes OQ, so identical BAM bytes do not imply identical
-effective quality evidence.
-
-## M4 dual-caller qualification
-
-The `m4_synthetic` workflow accepts `--callers gatk`, `--callers deepvariant`,
-or `--callers both`. It uses the same accepted BAM/BAI, reference and fixed
-full-contig calling region in all modes. GATK HaplotypeCaller 4.7.0.0 emits a
-direct native VCF using recalibrated QUAL. DeepVariant 1.10.0 uses its CPU WES
-model and explicitly consumes OQ. Their effective quality evidence differs,
-as recorded in [ADR 0003](docs/adr/0003-shared-bam-oq.md) and
-[the M4 execution decision](docs/adr/0012-m4-caller-execution-and-qualification.md).
-
-The separate [M4 fixture](tests/data/m4/README.md) has 264 invented read pairs,
-two expected SNVs and a reference control. The original M3 fixture is unchanged.
-Caller tasks contain seven explicit regular files, mount only their task
-directory and run without network access. The independent qualification driver
-checks the actual mounted copies and requires positive candidate and inference
-records tied to the pinned WES model, indexed native outputs, matching independent
-and both-mode results, and complete resume reuse.
-
-From a clean committed checkout on Linux/x86_64 with Docker, SSE4.1/SSE4.2/AVX,
-Python and Nextflow 26.04.6/Java 17:
-
-```bash
-python scripts/run_m4_synthetic.py --mode preflight \
-  --output-root /tmp/giab-m4-check --expected-sha "$(git rev-parse HEAD)"
-python scripts/run_m4_synthetic.py --mode docker \
-  --output-root /tmp/giab-m4-integration --expected-sha "$(git rev-parse HEAD)"
-```
-
-The synthetic driver requires at least two Docker CPUs, 12 GiB engine memory
-and 30 GiB free before preparing images. These are tiny-test prerequisites,
-not a canonical HG001 resource estimate. Local macOS/ARM tests qualify Python
-and framework behavior; real DeepVariant execution there remains unsupported
-by this project. M4 passed required Linux Docker CI 34237377774 on merged main.
-
-Historical failed attempts, including the original DeepVariant RefCall, remain
-preserved under `docs/orchestration/evidence/m4-ci-attempt-*.json`. Merged repairs
-staggered invented heterozygous support without changing expected alleles or
-genotypes, and fixed process-name parsing around Nextflow display tags. Existing
-main CI 34237377774 passed the strict native-call, inference, isolation,
-independent/both equivalence and resume acceptance. This reconciliation does not
-constitute new biological execution. See [the verified M4 checkpoint](docs/orchestration/checkpoints/M4.json).
-
-Each selected caller emits a versioned pre-normalization JSON contract, with
-input/output hashes, image/version/model identity, exact parameters and task
-resources. Only validated small JSON contracts enter the guarded
-[M4 evidence publisher](docs/m4-evidence-publication.md). See
-[actual integration acceptance](tests/integration/M4.md) for the complete gate.
-This fixture establishes no indel accuracy, canonical domain, HG001 benchmark
-or compute-cost comparison; those belong to M5 and later execution.
-
-## Scientific plan and claim boundary
-
-The canonical input is original paired Garvan HiSeq 2500 `NIST7035_TAAGGCGA_L001` FASTQ fetched directly from GIAB; SRR3197785/SRX1608029/SRP012400/PRJNA162355 are lineage only, not an SRA substitute. The reference is `GCA_000001405.15_GRCh38_no_alt_analysis_set` and truth is GIAB v4.2.1.
-
-Under owner-approved ADR 0013, `T_design` is the fixed GENCODE v50 Basic protein-coding CDS plus stop-codon union; `R_call = merge(pad(T_design,100)) ∩ chr1-22,X`; `R_eval_full = HC ∩ T_design ∩ chr1-22`; `R_eval_holdout = R_eval_full ∩ chr20-22`. Denominators never depend on depth, callable/query calls, or genotypes. Full results are descriptive/in-sample because DeepVariant 1.10 WES training included HG001 replicates. Chr20–22 is only a same-individual locus-held-out sensitivity—not generalization. No winner, superiority, clinical, or scalar-ranking claim is allowed.
-
-## Baseline and current execution limits
-
-| Item | Evidence/status |
+| Component | Implemented behavior and current boundary |
 |---|---|
-| M2.1.1 recovery Python 3.12/3.13, wheel and synthetic foundation CI | [Required CI passed](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34094504379) at `22d01b202e15bb098e9d42d0ad4a98606e78c2c2`; 104 Python tests per environment |
-| Nextflow 26.04.6 minimum, Java ≥17 | CI contract; local status reported honestly |
-| nf-core/tools 4.1.0, nf-schema 2.8.0, nf-test 0.9.5 | Pinned CI/tooling contracts |
-| M3 BWA-MEM2, GATK preprocessing and QC | [Verified synthetic Docker execution and resume](docs/orchestration/evidence/m3-verified.json); no canonical HG001 result |
-| GATK HaplotypeCaller and DeepVariant WES | M4 synthetic SNV qualification passed required CI 34237377774 |
-| DeepVariant linux/amd64 CPU (AVX) and GPU images | CPU image synthetically verified; GPU image configured only |
-| ARM64/Apple Silicon | Python tests and framework version commands executed; M3 biological containers and DeepVariant unqualified |
-| Source-cache control record | Ten objects reported, 4,900,011,445 bytes; metadata observed, fresh byte rehash pending |
-| Reference preparation / real HG001 workflow / callers | No immutable canonical execution evidence established |
-| Colab | Owner-supplied capability report consistency-checked; 50.99 GiB, no Docker; canonical runtime unqualified |
-| SLURM, Seqera/Wave | Not executed |
-| Dash | Local synthetic prototype; not deployed |
+| HealthOmics | Deterministic workflow ZIP, private ECR mapping validation, explicit registration/run-group/cache operations, input-bound run plans, guarded submission and run/task/cache evidence export. No workflow registered or run executed. |
+| Batch | Managed x86-only EC2 environment, zero minimum vCPUs, bounded retries, task-specific resources, durable S3 work, ten immutable-revision job definitions and live read-only image/role verification. Disabled by default. |
+| S3 | Separate private encrypted/versioned durable-data and disposable-work buckets, public access blocked, TLS required, lifecycle restricted to disposable work; canonical evidence has no expiry rule. |
+| ECR | Eight immutable/scanned private repositories: support, Explorer and six reviewed tool mirrors. Mirrors must preserve upstream digest provenance. No automatic deletion of potentially referenced images. |
+| IAM | Separate Batch ordinary/benchmark/execution/instance, HealthOmics execution and Explorer execution/runtime roles. No AdministratorAccess; bundled-evidence Explorer runtime has no AWS permissions. |
+| Observability / costs | CloudWatch log groups and optional budget alerts, project tags, explicit resource ceilings and storage lifecycle. Budget alerts do not stop spending; Batch may exceed its configured vCPU ceiling by one instance. |
+| Explorer serving | Optional ECS Fargate, ALB, ACM and external-DNS or delegated-subdomain Route53 configuration. Disabled until separately authorized; no NAT Gateway by default. |
 
-## Data and private-workspace policy
+Two current backend blockers are material. AWS documents HealthOmics
+**Nextflow 26.04.0**, below this repository's **26.04.6 minimum**; major/minor
+compatibility alone is insufficient. The tools fail closed pending actual
+compatible-engine qualification. The supplied earlier EC2 On-Demand Standard
+quota observation was **5 vCPUs** (`L-1216C47A`), not re-read during this root-restricted
+development session. Inspect standard Spot quota `L-34B43A08` independently.
+The default 4-vCPU Batch environment supports a potential bounded smoke test,
+not the 8-CPU canonical DeepVariant task. Preflight recommends explicit increases
+for the requested ceiling, normally 32 vCPUs; effective quota and capacity still
+need verification. [AWS API and engine references](scripts/aws/README.md#aws-api-references)
+are linked from the operator guide.
 
-Only the deterministic, explicitly synthetic nonhuman FASTQ fixture recipe is public; the gzip files are materialized locally so repository reviews remain text-only. Human FASTQ/BAM/VCF/reference/truth/vendor data are forbidden in Git. The guarded [M3 evidence publisher](docs/m3-evidence-publication.md) copies only six validated small JSON files to a content-addressed synthetic namespace. M2 reusable source caches and future canonical results have separate paths and acceptance rules. Drive is never a Nextflow work directory. See [private workspace](docs/private-workspace.md).
+Seven `giab-wes-demo-*` service roles and their scoped policies were created and
+read back during an explicitly authorized IAM-only bootstrap. They are service
+identities, not human operator access. **IAM Identity Center setup was requested
+but is not enabled**. Subsequently authorized read-only discovery confirmed no
+AWS Organization and no Identity Center instance in us-west-2 or us-east-1.
+Organization creation awaits explicit acceptance of its possible Free Tier credit
+forfeiture; a paid account plan alone does not establish credit preservation.
+An approved non-root federated/Identity Center operator session with temporary
+credentials remains required. Root cannot assume these roles and
+must not run Terraform or normal automation. No long-lived root keys were created.
+Import the bootstrapped roles into Terraform rather than recreating them.
 
-## Roadmap and limitations
-
-M1 foundation and architecture; M2 data and provenance; M3 FASTQ QC, alignment, preprocessing, and alignment/coverage QC; M4 independently selectable GATK HaplotypeCaller and DeepVariant WES callers; M5 common GIAB benchmarking and explicit caller accuracy-versus-resource comparison; M6 operational hardening, Seqera observability, and cloud/HPC profiles; M7 comprehensive QA, canonical execution, reproducibility audit, and v1.0 release; M8 Plotly Dash Pipeline Evidence Explorer and deployment; M9 website research showcase and final claim/reproducibility audit. See [milestones](docs/milestones.md), [architecture](docs/architecture.md), [contracts](docs/data-contracts.md), and [scientific validity](docs/scientific-validity.md). This is an external, unbranded nf-core-inspired structure—not an official nf-core pipeline or Sarek replacement.
-
-Authoritative sources and access dates are recorded in [`docs/source-ledger.yaml`](docs/source-ledger.yaml).
-
-## M2 canonical data driver
-
-`config/m2-resources.json` locks the one HG001 lane, exact GRCh38 source and GIAB v4.2.1 truth resources. Install the repository as a Python package before using console commands:
+After that operator identity is available, the next read-only step is:
 
 ```bash
-python -m pip install .
-giab-wes-acquire-m2 --preflight-only --workspace /path/to/m2-stage
-# Only if verified cache recovery is unavailable, choose a deliberate run ID:
-giab-wes-acquire-m2 --workspace /path/to/m2-stage --run-id m2-YYYYMMDDTHHMMSSZ
+python scripts/aws/preflight.py --profile giab-operator --region us-west-2 \
+  --desired-vcpus 32 --json work/aws-preflight.json
 ```
 
-Partial downloads resume; completed bytes are verified before reuse. Use the [Colab launch center](notebooks/README.md) and [recovery runbook](docs/m2-recovery.md) to reuse the observed source cache. The primary source inventory is about 4.9 GB. No large acquisition was performed during the recovery audit. Human and large reference bytes remain private and outside Git.
+Offline package creation is already available:
 
-M2 distinguishes implementation readiness from canonical data readiness. **Gate A** provides strict source contracts, synthetic downloader/domain tests, and private-workspace tooling. **Gate B has not run:** the owner approved the fixed GENCODE v50 coding-domain alternative in ADR 0013. Its deterministic canonical implementation and reference/BQSR validation remain pending. The unresolved physical capture-kit assignment is retained as historical uncertainty and does not revoke the approved alternative. See [M2 operations](docs/m2-data-provenance.md), the machine-readable [target decision](config/m2-target-design.json), and [ADR 0008](docs/adr/0008-m2-canonical-data.md). The [source-cache metadata audit](docs/orchestration/evidence/source-cache-metadata.json) documents the observed older mirror. It does not establish preparation, a qualified Colab/container environment or canonical domains.
+```bash
+python scripts/aws/healthomics.py --output work/package-evidence.json package \
+  --zip work/healthomics-workflow.zip
+```
 
-## Colab launch
+Neither command authorizes deployment. Every paid launch requires its separate
+explicit flag and prerequisites. Authentication always rehashes staged source
+bytes; multipart S3 ETags are not SHA-256 identities. Cache identity binds source,
+workflow package, container digests, inputs/reference/domain and parameters.
+API-reported hits, misses and unknowns stay distinct from new compute measurements.
 
-Use the [notebook launch center](notebooks/README.md) or open M2 directly:
-[![Open M2 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jcollins-bioinfo/giab-wes-nextflow/blob/main/notebooks/m2_colab.ipynb). The launcher records the resolved commit and keeps canonical Gate B fail-closed.
+Caller task inputs exclude truth. Ordinary Batch roles deny the durable truth
+prefix; benchmark roles admit it. This does not establish adversarial isolation
+for truth copies in shared Nextflow work storage or the workflow-wide HealthOmics
+role. No stronger cloud isolation claim is made.
 
-## M2.1 package and readiness boundary
+Follow [AWS execution](docs/aws-cloud.md), [Terraform setup/imports](infra/aws/README.md)
+and [operator CLI/API details](scripts/aws/README.md) for the reviewed plan. No
+Terraform apply, large genomic upload, image push, paid genomics run or hosted
+Explorer deployment is claimed. Fixed-cost components include an enabled ALB,
+continuously running Fargate task, public IPv4, optional DNS zone and retained
+storage/logs; optional serving defaults must remain a deliberate cost decision.
 
-Version `0.2.0-dev.3` established `src/giab_wes_nextflow/` the sole M2 implementation; the retained `scripts/*_m2.py` files only preserve historical command paths. Development dependencies are declared in `requirements-dev.in`, with the reviewed pinned direct set mirrored in `requirements-dev.txt`; CI installs that file before building both distributions and tests the wheel outside the checkout.
+## Pipeline Evidence Explorer
 
-Version `0.2.0-dev.4` repairs observed path, identity and restart defects. From a clean reviewed checkout, run `scripts/run_m2_readiness.sh identity` for zero-install identity verification, then `scripts/run_m2_readiness.sh verify` for package installation and local code verification. Data modes (`preflight`, `acquire`, `hydrate`, and `mirror`) are explicit and require a reusable `RUN_ID`. Mirroring is only a durable, rehashed source cache: it cannot create `COMPLETED.json`, satisfy capture-design Gate B, or authorize canonical publication. The exact deposited target bytes are now recorded; their unique per-library assay assignment remains unresolved; canonical analysis instead uses the approved coding-domain alternative once its implementation is validated. Historical Drive mirror metadata is observed; fresh hydration verification and all canonical biological execution remain separate evidence gates. M3 is synthetically verified after the recovery gate. M4 is synthetically verified on merged main; M5 is synthetically verified from retained CI; canonical execution retains its own gates.
+The local synthetic application presents retained M3/M4/M5 evidence, provenance,
+execution traces and downloads. Start it from the installed environment:
 
-## M5 synthetically verified
+```bash
+gunicorn pipeline_evidence_explorer.wsgi:server \
+  --bind 127.0.0.1:8050 --workers 1 --no-control-socket
+```
 
-Version `0.5.0-dev.1` adds common BCFtools normalization, direct RTG vcfeval
-benchmarking, schema-validated Python count/metric artifacts and typed resource
-attribution. [ADR 0014](docs/adr/0014-m5-common-normalization-and-benchmark.md)
-preregisters the policy and immutable tools. `m5.nf -profile m5_test` is a
-synthetic-only downstream workflow; truth stays outside normalization. Actual
-engine qualification uses the bounded driver in the existing M4 CI job.
-Retained [CI34270789172 evidence](docs/orchestration/evidence/m5-verified-34270789172.json)
-qualifies actual BCFtools 1.24/RTG 3.13 execution, split representations, isolation,
-independent/both equivalence and full resume. Post-merge main CI34272289311 passed
-on the identical tested source tree. M5 is synthetically verified. Canonical HG001 accuracy, cost and clinical/generalization
-claims remain unavailable. Approved coding-domain construction is locally reproduced as described below;
-reusable-index qualification remains deferred and Colab is still unqualified.
+Open [the local Explorer](http://127.0.0.1:8050/research/giab-wes-nextflow/explorer/).
+Its `healthz`/`readyz` endpoints distinguish liveness and synthetic evidence
+readiness; `canonical/readyz` remains unavailable without an accepted canonical
+bundle. Supplying both `EXPLORER_CANONICAL_BUNDLE` and an independently reviewed
+`EXPLORER_CANONICAL_MANIFEST_SHA256` activates strict schema, hash, metric,
+qualification and caller-symmetry validation before canonical rendering.
 
-### M5 continuation
+[`explorer/Dockerfile`](explorer/Dockerfile) builds a non-root amd64 image with
+pinned base/dependencies; [`containers/support.Dockerfile`](containers/support.Dockerfile)
+builds the separate Python validation image. Container CI is distinct from local
+source checks. The planned HTTPS route is `apps.johnpatrickcollins.info` → ALB →
+Fargate. Only that subdomain may be delegated to Route53; the parent zone is not
+migrated. No DNS records or live serving deployment were created.
+See [Explorer operation and HTTP interfaces](explorer/README.md).
 
-CI34266895406 passed M4 caller execution but rejected M5 SNP counts. The repair
-adds RTG reference-overlap handling for decomposed records while preserving the
-4TP/2FP/2FN oracle and diploid genotype mismatch tests. Duplicate JSON keys now
-fail before task launch. The actual Nextflow independent/both/resume qualification
-helper passed in CI34270789172: independent GATK and DeepVariant modes each
-executed two tasks; both-mode and resume each reused four. Both queries match
-the frozen SNP4TP/2FP/2FN and indel1TP/0FP/0FN expectations. Retained traces
-qualify resource parsing and cache attribution, not canonical caller cost.
+## Evidence, validation and remaining work
 
-The package-owned `python -m giab_wes_nextflow.coding_domain` constructor reproduced
-all three ADR0013 domain hashes from the exact pinned inputs in memory. Its
-optional output writes verified BEDs and a completion record last. It does not
-qualify reference bases, a Colab runtime or canonical execution. The restart-safe
-reusable-index notebook remains deferred.
+Historical evidence is preserved rather than relabeled as a new run:
+
+| Milestone | Retained qualification and limits |
+|---|---|
+| M2 recovery | [CI 34094504379](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34094504379): Python 3.12/3.13 packaging, contracts and synthetic recovery checks. Historical source-cache metadata is not a fresh byte verification. |
+| M3 | [Verified CI 34103737524](docs/orchestration/evidence/m3-verified.json): invented-read BWA-MEM2 preprocessing, BAM/index/OQ acceptance, 22 completed and 22 cached tasks. Distribution 2.3 reports 2.2.1; both identities remain recorded. |
+| M4 | [Verified main CI 34237377774](docs/orchestration/evidence/m4-verified-main-34237377774.json): actual pinned GATK/DeepVariant WES synthetic SNVs, inference, isolation, independent/both equivalence and resume. Earlier RefCall failure evidence remains historical. |
+| M5 | [Retained CI 34270789172](docs/orchestration/evidence/m5-verified-34270789172.json), followed by identical-tree main CI 34272289311: BCFtools 1.24, RTG 3.13, fixed synthetic SNP/indel counts and resume. These timings do not estimate canonical WES cost. |
+
+Current local AWS-development validation recorded **409 passing pipeline/Explorer
+tests**, Terraform formatting/validation and **five mock-provider tests**, clean
+lint for both cloud Nextflow files, package build/inventory, pre-commit and
+repository-hygiene checks. Full Nextflow lint retains two existing warnings.
+These local results do not establish successful AWS execution. The initial cloud
+CI built both images and exposed an HTTP startup race and a platform-specific
+provider-lock omission. Bounded transport retries with three regression tests and
+the official Linux provider hash address those failures; consult the exact-head
+[PR checks](https://github.com/jcollins-bioinfo/giab-wes-nextflow/pull/27/checks)
+for the corrected run. Existing CI is preserved;
+[new cloud CI](.github/workflows/aws-cloud.yml) adds credential-free Terraform,
+cloud contract/configuration and image build/health checks.
+
+Before the first accepted cloud canonical result, complete these gates in order:
+
+1. Establish temporary non-root operator access and refresh account/quota state.
+2. Resolve the compatible HealthOmics engine or effective Batch quota/capacity;
+   review/import/apply infrastructure only under separate authorization.
+3. Build and qualify images; authenticate durable S3 assets. Cloud-native asset
+   acquisition/index construction and functional-qualification automation remain
+   incomplete; the current DAG consumes already-qualified assets.
+4. Produce representative native cloud runtime qualification. Execute and audit
+   the direct-container workflow, including restart/cache and resource evidence.
+5. Implement and qualify the cloud canonical public-bundle adapter. Its current
+   private collector is not that adapter. Validate the accepted manifest externally
+   before Explorer import, public deployment or a scoped release candidate.
+
+Human FASTQ/BAM/VCF/reference/truth data, credentials and large generated outputs
+never belong in Git. The public result bundle contains only bounded validated
+metadata, observations and artifact hashes; scientific files remain private.
+See [private-workspace policy](docs/private-workspace.md), [publication contract](docs/canonical-results-contract.md),
+[release readiness](docs/release-candidate-readiness.md), [milestones](docs/milestones.md)
+and the dated [authoritative source ledger](docs/source-ledger.yaml).
