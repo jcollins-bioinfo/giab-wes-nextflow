@@ -133,7 +133,7 @@ flowchart TB
 ```
 
 `canonical.nf` and `canonical_run.py` own the established Colab route. `cloud.nf`
-and `modules/cloud/` own the separate AWS route. Python validates identity,
+and `modules/local/cloud/` own the separate AWS route. Python validates identity,
 scientific contracts and evidence using shared tested functions; the Explorer
 only filters/renders validated observations and exports. Its callbacks do not
 recalculate biological metrics. [Architecture detail](docs/architecture.md)
@@ -227,8 +227,8 @@ read back during an explicitly authorized IAM-only bootstrap. They are service
 identities, not human operator access. **IAM Identity Center setup was requested
 but is not enabled**. Subsequently authorized read-only discovery confirmed no
 AWS Organization and no Identity Center instance in us-west-2 or us-east-1.
-Organization creation awaits explicit acceptance of its possible Free Tier credit
-forfeiture; a paid account plan alone does not establish credit preservation.
+The owner chose to preserve Free Tier credits and pause Organization/Identity
+Center creation; a paid account plan alone does not establish credit preservation.
 An approved non-root federated/Identity Center operator session with temporary
 credentials remains required. Root cannot assume these roles and
 must not run Terraform or normal automation. No long-lived root keys were created.

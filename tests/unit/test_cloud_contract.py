@@ -61,7 +61,7 @@ def test_cache_binds_scientific_identity_code_and_execution():
 
 
 def test_cloud_dag_uses_direct_pins_and_truth_exclusion():
-    tasks = (ROOT / 'modules/cloud/tasks.nf').read_text()
+    tasks = (ROOT / 'modules/local/cloud/tasks.nf').read_text()
     for caller in ('GATK', 'DEEPVARIANT'):
         body = tasks.split(f'process CLOUD_{caller}_CALL {{')[1].split('\nprocess ')[0]
         inputs = body.split('input:')[1].split('output:')[0]
