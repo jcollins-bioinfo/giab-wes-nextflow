@@ -1,0 +1,18 @@
+# Copy this file to import-bootstrapped-roles.tf after confirming the identity and
+# exact role set. Change prefix only if the existing live names differ.
+locals {
+  bootstrapped_roles = toset([
+    "batch-job", "batch-benchmark-job", "batch-execution",
+    "healthomics-execution", "explorer-execution", "explorer-task", "batch-instance"
+  ])
+}
+import {
+  for_each = local.bootstrapped_roles
+  to       = aws_iam_role.project[each.key]
+  id       = "giab-wes-demo-${each.key}"
+}
+import {
+  for_each = setsubtract(local.bootstrapped_roles, toset(["explorer-task"]))
+  to       = aws_iam_role_policy.project[each.key]
+  id       = "giab-wes-demo-${each.key}:project-access"
+}

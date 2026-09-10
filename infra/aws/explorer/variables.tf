@@ -1,0 +1,13 @@
+variable "name" { type = string }
+variable "region" { type = string }
+variable "vpc_id" { type = string }
+variable "subnet_ids" { type = list(string) }
+variable "image" { type = string }
+variable "repository_url" { type = string }
+variable "execution_role_arn" { type = string }
+variable "task_role_arn" { type = string }
+variable "log_group_name" { type = string }
+variable "domain" { type = string }
+variable "desired_count" { type = number }
+variable "create_delegated_zone" { type = bool }
+variable "existing_certificate_arn" { type = string }
