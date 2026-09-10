@@ -159,3 +159,14 @@ canonical_sources:
     url: https://www.htslib.org/doc/samtools-depth.html
     evidence: src/giab_wes_nextflow/canonical_coverage.py
     access_date: 2026-09-08
+
+aws_sources:
+  - claim: "HealthOmics documented exact Nextflow engine 26.04.0 does not satisfy this repository minimum 26.04.6; profiles and engine settings are supported."
+    url: https://docs.aws.amazon.com/omics/latest/dev/starting-a-run.html
+    access_date: 2026-09-10
+  - claim: "Root cannot assume an IAM role; a human/federated non-root sign-in is required."
+    url: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-cli.html
+    access_date: 2026-09-10
+  - claim: "AWS MCP OAuth grants the authenticated identity's existing AWS permissions and does not elevate it."
+    url: https://docs.aws.amazon.com/signin/latest/userguide/aws-mcp-server.html
+    access_date: 2026-09-10

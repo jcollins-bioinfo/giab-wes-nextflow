@@ -1,0 +1,27 @@
+# Copy to terraform.tfvars (gitignored), then set YOUR confirmed AWS account.
+account_id  = "123456789012"
+region      = "us-west-2"
+project     = "giab-wes"
+environment = "demo"
+
+# Base S3/ECR/IAM/log resources only. Never a paid workflow submission.
+authorize_paid_services = false
+enable_batch             = false
+enable_explorer          = false
+
+# Bounded smoke environment: unsuitable for the complete high-memory DAG.
+batch_max_vcpus      = 4
+batch_instance_types = ["c6i.xlarge", "m6i.xlarge", "r6i.xlarge"]
+batch_use_spot       = false
+batch_scratch_gib    = 300
+
+# Enable before substantial data/compute usage. This is an ALERT, not a cap.
+enable_budget      = false
+monthly_budget_usd = 50
+budget_email       = ""
+
+# Set only after image build/scan and explicit deployment authorization.
+explorer_image         = ""
+explorer_desired_count = 1
+explorer_domain        = "apps.johnpatrickcollins.info"
+create_delegated_zone  = false

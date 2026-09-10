@@ -1,0 +1,658 @@
+{
+  "batch-job": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "${account}"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:${partition}:ecs:${region}:${account}:*"
+            }
+          }
+        }
+      ]
+    },
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetBucketLocation"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}",
+            "arn:${partition}:s3:::${work_bucket}"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "source/*",
+                "reference/*",
+                "index/*",
+                "domain/*",
+                "known-sites/*",
+                "results/*",
+                "evidence/*",
+                "provenance/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "work/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/source/*",
+            "arn:${partition}:s3:::${data_bucket}/reference/*",
+            "arn:${partition}:s3:::${data_bucket}/index/*",
+            "arn:${partition}:s3:::${data_bucket}/domain/*",
+            "arn:${partition}:s3:::${data_bucket}/known-sites/*",
+            "arn:${partition}:s3:::${data_bucket}/results/*",
+            "arn:${partition}:s3:::${data_bucket}/evidence/*",
+            "arn:${partition}:s3:::${data_bucket}/provenance/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:PutObject",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/results/*",
+            "arn:${partition}:s3:::${data_bucket}/evidence/*",
+            "arn:${partition}:s3:::${data_bucket}/provenance/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "s3:PutObject",
+            "s3:DeleteObject",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}/work/*"
+          ]
+        },
+        {
+          "Effect": "Deny",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/truth/*"
+          ]
+        }
+      ]
+    }
+  },
+  "batch-benchmark-job": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "${account}"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:${partition}:ecs:${region}:${account}:*"
+            }
+          }
+        }
+      ]
+    },
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetBucketLocation"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}",
+            "arn:${partition}:s3:::${work_bucket}"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "source/*",
+                "reference/*",
+                "index/*",
+                "domain/*",
+                "known-sites/*",
+                "results/*",
+                "evidence/*",
+                "provenance/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "work/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/source/*",
+            "arn:${partition}:s3:::${data_bucket}/reference/*",
+            "arn:${partition}:s3:::${data_bucket}/index/*",
+            "arn:${partition}:s3:::${data_bucket}/domain/*",
+            "arn:${partition}:s3:::${data_bucket}/known-sites/*",
+            "arn:${partition}:s3:::${data_bucket}/results/*",
+            "arn:${partition}:s3:::${data_bucket}/evidence/*",
+            "arn:${partition}:s3:::${data_bucket}/provenance/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:PutObject",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/results/*",
+            "arn:${partition}:s3:::${data_bucket}/evidence/*",
+            "arn:${partition}:s3:::${data_bucket}/provenance/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "s3:PutObject",
+            "s3:DeleteObject",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}/work/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/truth/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "truth/*"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "batch-execution": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "${account}"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:${partition}:ecs:${region}:${account}:*"
+            }
+          }
+        }
+      ]
+    },
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:GetAuthorizationToken"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:BatchGetImage",
+            "ecr:GetDownloadUrlForLayer"
+          ],
+          "Resource": "arn:${partition}:ecr:${region}:${account}:repository/${name}/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:DescribeLogStreams"
+          ],
+          "Resource": "arn:${partition}:logs:${region}:${account}:log-group:/${name}/batch:*"
+        }
+      ]
+    }
+  },
+  "healthomics-execution": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "omics.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "${account}"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:${partition}:omics:${region}:${account}:*"
+            }
+          }
+        }
+      ]
+    },
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetBucketLocation"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}",
+            "arn:${partition}:s3:::${work_bucket}"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "source/*",
+                "reference/*",
+                "index/*",
+                "domain/*",
+                "known-sites/*",
+                "results/*",
+                "evidence/*",
+                "provenance/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "work/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/source/*",
+            "arn:${partition}:s3:::${data_bucket}/reference/*",
+            "arn:${partition}:s3:::${data_bucket}/index/*",
+            "arn:${partition}:s3:::${data_bucket}/domain/*",
+            "arn:${partition}:s3:::${data_bucket}/known-sites/*",
+            "arn:${partition}:s3:::${data_bucket}/results/*",
+            "arn:${partition}:s3:::${data_bucket}/evidence/*",
+            "arn:${partition}:s3:::${data_bucket}/provenance/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:PutObject",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/results/*",
+            "arn:${partition}:s3:::${data_bucket}/evidence/*",
+            "arn:${partition}:s3:::${data_bucket}/provenance/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "s3:PutObject",
+            "s3:DeleteObject",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}/work/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}/truth/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${data_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "truth/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}"
+          ],
+          "Condition": {
+            "StringLike": {
+              "s3:prefix": [
+                "cache/*"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "s3:PutObject",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": [
+            "arn:${partition}:s3:::${work_bucket}/cache/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:DescribeLogStreams"
+          ],
+          "Resource": "arn:${partition}:logs:${region}:${account}:log-group:/aws/omics/WorkflowLog:*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:GetAuthorizationToken"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:BatchGetImage",
+            "ecr:GetDownloadUrlForLayer"
+          ],
+          "Resource": "arn:${partition}:ecr:${region}:${account}:repository/${name}/*"
+        }
+      ]
+    }
+  },
+  "explorer-execution": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "${account}"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:${partition}:ecs:${region}:${account}:*"
+            }
+          }
+        }
+      ]
+    },
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:GetAuthorizationToken"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:BatchGetImage",
+            "ecr:GetDownloadUrlForLayer"
+          ],
+          "Resource": "arn:${partition}:ecr:${region}:${account}:repository/${name}/explorer"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:DescribeLogStreams"
+          ],
+          "Resource": "arn:${partition}:logs:${region}:${account}:log-group:/${name}/explorer:*"
+        }
+      ]
+    }
+  },
+  "explorer-task": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "${account}"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:${partition}:ecs:${region}:${account}:*"
+            }
+          }
+        }
+      ]
+    },
+    "policy": null
+  },
+  "batch-instance": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ec2.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    },
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:GetAuthorizationToken"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:BatchGetImage",
+            "ecr:GetDownloadUrlForLayer"
+          ],
+          "Resource": "arn:${partition}:ecr:${region}:${account}:repository/${name}/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:DescribeLogStreams"
+          ],
+          "Resource": "arn:${partition}:logs:${region}:${account}:log-group:/${name}/batch:*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ecs:CreateCluster",
+            "ecs:DeregisterContainerInstance",
+            "ecs:DiscoverPollEndpoint",
+            "ecs:Poll",
+            "ecs:RegisterContainerInstance",
+            "ecs:StartTelemetrySession",
+            "ecs:UpdateContainerInstancesState",
+            "ecs:SubmitAttachmentStateChanges",
+            "ecs:SubmitContainerStateChange",
+            "ecs:SubmitTaskStateChange"
+          ],
+          "Resource": "*"
+        }
+      ]
+    }
+  }
+}

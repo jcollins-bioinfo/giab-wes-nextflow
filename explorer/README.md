@@ -88,3 +88,13 @@ and 390-pixel widths. The new canonical view has HTTP/callback coverage but
 current visual, responsive and accessibility browser qualification is pending;
 these earlier checks do not qualify the new view. Public hosting and an actual
 canonical bundle are still required for operational M8 completion.
+
+## Container and AWS serving path
+
+Build from the repository root: `docker build --platform linux/amd64 -f explorer/Dockerfile .`.
+The image pins its official Python amd64 base and runtime dependency versions,
+runs non-root and exposes port8050. A read-only filesystem needs writable `/tmp`.
+`python explorer/container_smoke.py` checks a running default image at localhost8050.
+The new CI builds and checks both project images; a local source HTTP check is
+not a Docker image qualification. See [AWS deployment](../docs/aws-cloud.md) and
+[Terraform](../infra/aws/README.md). Deployment remains explicitly disabled.

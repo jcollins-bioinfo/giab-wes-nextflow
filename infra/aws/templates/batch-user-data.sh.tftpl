@@ -1,0 +1,22 @@
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="GIAB_BATCH_BOUNDARY"
+
+--GIAB_BATCH_BOUNDARY
+Content-Type: text/x-shellscript; charset="us-ascii"
+
+#!/bin/bash
+set -euo pipefail
+# Host staging client only. Scientific tools run directly in their own images.
+# The entire self-contained AWS CLI v2 bundle is mounted read-only into each job.
+dnf install -y unzip
+bootstrap_dir=$(mktemp -d)
+trap 'rm -rf "$bootstrap_dir"' EXIT
+curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 \
+  'https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${awscli_version}.zip' \
+  --output "$bootstrap_dir/awscli.zip"
+printf '%s  %s\n' '${awscli_sha256}' "$bootstrap_dir/awscli.zip" | sha256sum --check -
+unzip -q "$bootstrap_dir/awscli.zip" -d "$bootstrap_dir"
+"$bootstrap_dir/aws/install" --install-dir /opt/giab-awscli --bin-dir /opt/giab-awscli/bin
+/opt/giab-awscli/bin/aws --version
+# EC2 host role has no S3 access. Task roles provide scoped temporary credentials.
+--GIAB_BATCH_BOUNDARY--

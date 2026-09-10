@@ -42,3 +42,12 @@ interface acceptance. Four phases share one Nextflow cache and must yield
 2/0,2/0,0/4,0/4 completed/cached tasks. Canonical JSON from the strict package
 manifest reader is parsed once before task creation. The coding-domain constructor
 is independent of query, truth VCF, reads, alignments and coverage.
+
+## AWS direct-container architecture
+
+The separate `cloud.nf` workflow decomposes scientific operations into task
+containers shared by HealthOmics and Batch profiles. Terraform provisions
+infrastructure; Nextflow orchestrates scientific computation. S3 is the private
+durable data plane; ECR binds tool digests; CloudWatch records execution. Explorer
+uses an optional Fargate/ALB/ACM serving path. The existing Colab path and its
+qualification are unchanged. See the [AWS architecture diagram and gates](aws-cloud.md).
