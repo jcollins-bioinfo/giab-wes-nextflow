@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import time
 import urllib.error
@@ -37,7 +38,7 @@ def main() -> None:
             check(args.base_url)
             print('Explorer health/evidence passed; canonical correctly unavailable')
             return
-        except (urllib.error.URLError, TimeoutError):
+        except (OSError, http.client.HTTPException):
             if attempt == 29:
                 raise
             time.sleep(1)
