@@ -1,39 +1,17 @@
 {
-  "updated_at": "2026-09-11T02:47:14.908848+00:00",
+  "updated_at": "2026-09-11T04:10:48.084595+00:00",
   "start_sha": "e291340f19dd7a55df8eda89258dcabd70fd41f4",
   "branch": "codex/giab-execution-economical",
-  "authorization": {
-    "execution_gross_usd": 50,
-    "hosting_first_month_usd": 10,
-    "persistent_hosting_services_max": 1,
-    "organizations": false,
-    "mfa_required": false,
-    "root_scope": "one-time IAM bootstrap and verification only"
-  },
-  "identities": {
-    "desktop_source": "arn:aws:iam::400200465857:user/john-console",
-    "desktop_operator": "arn:aws:sts::400200465857:assumed-role/giab-operator/john-console-giab-operator",
-    "aws_core": "arn:aws:iam::400200465857:root"
-  },
   "plan": [
     "Bootstrap exact operator role and verify local assumption",
     "Read account credit/quotas and select viable backend",
     "Qualify exact Nextflow 26.04.0 with cache negatives",
     "Complete acquisition and evidence adapter under scientific gates",
     "Measure and deploy one economical Lightsail Explorer",
-    "Update existing website PR and interview demonstration"
+    "Update existing website PR and project demonstration"
   ],
-  "costs": {
-    "task_compute_launched": false,
-    "hosting_launched": false,
-    "gross_incurred_usd": 0,
-    "credit_balance_user_confirmed_usd": 100,
-    "machine_verified_credit_balance": 100,
-    "billing_observation": "2026-09-11T02:28:04Z",
-    "posted_costs": "unavailable: Cost Explorer DataUnavailableException"
-  },
   "scientific_result": "unavailable",
-  "next": "Qualify exact HealthOmics engine/parser/native runtime and container cache identity; complete private role imports and inspect a scoped infrastructure plan before activation.",
+  "next": "Complete source staging and image mirrors; execute and validate bounded full-reference index and native HealthOmics qualification, then the real HG001 comparison.",
   "iam_imports": {
     "roles": 7,
     "inline_policies": 6,
@@ -43,12 +21,18 @@
   "verification": {
     "python_http_tests": 53,
     "lightsail_terraform_validate": "passed",
-    "engine_local": "partial; managed/container qualification incomplete",
-    "local_http": "240 requests, 4 clients passed; browser callback, canonical missingness and mobile layout checked"
+    "engine_local": "26.04.0 Docker v1 and v2: all eight cases passed at be07180a16ea3e8aaa06c72c4bc10faa5d64e4f5; managed qualification remains pending",
+    "local_http": "240 requests, 4 clients passed; browser callback, canonical missingness and mobile layout checked",
+    "asset_filter_tests": "20 existing canonical asset tests passed after extraction of the streaming known-sites transform"
   },
   "infrastructure": {
     "plan": "33 creates; 13 IAM no-op; no compute or hosting",
-    "apply": "blocked by automatic approval review; awaiting explicit plan approval",
-    "resources_created": 0
+    "apply": "applied after explicit owner approval",
+    "resources_created": 33
+  },
+  "qualification_resources": {
+    "native_workflow": "registered; execution pending",
+    "index_workflow": "registered; execution pending",
+    "run_limits": "configured in private deployment state"
   }
 }

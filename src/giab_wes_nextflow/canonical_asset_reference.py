@@ -176,6 +176,64 @@ def reference_slice(stream: Any, row: dict[str, Any], start: int, length: int) -
     return bytes(result).decode().upper()
 
 
+def filter_known_site(source_path: Path, item: dict[str, Any], reference_dir: Path, target: Path) -> tuple[int, int]:
+    """Stream the existing audited no-alt transform independently of compression.
+
+    This reusable stage authenticates source and full reference; it never accepts
+    GIAB benchmark truth as a recalibration source. The caller supplies guarded
+    scratch and publishes no asset marker until native compression/index checks.
+    """
+    if item not in load_assets()['known_sites'] or item['role'] != 'bqsr_known_sites':
+        raise ValueError('not an approved independent recalibration source')
+    validate_source_bytes(regular(source_path), item)
+    validate_reference(reference_dir)
+    rows = {r['name']: r for r in scan_reference(reference_dir / 'reference.fa')}
+    target = destination(target.parent, target.name)
+    kept = removed = 0
+    declared: dict[str, int] = {}
+    previous = (-1, -1)
+    order = {name: i for i, name in enumerate(rows)}
+    with gzip.open(source_path, 'rt') as source, target.open('w') as out, (reference_dir / 'reference.fa').open('rb') as fasta:
+        header_seen = False
+        for line in source:
+            if line.startswith('##contig='):
+                match = re.search(r'ID=([^,>]+),length=([0-9]+)', line)
+                if not match or match[1] in declared:
+                    raise ValueError('ambiguous known-sites contig dictionary')
+                name, length = match[1], int(match[2])
+                declared[name] = length
+                if name in rows and rows[name]['length'] != length:
+                    raise ValueError('known-sites/reference contig length mismatch')
+                continue
+            if line.startswith('#CHROM'):
+                for row in rows.values():
+                    out.write(f"##contig=<ID={row['name']},length={row['length']}>\n")
+                header_seen = True
+                out.write(line)
+                continue
+            if line.startswith('#'):
+                out.write(line)
+                continue
+            fields = line.rstrip('\n').split('\t')
+            if not header_seen or len(fields) < 8 or not fields[1].isdigit() or not re.fullmatch('[ACGTNacgtn]+', fields[3]):
+                raise ValueError('invalid known-sites VCF record')
+            name, position, ref = fields[0], int(fields[1]), fields[3].upper()
+            if name not in declared or not 0 < position <= declared[name] or position + len(ref) - 1 > declared[name]:
+                raise ValueError('known-sites record outside declared source dictionary')
+            if name not in rows:
+                removed += 1
+                continue
+            key = (order[name], position)
+            if key < previous or reference_slice(fasta, rows[name], position - 1, len(ref)) != ref:
+                raise ValueError('known-sites retained REF/order mismatch')
+            previous = key
+            kept += 1
+            out.write(line)
+    if kept == 0:
+        raise ValueError('known-sites derivative is empty')
+    return kept, removed
+
+
 def prepare_known_sites(sources: dict[str, Path], reference_dir: Path, output: Path, runner: Runner) -> dict[str, Any]:
     """Audit every retained BQSR REF allele and explicitly remove only absent no-alt contigs.
 
@@ -184,7 +242,6 @@ def prepare_known_sites(sources: dict[str, Path], reference_dir: Path, output: P
     renamed. Newly compressed derivatives receive new indexes and byte hashes.
     """
     reference = validate_reference(reference_dir)
-    rows = {r['name']: r for r in scan_reference(reference_dir / 'reference.fa')}
     spec = load_assets()['known_sites']
     if set(sources) != {r['id'] for r in spec}:
         raise ValueError('BQSR source inventory differs from independent pinned resources')
@@ -206,48 +263,7 @@ def prepare_known_sites(sources: dict[str, Path], reference_dir: Path, output: P
         if item['role'] != 'bqsr_known_sites':
             continue
         target = destination(output, item['id'] + '.no-alt.vcf')
-        kept = removed = 0
-        declared: dict[str, int] = {}
-        previous = (-1, -1)
-        order = {name: i for i, name in enumerate(rows)}
-        with gzip.open(sources[item['id']], 'rt') as source, target.open('w') as out, (reference_dir / 'reference.fa').open('rb') as fasta:
-            header_seen = False
-            for line in source:
-                if line.startswith('##contig='):
-                    match = re.search(r'ID=([^,>]+),length=([0-9]+)', line)
-                    if not match or match[1] in declared:
-                        raise ValueError('ambiguous known-sites contig dictionary')
-                    name, length = match[1], int(match[2])
-                    declared[name] = length
-                    if name in rows and rows[name]['length'] != length:
-                        raise ValueError('known-sites/reference contig length mismatch')
-                    continue
-                if line.startswith('#CHROM'):
-                    for row in rows.values():
-                        out.write(f"##contig=<ID={row['name']},length={row['length']}>\n")
-                    header_seen = True
-                    out.write(line)
-                    continue
-                if line.startswith('#'):
-                    out.write(line)
-                    continue
-                fields = line.rstrip('\n').split('\t')
-                if not header_seen or len(fields) < 8 or not fields[1].isdigit() or not re.fullmatch('[ACGTNacgtn]+', fields[3]):
-                    raise ValueError('invalid known-sites VCF record')
-                name, position, ref = fields[0], int(fields[1]), fields[3].upper()
-                if name not in declared or not 0 < position <= declared[name] or position + len(ref) - 1 > declared[name]:
-                    raise ValueError('known-sites record outside declared source dictionary')
-                if name not in rows:
-                    removed += 1
-                    continue
-                key = (order[name], position)
-                if key < previous or reference_slice(fasta, rows[name], position - 1, len(ref)) != ref:
-                    raise ValueError('known-sites retained REF/order mismatch')
-                previous = key
-                kept += 1
-                out.write(line)
-        if kept == 0:
-            raise ValueError('known-sites derivative is empty')
+        kept, removed = filter_known_site(sources[item['id']], item, reference_dir, target)
         compressed = target.with_suffix(target.suffix + '.gz')
         runner('bcftools', ['view', '-Oz', '-o', compressed.name, target.name], output)
         runner('bcftools', ['index', '--tbi', '--force', compressed.name], output)

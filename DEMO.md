@@ -1,8 +1,7 @@
 # Five-minute GIAB WES demonstration
 
-Prepared September 11 UTC / September 10 MDT for the September 11 interview.
-The exact interview time is unknown. This is research software, not a clinical
-validation or a claim about prior professional Nextflow tenure.
+This research-software walkthrough distinguishes synthetic qualification from
+accepted scientific execution and does not establish clinical validation.
 
 ## Start and fallback
 
@@ -39,16 +38,13 @@ canonical results.
    the earlier RefCall failure and later accepted native caller qualification;
    show the actual evidence rather than narrating an invented production incident.
    Download synthetic JSON and show `canonical: false`.
-5. **3:15-4:15, engineering tradeoff.** CLI and boto3 now use a scoped temporary
-   operator role. EC2 quotas are 5 vCPUs; the current DeepVariant task requests 8.
-   HealthOmics is the first candidate, but exact 26.04.0 managed qualification is
-   incomplete. Local parameter/content cache probes cannot prove managed image
-   cache behavior. Production guards remain active.
-6. **4:15-5:00, costs and limits.** The account reports $100 credits; execution is
-   bounded to $50 gross and the first hosting month to $10. One proposed Lightsail
-   service costs $7 or $10 base per month, pending measured image headroom. No
-   accepted HG001 metrics, total execution cost, live AWS app or caller winner is
-   claimed. Show canonical readiness returning 503 while synthetic readiness is 200.
+5. **3:15-4:15, execution portability.** Scientific tools execute in separate,
+   digest-pinned containers. Exact Nextflow 26.04.0 local Docker cache probes passed
+   for both parsers; managed execution and cache behavior still need qualification.
+   Production guards remain active.
+6. **4:15-5:00, readiness.** Show canonical readiness returning 503 while synthetic
+   readiness returns 200. No accepted HG001 metrics, live hosted application or
+   caller winner is claimed. Explain which returned artifacts unlock acceptance.
 
 ```mermaid
 flowchart LR
