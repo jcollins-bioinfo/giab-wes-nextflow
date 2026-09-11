@@ -82,7 +82,9 @@ def main():
         trace=list(csv.DictReader((root/(name+'.tsv')).open(),delimiter='\t')) if (root/(name+'.tsv')).exists() else []
         passed=proc.returncode==0 and len(trace)==1 and trace[0]['status']==expected
         results.append({'case':name,'expected':expected,'passed':passed,'exit':proc.returncode,'trace':trace})
-        if proc.returncode: break
+        if proc.returncode:
+            print(proc.stdout + proc.stderr, file=sys.stderr)
+            break
     report={'engine':'26.04.0','parser':args.parser,'scope':'local nonhuman explicit-input cache and tuple workflow-output probe',
             'native_containers_executed':bool(args.container_image),'managed_backend_qualified':False,
             'container_digest_cache_test':'executed with Docker; managed cache still unqualified' if args.container_image else 'unavailable: local executor without a container runtime excludes container identity from its task hash; must test on managed backend',

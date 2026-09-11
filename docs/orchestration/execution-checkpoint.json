@@ -43,6 +43,12 @@
   "verification": {
     "python_http_tests": 53,
     "lightsail_terraform_validate": "passed",
-    "engine_local": "partial; managed/container qualification incomplete"
+    "engine_local": "partial; managed/container qualification incomplete",
+    "local_http": "240 requests, 4 clients passed; browser callback, canonical missingness and mobile layout checked"
+  },
+  "infrastructure": {
+    "plan": "33 creates; 13 IAM no-op; no compute or hosting",
+    "apply": "blocked by automatic approval review; awaiting explicit plan approval",
+    "resources_created": 0
   }
 }

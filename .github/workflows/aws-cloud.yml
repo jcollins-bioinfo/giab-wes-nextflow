@@ -92,6 +92,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix: {parser: ['v1', 'v2']}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
