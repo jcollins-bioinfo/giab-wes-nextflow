@@ -26,6 +26,8 @@ jobs:
           terraform -chdir=infra/aws init -backend=false -input=false -lockfile=readonly
           terraform -chdir=infra/aws validate
           terraform -chdir=infra/aws test
+          terraform -chdir=infra/hosting-lightsail init -backend=false -input=false -lockfile=readonly
+          terraform -chdir=infra/hosting-lightsail validate
   cloud-contract:
     runs-on: ubuntu-24.04
     steps:
@@ -58,9 +60,59 @@ jobs:
           docker build --platform linux/amd64 -f explorer/Dockerfile -t giab-explorer:ci .
       - name: Verify non-root read-only Explorer health and claim boundary
         run: |
-          docker run --detach --name explorer --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges -p 127.0.0.1:8050:8050 giab-explorer:ci
+          docker run --detach --name explorer --memory=512m --memory-swap=512m --cpus=0.25 --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges -p 127.0.0.1:8050:8050 giab-explorer:ci
           python explorer/container_smoke.py
           test "$(docker exec explorer id -u)" = 10001
+          python explorer/memory_probe.py
+          docker exec explorer cat /sys/fs/cgroup/memory.peak > /tmp/explorer-memory-peak.bytes
+          docker image inspect --format '{{.Id}}' giab-explorer:ci > /tmp/explorer-image-id.txt
+          docker inspect --format '{{.State.OOMKilled}}' explorer > /tmp/explorer-oom.txt
+          python - <<'PYCODE'
+          import json, pathlib
+          peak=int(pathlib.Path('/tmp/explorer-memory-peak.bytes').read_text())
+          oom=pathlib.Path('/tmp/explorer-oom.txt').read_text().strip()=='true'
+          report={'image_config_digest':pathlib.Path('/tmp/explorer-image-id.txt').read_text().strip(),'limit_bytes':536870912,'peak_bytes':peak,'oom_killed':oom,
+                  'scope':'synthetic evidence; 4 clients; 240 requests; 0.25 CPU',
+                  'nano_memory_candidate':not oom and peak<=429496729}
+          print(json.dumps(report,indent=2))
+          pathlib.Path('/tmp/explorer-memory.json').write_text(json.dumps(report,indent=2))
+          assert not oom and peak<=429496729, 'Nano requires at least 20% measured headroom'
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: explorer-memory
+          path: /tmp/explorer-memory.json
+          retention-days: 14
       - name: Container diagnostics
         if: always()
         run: docker logs explorer || true
+
+  engine-26040:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      matrix: {parser: ['v1', 'v2']}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Select Java 17
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+      - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914
+        with: {version: '26.04.0'}
+      - name: Real container cache and workflow-output probes
+        run: |
+          python scripts/qualification/nextflow_engine.py --nextflow "$(command -v nextflow)" \
+            --work "$RUNNER_TEMP/engine-probe" --parser '${{ matrix.parser }}' \
+            --container-image 'python:3.13-slim-bookworm@sha256:2f2e5a876c71a6757f55ec57f2add0225ddaf01c802a33fcc29073943f94d907' \
+            --alternate-container-image 'quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: engine-26040-${{ matrix.parser }}
+          path: |
+            ${{ runner.temp }}/engine-probe/qualification.json
+            ${{ runner.temp }}/engine-probe/*.tsv
+            ${{ runner.temp }}/engine-probe/*.log
+          retention-days: 14

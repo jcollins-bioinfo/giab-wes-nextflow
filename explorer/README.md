@@ -42,7 +42,7 @@ python -m pip install . ./explorer
 gunicorn pipeline_evidence_explorer.wsgi:server --bind 127.0.0.1:8050 --workers 1 --no-control-socket
 ```
 
-Open `http://127.0.0.1:8050/research/giab-wes-nextflow/explorer/`.
+Open `http://127.0.0.1:8050/giab-wes-nextflow/`.
 Direct dependencies are pinned to Dash 4.4.1, Plotly 7.0.0 and Gunicorn 26.2.0;
 transitive dependencies are not a reproducible deployment lock. A public image,
 reverse proxy, hosting qualification and deployment approval remain future work.

@@ -68,3 +68,11 @@ m3-test-results/
 *.sa
 *.ann
 *.amb
+
+# Terraform state and provider caches are private/generated in every module.
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+*.tfvars.json

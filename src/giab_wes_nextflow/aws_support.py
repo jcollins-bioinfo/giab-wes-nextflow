@@ -85,9 +85,11 @@ def quota_assessment(ec2_quotas, requested_vcpus, region=REGION):
     return result
 
 
-def preflight(session, requested_vcpus=32, project_prefix="giab-wes"):
+def preflight(session, requested_vcpus=32, project_prefix="giab-wes", backend="all"):
     """Only STS is called before rejecting root or non-role identities."""
-    report = {"schema_version": "1.0.0", "region": session.region_name,
+    if backend not in {"all", "awsbatch", "healthomics"}:
+        raise ValueError("Choose all, awsbatch, or healthomics")
+    report = {"schema_version": "1.0.0", "backend": backend, "region": session.region_name,
               "observed_at": datetime.now(timezone.utc).isoformat(), "mutations": [],
               "inventory": {}, "errors": {}, "blockers": [], "safe_to_deploy": False}
     identity = client(session, "sts").get_caller_identity()
@@ -144,16 +146,33 @@ def preflight(session, requested_vcpus=32, project_prefix="giab-wes"):
                   "api_read_succeeded": any(k.startswith(service + ".") for k in report["inventory"])}
         for service in ("s3", "ecr", "batch", "omics", "ecs")
     }
-    if report["errors"]:
-        report["blockers"].append("Inspection incomplete; denied/failed calls are unknown state, never empty state")
-    if not report["batch"]["on_demand_standard"]["sufficient_quota"]:
-        report["blockers"].append(f"On-Demand EC2 quota below desired {requested_vcpus} vCPU ceiling")
-    report["blockers"].extend([
-        "HealthOmics documented 26.04.0 engine is below repository minimum 26.04.6",
-        "Deployment needs a reviewed Terraform plan and separate explicit operator authorization",
-    ])
+    report["readiness"] = backend_readiness(report, requested_vcpus)
+    selected = ("awsbatch", "healthomics") if backend == "all" else (backend,)
+    report["blockers"] = list(dict.fromkeys(
+        issue for name in selected for issue in report["readiness"][name]["blockers"]))
     report["inspection_complete"] = not report["errors"]
+
     return report
+
+
+def backend_readiness(report, requested_vcpus):
+    """Separate discovery failures by backend; inspection never authorizes apply."""
+    scopes = {
+        "awsbatch": ("s3.", "ecr.", "batch.", "ec2.", "logs.", "quotas.ec2"),
+        "healthomics": ("s3.", "ecr.", "omics.", "logs.", "quotas.omics"),
+    }
+    result = {}
+    for backend, prefixes in scopes.items():
+        errors = {key: value for key, value in report["errors"].items() if key.startswith(prefixes)}
+        blockers = [f"Inspection unknown: {key}" for key in errors]
+        if backend == "awsbatch" and not report["batch"]["on_demand_standard"]["sufficient_quota"]:
+            blockers.append(f"On-Demand EC2 quota below desired {requested_vcpus} vCPU ceiling")
+        if backend == "healthomics" and not report["healthomics"]["engine_compatibility_verified"]:
+            blockers.append("HealthOmics engine qualification incomplete; exact version/parser and managed run required")
+        blockers.append("A reviewed Terraform plan, cost envelope and execution qualification are required before deployment")
+        result[backend] = {"inspection_complete": not errors, "errors": errors,
+                           "blockers": blockers, "safe_to_deploy": False}
+    return result
 
 
 def package_workflow(repo, destination):

@@ -69,6 +69,15 @@ class ExplorerTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(data.tasks[0].task_hash, json.dumps(response.json))
 
+    def test_directory_and_legacy_callback_redirect(self) -> None:
+        app = create_app()
+        client = app.server.test_client()
+        self.assertIn(DEFAULT_PREFIX, client.get("/").get_data(as_text=True))
+        for method in (client.get, client.post):
+            response = method("/research/giab-wes-nextflow/explorer/_dash-update-component")
+            self.assertEqual(response.status_code, 308)
+            self.assertEqual(response.headers["Location"], DEFAULT_PREFIX + "_dash-update-component")
+
     def test_invalid_bundle_is_not_ready(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             app = create_app(bundle_dir=Path(tmp))

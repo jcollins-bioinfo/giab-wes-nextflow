@@ -1,5 +1,6 @@
-"""Gunicorn entry point with synthetic default and optional trusted canonical bundle."""
-from .app import create_app
+"""Gunicorn entrypoint with an explicit validated deployment prefix."""
+import os
+from .app import DEFAULT_PREFIX, create_app
 
-app = create_app()
+app = create_app(prefix=os.environ.get("EXPLORER_PREFIX", DEFAULT_PREFIX))
 server = app.server
