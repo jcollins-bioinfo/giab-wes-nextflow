@@ -65,8 +65,8 @@ jobs:
           test "$(docker exec explorer id -u)" = 10001
           python explorer/memory_probe.py
           docker exec explorer cat /sys/fs/cgroup/memory.peak > /tmp/explorer-memory-peak.bytes
-          docker image inspect --format '{{.Id}}' giab-explorer:ci > /tmp/explorer-image-id.txt
-          docker inspect --format '{{.State.OOMKilled}}' explorer > /tmp/explorer-oom.txt
+          docker image inspect giab-explorer:ci | python -c 'import json,sys; print(json.load(sys.stdin)[0]["Id"])' > /tmp/explorer-image-id.txt
+          docker inspect explorer | python -c 'import json,sys; print(str(json.load(sys.stdin)[0]["State"]["OOMKilled"]).lower())' > /tmp/explorer-oom.txt
           python - <<'PYCODE'
           import json, pathlib
           peak=int(pathlib.Path('/tmp/explorer-memory-peak.bytes').read_text())
@@ -104,9 +104,12 @@ jobs:
         with: {version: '26.04.0'}
       - name: Real container cache and workflow-output probes
         run: |
+          docker build --platform linux/amd64 -f containers/support.Dockerfile -t giab-probe:ci .
+          probe_image=$(docker image inspect giab-probe:ci | python -c 'import json,sys; print(json.load(sys.stdin)[0]["Id"])')
+          docker run --rm "$probe_image" ps --version
           python scripts/qualification/nextflow_engine.py --nextflow "$(command -v nextflow)" \
             --work "$RUNNER_TEMP/engine-probe" --parser '${{ matrix.parser }}' \
-            --container-image 'python:3.13-slim-bookworm@sha256:2f2e5a876c71a6757f55ec57f2add0225ddaf01c802a33fcc29073943f94d907' \
+            --container-image "$probe_image" \
             --alternate-container-image 'quay.io/biocontainers/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561'
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

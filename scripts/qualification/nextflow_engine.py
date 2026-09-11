@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -50,7 +51,7 @@ def main():
     args = parser.parse_args()
     if bool(args.container_image) != bool(args.alternate_container_image):
         parser.error('Both immutable runtime images are required together')
-    if args.container_image and any('@sha256:' not in x for x in (args.container_image,args.alternate_container_image)):
+    if args.container_image and any(not re.fullmatch(r'(?:[^\s]+@)?sha256:[a-f0-9]{64}', x) for x in (args.container_image,args.alternate_container_image)):
         parser.error('Use digest-pinned images')
     root = args.work.resolve(); root.mkdir(parents=True, exist_ok=True)
     env = {k:v for k,v in os.environ.items() if not k.startswith('BASH_FUNC_')}
