@@ -50,35 +50,40 @@ workflow {
     authentication = authenticated.receipt.first()
     aligned = CLOUD_BWA_ALIGN(authenticated.reads, authenticated.index)
     sorted = CLOUD_SORT(aligned.alignment)
-    marked = CLOUD_MARK_DUPLICATES(sorted)
+    marked = CLOUD_MARK_DUPLICATES(sorted.bam)
     recalibrated = CLOUD_BQSR(marked.bam, marked.bai, reference, authenticated.known)
     observed = CLOUD_BAM_OBSERVATIONS(recalibrated.bam)
-    validated = CLOUD_BAM_GATE(observed, reference, authentication)
+    validated = CLOUD_BAM_GATE(observed.observations, reference, authentication)
     shared = validated.shared.first()
     gatk = CLOUD_GATK_CALL(shared, reference, domain)
     deepvariant = CLOUD_DEEPVARIANT_CALL(shared, reference, domain)
     truth = CLOUD_PREPARE_TRUTH(truthAssets)
-    normalized = CLOUD_NORMALIZE(gatk.vcf.mix(deepvariant.vcf, truth), reference)
-    included = CLOUD_INCLUDE(normalized, reference)
-    compressed = CLOUD_COMPRESS(included, reference)
-    split = compressed.branch { source, _vcf, _index ->
+    normalized = CLOUD_NORMALIZE(gatk.vcf.mix(deepvariant.vcf, truth.vcf), reference)
+    included = CLOUD_INCLUDE(normalized.vcf, reference)
+    compressed = CLOUD_COMPRESS(included.vcf, reference)
+    split = compressed.vcf.branch { source, _vcf, _index ->
         truth: source == 'truth'
         query: true
     }
     baseline = split.truth.first()
-    sdf = CLOUD_RTG_REFERENCE(reference).first()
-    benchmark = CLOUD_VCFEVAL(split.query, baseline, sdf, truthAssets)
-    evidence = CLOUD_COLLECT(gatk.identity.mix(deepvariant.identity).collect(), benchmark.partitions.collect(), reference, validated.receipt, authentication)
+    sdf = CLOUD_RTG_REFERENCE(reference)
+    benchmark = CLOUD_VCFEVAL(split.query, baseline, sdf.reference.first(), truthAssets)
+    taskObservations = authenticated.observation.mix(aligned.observation, sorted.observation, marked.observation,
+        recalibrated.observation, observed.observation, validated.observation, gatk.observation, deepvariant.observation,
+        truth.observation, normalized.observation, included.observation, compressed.observation, sdf.observation, benchmark.observation)
+    evidence = CLOUD_COLLECT(gatk.identity.mix(deepvariant.identity).collect(), benchmark.partitions.collect(), reference, validated.receipt, authentication, taskObservations.collect())
     publish:
-    private_evidence = evidence
+    private_evidence = evidence.evidence
+    task_observations = taskObservations.mix(evidence.observation)
     shared_bam = validated.shared
     raw_calls = gatk.vcf.mix(deepvariant.vcf)
-    normalized_calls = compressed
+    normalized_calls = compressed.vcf
     benchmark_partitions = benchmark.partitions
 }
 
 output {
     private_evidence { path 'cloud/private/evidence' }
+    task_observations { path 'cloud/private/task-observations' }
     shared_bam { path 'cloud/private/shared' }
     raw_calls { path { caller, _vcf -> "cloud/private/${caller}/native" } }
     normalized_calls { path { caller, _vcf, _index -> "cloud/private/${caller}/normalized" } }

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-11T04:53:41.658398+00:00",
+  "updated_at": "2026-09-11T05:02:02.079964+00:00",
   "start_sha": "e291340f19dd7a55df8eda89258dcabd70fd41f4",
   "branch": "codex/giab-execution-economical",
   "plan": [
@@ -10,8 +10,8 @@
     "Measure and deploy one economical Lightsail Explorer",
     "Update existing website PR and project demonstration"
   ],
-  "scientific_result": "unavailable; no accepted HG001 run",
-  "next": "Register corrected complete-image workflow packages, reconcile retained private submission reservation, complete source/image staging, then execute managed qualification. Accepted HG001 results remain unavailable.",
+  "scientific_result": "unavailable; no HG001 calling run submitted or accepted",
+  "next": "Resolve the operator task-inspection prerequisite; finish source/image staging; execute complete-reference assets, native and full-DAG qualification with cache negatives. Provider joins, durable destination receipts and full original-quality proof remain acceptance gates.",
   "iam_imports": {
     "roles": 7,
     "inline_policies": 6,
@@ -24,8 +24,9 @@
     "engine_local": "26.04.0 Docker v1 and v2: all eight cases passed at be07180a16ea3e8aaa06c72c4bc10faa5d64e4f5; managed qualification remains pending",
     "local_http": "240 requests, 4 clients passed; browser callback, canonical missingness and mobile layout checked",
     "asset_filter_tests": "20 existing canonical asset tests passed after extraction of the streaming known-sites transform",
-    "cloud_continuation_tests": "95 targeted tests passed",
-    "new_template_parser": "Exact26.04.0/v2 parsed 12 native and 4 known-sites processes. Both preview shutdowns exceeded60 seconds; preview exit and managed behavior remain unqualified."
+    "cloud_continuation_tests": "115 targeted contract, observation, qualification, watchdog and transfer-recovery tests passed",
+    "new_template_parser": "Exact26.04.0/v2 parsed 12 native and 4 known-sites processes. Both preview shutdowns exceeded60 seconds; preview exit and managed behavior remain unqualified.",
+    "full_dag_template_parser": "Exact26.04.0/v2 parsed all21 processes, including all16 actual CLOUD modules. Local preview shutdown exceeded15second bound and was stopped; no task execution or managed qualification claim."
   },
   "infrastructure": {
     "plan": "33 creates; 13 IAM no-op; no compute or hosting",
@@ -33,9 +34,10 @@
     "resources_created": 33
   },
   "qualification_resources": {
-    "native_workflow": "registered; execution pending",
-    "index_workflow": "StartRun rejected bare ECR prefix interpreted as an image; no run created. Complete image URI parameters implemented; new package and managed retry pending.",
+    "native_workflow": "Corrected complete-image package registered; execution pending",
+    "index_workflow": "Corrected package registered; submission accepted, then cancelled when task inspection failed. No completed index accepted.",
     "run_limits": "configured in private deployment state"
   },
-  "continuation_start_sha": "f6613ad29fa51e12556083ff2a686bc5f01860dd"
+  "continuation_start_sha": "f6613ad29fa51e12556083ff2a686bc5f01860dd",
+  "native_observation_status": "Actual task receipt production implemented; complete provider joins, cache evidence and durable destination rehash pending"
 }
