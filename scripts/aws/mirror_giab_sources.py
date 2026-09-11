@@ -18,6 +18,7 @@ from acquire_sources import BUCKET, remote_identity
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--receipts', type=Path, required=True)
+    parser.add_argument('--only', action='append', help='Mirror only an exact declared source id')
     args = parser.parse_args()
     args.receipts.mkdir(parents=True, exist_ok=True)
     session = make_session('giab-operator')
@@ -27,6 +28,10 @@ def main():
     s3 = client(session, 's3')
     public = session.client('s3', region_name='us-east-1', config=Config(signature_version=UNSIGNED))
     resources = [r for r in load_manifest()['resources'] if '/ReferenceSamples/giab/' in r['url']]
+    if args.only:
+        if not set(args.only) <= {r['id'] for r in resources}:
+            raise ValueError('Unknown mirror source selection')
+        resources = [r for r in resources if r['id'] in args.only]
     resources.sort(key=lambda r: (not r['id'].startswith('grch38'), r.get('role','').startswith('raw_read'),r['id']))
     for resource in resources:
         path = args.receipts / (resource['id'] + '.json')

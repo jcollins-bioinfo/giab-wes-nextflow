@@ -11,12 +11,17 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
 from giab_wes_nextflow.aws_support import make_session, client, require_role
+from giab_wes_nextflow.run_watchdog import load_policy, run_guarded
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--work',type=Path,required=True)
+    parser.add_argument('--watchdog-policy',type=Path,required=True)
+    parser.add_argument('--watchdog-ledger',type=Path,required=True)
+    parser.add_argument('--prepare-only',action='store_true',help='Write the reviewed request without staging or submitting a run')
     args=parser.parse_args()
+    load_policy(args.watchdog_policy)  # Missing or invalid cost bounds stop before any AWS calls.
     root=args.work.resolve()
     session=make_session('giab-operator')
     identity=require_role(client(session,'sts').get_caller_identity())
@@ -56,9 +61,10 @@ def main():
     bucket=BUCKET
     seed=b'giab-managed-nonhuman-qualification-v1\n'
     key='source/qualification/nonhuman-v1.txt'
-    s3.put_object(Bucket=bucket,Key=key,Body=seed,ExpectedBucketOwner=ACCOUNT)
-    with s3.get_object(Bucket=bucket,Key=key,ExpectedBucketOwner=ACCOUNT)['Body'] as stream:
-        if stream.read()!=seed: raise ValueError('S3 seed staging differs')
+    if not args.prepare_only:
+        s3.put_object(Bucket=bucket,Key=key,Body=seed,ExpectedBucketOwner=ACCOUNT)
+        with s3.get_object(Bucket=bucket,Key=key,ExpectedBucketOwner=ACCOUNT)['Body'] as stream:
+            if stream.read()!=seed: raise ValueError('S3 seed staging differs')
     request={'workflowId':workflow_id,'workflowType':'PRIVATE',
              'roleArn':EXECUTION_ROLE,
              'name':'giab-native-'+package_hash[:12],'runGroupId':group_id,
@@ -69,10 +75,14 @@ def main():
              'tags':{'Project':'giab-wes-nextflow','Environment':'demo','ExecutionKind':'nonhuman-qualification'},
              'requestId':hashlib.sha256((package_hash+support+group_id).encode()).hexdigest()}
     (root/'native-start-request.json').write_text(json.dumps(request,indent=2)+'\n')
-    response=omics.start_run(**request)
+    if args.prepare_only:
+        print('Native qualification request prepared; no run submitted',flush=True)
+        return 0
+    response=run_guarded(omics=omics,request=request,policy_path=args.watchdog_policy,
+                         ledger_path=args.watchdog_ledger,reservation_key='native_qualification',identity=identity)
     (root/'native-run.json').write_text(json.dumps(response,default=str,indent=2)+'\n')
     print(json.dumps(response,default=str),flush=True)
-    return 0
+    return 0 if response['status']=='COMPLETED' else 2
 
 
 if __name__ == '__main__':

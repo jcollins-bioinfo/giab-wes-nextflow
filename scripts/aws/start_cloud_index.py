@@ -11,13 +11,18 @@ import time
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'src'))
 from giab_wes_nextflow.acquisition import load_manifest
 from giab_wes_nextflow.aws_support import make_session, client, require_role
+from giab_wes_nextflow.run_watchdog import load_policy, run_guarded
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--work',type=Path,required=True)
     parser.add_argument('--receipts',type=Path,required=True)
+    parser.add_argument('--watchdog-policy',type=Path,required=True)
+    parser.add_argument('--watchdog-ledger',type=Path,required=True)
+    parser.add_argument('--prepare-only',action='store_true',help='Write the reviewed request without submitting a run')
     args=parser.parse_args();root=args.work.resolve()
+    load_policy(args.watchdog_policy)  # Missing or invalid cost bounds stop before any AWS calls.
     session=make_session('giab-operator')
     identity=require_role(client(session,'sts').get_caller_identity())
     if not identity['Arn'].startswith(ROLE_PREFIX):
@@ -67,10 +72,14 @@ def main():
              'tags':{'Project':'giab-wes-nextflow','Environment':'demo','ExecutionKind':'full-reference-index'},
              'requestId':hashlib.sha256((digest+json.dumps(parameters,sort_keys=True)).encode()).hexdigest()}
     (root/'index-start-request.json').write_text(json.dumps(request,indent=2)+'\n')
-    response=omics.start_run(**request)
+    if args.prepare_only:
+        print('Index request prepared; no run submitted',flush=True)
+        return 0
+    response=run_guarded(omics=omics,request=request,policy_path=args.watchdog_policy,
+                         ledger_path=args.watchdog_ledger,reservation_key='full_reference_assets',identity=identity)
     (root/'index-run.json').write_text(json.dumps(response,default=str,indent=2)+'\n')
     print(json.dumps(response,default=str),flush=True)
-    return 0
+    return 0 if response['status']=='COMPLETED' else 2
 
 
 if __name__=='__main__':

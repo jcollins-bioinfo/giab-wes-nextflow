@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-11T04:10:48.084595+00:00",
+  "updated_at": "2026-09-11T04:48:42.187479+00:00",
   "start_sha": "e291340f19dd7a55df8eda89258dcabd70fd41f4",
   "branch": "codex/giab-execution-economical",
   "plan": [
@@ -10,8 +10,8 @@
     "Measure and deploy one economical Lightsail Explorer",
     "Update existing website PR and project demonstration"
   ],
-  "scientific_result": "unavailable",
-  "next": "Complete source staging and image mirrors; execute and validate bounded full-reference index and native HealthOmics qualification, then the real HG001 comparison.",
+  "scientific_result": "unavailable; no accepted HG001 run",
+  "next": "Reconcile index submission outcome, finish source/image transfers, rebuild support image and execute managed qualification. Real HG001 calling remains gated.",
   "iam_imports": {
     "roles": 7,
     "inline_policies": 6,
@@ -23,7 +23,9 @@
     "lightsail_terraform_validate": "passed",
     "engine_local": "26.04.0 Docker v1 and v2: all eight cases passed at be07180a16ea3e8aaa06c72c4bc10faa5d64e4f5; managed qualification remains pending",
     "local_http": "240 requests, 4 clients passed; browser callback, canonical missingness and mobile layout checked",
-    "asset_filter_tests": "20 existing canonical asset tests passed after extraction of the streaming known-sites transform"
+    "asset_filter_tests": "20 existing canonical asset tests passed after extraction of the streaming known-sites transform",
+    "cloud_continuation_tests": "85 targeted adapter, controller, qualification and source tests passed; five additional checksum tests passed",
+    "new_template_parser": "Exact26.04.0/v2 parsed 12 native and 4 known-sites processes. Both preview shutdowns exceeded60 seconds; preview exit and managed behavior remain unqualified."
   },
   "infrastructure": {
     "plan": "33 creates; 13 IAM no-op; no compute or hosting",
@@ -32,7 +34,8 @@
   },
   "qualification_resources": {
     "native_workflow": "registered; execution pending",
-    "index_workflow": "registered; execution pending",
+    "index_workflow": "Source-bound package registered; attempted submission requires private reconciliation; successful execution unverified",
     "run_limits": "configured in private deployment state"
-  }
+  },
+  "continuation_start_sha": "f6613ad29fa51e12556083ff2a686bc5f01860dd"
 }

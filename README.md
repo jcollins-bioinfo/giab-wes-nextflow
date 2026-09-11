@@ -339,13 +339,22 @@ Before the first accepted cloud canonical result, complete these gates in order:
    qualification is already complete for both parsers.
 3. Build and qualify images; authenticate durable S3 assets. Cloud-native asset
    acquisition is active. The complete-reference classic-BWA workflow is
-   registered but has not executed; known-sites cloud preparation remains
-   incomplete. The canonical DAG consumes already-qualified assets.
+   registered; successful managed execution remains unverified. Known-sites
+   filtering, native compression/indexing and record-validation stages are
+   implemented and locally tested but still need managed execution. The
+   canonical DAG consumes already-qualified assets.
 4. Produce representative native cloud runtime qualification. Execute and audit
    the direct-container workflow, including restart/cache and resource evidence.
-5. Implement and qualify the cloud canonical public-bundle adapter. Its current
-   private collector is not that adapter. Validate the accepted manifest externally
+5. Qualify the implemented offline cloud public-bundle adapter against actual
+   native receipts. `python -m giab_wes_nextflow.cloud_public --help` describes
+   its pinned private inventory interface. The existing private collector alone
+   cannot satisfy its provenance and acceptance gates. Validate the accepted manifest externally
    before Explorer import, public deployment or a scoped release candidate.
+
+[Bounded run supervision](docs/aws-run-watchdog.md) requires private cost
+reservations, immutable launch identity, a shared durable journal and verified
+server limits. Multipart source recovery preserves uploaded parts and additional
+checksums; acceptance still requires a full destination rehash.
 
 Human FASTQ/BAM/VCF/reference/truth data, credentials and large generated outputs
 never belong in Git. The public result bundle contains only bounded validated
@@ -361,5 +370,7 @@ fallback. [The continuation checkpoint](docs/orchestration/execution-checkpoint.
 records technical readiness, validation evidence and outstanding scientific gates.
 M6 operational cloud qualification, M7 final release acceptance, M8 hosted
 canonical evidence and M9 a live main-site update remain open. The website work
-continues in [existing draft PR #33](https://github.com/jcollins-bioinfo/john-collins-bioinformatics/pull/33);
-no automatic merge or final release is authorized.
+from [merged PR #33](https://github.com/jcollins-bioinfo/john-collins-bioinformatics/pull/33).
+Accepted-result changes require a follow-up PR; the merged historical synthetic
+page does not establish accepted HG001 results or production deployment.
+No automatic merge or final release is authorized.

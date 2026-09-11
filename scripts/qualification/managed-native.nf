@@ -156,6 +156,147 @@ process ACCEPT {
     """
 }
 
+process PREPARE_BENCHMARK {
+    container params.support_image
+    cpus 2
+    memory '8 GB'
+    time '15m'
+    stageInMode 'copy'
+    input:
+    path evaluated
+    path accepted
+    output:
+    path 'benchmark-inputs'
+    script:
+    """
+    python -I -m giab_wes_nextflow.managed_qualification prepare --input ${evaluated} --accepted ${accepted} --output benchmark-inputs
+    """
+}
+
+process NORMALIZE_BENCHMARK {
+    container "${params.ecr_prefix}/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+    cpus 2
+    memory '8 GB'
+    time '15m'
+    input:
+    path prepared
+    output:
+    path 'normalized'
+    script:
+    """
+    cp -r ${prepared} normalized
+    cd normalized
+    for dataset in fixture native; do
+      (
+        cd "\$dataset"
+        bcftools --version > normalize.version.txt
+        grep -q '^bcftools 1.24\$' normalize.version.txt
+        for caller in gatk deepvariant truth; do
+            source="\$caller.vcf"
+            if test -f "\$caller.vcf.gz"; then source="\$caller.vcf.gz"; fi
+            test "\$(bcftools query -l "\$source")" = "\$(cat sample.txt)"
+            bcftools view --no-version -Oz -o "\$caller.input.vcf.gz" "\$source"
+            bcftools index --tbi "\$caller.input.vcf.gz"
+            bcftools view -H "\$caller.input.vcf.gz" > sequential.txt
+            bcftools view -H -r "\$(cut -f1 reference.fa.fai | paste -sd, -)" "\$caller.input.vcf.gz" > indexed.txt
+            cmp sequential.txt indexed.txt
+            bcftools norm -f reference.fa -c e -m -any --multi-overlaps 0 --old-rec-tag M5_ORIG --no-version -Ov -o split.vcf "\$caller.input.vcf.gz"
+            bcftools sort -Ov -o "\$caller.sorted.vcf" split.vcf
+        done
+      )
+    done
+    """
+}
+
+process INCLUDE_BENCHMARK {
+    container params.support_image
+    cpus 2
+    memory '8 GB'
+    time '15m'
+    stageInMode 'copy'
+    input:
+    path normalized
+    output:
+    path 'included'
+    script:
+    """
+    python -I -m giab_wes_nextflow.managed_qualification include --input ${normalized} --output included
+    """
+}
+
+process COMPRESS_BENCHMARK {
+    container "${params.ecr_prefix}/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+    cpus 2
+    memory '8 GB'
+    time '15m'
+    input:
+    path included
+    output:
+    path 'compressed'
+    script:
+    """
+    cp -r ${included} compressed
+    cd compressed
+    for dataset in fixture native; do
+      (
+        cd "\$dataset"
+        bcftools --version > compress.version.txt
+        for caller in gatk deepvariant truth; do
+            bcftools view --no-version -Oz -o "\$caller.normalized.vcf.gz" "\$caller.included.vcf"
+            bcftools index --tbi "\$caller.normalized.vcf.gz"
+            bcftools view -H "\$caller.normalized.vcf.gz" > sequential.txt
+            bcftools view -H -r "\$(cut -f1 reference.fa.fai | paste -sd, -)" "\$caller.normalized.vcf.gz" > indexed.txt
+            cmp sequential.txt indexed.txt
+        done
+      )
+    done
+    """
+}
+
+process RTG_BENCHMARK {
+    container "${params.ecr_prefix}/rtg@sha256:b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790"
+    cpus 2
+    memory '8 GB'
+    time '15m'
+    input:
+    path compressed
+    output:
+    path 'benchmarked'
+    script:
+    """
+    cp -r ${compressed} benchmarked
+    cd benchmarked
+    export RTG_MEM=2G
+    for dataset in fixture native; do
+      (
+        cd "\$dataset"
+        rtg version > rtg.version.txt
+        grep -q 'RTG Tools 3.13' rtg.version.txt
+        rtg format -o reference.sdf reference.fa
+        for caller in gatk deepvariant; do
+            rtg vcfeval -b truth.normalized.vcf.gz -c "\$caller.normalized.vcf.gz" -t reference.sdf -o "\$caller" --evaluation-regions evaluated.bed --sample "\$(cat sample.txt)" --all-records --ref-overlap --output-mode split --no-roc --sample-ploidy 2 --threads 2
+        done
+      )
+    done
+    """
+}
+
+process ACCEPT_BENCHMARK {
+    container params.support_image
+    cpus 2
+    memory '8 GB'
+    time '15m'
+    stageInMode 'copy'
+    input:
+    path benchmarked
+    output:
+    path 'managed-qualification.json'
+    script:
+    """
+    python -I -m giab_wes_nextflow.managed_qualification accept --input ${benchmarked} --output managed-qualification.json
+    """
+}
+
 workflow {
     main:
     fixture = FIXTURE(file(params.seed))
@@ -164,12 +305,20 @@ workflow {
     calls = GATK(sorted)
     evaluated = DEEPVARIANT(calls)
     accepted = ACCEPT(evaluated)
+    benchmark_inputs = PREPARE_BENCHMARK(evaluated,accepted)
+    normalized = NORMALIZE_BENCHMARK(benchmark_inputs)
+    included = INCLUDE_BENCHMARK(normalized)
+    compressed = COMPRESS_BENCHMARK(included)
+    benchmarked = RTG_BENCHMARK(compressed)
+    benchmark_accepted = ACCEPT_BENCHMARK(benchmarked)
     publish:
-    qualification = accepted
+    qualification = benchmark_accepted
     native_evidence = evaluated
+    benchmark_evidence = benchmarked
 }
 
 output {
     qualification { path 'qualification' }
     native_evidence { path 'private-nonhuman' }
+    benchmark_evidence { path 'private-nonhuman-benchmark' }
 }

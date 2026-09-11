@@ -14,7 +14,7 @@ from giab_wes_nextflow.acquisition import acquire, destination, load_manifest, n
 from giab_wes_nextflow.canonical_run import GTF
 from giab_wes_nextflow.canonical_asset_reference import load_assets
 from giab_wes_nextflow.aws_support import make_session, client, require_role
-from boto3.s3.transfer import TransferConfig
+from source_upload import upload_source
 
 
 
@@ -67,14 +67,14 @@ def main():
         source = acquire(resource, scratch)
         path = destination(scratch, resource['destination'])
         key = 'source/sha256/' + source['sha256'] + '/' + resource['filename']
-        s3.upload_file(str(path), BUCKET, key, ExtraArgs={'ExpectedBucketOwner': ACCOUNT,
-                       'Metadata': {'sha256': source['sha256'], 'source-id': resource['id']}},
-                       Config=TransferConfig(max_concurrency=2, multipart_chunksize=16 << 20))
+        transfer = upload_source(s3, path, BUCKET, key, ACCOUNT,
+                                 {'sha256': source['sha256'], 'source-id': resource['id']})
         observed = remote_identity(s3, key)
         if (observed['md5'], observed['sha256'], observed['bytes']) != (resource['checksum']['expected'], source['sha256'], source['bytes']):
             raise ValueError('Destination rehash differs: ' + resource['id'])
         receipt = {'status': 'source_bytes_verified', 'observed_at': now(), 'source': source,
-                   'bucket': BUCKET, 'key': key, 'destination': observed, 'canonical_result': False}
+                   'bucket': BUCKET, 'key': key, 'destination': observed,
+                   'transfer': transfer, 'canonical_result': False}
         payload = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
         # Commit completion markers only after origin authentication and destination rehash.
         s3.put_object(Bucket=BUCKET, Key=key + '.complete.json', Body=payload,

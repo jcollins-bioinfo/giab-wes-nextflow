@@ -161,6 +161,10 @@ canonical_sources:
     access_date: 2026-09-08
 
 aws_sources:
+  - claim: "HealthOmics dynamic storage peak is a post-run observation; private conservative reservations and verified run-group limits are not an instantaneous billing cap."
+    url: https://docs.aws.amazon.com/omics/latest/dev/workflows-run-types.html
+    evidence: docs/aws-run-watchdog.md
+    access_date: 2026-09-11
   - claim: "HealthOmics documented exact Nextflow engine 26.04.0 does not satisfy this repository minimum 26.04.6; profiles and engine settings are supported."
     url: https://docs.aws.amazon.com/omics/latest/dev/starting-a-run.html
     access_date: 2026-09-10
