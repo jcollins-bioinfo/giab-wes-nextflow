@@ -219,3 +219,13 @@ valid HG001 canonical bundle.
 - [GetRun: actual engineVersion](https://docs.aws.amazon.com/omics/latest/api/API_GetRun.html)
 - [ListRunTasks: cacheHit](https://docs.aws.amazon.com/omics/latest/api/API_ListRunTasks.html)
 - [EC2 instance quotas](https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-quotas.html)
+
+Managed source-staging and qualification helpers require `GIAB_AWS_ACCOUNT_ID`
+from private deployment configuration. Missing or malformed values fail closed;
+the resulting account and assumed-role prefix are checked before cloud actions.
+Do not commit account identifiers, personal login details, financial approvals,
+source receipts, Terraform state or generated deployment packages. Native
+qualification and complete-reference indexing remain separate from acceptance
+of a real HG001 result. Workflow templates accept the private ECR prefix as an
+explicit parameter; preserve the registered package digest and native task image
+receipts when qualifying a backend.

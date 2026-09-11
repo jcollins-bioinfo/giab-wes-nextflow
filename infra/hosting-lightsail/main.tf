@@ -1,3 +1,11 @@
+variable "account_id" {
+  type        = string
+  description = "Expected deployment account from private configuration."
+  validation {
+    condition     = can(regex("^[0-9]{12}$", var.account_id))
+    error_message = "A valid explicit deployment account is required."
+  }
+}
 terraform {
   required_version = ">= 1.7.0"
   required_providers {
@@ -6,14 +14,14 @@ terraform {
 }
 provider "aws" {
   region              = "us-west-2"
-  allowed_account_ids = ["400200465857"]
+  allowed_account_ids = [var.account_id]
   default_tags { tags = { Project = "giab-wes", Environment = "demo", ManagedBy = "Terraform" } }
 }
 variable "image" {
   type        = string
   description = "Reviewed private ECR Explorer image with its actual immutable digest."
   validation {
-    condition     = can(regex("^400200465857\\.dkr\\.ecr\\.us-west-2\\.amazonaws\\.com/giab-wes-demo-explorer@sha256:[a-f0-9]{64}$", var.image))
+    condition     = can(regex("^${var.account_id}\\.dkr\\.ecr\\.us-west-2\\.amazonaws\\.com/giab-wes-demo/explorer@sha256:[a-f0-9]{64}$", var.image))
     error_message = "Use the qualified project Explorer ECR digest."
   }
 }
@@ -22,7 +30,7 @@ variable "power" {
   default = "nano"
   validation {
     condition     = contains(["nano", "micro"], var.power)
-    error_message = "Only the $7 Nano and $10 Micro tiers are within the authorized base-service ceiling."
+    error_message = "Only memory-qualified Nano or Micro tiers are supported."
   }
 }
 variable "authorize_first_month" {
@@ -58,7 +66,7 @@ data "aws_caller_identity" "operator" {}
 resource "terraform_data" "safety" {
   lifecycle {
     precondition {
-      condition     = startswith(data.aws_caller_identity.operator.arn, "arn:aws:sts::400200465857:assumed-role/giab-operator/")
+      condition     = startswith(data.aws_caller_identity.operator.arn, "arn:aws:sts::${var.account_id}:assumed-role/giab-operator/")
       error_message = "Only the verified giab-operator assumed role may deploy."
     }
     precondition {
@@ -91,7 +99,7 @@ resource "aws_lightsail_container_service" "explorer" {
   depends_on = [terraform_data.safety]
 }
 resource "aws_ecr_repository_policy" "explorer_pull" {
-  repository = "giab-wes-demo-explorer"
+  repository = "giab-wes-demo/explorer"
   policy = jsonencode({ Version = "2012-10-17", Statement = [{
     Sid       = "LightsailPullReviewedExplorer"
     Effect    = "Allow"
@@ -122,6 +130,5 @@ resource "aws_lightsail_container_service_deployment_version" "explorer" {
   depends_on = [aws_ecr_repository_policy.explorer_pull]
 }
 output "provider_url" { value = aws_lightsail_container_service.explorer.url }
-output "monthly_base_usd" { value = var.power == "nano" ? 7 : 10 }
 output "renewal_decision_date" { value = var.renewal_decision_date }
 output "created_at" { value = aws_lightsail_container_service.explorer.created_at }

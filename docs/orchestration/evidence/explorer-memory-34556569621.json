@@ -1,0 +1,21 @@
+{
+  "source_sha": "61a70205d0f51f263fd7b839344b74fb27010d52",
+  "run_id": 34556569621,
+  "job_id": 103130386609,
+  "image_config_digest": "sha256:9651ac208a4759d46f8b47931ad3e58c65525f1299b9ec4d3dbeae6020c125db",
+  "limit_bytes": 536870912,
+  "peak_bytes": 94502912,
+  "oom_killed": false,
+  "cpu_limit": 0.25,
+  "requests": 240,
+  "concurrent_clients": 4,
+  "canonical": false,
+  "nano_memory_candidate": true,
+  "artifact_id": 10182783217,
+  "artifact_sha256": "9de9ab9e037ff30a5931d904974a01da9b86cc78b8cc6d3e2a402017fd5fb7cd",
+  "limitations": [
+    "Synthetic evidence only",
+    "Image config identity is not registry manifest identity",
+    "No AWS service deployed"
+  ]
+}

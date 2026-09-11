@@ -22,6 +22,10 @@ from .m5 import metrics, require, selected, vcf_rows
 
 def authenticate(manifest: Path, expected: str, inputs: Path, output: Path, backend: str) -> dict:
     """Authenticate original sources and qualified derivatives before alignment."""
+    require(re.fullmatch('[0-9a-f]{64}', expected) is not None and checksum(manifest) == expected, 'cloud manifest pin mismatch')
+    if json.loads(manifest.read_text()).get('kind') == 'cloud_nonhuman_qualification_inputs':
+        from .cloud_qualification import authenticate as authenticate_fixture
+        return authenticate_fixture(manifest, expected, inputs, output, backend)
     record = load_manifest(manifest, expected)
     roots = {key: output / key for key in ('reads', 'reference', 'known', 'domain', 'truth')}
     for root in roots.values():
@@ -151,9 +155,15 @@ def bam_gate(directory: Path, reference: Path, authentication: Path, output: Pat
     validation = validate_bam(SamtoolsEvidence(directory), 'shared.bam', reference, oq=True)
     receipt = json.loads(authentication.read_text())
     require(validation['primary_records'] == receipt['fastq_pairs'] * 2, 'primary-read count differs from original paired reads')
+    original_quality_evidence = None
+    if receipt.get('kind') == 'cloud_nonhuman_qualification_authentication':
+        from .cloud_qualification import validate_original_qualities
+        original_quality_evidence = validate_original_qualities(directory, receipt)
     result = {'kind': 'cloud_shared_bam', 'status': 'passed', 'bam_validation': validation,
               'outputs': {name: file_id(directory / name) for name in ('shared.bam', 'shared.bam.bai')},
               'quality_contract': {'gatk': 'recalibrated_QUAL', 'deepvariant': 'retained_OQ'}}
+    if original_quality_evidence is not None:
+        result['original_quality_records_verified'] = original_quality_evidence
     write_json(output, result)
     return result
 
@@ -186,7 +196,8 @@ def include_variants(source: Path, reference: Path, output: Path) -> dict:
     return result
 
 
-def collect(partitions: list[Path], caller_identities: list[Path], reference: Path, shared_receipt: Path, authentication: Path, output: Path) -> dict:
+def collect(partitions: list[Path], caller_identities: list[Path], reference: Path, shared_receipt: Path, authentication: Path, output: Path,
+            task_observations: list[Path] | None = None) -> dict:
     """Collect real RTG counts; withhold a canonical result until adapter qualification."""
     seqs = indexed_reference(reference)
     auth = json.loads(authentication.read_text())
@@ -208,9 +219,16 @@ def collect(partitions: list[Path], caller_identities: list[Path], reference: Pa
         callers[caller] = {'metrics': {kind: metrics(counts['tp'][kind], counts['tp-baseline'][kind], counts['fp'][kind], counts['fn'][kind]) for kind in ('SNP', 'INDEL', 'OTHER')},
                            'partitions': {p.name: file_id(p) for p in sorted(directory.iterdir()) if p.is_file()}}
     require(set(callers) == {'gatk', 'deepvariant'}, 'both callers required')
+    observations = []
+    if task_observations is not None:
+        from .cloud_observations import collect_task_observations, join_scientific_lineage
+        observations = collect_task_observations(task_observations)
+        join_scientific_lineage(observations, callers, expected_inputs)
+    synthetic = auth.get('kind') == 'cloud_nonhuman_qualification_authentication'
     result = {'kind': 'cloud_scientific_evidence', 'status': 'pending_canonical_bundle_qualification', 'canonical': False,
               'authentication': json.loads(authentication.read_text()), 'shared': json.loads(shared_receipt.read_text()),
-              'callers': callers, 'domain': DOMAINS['hg001_chr20_22_coding'],
+              'callers': callers, 'domain': auth['domain'] if synthetic else DOMAINS['hg001_chr20_22_coding'], 'synthetic': synthetic,
+              'task_observations': observations,
               'blockers': ['Backend-native runtime, task/resource/cache and resume receipts require independent qualification before canonical bundle publication.'],
               'claim': 'Private execution evidence only; not a validated canonical public result.'}
     write_json(output, result)
@@ -230,6 +248,7 @@ def main() -> None:
     evidence = sub.add_parser('collect')
     evidence.add_argument('--partitions', nargs=2, type=Path, required=True)
     evidence.add_argument('--caller-identities', nargs=2, type=Path, required=True)
+    evidence.add_argument('--task-observations', nargs='+', type=Path, required=True)
     for name in ('reference', 'shared-receipt', 'authentication', 'output'): evidence.add_argument('--' + name, type=Path, required=True)
     args = vars(parser.parse_args()); command = args.pop('command')
     if command == 'authenticate': args['expected'] = args.pop('manifest_sha256')
