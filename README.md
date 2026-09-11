@@ -27,12 +27,14 @@ pipeline or a Sarek replacement. ONT and somatic analysis are outside v1.
 
 ## Current readiness
 
-Snapshot: **2026-09-10**, development package `0.5.0-dev.1`. AWS work is under
-[draft PR #27](https://github.com/jcollins-bioinfo/giab-wes-nextflow/pull/27), branch
-`codex/aws-cloud-acceleration`, based on verified main
-`410cc78d46ed76a4be8911963d5af66b9c7382a0`. A draft implementation is not a merged
-release. Check the exact PR head and its live CI results before accepting the
-change; local checks and historical CI runs establish different evidence.
+Snapshot: **2026-09-11 UTC / September 10 MDT**, development package
+`0.5.0-dev.1`. [PR #27](https://github.com/jcollins-bioinfo/giab-wes-nextflow/pull/27)
+is merged into main at `e291340f19dd7a55df8eda89258dcabd70fd41f4`.
+Its [pipeline CI](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34503809951)
+and [cloud validation](https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34503809921)
+succeeded. This continuation uses branch `codex/giab-execution-economical`.
+Historical CI, current local checks, cloud execution and a deployed application
+are distinct evidence layers. The continuation has not produced canonical results.
 
 | Path / capability | CODED | VALIDATED | DEPLOYED | EXECUTED |
 |---|---|---|---|---|
@@ -42,7 +44,9 @@ change; local checks and historical CI runs establish different evidence.
 | AWS HealthOmics canonical path | Partial | Local packaging, contracts and configuration checks | No workflow/run/cache created | No cloud scientific run |
 | AWS Batch canonical path | Partial | Local contracts, job-definition checker and Terraform checks | No compute environment/queue/jobs created | No cloud scientific run |
 | AWS project IAM service roles | Yes | Trust and inline policies read back | Seven service roles created | No workload execution implied |
-| Explorer on ECS Fargate / ALB / ACM | Yes | Source HTTP/Terraform checks and initial image builds; final CI linked below | No | No hosted service |
+| Explorer economical hosting | New route and bounded image memory probe implemented | Local HTTP validation; Linux memory gate pending | No | No hosted service |
+| Explorer on ECS Fargate / ALB / ACM | Retained optional code | Historical source HTTP/Terraform checks | Disabled | No hosted service |
+| Human operator access | Scoped role and temporary browser login | CLI and boto3 assumed-role identity verified | `giab-operator` created | Read-only preflight completed |
 
 The cloud DAG runs scientific tools directly in their own task containers.
 Its collector currently emits **private `cloud_scientific_evidence` with
@@ -128,7 +132,7 @@ flowchart TB
     nf[Nextflow cloud.nf] --> aws
     aws --> s3[Private S3 durable inputs / outputs + separate work storage]
     aws --> logs[CloudWatch execution evidence]
-    tls[apps.johnpatrickcollins.info → ACM / ALB] --> serving[ECS Fargate Explorer]
+    tls[apps.johnpatrickcollins.info: reviewed DNS + managed TLS] --> serving[Proposed Lightsail Containers: one Nano or Micro node]
     explorer --> serving
 ```
 
@@ -156,7 +160,8 @@ python -m pytest -q tests/unit explorer/tests
 python scripts/validate_contracts.py
 ```
 
-The AWS extra installs the SDK; it does not authenticate or contact AWS. To run
+The AWS extra installs the SDK and its required CRT browser-login dependency;
+it does not authenticate or contact AWS. To run
 the small nonhuman foundation fixture with a working Docker engine:
 
 ```bash
@@ -210,36 +215,49 @@ scientifically superior. DNS setup is independent of scientific execution.
 | Observability / costs | CloudWatch log groups and optional budget alerts, project tags, explicit resource ceilings and storage lifecycle. Budget alerts do not stop spending; Batch may exceed its configured vCPU ceiling by one instance. |
 | Explorer serving | Optional ECS Fargate, ALB, ACM and external-DNS or delegated-subdomain Route53 configuration. Disabled until separately authorized; no NAT Gateway by default. |
 
-Two current backend blockers are material. AWS documents HealthOmics
-**Nextflow 26.04.0**, below this repository's **26.04.6 minimum**; major/minor
-compatibility alone is insufficient. The tools fail closed pending actual
-compatible-engine qualification. The supplied earlier EC2 On-Demand Standard
-quota observation was **5 vCPUs** (`L-1216C47A`), not re-read during this root-restricted
-development session. Inspect standard Spot quota `L-34B43A08` independently.
-The default 4-vCPU Batch environment supports a potential bounded smoke test,
-not the 8-CPU canonical DeepVariant task. Preflight recommends explicit increases
-for the requested ceiling, normally 32 vCPUs; effective quota and capacity still
-need verification. [AWS API and engine references](scripts/aws/README.md#aws-api-references)
-are linked from the operator guide.
+Read-only AWS inspection through the verified operator on September 11 UTC
+confirmed an **active Paid plan and $100 remaining credits**. Cost Explorer
+returned `DataUnavailableException`; that is unavailable posted-cost evidence,
+not proof of a zero bill. The project has not launched analysis or hosting.
+Standard On-Demand and Spot quotas are each **5 vCPUs**. HealthOmics inspection
+succeeds with **50 concurrent dynamic-storage runs** and **25 tasks per run**;
+these quotas are capacity limits, not desired concurrency or permission to spend.
+HealthOmics is the first candidate to qualify because the current 8-CPU
+DeepVariant task cannot fit either EC2 quota.
 
-Seven `giab-wes-demo-*` service roles and their scoped policies were created and
-read back during an explicitly authorized IAM-only bootstrap. They are service
-identities, not human operator access. **IAM Identity Center setup was requested
-but is not enabled**. Subsequently authorized read-only discovery confirmed no
-AWS Organization and no Identity Center instance in us-west-2 or us-east-1.
-The owner chose to preserve Free Tier credits and pause Organization/Identity
-Center creation; a paid account plan alone does not establish credit preservation.
-An approved non-root federated/Identity Center operator session with temporary
-credentials remains required. Root cannot assume these roles and
-must not run Terraform or normal automation. No long-lived root keys were created.
-Import the bootstrapped roles into Terraform rather than recreating them.
+AWS documents exact Nextflow **26.04.0** and selectable `v1`/`v2` parsers.
+The existing 26.04.6 floor came from the historical qualified baseline, not a
+proven biological requirement. An isolated exact-engine investigation now records
+parameter/reference/domain/content cache probes and tuple-output staging.
+Container identity, managed cache semantics and native GATK/DeepVariant execution
+still require managed qualification. The production version guard remains in
+place; no broad downgrade is claimed. See [engine investigation](docs/nextflow-26.04.0-qualification.md).
+Backend preflight separates EC2 and HealthOmics conditions and preserves unknown
+state for denied reads. Unrelated discovery failures cannot imply absent resources.
 
-After that operator identity is available, the next read-only step is:
+The standalone-account login uses `john-console` temporary browser credentials
+to assume `giab-operator`. Both CLI and boto3 returned the intended STS assumed
+role; the AWS Core connector remains a separate root connection and is excluded
+from routine work. The operator has nine project-scoped policies with restricted
+PassRole and no IAM trust/policy administration. The owner explicitly retained
+**no MFA for this bootstrap**. No access keys, Organizations or Identity Center
+were created. The seven existing service roles are preserved and have been imported
+with their six inline policies into private Terraform state. Review live plan
+drift before infrastructure reconciliation.
 
 ```bash
+aws sts get-caller-identity --profile giab-operator --region us-west-2
 python scripts/aws/preflight.py --profile giab-operator --region us-west-2 \
-  --desired-vcpus 32 --json work/aws-preflight.json
+  --backend healthomics --desired-vcpus 32 --json work/aws-preflight.json
 ```
+
+The current authorization reserves **$50 gross for one-time execution** and a
+separate **$10 first hosting month**, with one persistent service. Live regional
+Lightsail pricing returned Nano **$7/month, 512 MB** and Micro **$10/month, 1 GB**.
+A real memory-limited image probe, reviewed plan, conservative execution estimate
+and charge eligibility checks precede activation. No ALB, NAT Gateway, database,
+new DNS zone or additional recurring platform is authorized. Existing Fargate
+serving stays disabled. Credits offset eligible bills; they are not a hard cap.
 
 Offline package creation is already available:
 
@@ -248,8 +266,9 @@ python scripts/aws/healthomics.py --output work/package-evidence.json package \
   --zip work/healthomics-workflow.zip
 ```
 
-Neither command authorizes deployment. Every paid launch requires its separate
-explicit flag and prerequisites. Authentication always rehashes staged source
+The inspection/package commands do not deploy. The owner has authorized bounded
+execution, but every paid launch still requires its explicit flag and verified
+scientific, infrastructure and cost prerequisites. Authentication always rehashes staged source
 bytes; multipart S3 ETags are not SHA-256 identities. Cache identity binds source,
 workflow package, container digests, inputs/reference/domain and parameters.
 API-reported hits, misses and unknowns stay distinct from new compute measurements.
@@ -262,9 +281,8 @@ role. No stronger cloud isolation claim is made.
 Follow [AWS execution](docs/aws-cloud.md), [Terraform setup/imports](infra/aws/README.md)
 and [operator CLI/API details](scripts/aws/README.md) for the reviewed plan. No
 Terraform apply, large genomic upload, image push, paid genomics run or hosted
-Explorer deployment is claimed. Fixed-cost components include an enabled ALB,
-continuously running Fargate task, public IPv4, optional DNS zone and retained
-storage/logs; optional serving defaults must remain a deliberate cost decision.
+Explorer deployment is claimed. The selected economical hosting path must remain separate from disabled
+Fargate/ALB code. Storage, logs and image retention remain independently billable.
 
 ## Pipeline Evidence Explorer
 
@@ -276,7 +294,7 @@ gunicorn pipeline_evidence_explorer.wsgi:server \
   --bind 127.0.0.1:8050 --workers 1 --no-control-socket
 ```
 
-Open [the local Explorer](http://127.0.0.1:8050/research/giab-wes-nextflow/explorer/).
+Open [the local Explorer](http://127.0.0.1:8050/giab-wes-nextflow/).
 Its `healthz`/`readyz` endpoints distinguish liveness and synthetic evidence
 readiness; `canonical/readyz` remains unavailable without an accepted canonical
 bundle. Supplying both `EXPLORER_CANONICAL_BUNDLE` and an independently reviewed
@@ -286,9 +304,13 @@ qualification and caller-symmetry validation before canonical rendering.
 [`explorer/Dockerfile`](explorer/Dockerfile) builds a non-root amd64 image with
 pinned base/dependencies; [`containers/support.Dockerfile`](containers/support.Dockerfile)
 builds the separate Python validation image. Container CI is distinct from local
-source checks. The planned HTTPS route is `apps.johnpatrickcollins.info` → ALB →
-Fargate. Only that subdomain may be delegated to Route53; the parent zone is not
-migrated. No DNS records or live serving deployment were created.
+source checks. The target HTTPS route is
+`https://apps.johnpatrickcollins.info/giab-wes-nextflow/`. The root path is a minimal
+applications directory. Old `/research/giab-wes-nextflow/explorer/` links receive
+method-preserving redirects. `EXPLORER_PREFIX` configures a validated alternate
+prefix. The app has no analysis launch or private-storage access endpoint.
+Managed HTTPS and exact DNS records must be verified after a provider URL works;
+no live URL, DNS change or hosted service is claimed yet.
 See [Explorer operation and HTTP interfaces](explorer/README.md).
 
 ## Evidence, validation and remaining work
@@ -302,7 +324,7 @@ Historical evidence is preserved rather than relabeled as a new run:
 | M4 | [Verified main CI 34237377774](docs/orchestration/evidence/m4-verified-main-34237377774.json): actual pinned GATK/DeepVariant WES synthetic SNVs, inference, isolation, independent/both equivalence and resume. Earlier RefCall failure evidence remains historical. |
 | M5 | [Retained CI 34270789172](docs/orchestration/evidence/m5-verified-34270789172.json), followed by identical-tree main CI 34272289311: BCFtools 1.24, RTG 3.13, fixed synthetic SNP/indel counts and resume. These timings do not estimate canonical WES cost. |
 
-Current local AWS-development validation recorded **409 passing pipeline/Explorer
+The PR #27 development baseline recorded **409 passing pipeline/Explorer
 tests**, Terraform formatting/validation and **five mock-provider tests**, clean
 lint for both cloud Nextflow files, package build/inventory, pre-commit and
 repository-hygiene checks. Full Nextflow lint retains two existing warnings.
@@ -311,15 +333,15 @@ CI built both images and exposed an HTTP startup race and a platform-specific
 provider-lock omission. Bounded transport retries with three regression tests and
 the official Linux provider hash address those failures; consult the exact-head
 [PR checks](https://github.com/jcollins-bioinfo/giab-wes-nextflow/pull/27/checks)
-for the corrected run. Existing CI is preserved;
+for the corrected run (PR #27 is now merged). Existing CI is preserved;
 [new cloud CI](.github/workflows/aws-cloud.yml) adds credential-free Terraform,
 cloud contract/configuration and image build/health checks.
 
 Before the first accepted cloud canonical result, complete these gates in order:
 
-1. Establish temporary non-root operator access and refresh account/quota state.
+1. **Completed:** establish temporary non-root operator access and refresh account/quota state.
 2. Resolve the compatible HealthOmics engine or effective Batch quota/capacity;
-   review/import/apply infrastructure only under separate authorization.
+   review/import/apply chosen infrastructure within the current bounded authorization.
 3. Build and qualify images; authenticate durable S3 assets. Cloud-native asset
    acquisition/index construction and functional-qualification automation remain
    incomplete; the current DAG consumes already-qualified assets.
@@ -335,3 +357,13 @@ metadata, observations and artifact hashes; scientific files remain private.
 See [private-workspace policy](docs/private-workspace.md), [publication contract](docs/canonical-results-contract.md),
 [release readiness](docs/release-candidate-readiness.md), [milestones](docs/milestones.md)
 and the dated [authoritative source ledger](docs/source-ledger.yaml).
+
+## Demonstration and continuation
+
+[INTERVIEW_DEMO.md](INTERVIEW_DEMO.md) provides a five-minute route and local
+fallback. [The continuation checkpoint](docs/orchestration/execution-checkpoint.json)
+records authorization, identity, budget and outstanding gates without credentials.
+M6 operational cloud qualification, M7 final release acceptance, M8 hosted
+canonical evidence and M9 a live main-site update remain open. The website work
+continues in [existing draft PR #33](https://github.com/jcollins-bioinfo/john-collins-bioinformatics/pull/33);
+no automatic merge or final release is authorized.

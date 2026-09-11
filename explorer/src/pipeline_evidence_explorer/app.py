@@ -7,13 +7,14 @@ import re
 from typing import Any
 
 from dash import Dash, Input, Output, dcc, html
-from flask import Response
+from flask import Response, redirect, request
 import plotly.graph_objects as go
 
 from . import __version__
 from .model import MANIFEST_SHA256, REPO, Snapshot, load_snapshot, select_tasks
 
-DEFAULT_PREFIX = "/research/giab-wes-nextflow/explorer/"
+DEFAULT_PREFIX = "/giab-wes-nextflow/"
+LEGACY_PREFIX = "/research/giab-wes-nextflow/explorer/"
 
 
 def card(label: str, value: str, detail: str) -> Any:
@@ -95,6 +96,19 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
                title="Pipeline Evidence Explorer", update_title=None,
                assets_folder=str(Path(__file__).parent / "assets"))
     app.server.config.update(MAX_CONTENT_LENGTH=1_000_000)
+
+    if prefix != "/":
+        @app.server.get("/")
+        def directory():
+            return Response('<!doctype html><html lang="en"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Applications | John Patrick Collins</title><main><h1>Applications</h1><p><a href="' + prefix + '">GIAB WES Pipeline Evidence Explorer</a></p><p>Research software demonstrations. Evidence status is shown inside each application.</p></main></html>', mimetype="text/html")
+
+    if prefix != LEGACY_PREFIX:
+        @app.server.route(LEGACY_PREFIX, defaults={"path": ""}, methods=["GET", "POST"])
+        @app.server.route(LEGACY_PREFIX + "<path:path>", methods=["GET", "POST"])
+        def legacy_redirect(path):
+            # 308 retains callback POST method/body for existing bookmarked pages.
+            suffix = ("?" + request.query_string.decode("ascii")) if request.query_string else ""
+            return redirect(prefix + path + suffix, code=308)
 
     @app.server.get(prefix + "healthz")
     def health() -> tuple[dict[str, str], int]:

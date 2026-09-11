@@ -12,6 +12,7 @@ from giab_wes_nextflow.aws_support import REGION, make_session, preflight
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile")
+    parser.add_argument("--backend", choices=("all", "awsbatch", "healthomics"), default="all")
     parser.add_argument("--region", default=REGION)
     parser.add_argument("--desired-vcpus", type=int, default=32)
     parser.add_argument("--project-prefix", default="giab-wes")
@@ -20,7 +21,7 @@ def main():
     if args.desired_vcpus < 1:
         parser.error("--desired-vcpus must be positive")
     try:
-        report = preflight(make_session(args.profile, args.region), args.desired_vcpus, args.project_prefix)
+        report = preflight(make_session(args.profile, args.region), args.desired_vcpus, args.project_prefix, args.backend)
     except Exception as exc:  # CLI boundary: never convert denied calls into empty state.
         print(f"Preflight failed: {exc}", file=sys.stderr)
         return 1

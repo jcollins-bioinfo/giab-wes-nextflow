@@ -12,7 +12,7 @@ import urllib.request
 
 def check(base: str) -> None:
     """Default synthetic service must not imply a canonical run occurred."""
-    prefix = base.rstrip('/') + '/research/giab-wes-nextflow/explorer/'
+    prefix = base.rstrip('/') + '/giab-wes-nextflow/'
     for endpoint in ('healthz', 'readyz', 'evidence.json'):
         with urllib.request.urlopen(prefix + endpoint, timeout=5) as response:
             assert response.status == 200, endpoint

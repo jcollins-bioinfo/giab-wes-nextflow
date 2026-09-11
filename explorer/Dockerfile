@@ -22,5 +22,5 @@ USER 10001:10001
 WORKDIR /tmp
 EXPOSE 8050
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-  CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8050/research/giab-wes-nextflow/explorer/readyz', timeout=3)"]
+  CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8050/giab-wes-nextflow/readyz', timeout=3)"]
 CMD ["gunicorn", "pipeline_evidence_explorer.wsgi:server", "--bind", "0.0.0.0:8050", "--workers", "1", "--threads", "2", "--timeout", "60", "--graceful-timeout", "30", "--worker-tmp-dir", "/tmp", "--no-control-socket", "--access-logfile", "-", "--error-logfile", "-"]

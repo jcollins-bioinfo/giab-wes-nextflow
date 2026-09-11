@@ -290,3 +290,23 @@ def test_create_group_defaults_to_offline_bounded_plan():
     botocore = pytest.importorskip('botocore.session')
     from botocore.validate import validate_parameters
     validate_parameters(plan, botocore.Session().get_service_model('omics').operation_model('CreateRunGroup').input_shape)
+
+
+@pytest.mark.parametrize("failed,unaffected", [("omics.list_workflows", "awsbatch"), ("quotas.ec2", "healthomics"), ("ecs.list_clusters", "healthomics"), ("route53.list_hosted_zones", "awsbatch")])
+def test_backend_inspection_is_independent(failed, unaffected):
+    report = {"errors": {failed: "AccessDenied"},
+              "batch": aws.quota_assessment([], 32),
+              "healthomics": {"engine_compatibility_verified": False}}
+    result = aws.backend_readiness(report, 32)
+    assert result[unaffected]["inspection_complete"]
+    assert not any(failed in x for x in result[unaffected]["blockers"])
+    assert not any("EC2" in x for x in result["healthomics"]["blockers"])
+    assert not any("HealthOmics" in x for x in result["awsbatch"]["blockers"])
+    assert not result[unaffected]["safe_to_deploy"]
+
+
+def test_common_inspection_failure_blocks_both_backends():
+    report = {"errors": {"s3.list_buckets": "AccessDenied"},
+              "batch": aws.quota_assessment([], 32),
+              "healthomics": {"engine_compatibility_verified": False}}
+    assert all(not x["inspection_complete"] for x in aws.backend_readiness(report, 32).values())

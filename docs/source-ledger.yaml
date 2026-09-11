@@ -170,3 +170,12 @@ aws_sources:
   - claim: "AWS MCP OAuth grants the authenticated identity's existing AWS permissions and does not elevate it."
     url: https://docs.aws.amazon.com/signin/latest/userguide/aws-mcp-server.html
     access_date: 2026-09-10
+  - claim: "Local browser-login credentials require botocore CRT; AWS CLI credential_process bridges tools without native login-provider support."
+    url: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sign-in.html
+    access_date: 2026-09-11
+  - claim: "Exact 26.04.0 qualification investigation retains 26.04.2 parameter-hash and 26.04.4 typed-output/completion-handler risks. No managed qualification claimed."
+    url: https://github.com/nextflow-io/nextflow/releases
+    access_date: 2026-09-11
+  - claim: "Regional Lightsail GetContainerServicePowers returned Nano 0.5 GB at USD 7/month and Micro 1 GB at USD 10/month; activation remains gated on measured memory and eligibility."
+    url: https://aws.amazon.com/lightsail/pricing/
+    access_date: 2026-09-11

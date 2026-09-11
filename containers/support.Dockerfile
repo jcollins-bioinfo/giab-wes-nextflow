@@ -9,6 +9,10 @@ COPY src ./src
 RUN python -m pip wheel --no-cache-dir --no-deps --wheel-dir /wheels .
 
 FROM python:3.13-slim-bookworm@sha256:2f2e5a876c71a6757f55ec57f2add0225ddaf01c802a33fcc29073943f94d907
+# Native Nextflow task monitoring requires ps, including support-only tasks.
+RUN apt-get update && apt-get install -y --no-install-recommends procps \
+    && dpkg-query -W procps > /usr/local/share/giab-support-system-packages.txt \
+    && rm -rf /var/lib/apt/lists/*
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 COPY --from=build /wheels /wheels
 RUN python -m pip install --no-cache-dir --no-index --no-deps /wheels/*.whl && rm -rf /wheels
