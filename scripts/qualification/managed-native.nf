@@ -1,6 +1,11 @@
 // Nonhuman native-backend qualification. Never produces canonical HG001 results.
 params.support_image = null
-params.ecr_prefix = null
+params.bcftools_image = null
+params.bwa_image = null
+params.deepvariant_image = null
+params.gatk_image = null
+params.rtg_image = null
+params.samtools_image = null
 params.seed = null
 
 process FIXTURE {
@@ -19,7 +24,7 @@ process FIXTURE {
 }
 
 process ALIGN {
-    container "${params.ecr_prefix}/bwa@sha256:c3a708bea7947a44288e675fd9791c7aaf0c97dba0710addba336ed193821f8a"
+    container params.bwa_image
     cpus 2
     memory '8 GB'
     input:
@@ -40,7 +45,7 @@ process ALIGN {
 }
 
 process SORT {
-    container "${params.ecr_prefix}/samtools@sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561"
+    container params.samtools_image
     cpus 2
     memory '8 GB'
     input:
@@ -62,7 +67,7 @@ process SORT {
 }
 
 process GATK {
-    container "${params.ecr_prefix}/gatk@sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891"
+    container params.gatk_image
     cpus 2
     memory '8 GB'
     input:
@@ -90,7 +95,7 @@ process GATK {
 }
 
 process DEEPVARIANT {
-    container "${params.ecr_prefix}/deepvariant@sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+    container params.deepvariant_image
     cpus 2
     memory '8 GB'
     input:
@@ -174,7 +179,7 @@ process PREPARE_BENCHMARK {
 }
 
 process NORMALIZE_BENCHMARK {
-    container "${params.ecr_prefix}/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+    container params.bcftools_image
     cpus 2
     memory '8 GB'
     time '15m'
@@ -225,7 +230,7 @@ process INCLUDE_BENCHMARK {
 }
 
 process COMPRESS_BENCHMARK {
-    container "${params.ecr_prefix}/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+    container params.bcftools_image
     cpus 2
     memory '8 GB'
     time '15m'
@@ -254,7 +259,7 @@ process COMPRESS_BENCHMARK {
 }
 
 process RTG_BENCHMARK {
-    container "${params.ecr_prefix}/rtg@sha256:b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790"
+    container params.rtg_image
     cpus 2
     memory '8 GB'
     time '15m'

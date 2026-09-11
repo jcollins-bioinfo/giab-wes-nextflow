@@ -10,7 +10,7 @@ params.known_indels_index = null
 params.mills = null
 params.mills_index = null
 params.support_image = null
-params.ecr_prefix = null
+params.bcftools_image = null
 
 process FILTER_KNOWN_SITES {
     container params.support_image
@@ -32,7 +32,7 @@ process FILTER_KNOWN_SITES {
 }
 
 process COMPRESS_KNOWN_SITES {
-    container "${params.ecr_prefix}/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+    container params.bcftools_image
     cpus 2
     memory '8 GB'
     time '2h'
@@ -56,7 +56,7 @@ process COMPRESS_KNOWN_SITES {
 }
 
 process INDEX_VALIDATE_KNOWN_SITES {
-    container "${params.ecr_prefix}/bcftools@sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+    container params.bcftools_image
     cpus 2
     memory '8 GB'
     time '2h'

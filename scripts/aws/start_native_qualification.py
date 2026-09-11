@@ -5,13 +5,13 @@ from deployment_settings import ACCOUNT, REGISTRY, BUCKET, ROLE_PREFIX, EXECUTIO
 import hashlib
 import json
 from pathlib import Path
-import re
 import sys
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
 from giab_wes_nextflow.aws_support import make_session, client, require_role
 from giab_wes_nextflow.run_watchdog import load_policy, run_guarded
+from giab_wes_nextflow.cloud_contract import tool_images
 
 
 def main():
@@ -41,8 +41,9 @@ def main():
     if workflow['status']!='ACTIVE' or workflow['tags']['PackageSHA256']!=package_hash:
         raise ValueError('Active workflow identity differs')
     support=(root/'support-amd64-image.txt').read_text().strip()
-    workflow_source=(Path(__file__).resolve().parents[1]/'qualification/managed-native.nf').read_text()
-    images=sorted(set(REGISTRY+'/'+name+'@sha256:'+digest for name,digest in re.findall(r'/([a-z]+)@sha256:([0-9a-f]{64})',workflow_source))|{support})
+    scientific_images = {name + '_image': REGISTRY + '/' + name + '@' + uri.split('@')[1]
+                         for name, uri in tool_images().items()}
+    images=sorted(set(scientific_images.values()) | {support})
     remaining=images[:]
     deadline=time.monotonic()+1800
     while remaining:
@@ -68,7 +69,7 @@ def main():
     request={'workflowId':workflow_id,'workflowType':'PRIVATE',
              'roleArn':EXECUTION_ROLE,
              'name':'giab-native-'+package_hash[:12],'runGroupId':group_id,
-             'parameters':{'support_image':support,'ecr_prefix':REGISTRY,'seed':'s3://'+bucket+'/'+key},
+             'parameters':{'support_image':support,**scientific_images,'seed':'s3://'+bucket+'/'+key},
              'outputUri':'s3://'+bucket+'/results/qualification/'+package_hash+'/',
              'storageType':'DYNAMIC','retentionMode':'RETAIN','logLevel':'ALL',
              'engineSettings':{'engineVersion':'26.04.0','syntaxVersion':'v2'},

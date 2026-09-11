@@ -53,7 +53,7 @@ def main():
         name,digest=image.split('.amazonaws.com/')[1].split('@')
         ecr.describe_images(repositoryName=name,imageIds=[{'imageDigest':digest}])
     parameters['support_image']=support
-    parameters['ecr_prefix']=REGISTRY
+    parameters['bwa_image']=f'{REGISTRY}/bwa@sha256:c3a708bea7947a44288e675fd9791c7aaf0c97dba0710addba336ed193821f8a'
     workflow_id=json.loads((root/'cloud-index-workflow.json').read_text())['id']
     group_id=json.loads((root/'live-omics-qualification/group-assets.json').read_text())['id']
     workflow=omics.get_workflow(id=workflow_id,type='PRIVATE')

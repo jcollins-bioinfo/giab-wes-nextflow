@@ -2,7 +2,7 @@
 params.reference_source = null
 params.reference_fai = null
 params.support_image = null
-params.ecr_prefix = null
+params.bwa_image = null
 
 process REFERENCE {
     container params.support_image
@@ -21,7 +21,7 @@ process REFERENCE {
 }
 
 process CLASSIC_INDEX {
-    container "${params.ecr_prefix}/bwa@sha256:c3a708bea7947a44288e675fd9791c7aaf0c97dba0710addba336ed193821f8a"
+    container params.bwa_image
     cpus 4
     memory '24 GB'
     time '6h'
