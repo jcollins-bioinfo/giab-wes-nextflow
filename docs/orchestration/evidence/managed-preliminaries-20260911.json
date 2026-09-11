@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "managed_preliminary_execution_summary",
+  "observed_date": "2026-09-11",
+  "purpose": "Public-safe selected observations supporting README readiness; not a canonical result bundle.",
+  "observation_basis": [
+    "Provider GetRun reported COMPLETED for both preliminary workflows.",
+    "Provider ListRunTasks and GetRunTask reported all tasks completed and retained image digests.",
+    "Returned task-produced native qualification and index validation JSON were retrieved from private output storage."
+  ],
+  "source_acquisition": {
+    "authenticated_receipts": 16,
+    "original_paired_fastqs_authenticated": true,
+    "scientific_payloads_public": false
+  },
+  "native_qualification": {
+    "scope": "invented nonhuman fixtures",
+    "canonical": false,
+    "engine": "Nextflow 26.04.0",
+    "parser": "v2",
+    "workflow_package_sha256": "04a44823821578a4c62435949b4af85ac1d7e3deeafa17da81301ca33397c200",
+    "fixture_recipe": "1.1.0",
+    "original_quality_records_verified": 528,
+    "both_callers_native_positive_sites_accepted": 2,
+    "normalization_benchmark_qualified": true,
+    "full_cloud_workflow_qualified": false,
+    "managed_cache_qualified": false,
+    "backend_receipt_binding_required": true,
+    "receipt_sha256": "a3cdb0ca22546e50bd1f1b7fc0c4725eb5b0eba574d328c21a8041b2a4c20b65",
+    "tasks": [
+      {
+        "process": "ACCEPT_BENCHMARK",
+        "status": "COMPLETED",
+        "image_digest": "sha256:009ae131d028039f0260dd31dd3c8f36d6ebb8617ed2e56054abdfc6a79a8b38"
+      },
+      {
+        "process": "RTG_BENCHMARK",
+        "status": "COMPLETED",
+        "image_digest": "sha256:b53115f1646258c5bd7af1e884fd06f1eab70ebb4ebc1161fff1e5529e200790"
+      },
+      {
+        "process": "COMPRESS_BENCHMARK",
+        "status": "COMPLETED",
+        "image_digest": "sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+      },
+      {
+        "process": "INCLUDE_BENCHMARK",
+        "status": "COMPLETED",
+        "image_digest": "sha256:009ae131d028039f0260dd31dd3c8f36d6ebb8617ed2e56054abdfc6a79a8b38"
+      },
+      {
+        "process": "NORMALIZE_BENCHMARK",
+        "status": "COMPLETED",
+        "image_digest": "sha256:a3e0d3007ffe325c409b398f660840a3e7574d076219c6e82fc994ced87d47c3"
+      },
+      {
+        "process": "PREPARE_BENCHMARK",
+        "status": "COMPLETED",
+        "image_digest": "sha256:009ae131d028039f0260dd31dd3c8f36d6ebb8617ed2e56054abdfc6a79a8b38"
+      },
+      {
+        "process": "ACCEPT",
+        "status": "COMPLETED",
+        "image_digest": "sha256:009ae131d028039f0260dd31dd3c8f36d6ebb8617ed2e56054abdfc6a79a8b38"
+      },
+      {
+        "process": "DEEPVARIANT",
+        "status": "COMPLETED",
+        "image_digest": "sha256:962e5a83b1d76aae6990625d47102785f791603f2138aa1fa9aa4fb6a2eecbe6"
+      },
+      {
+        "process": "GATK",
+        "status": "COMPLETED",
+        "image_digest": "sha256:7da5cf586e1c463f0c72908f9ac7dec8c29e37912c82d6e7b3c250f27fcb3891"
+      },
+      {
+        "process": "SORT",
+        "status": "COMPLETED",
+        "image_digest": "sha256:a130447589651ed09252aa95a5e4f4132942cdb54d835d81a04a9a930d656561"
+      },
+      {
+        "process": "ALIGN",
+        "status": "COMPLETED",
+        "image_digest": "sha256:c3a708bea7947a44288e675fd9791c7aaf0c97dba0710addba336ed193821f8a"
+      },
+      {
+        "process": "FIXTURE",
+        "status": "COMPLETED",
+        "image_digest": "sha256:009ae131d028039f0260dd31dd3c8f36d6ebb8617ed2e56054abdfc6a79a8b38"
+      }
+    ]
+  },
+  "reference_index": {
+    "engine": "Nextflow 26.04.0",
+    "parser": "v2",
+    "workflow_package_sha256": "4adccd1314430e7f5875cadd1839764ff4262ace35953785ffe20241711c34d0",
+    "implementation_sha": "f5c514e14d29c14ced8a9213fc3f5aeda4944bf3",
+    "reference_contigs": 195,
+    "aligner": "BWA 0.7.17-r1188",
+    "construction_algorithm": "bwtsw",
+    "complete_reference_base_identity_verified": true,
+    "functional_probes_all_expected_loci_observed": true,
+    "functional_probe_method": "fixed_context_exact_reads_v1",
+    "index_manifest_sha256": "344c661c2242fc5a01821c34013694187c7ed344cdd1f29fc51c36ca2a339dba",
+    "validation_receipt_sha256": "d36fddd8647332527f24663dbf0aa76fd117d547f15927979441e1c0d1af32fd",
+    "final_durable_destination_rehash_complete": false,
+    "reusable_asset_publication_complete": false,
+    "tasks": [
+      {
+        "process": "ACCEPT_INDEX",
+        "status": "COMPLETED",
+        "image_digest": "sha256:009ae131d028039f0260dd31dd3c8f36d6ebb8617ed2e56054abdfc6a79a8b38"
+      },
+      {
+        "process": "CLASSIC_INDEX",
+        "status": "COMPLETED",
+        "image_digest": "sha256:c3a708bea7947a44288e675fd9791c7aaf0c97dba0710addba336ed193821f8a"
+      },
+      {
+        "process": "REFERENCE",
+        "status": "COMPLETED",
+        "image_digest": "sha256:009ae131d028039f0260dd31dd3c8f36d6ebb8617ed2e56054abdfc6a79a8b38"
+      }
+    ]
+  },
+  "canonical_hg001_comparison": {
+    "executed": false,
+    "accepted": false,
+    "metrics_available": false
+  },
+  "limitations": [
+    "This selected summary is not an independent execution attestation or a complete public evidence bundle.",
+    "Native caller and benchmark observations concern invented fixtures, not HG001 accuracy.",
+    "Managed full production-DAG and cache qualification remain pending.",
+    "The complete returned durable index payload has not yet been independently rehashed for reusable-asset publication.",
+    "Real-sample original-quality equality and the HG001 comparison remain pending.",
+    "Provider account identifiers, run identifiers, private locations, financial records and genomic payloads are intentionally excluded."
+  ]
+}
