@@ -12,11 +12,12 @@ process REFERENCE {
     input:
     path source
     path fai
+    path helper
     output:
     path 'reference'
     script:
     """
-    python -I /mnt/workflow/cloud_index.py prepare --source ${source} --fai ${fai} --output reference
+    python -I ${helper} prepare --source ${source} --fai ${fai} --output reference
     """
 }
 
@@ -56,20 +57,22 @@ process ACCEPT_INDEX {
     time '60m'
     input:
     path indexed
+    path helper
     output:
     path 'index', emit: index
     path 'index-validation.json', emit: receipt
     script:
     """
-    python -I /mnt/workflow/cloud_index.py accept --input ${indexed} --output index
+    python -I ${helper} accept --input ${indexed} --output index
     """
 }
 
 workflow {
     main:
-    reference = REFERENCE(file(params.reference_source),file(params.reference_fai))
+    helper = file("${projectDir}/cloud_index.py", checkIfExists: true)
+    reference = REFERENCE(file(params.reference_source),file(params.reference_fai),helper)
     indexed = CLASSIC_INDEX(reference)
-    validated = ACCEPT_INDEX(indexed)
+    validated = ACCEPT_INDEX(indexed,helper)
     publish:
     index = validated.index
     qualification = validated.receipt
