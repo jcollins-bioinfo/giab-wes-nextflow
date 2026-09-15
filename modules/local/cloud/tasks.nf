@@ -1,7 +1,7 @@
 // Native observations remain private and require a provider task/image join.
 def cloudObservationStart(task, process, label, inputs) {
     def metadata = groovy.json.JsonOutput.toJson([process: process, label: label,
-        nextflow_task_id: task.id, attempt: task.attempt, declared_image: task.container,
+        nextflow_process_index: task.index, attempt: task.attempt, declared_image: task.container,
         requested_cpus: task.cpus, requested_memory_bytes: task.memory.toBytes()])
     def quotedMetadata = "'" + metadata.replace("'", "'\"'\"'") + "'"
     """
@@ -16,7 +16,11 @@ def cloudObservationStart(task, process, label, inputs) {
             if [ -d "\$target" ]; then find "\$target" -type f -print0; else printf '%s\\0' "\$target"; fi
         done | sort -z | while IFS= read -r -d '' artifact; do
             digest=\$(sha256sum -- "\$artifact" | cut -d ' ' -f 1)
-            printf '%s\\t%s\\t%s\\n' "\$digest" "\$(stat -c %s -- "\$artifact")" "\$artifact"
+            # BWA's minimal image has no stat. Separate assignments preserve failures.
+            size=\$(wc -c < "\$artifact")
+            size=\${size//[[:space:]]/}
+            case "\$size" in ''|*[!0-9]*) return 1 ;; esac
+            printf '%s\\t%s\\t%s\\n' "\$digest" "\$size" "\$artifact"
         done
     }
     observe_files ${inputs} > "\$receipt_dir/inputs.tsv"

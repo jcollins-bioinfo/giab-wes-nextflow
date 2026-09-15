@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from giab_wes_nextflow import cloud_observations
 from giab_wes_nextflow.cloud_observations import read_file_inventory, read_task_observation, join_scientific_lineage
 from giab_wes_nextflow.cloud_science import authenticate
 
@@ -18,7 +19,7 @@ def ident(value):
 
 def task_receipt(tmp_path):
     root = tmp_path / 'receipt'; root.mkdir()
-    (root / 'task.json').write_text(json.dumps({'process': 'CLOUD_GATK_CALL', 'label': 'gatk', 'nextflow_task_id': 8, 'attempt': 1,
+    (root / 'task.json').write_text(json.dumps({'process': 'CLOUD_GATK_CALL', 'label': 'gatk', 'nextflow_process_index': 8, 'attempt': 1,
         'declared_image': 'example/gatk@sha256:' + 'a' * 64, 'requested_cpus': 2, 'requested_memory_bytes': 1000000, 'architecture': 'x86_64'}))
     for name, text in {'started.txt': '100', 'completed.txt': '120', 'command.sh': '#!/bin/bash\ngatk --version\n',
                        'version.txt': 'GATK 4.7.0.0\n', 'inputs.tsv': 'b' * 64 + '\t3\tshared/shared.bam\n',
@@ -34,6 +35,43 @@ def test_native_observations_retain_measured_and_unknown_fields(tmp_path):
     assert result['cpu_seconds'] is None and result['peak_rss_bytes'] is None
     assert result['outputs']['raw.vcf.gz'] == {'sha256': 'c' * 64, 'bytes': 4}
     assert result['command']['sha256'] == ident('#!/bin/bash\ngatk --version\n')['sha256']
+    assert result['nextflow_process_index'] == 8
+    assert 'nextflow_task_id' not in result
+
+
+@pytest.mark.parametrize('field', ['nextflow_process_index', 'attempt'])
+@pytest.mark.parametrize('value', [None, 0, -1, True, '1'])
+def test_missing_or_invalid_native_task_identity_rejected(tmp_path, field, value):
+    root = task_receipt(tmp_path)
+    path = root / 'task.json'; meta = json.loads(path.read_text())
+    meta[field] = value; path.write_text(json.dumps(meta))
+    with pytest.raises(ValueError, match='process index or attempt missing'):
+        read_task_observation(root)
+
+
+def test_legacy_null_task_id_is_not_invented_or_migrated(tmp_path):
+    root = task_receipt(tmp_path)
+    path = root / 'task.json'; meta = json.loads(path.read_text())
+    meta.pop('nextflow_process_index'); meta['nextflow_task_id'] = None
+    path.write_text(json.dumps(meta))
+    with pytest.raises(ValueError, match='metadata fields differ'):
+        read_task_observation(root)
+
+
+@pytest.mark.parametrize('duplicate', [False, True])
+def test_process_local_indices_are_scoped_to_the_process(monkeypatch, duplicate):
+    records = [dict(process=process, label=str(index), nextflow_process_index=index, attempt=1)
+               for process, (_, _, count) in cloud_observations.PROCESSES.items() if process != 'CLOUD_COLLECT'
+               for index in range(1, count + 1)]
+    if duplicate:
+        repeated = [record for record in records if record['process'] == 'CLOUD_NORMALIZE']
+        repeated[1]['nextflow_process_index'] = repeated[0]['nextflow_process_index']
+    monkeypatch.setattr(cloud_observations, 'read_task_observation', lambda record: record)
+    if duplicate:
+        with pytest.raises(ValueError, match='duplicate native task attempt'):
+            cloud_observations.collect_task_observations(records)
+    else:
+        assert cloud_observations.collect_task_observations(records) == records
 
 
 @pytest.mark.parametrize('change', ['missing_version', 'symlink', 'bad_timing', 'missing_model', 'mutable_image'])
@@ -63,7 +101,7 @@ def lineage():
     shared = {'shared.bam': ident('shared')['sha256'], 'reference.fa': ident('reference')['sha256']}
     def task(process, label, inputs, outputs):
         item = {'process': process, 'label': label, 'inputs': inputs, 'outputs': outputs,
-                'nextflow_task_id': len(records) + 1, 'attempt': 1, 'command': ident(process)}
+                'nextflow_process_index': 1 + sum(r['process'] == process for r in records), 'attempt': 1, 'command': ident(process)}
         records.append(item); return item
     for label in ('gatk', 'deepvariant', 'truth'):
         if label == 'truth':
@@ -89,6 +127,10 @@ def test_common_normalization_and_partition_lineage():
     assert callers['gatk']['raw_vcf'] == ident('gatk-raw')
     assert callers['gatk']['normalized_vcf'] == ident('gatk-normalized')
     assert len(callers['deepvariant']['normalization_chain']) == 3
+    assert callers['gatk']['caller_nextflow_process_index'] == 1
+    assert callers['deepvariant']['benchmark_nextflow_process_index'] == 2
+    assert all('nextflow_process_index' in item and 'nextflow_task_id' not in item
+               for item in callers['gatk']['normalization_chain'])
 
 
 @pytest.mark.parametrize('process,label,group,name', [
