@@ -16,7 +16,11 @@ def cloudObservationStart(task, process, label, inputs) {
             if [ -d "\$target" ]; then find "\$target" -type f -print0; else printf '%s\\0' "\$target"; fi
         done | sort -z | while IFS= read -r -d '' artifact; do
             digest=\$(sha256sum -- "\$artifact" | cut -d ' ' -f 1)
-            printf '%s\\t%s\\t%s\\n' "\$digest" "\$(stat -c %s -- "\$artifact")" "\$artifact"
+            # BWA's minimal image has no stat. Separate assignments preserve failures.
+            size=\$(wc -c < "\$artifact")
+            size=\${size//[[:space:]]/}
+            case "\$size" in ''|*[!0-9]*) return 1 ;; esac
+            printf '%s\\t%s\\t%s\\n' "\$digest" "\$size" "\$artifact"
         done
     }
     observe_files ${inputs} > "\$receipt_dir/inputs.tsv"
