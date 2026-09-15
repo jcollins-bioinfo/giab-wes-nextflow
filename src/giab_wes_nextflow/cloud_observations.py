@@ -1,6 +1,6 @@
 """Read private observations produced inside native cloud scientific tasks.
 
-Declared container references and Nextflow task IDs are not backend identities.
+Declared container references and Nextflow process indices are not backend identities.
 These records deliberately require a later join to provider task/image receipts.
 """
 from __future__ import annotations
@@ -43,12 +43,12 @@ def read_task_observation(directory: Path) -> dict:
     for path in directory.iterdir():
         require(path.is_file() and not path.is_symlink() and path.stat().st_size <= 2_000_000, 'unsafe native receipt member')
     meta = _json((directory / 'task.json').read_bytes())
-    require(set(meta) == {'process', 'label', 'nextflow_task_id', 'attempt', 'declared_image', 'requested_cpus', 'requested_memory_bytes', 'architecture'},
+    require(set(meta) == {'process', 'label', 'nextflow_process_index', 'attempt', 'declared_image', 'requested_cpus', 'requested_memory_bytes', 'architecture'},
             'native task metadata fields differ')
     require(meta['process'] in PROCESSES and re.fullmatch(r'[A-Za-z0-9_-]{1,40}', meta['label']) is not None,
             'unknown task process/label')
-    require(type(meta['nextflow_task_id']) is int and meta['nextflow_task_id'] > 0 and type(meta['attempt']) is int and meta['attempt'] > 0,
-            'Nextflow task identity missing')
+    require(type(meta['nextflow_process_index']) is int and meta['nextflow_process_index'] > 0 and type(meta['attempt']) is int and meta['attempt'] > 0,
+            'Nextflow process index or attempt missing')
     require(re.fullmatch(r'[^\s]+@sha256:[0-9a-f]{64}', meta['declared_image']) is not None, 'declared image must be immutable')
     require(meta['architecture'] == 'x86_64' and all(type(meta[k]) is int and meta[k] > 0 for k in ('requested_cpus', 'requested_memory_bytes')),
             'native architecture or requested resource observation invalid')
@@ -75,7 +75,7 @@ def read_task_observation(directory: Path) -> dict:
 
 def collect_task_observations(directories: list[Path], *, include_collector: bool = False) -> list[dict]:
     records = [read_task_observation(directory) for directory in directories]
-    require(len({(r['nextflow_task_id'], r['attempt']) for r in records}) == len(records), 'duplicate native task attempt observation')
+    require(len({(r['process'], r['nextflow_process_index'], r['attempt']) for r in records}) == len(records), 'duplicate native task attempt observation')
     require(len({(r['process'], r['label']) for r in records}) == len(records), 'duplicate native process/label observation')
     for process, (_, _, count) in PROCESSES.items():
         expected = count if include_collector or process != 'CLOUD_COLLECT' else 0
@@ -108,9 +108,9 @@ def join_scientific_lineage(observations: list[dict], callers: dict, shared: dic
         for name, identity in callers[caller]['partitions'].items():
             require(artifact(benchmark, 'outputs', name) == identity, 'RTG to collector partition lineage differs')
         callers[caller].update(raw_vcf=artifact(call, 'outputs', 'raw.vcf.gz'), normalized_vcf=artifact(compress, 'outputs', 'normalized.vcf.gz'),
-                               caller_nextflow_task_id=call['nextflow_task_id'], caller_attempt=call['attempt'],
-                               benchmark_nextflow_task_id=benchmark['nextflow_task_id'], benchmark_attempt=benchmark['attempt'],
-                               normalization_chain=[{'process': r['process'], 'nextflow_task_id': r['nextflow_task_id'], 'attempt': r['attempt'],
+                               caller_nextflow_process_index=call['nextflow_process_index'], caller_attempt=call['attempt'],
+                               benchmark_nextflow_process_index=benchmark['nextflow_process_index'], benchmark_attempt=benchmark['attempt'],
+                               normalization_chain=[{'process': r['process'], 'nextflow_process_index': r['nextflow_process_index'], 'attempt': r['attempt'],
                                                      'command': r['command'], 'inputs': r['inputs'], 'outputs': r['outputs']} for r in (normalize, include, compress)])
         if caller == 'deepvariant':
             callers[caller].update(model_before=call['model_before'], model_after=call['model_after'])

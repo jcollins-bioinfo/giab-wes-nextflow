@@ -1,7 +1,7 @@
 // Native observations remain private and require a provider task/image join.
 def cloudObservationStart(task, process, label, inputs) {
     def metadata = groovy.json.JsonOutput.toJson([process: process, label: label,
-        nextflow_task_id: task.id, attempt: task.attempt, declared_image: task.container,
+        nextflow_process_index: task.index, attempt: task.attempt, declared_image: task.container,
         requested_cpus: task.cpus, requested_memory_bytes: task.memory.toBytes()])
     def quotedMetadata = "'" + metadata.replace("'", "'\"'\"'") + "'"
     """
