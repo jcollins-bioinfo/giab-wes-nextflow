@@ -20,7 +20,7 @@ A **Nextflow** workflow and **Plotly Dash** application for comparing GATK Haplo
 The first intended scientific result is an **HG001 chr20–22 coding-domain comparison**. Both callers receive the same physical BAM, BAI, reference, and calling-region bytes. Their outputs pass through a common normalization and benchmarking policy; the Explorer renders accepted observations without recalculating biological metrics in callbacks.
 
 > [!IMPORTANT]
-> **HG001 comparison results are not yet available.** Managed native qualification and complete-reference index construction have completed, but they are preliminary evidence. Full production-workflow and cache qualification, durable asset acceptance, and the real HG001 comparison remain pending. Synthetic results are always identified as synthetic.
+> **HG001 comparison results are not yet available.** The complete managed process graph has passed its separate nonhuman qualification, and the full-reference/index and independent known-sites assets are accepted and published. Managed cache qualification and the real HG001 comparison remain pending. Synthetic results are always identified as synthetic.
 
 This is independent, nonclinical research software inspired by nf-core conventions. It is not an official nf-core pipeline or a replacement for Sarek. Somatic and Oxford Nanopore analysis are outside the initial scope.
 
@@ -37,21 +37,23 @@ This is independent, nonclinical research software inspired by nf-core conventio
 
 ## Evidence and readiness
 
-**Verified snapshot: September 11, 2026 · Development package `0.5.0-dev.1`.**
+**Verified snapshot: September 15, 2026 · Development package `0.5.0-dev.1`.**
 
-The [managed preliminary evidence summary](docs/orchestration/evidence/managed-preliminaries-20260911.json) records the basis and limits of the current cloud milestones. It contains selected observations and receipt hashes; private provider records and scientific payloads remain outside Git.
+The [current managed qualification summary](docs/orchestration/evidence/managed-qualification-20260915.json) records accepted reusable assets and the completed nonhuman process graph. The [earlier preliminary summary](docs/orchestration/evidence/managed-preliminaries-20260911.json) preserves its original evidence boundaries. These summaries contain selected observations and receipt hashes; private provider records and scientific payloads remain outside Git.
 
 | Evidence layer | Observed status | Interpretation |
 |---|---|---|
 | **Source acquisition** | All 16 required source receipts authenticated, including both original paired FASTQs. | Inputs are available in private storage; acquisition is not an analysis result. |
-| **Full-reference indexing** | Three HealthOmics tasks completed: reference preparation, classical BWA index construction, and acceptance checks. Returned evidence reports complete base identity and functional-probe verification. | Native construction passed. Final durable destination verification and reusable-asset publication remain separate gates. |
-| **Managed native qualification** | All 12 tasks completed on Nextflow 26.04.0. Both native callers, normalization, inclusion, compression, and RTG benchmarking executed on invented fixtures; 528 original-quality records were verified. | Establishes the tested nonhuman behavior. The receipt explicitly leaves full production-workflow and managed-cache qualification false. |
+| **Full-reference indexing** | Complete 195-contig reference and classical BWA index accepted; nine payloads have whole-object verification proofs and a versioned completion marker. Current object versions were rechecked. | Accepted reusable asset; complete base identity and sampled functional probes remain distinct checks. |
+| **Independent known sites** | Three Broad resources prepared into six accepted derivative/index payloads, with source, retained REF, record-count and index-readback checks; versioned publication verified. | Reusable BQSR resources. GIAB benchmark truth is excluded. |
+| **Earlier managed native qualification** | All 12 tasks completed on Nextflow 26.04.0. Both native callers, normalization, inclusion, compression, and RTG benchmarking executed on invented fixtures; 528 original-quality records were verified. | Establishes the tested nonhuman behavior. The historical receipt explicitly leaves full production-workflow and managed-cache qualification false. |
+| **Complete managed process graph** | All 28 tasks across 21 processes completed on the nonhuman fixture; 23 native observations, provider image bindings, OQ and common normalization/RTG lineage independently validated. | Full nonhuman DAG qualified on Nextflow 26.04.0/v2. Managed cache and real HG001 acceptance remain separate. |
 | **Historical M3–M5 qualification** | Retained Linux/x86_64 Docker and CI evidence for synthetic preprocessing, calling, benchmarking, and resume. | Applies to those fixtures and execution environments. |
 | **Canonical HG001 comparison** | Not executed or accepted. | No HG001 accuracy, caller ranking, comparative cost, or clinical-performance result is claimed. |
 | **Evidence Explorer** | Local synthetic views and strict canonical-bundle consumer implemented and tested. | Canonical readiness remains unavailable without an accepted, externally pinned bundle. |
 | **Public application** | Hosting configuration exists; no hosted Explorer is verified. | The [research showcase](https://johnpatrickcollins.info/research/giab-wes-nextflow) presents the earlier synthetic evidence. |
 
-CI badges describe repository checks. They do not attest to a canonical scientific result or a live deployment. The managed preliminary runs also do not replace execution of the full production DAG: the separate [full-DAG qualification workflow](scripts/qualification/cloud-dag.nf) and managed cache tests remain required.
+CI badges describe repository checks. They do not attest to a canonical scientific result or a live deployment. The separate [full-DAG qualification workflow](scripts/qualification/cloud-dag.nf) has now passed on nonhuman fixtures. Managed cache tests and the real HG001 experiment still require their own execution evidence.
 
 ## Scientific design
 
@@ -240,7 +242,7 @@ The optional AWS extra installs the SDK and browser-login dependency; installati
 |---|---|---|
 | **Local development and synthetic qualification** | [`main.nf`](main.nf), [`m5.nf`](m5.nf) | Foundation and staged synthetic integration with retained native-tool evidence. |
 | **Canonical Colab workflow** | [`canonical.nf`](canonical.nf), [notebook launch center](notebooks/README.md) | Exact-source launcher, runtime and asset guards, private durable recovery. No accepted HG001 result. |
-| **AWS HealthOmics** | [`cloud.nf`](cloud.nf), [qualification workflows](scripts/qualification) | Selected managed backend. Native and index preliminaries completed on exact Nextflow 26.04.0; full production and cache qualification pending. |
+| **AWS HealthOmics** | [`cloud.nf`](cloud.nf), [qualification workflows](scripts/qualification) | Selected managed backend. Native and complete nonhuman process-graph qualification passed on exact Nextflow 26.04.0/v2; reusable assets accepted. Managed cache and HG001 execution remain pending. |
 | **AWS Batch** | [`cloud.nf`](cloud.nf), [AWS Terraform](infra/aws/README.md) | Implemented alternative with separate job roles and verified definition identities; not executed. |
 
 ### Managed cloud execution
@@ -286,20 +288,20 @@ The project separates contract tests, real synthetic execution, managed prelimin
 | [M3 preprocessing](docs/orchestration/evidence/m3-verified.json) | Invented-read preprocessing, BAM/index/OQ acceptance, and completed versus cached tasks. |
 | [M4 callers](docs/orchestration/evidence/m4-verified-main-34237377774.json) | Native GATK and DeepVariant synthetic SNVs, inference, independent/both-mode agreement, and resume. |
 | [M5 benchmarking](docs/orchestration/evidence/m5-verified-34270789172.json) | Fixed synthetic SNP/indel representations, common normalization, RTG counts, and resume. |
-| [Managed preliminaries](docs/orchestration/evidence/managed-preliminaries-20260911.json) | Completed native nonhuman qualification and full-reference index tasks, with explicit acceptance limits. |
+| [Managed qualification](docs/orchestration/evidence/managed-qualification-20260915.json) | Accepted reusable assets and independently validated complete nonhuman DAG. |
+| [Earlier managed preliminaries](docs/orchestration/evidence/managed-preliminaries-20260911.json) | Historical native and index observations, preserving their original acceptance limits. |
 | [Pipeline CI](.github/workflows/ci.yml), [cloud validation](.github/workflows/aws-cloud.yml), [Explorer checks](.github/workflows/explorer.yml) | Repository-specific contracts, synthetic integrations, infrastructure validation, and application/image checks. |
 
-Scientific timings and resource observations retain their original execution context. Synthetic performance does not estimate real WES performance; completed managed preliminaries do not establish production-workflow readiness.
+Scientific timings and resource observations retain their original execution context. The full-DAG qualification exercises invented nonhuman fixtures; it does not establish HG001 accuracy or human-workload performance.
 
 The path to the first accepted result is:
 
-1. **Complete durable asset acceptance:** verify returned full-reference/index bytes and qualify the independent known-sites derivatives.
-2. **Qualify the complete managed workflow:** execute the actual production process graph on its separate nonhuman fixture and test unchanged reuse plus cache-invalidation cases.
-3. **Run the fixed HG001 experiment:** establish all real-sample preprocessing and original-quality proofs, then execute both callers and common benchmarking.
-4. **Accept and publish evidence:** bind provider task/image/cache records, scientific lineage, durable outputs, and the externally reviewed public manifest.
-5. **Deliver the accepted result:** load the bundle into the Explorer, measure the final image under traffic, verify hosting, and update the source-bound research page.
+1. **Qualify managed reuse:** establish unchanged reuse and negative cases for parameter, input, reference/domain, container and command changes on the supported backend.
+2. **Run the fixed HG001 experiment:** reuse the accepted reference/index and known-sites assets, establish all real-sample preprocessing and original-quality proofs, then execute both callers and common benchmarking.
+3. **Accept and publish evidence:** bind provider task/image/cache records, scientific lineage, durable outputs, and the externally reviewed public manifest.
+4. **Deliver the accepted result:** load the bundle into the Explorer, measure the final image under traffic, verify hosting, and update the source-bound research page.
 
-Until those gates pass, canonical metrics and canonical readiness remain unavailable. Infrastructure changes, a completed preliminary run, and a working synthetic interface cannot substitute for those receipts.
+Until those gates pass, canonical metrics and canonical readiness remain unavailable. Completed nonhuman qualification and a working synthetic interface cannot substitute for those receipts.
 
 ## Documentation
 
