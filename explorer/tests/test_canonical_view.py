@@ -37,7 +37,7 @@ class CanonicalViewTests(unittest.TestCase):
             self.assertIn('HG001 chr20',layout);self.assertIn('1905809',json.dumps(record))
             key=next(k for k in app.callback_map if 'canonical-panel.style' in k)
             response=client.post(DEFAULT_PREFIX+'_dash-update-component',json={
-                'output':key,'outputs':[{'id':name+'-panel','property':'style'} for name in ('overview','execution','provenance','canonical')],
+                'output':key,'outputs':[{'id':name+'-panel','property':'style'} for name in ('overview','execution','infrastructure','provenance','canonical')],
                 'inputs':[{'id':'view','property':'value','value':'canonical'}],'state':[],'changedPropIds':['view.value']})
             self.assertEqual(response.status_code,200)
             self.assertEqual(response.json['response']['canonical-panel']['style'],{'display':'block'})

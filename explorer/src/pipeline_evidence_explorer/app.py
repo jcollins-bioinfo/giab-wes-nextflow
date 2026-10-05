@@ -11,6 +11,10 @@ from flask import Response, redirect, request
 import plotly.graph_objects as go
 
 from . import __version__
+from .execution import MANAGED_SHA256, load_managed
+from .infrastructure import load_infrastructure, infrastructure_view
+import json
+from .execution_view import managed_execution, managed_overview, task_detail, timeline_figure
 from .model import MANIFEST_SHA256, REPO, Snapshot, load_snapshot, select_tasks
 
 DEFAULT_PREFIX = "/giab-wes-nextflow/"
@@ -37,7 +41,7 @@ def canonical_view(data: Any, missing_reason: str, prefix: str) -> Any:
     if data is None:
         return html.Section([html.H2("Canonical results unavailable"), html.P(missing_reason),
             html.P("No HG001 accuracy, resource result, or canonical completion is inferred from the synthetic qualification panels."),
-            html.P("The canonical notebook must return a complete, validated public bundle and its independently reviewed manifest SHA-256.")], className="panel")
+            html.P("Canonical execution must return a complete, validated public bundle and its independently reviewed manifest SHA-256.")], className="panel")
     record = data.record
     label = "HG001 chr20–22 coding-domain benchmark" if record["scope"] == "hg001_chr20_22_coding" else "HG001 full coding-domain benchmark"
     columns = ("Caller", "Variant", "TP query", "TP truth", "FP", "FN", "Precision", "Recall", "F1")
@@ -78,6 +82,16 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
     snapshot: Snapshot | None = None
     try:
         snapshot = load_snapshot(bundle_dir)
+    except (ValueError, OSError, KeyError, TypeError):
+        pass
+    managed_data = None
+    try:
+        managed_data = load_managed()
+    except (ValueError, OSError, KeyError, TypeError):
+        pass
+    infrastructure_data = None
+    try:
+        infrastructure_data = load_infrastructure()
     except (ValueError, OSError, KeyError, TypeError):
         pass
     canonical_data = None
@@ -128,6 +142,24 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
                         status=200 if snapshot else 503, mimetype="application/json",
                         headers={"Content-Disposition": 'attachment; filename="synthetic-evidence.json"'})
 
+    @app.server.get(prefix + "managed/readyz")
+    def managed_readiness() -> tuple[dict[str, Any], int]:
+        """Keep accepted nonhuman readiness separate from human acceptance."""
+        return {"status": "accepted_managed_nonhuman" if managed_data else "managed_unavailable",
+                "canonical": False, "manifest_sha256": MANAGED_SHA256 if managed_data else None}, 200 if managed_data else 503
+
+    @app.server.get(prefix + "managed/evidence.json")
+    def managed_download() -> Response:
+        return Response(managed_data.public_json if managed_data else '{"error":"managed_unavailable"}',
+                        status=200 if managed_data else 503, mimetype="application/json",
+                        headers={"Content-Disposition": 'attachment; filename="managed-nonhuman-execution.json"'})
+
+    @app.server.get(prefix + "infrastructure/evidence.json")
+    def infrastructure_download() -> Response:
+        return Response(json.dumps(infrastructure_data, sort_keys=True, indent=2) + "\n" if infrastructure_data else '{"error":"infrastructure_unavailable"}',
+                        status=200 if infrastructure_data else 503, mimetype="application/json",
+                        headers={"Content-Disposition": 'attachment; filename="infrastructure-declared.json"'})
+
     @app.server.get(prefix + "canonical/readyz")
     def canonical_readiness() -> tuple[dict[str, Any], int]:
         """Keep canonical readiness distinct from the synthetic prototype."""
@@ -170,7 +202,7 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
     reads.update_layout(template="plotly_white", height=285, margin=dict(l=45, r=20, t=25, b=35),
                         yaxis_title="Primary reads", font=dict(family="Arial", color="#23354a"),
                         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
-    overview = html.Div([
+    overview = html.Div([managed_overview(managed_data, prefix),
         html.Div([card("Primary reads", str(data.primary_reads), "M3 invented preprocessing fixture"),
                   card("First execution", str(data.completed_tasks), "Completed Nextflow tasks"),
                   card("Resume reuse", str(data.cached_tasks), "Cached tasks; accepted bytes unchanged")], className="cards"),
@@ -192,7 +224,7 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
                       card("Indel precision / recall / F1", "Unavailable", "No canonical indel counts"),
                       card("Accuracy versus cost", "Unavailable", "No fair caller-cost experiment")], className="cards"),
             html.P("The fixed GENCODE v50 coding-domain alternative is owner-approved. Full HG001 results will be descriptive/in-sample: the DeepVariant WES training data include HG001. Chr20–22 is a same-individual sensitivity analysis.")], className="panel")])
-    execution = html.Div([html.H2("Recorded task execution"), html.P(
+    execution = html.Div([managed_execution(managed_data), html.H2("Historical synthetic M3 task execution"), html.P(
         "M3 first execution, Linux/x86_64 Docker. Original Nextflow trace units are retained. CPU is reported utilization; these observations are not a dual-caller cost comparison."),
         html.Label("Process", htmlFor="process"), dcc.Dropdown(id="process", value="all", clearable=False,
             options=[{"label": "All processes", "value": "all"}] + [{"label": t.name.split(":")[-1], "value": t.name} for t in data.tasks]),
@@ -209,24 +241,25 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
     canonical_panel = canonical_view(canonical_data, canonical_error, prefix)
     app.layout = html.Div([html.Header([html.A("JPC / RESEARCH", href=REPO, className="brand"),
         html.Span(f"EXPLORER {__version__}", className="version")]), html.Main([
-        html.Div("SYNTHETIC EVIDENCE PROTOTYPE", className="scope"), html.H1("Pipeline Evidence Explorer"),
+        html.Div("SYNTHETIC AND MANAGED NONHUMAN EVIDENCE", className="scope"), html.H1("Pipeline Evidence Explorer"),
         html.P("From raw reads to inspectable evidence.", className="subtitle"),
         html.P("GIAB HG001 WES project · John Patrick Collins · Public engineering work, 2026", className="byline"),
-        html.Div("This preview contains invented test data and recorded qualification outcomes. It does not report HG001 accuracy or a caller winner.", className="notice", role="note"),
+        html.Div("This preview separates local synthetic tests from accepted managed nonhuman qualification. Real HG001 results remain unavailable unless a canonical bundle passes validation.", className="notice", role="note"),
         html.Fieldset([html.Legend("Choose evidence view", className="sr-only"),
-            dcc.RadioItems(id="view", options=[{"label": x.title(), "value": x} for x in ("overview", "execution", "provenance", "canonical")],
+            dcc.RadioItems(id="view", options=[{"label": x.title(), "value": x} for x in ("overview", "execution", "infrastructure", "provenance", "canonical")],
                            value="overview", inline=True, className="section-nav")]),
         html.Div(overview, id="overview-panel"), html.Div(execution, id="execution-panel", style={"display": "none"}),
+        html.Div(infrastructure_view(infrastructure_data, prefix), id="infrastructure-panel", style={"display": "none"}),
         html.Div(provenance, id="provenance-panel", style={"display": "none"}),
         html.Div(canonical_panel, id="canonical-panel", style={"display": "none"})]),
         html.Footer(["Source-owned measurements. Explicit limitations. ", html.A("View repository ↗", href=REPO)])])
 
     @app.callback(Output("overview-panel", "style"), Output("execution-panel", "style"),
-                  Output("provenance-panel", "style"), Output("canonical-panel", "style"), Input("view", "value"))
+                  Output("infrastructure-panel", "style"), Output("provenance-panel", "style"), Output("canonical-panel", "style"), Input("view", "value"))
     def choose_view(selection: str) -> tuple[dict[str, str], ...]:
         """Switch panels with keyboard-accessible native radio controls."""
         return tuple({"display": "block" if selection == name else "none"}
-                     for name in ("overview", "execution", "provenance", "canonical"))
+                     for name in ("overview", "execution", "infrastructure", "provenance", "canonical"))
 
     @app.callback(Output("task-table", "children"), Input("process", "value"))
     def filter_tasks(selection: str) -> Any:
@@ -236,6 +269,24 @@ def create_app(*, bundle_dir: Path | None = None, prefix: str = DEFAULT_PREFIX,
         except ValueError:
             return html.P("Choose a process from the list.")
 
+    if managed_data is not None:
+        @app.callback(Output("managed-timeline", "figure"), Output("managed-task-detail", "children"),
+                      Input("managed-task", "value"))
+        def select_managed(selection: str) -> tuple[Any, Any]:
+            try:
+                return timeline_figure(managed_data, selection), task_detail(managed_data, selection)
+            except ValueError:
+                return timeline_figure(managed_data), html.P("Choose a managed task from the list.")
+
+        @app.callback(Output("managed-task", "value"), Input("managed-timeline", "clickData"), prevent_initial_call=True)
+        def click_managed(click: Any) -> str:
+            try:
+                selected = click["points"][0]["customdata"]
+                return selected if isinstance(selected, str) and selected in {row.key for row in managed_data.timeline} else "all"
+            except (KeyError, TypeError, IndexError):
+                return "all"
+
+    app.server.config["MANAGED_EXECUTION"] = managed_data
     app.server.config["EXPLORER_SNAPSHOT"] = data
     app.server.config["CANONICAL_RESULTS"] = canonical_data
     return app
