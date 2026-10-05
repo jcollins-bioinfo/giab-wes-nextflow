@@ -1,0 +1,157 @@
+{
+  "components": [
+    {
+      "id": "data",
+      "name": "Durable scientific storage",
+      "owner": "Terraform",
+      "purpose": "Private versioned storage retains authenticated inputs, accepted results and provenance. Public access is blocked.",
+      "source": "infra/aws/storage.tf",
+      "state": "declared"
+    },
+    {
+      "id": "work",
+      "name": "Working and cache storage",
+      "owner": "Terraform",
+      "purpose": "Separate versioned storage retains workflow work/cache according to distinct retention policies.",
+      "source": "infra/aws/storage.tf",
+      "state": "declared"
+    },
+    {
+      "id": "iam",
+      "name": "Service identities",
+      "owner": "Terraform",
+      "purpose": "Separate roles bind storage, registry and log responsibilities. The HealthOmics role is workflow-wide; truth isolation between callers and evaluators comes from staged dataflow.",
+      "source": "infra/aws/iam.tf",
+      "state": "declared"
+    },
+    {
+      "id": "images",
+      "name": "Immutable image registry",
+      "owner": "Terraform",
+      "purpose": "Private immutable repositories retain exact scientific and Explorer image digests.",
+      "source": "infra/aws/ecr.tf",
+      "state": "declared"
+    },
+    {
+      "id": "logs",
+      "name": "Execution logs",
+      "owner": "Terraform",
+      "purpose": "Dedicated log groups retain provider execution observations; accepted evidence must be archived independently.",
+      "source": "infra/aws/observability.tf",
+      "state": "declared"
+    },
+    {
+      "id": "workflow",
+      "name": "Managed scientific workflow",
+      "owner": "Nextflow / HealthOmics",
+      "purpose": "Nextflow defines process dependencies, input staging, requested resources and task/cache behavior. Provider execution is accepted separately.",
+      "source": "cloud.nf",
+      "state": "declared"
+    },
+    {
+      "id": "batch",
+      "name": "Optional Batch compute",
+      "owner": "Terraform",
+      "purpose": "Compute environment and job queue declarations are disabled by default. No live Batch claim is made.",
+      "source": "infra/aws/batch.tf",
+      "state": "declared"
+    },
+    {
+      "id": "hosting",
+      "name": "Separate Explorer hosting",
+      "owner": "Terraform / Lightsail",
+      "purpose": "The separate module describes an immutable-image service and readiness route. It requires exact-image memory qualification before activation; no current deployment is inferred.",
+      "source": "infra/hosting-lightsail/main.tf",
+      "state": "declared"
+    }
+  ],
+  "evidence_state": "declared",
+  "observed_date": "2026-10-05",
+  "relationships": [
+    {
+      "from": "iam",
+      "relationship": "Workflow service permissions govern scientific storage, image pulls and logging.",
+      "to": "workflow"
+    },
+    {
+      "from": "data",
+      "relationship": "Authenticated reference, read and domain inputs are staged by the workflow.",
+      "to": "workflow"
+    },
+    {
+      "from": "workflow",
+      "relationship": "Completed outputs and accepted evidence are retained durably.",
+      "to": "data"
+    },
+    {
+      "from": "workflow",
+      "relationship": "Intermediate work and cache are separate from durable evidence.",
+      "to": "work"
+    },
+    {
+      "from": "images",
+      "relationship": "Tasks resolve immutable scientific image digests.",
+      "to": "workflow"
+    },
+    {
+      "from": "workflow",
+      "relationship": "Provider execution emits logs and task observations.",
+      "to": "logs"
+    },
+    {
+      "from": "batch",
+      "relationship": "Optional execution backend; not activated by this snapshot.",
+      "to": "workflow"
+    },
+    {
+      "from": "images",
+      "relationship": "Hosting pulls the reviewed Explorer image.",
+      "to": "hosting"
+    },
+    {
+      "from": "hosting",
+      "relationship": "No runtime private-storage access; public evidence is bundled in the image.",
+      "to": "data"
+    }
+  ],
+  "repository_sha": "2e3b522c25c08e9e67b3f49d0bdfe65f9dcc58ab",
+  "schema_version": "1.0.0",
+  "source_files": [
+    {
+      "path": "infra/aws/storage.tf",
+      "sha256": "9efb8daea5733ba2eeff98ee86b40e3ba15514b1eb075193de73850d8d8a0b5b"
+    },
+    {
+      "path": "infra/aws/iam.tf",
+      "sha256": "96a95ad718f2ca54b0aa086bc5228fa23a758b985cdc568488b93e68a33058f2"
+    },
+    {
+      "path": "infra/aws/iam-roles.json.tftpl",
+      "sha256": "21aa06ffd7971136d826dc600f7b9e7dbe25da35ba32d31bc3b0d7fc3f71f693"
+    },
+    {
+      "path": "infra/aws/ecr.tf",
+      "sha256": "eae01a083020c793e794072fa5fa1ca07a70c7bfa9367a3f11577ca0d0077666"
+    },
+    {
+      "path": "infra/aws/observability.tf",
+      "sha256": "76389b19b6b022c874137f9d90ed8727fa5b2e22a8a166b97ff62f4df9c49cdf"
+    },
+    {
+      "path": "infra/aws/batch.tf",
+      "sha256": "047bc7ba16543bb52a1bc92aed5f318e21cb14faa4404f58efe448f57adefb27"
+    },
+    {
+      "path": "infra/aws/variables.tf",
+      "sha256": "c78d225ac5d819d44562d98cdfe17550eb8dc72c382815f22df6e6dead32137a"
+    },
+    {
+      "path": "infra/hosting-lightsail/main.tf",
+      "sha256": "71c675644012a31108e3c871b56701bf0659f26ebe0863a7400dbd3dd6af9c7b"
+    },
+    {
+      "path": "cloud.nf",
+      "sha256": "1757421a810024db1afcbb38fde5e338bb939affb8e88923c64d2808559a20dc"
+    }
+  ]
+}

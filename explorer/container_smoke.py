@@ -13,13 +13,22 @@ import urllib.request
 def check(base: str) -> None:
     """Default synthetic service must not imply a canonical run occurred."""
     prefix = base.rstrip('/') + '/giab-wes-nextflow/'
-    for endpoint in ('healthz', 'readyz', 'evidence.json'):
+    for endpoint in ('healthz', 'readyz', 'evidence.json', 'managed/readyz', 'managed/evidence.json', 'infrastructure/evidence.json'):
         with urllib.request.urlopen(prefix + endpoint, timeout=5) as response:
             assert response.status == 200, endpoint
             payload = json.load(response)
             if endpoint == 'readyz':
                 assert payload['canonical'] is False
                 assert payload['status'] == 'synthetic_prototype_ready'
+            elif endpoint == 'managed/readyz':
+                assert payload['status'] == 'accepted_managed_nonhuman'
+                assert payload['canonical'] is False
+            elif endpoint == 'managed/evidence.json':
+                assert payload['scope'] == 'accepted_managed_nonhuman'
+                assert len(payload['tasks']) == 28
+                assert payload['canonical'] is False
+            elif endpoint == 'infrastructure/evidence.json':
+                assert payload['evidence_state'] == 'declared'
     try:
         urllib.request.urlopen(prefix + 'canonical/readyz', timeout=5)
     except urllib.error.HTTPError as error:
@@ -36,7 +45,7 @@ def main() -> None:
     for attempt in range(30):
         try:
             check(args.base_url)
-            print('Explorer health/evidence passed; canonical correctly unavailable')
+            print('Explorer synthetic/managed/declaration evidence passed; canonical correctly unavailable')
             return
         except (OSError, http.client.HTTPException):
             if attempt == 29:

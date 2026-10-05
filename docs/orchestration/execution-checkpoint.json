@@ -39,5 +39,8 @@
     "run_limits": "configured in private deployment state"
   },
   "continuation_start_sha": "f6613ad29fa51e12556083ff2a686bc5f01860dd",
-  "native_observation_status": "Actual task receipt production implemented; complete provider joins, cache evidence and durable destination rehash pending"
+  "native_observation_status": "Actual task receipt production implemented; complete provider joins, cache evidence and durable destination rehash pending",
+  "record_scope": "Historical September11 execution snapshot; original observations are retained.",
+  "superseded_by": "docs/orchestration/project-state.json",
+  "accepted_managed_successor": "docs/orchestration/evidence/managed-qualification-20260915.json"
 }

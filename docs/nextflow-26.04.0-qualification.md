@@ -1,7 +1,17 @@
 # Exact Nextflow 26.04.0 investigation
 
-Status: partial local evidence; **not qualified for managed scientific execution**.
-Historical 26.04.6 M3-M5 observations and the production guard remain unchanged.
+Status: **the complete managed nonhuman graph is qualified on 26.04.0/v2**.
+Managed reuse/cache invalidation and real HG001 acceptance remain separate gates.
+Historical 26.04.6 M3-M5 observations and the local production guard remain unchanged.
+
+The [accepted September 15 summary](orchestration/evidence/managed-qualification-20260915.json)
+supersedes the earlier pending full-graph statements below. It binds source
+`38f30ed40cd58877a874a8136cbb79a6cb006557` and transformed workflow package
+`34e4997cefc18d147b8054c8732bbe8fb5ba3a44cfb20340ddd3e2e57deaf8d3`
+to 28 completed tasks across 21 processes, 28 provider image joins, 23 native
+observation joins, 528 original-quality records and 198 rehashed returned objects.
+These are invented nonhuman inputs, not HG001 measurements. The source commit,
+transformed package and platform image manifests retain distinct identities.
 
 The version floor first appears in `bd2c447b5e3b24d371ac84a81e2180990d4ef6cd`
 (`fix(lint): align external pipeline with nf-core checks`, August 29). Its presence
@@ -54,10 +64,16 @@ Use the exact immutable images recorded in `.github/workflows/aws-cloud.yml`.
 The portable command takes real image arguments; it does not discover or retag
 images. Probe receipt status must be inspected before any compatibility claim.
 
-Remaining: both parser CI results, actual packaged cloud graph execution, explicit
-StartRun parser identity, native GATK/DeepVariant managed nonhuman qualification,
-managed input staging/output receipts and cache negatives. Only those results can
-justify a backend-specific guard and packaging change. EC2 quota warnings do not
+The historical local probe receipts remain [v1](orchestration/evidence/engine-26040-local-v1.json)
+and [v2](orchestration/evidence/engine-26040-local-v2.json), including their failed
+container/parser cases. The subsequent accepted
+managed graph establishes exact parser identity, native caller behavior and
+input/output receipt binding for its nonhuman fixture. It does not establish
+managed caching. Required managed cases remain first execution, unchanged reuse,
+and separate parameter, input-content, reference, domain, container and command
+invalidation. Local task hashes cannot substitute for those provider observations.
+Only the completed backend-specific evidence set can justify the production
+adapter's engine admission; no general version floor is lowered. EC2 quota warnings do not
 block HealthOmics inspection; HealthOmics compatibility warnings do not block
 Batch inspection. Neither inspection result authorizes scheduling on its own.
 

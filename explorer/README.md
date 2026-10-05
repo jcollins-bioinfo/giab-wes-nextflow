@@ -2,8 +2,10 @@
 
 Version `0.1.0.dev1`. The owner approved this early prototype on 2026-09-08.
 It is a separate Python distribution. Install the pipeline package alongside it
-to enable the canonical result consumer. Canonical execution and public deployment
-remain unavailable; this does not establish M8 completion.
+to enable the canonical result consumer. The app now also renders accepted managed
+nonhuman qualification and source-bound infrastructure declarations. Canonical HG001
+execution and public deployment remain unavailable in its bundled evidence; this
+does not establish M8 completion.
 
 The overview renders the verified M3 synthetic 48-read preprocessing run,
 22 completed tasks and 22 cached tasks on resume. The execution view filters
@@ -33,6 +35,46 @@ and RTG Tools 3.13, strict invented SNP/indel representations, accepted M4
 SNV interfaces, independent/both execution and actual cached resume. Its
 metrics qualify that fixture only; they are not HG001 accuracy measurements.
 
+## Accepted managed execution and infrastructure
+
+The execution view includes the accepted managed nonhuman fixture observed on
+2026-09-15: 28 provider tasks across 21 processes, 23 native identity joins and
+22 retained native command timings. The collector cannot include its own final
+observation in the JSON it writes, so its command timing stays unavailable in
+this projection. Five fixture tasks have no accepted native attempt identity;
+the app does not invent an attempt number. Observed CPU seconds and peak RSS
+remain null for all tasks. Requested vCPUs and memory are reservations.
+
+The interactive timeline preserves concurrent provider intervals, separates
+creation-to-start (queue/staging combined) from start-to-stop, and shows native
+command elapsed independently. It never turns sums of task durations into run
+wall time. The task selector and clickable bars expose image digests, command
+hashes and artifact byte identities. A native dropdown offers the same details
+without using the chart. Managed cache/retry-history qualification remains
+unavailable; historical local M3 resume reuse does not qualify managed reuse.
+
+`managed/evidence.json` is a fixed allowlisted export. Its external source-code
+pin is checked before rendering; `managed/readyz` is separate from synthetic and
+canonical readiness. The exporter verifies the already accepted validation
+receipt, then its exact provider and collector hashes. It publishes no provider
+run/task/account identifiers, storage locations, raw commands or genomic payloads.
+To reproduce from the accepted private receipt chain:
+
+```bash
+python explorer/export_managed.py --validation "$VALIDATION_RECEIPT" \
+  --provider "$PROVIDER_RECEIPT" --collector "$COLLECTOR_EVIDENCE" \
+  --output "$PUBLIC_EXECUTION_JSON"
+```
+
+The Infrastructure tab uses a separately pinned sanitized JSON snapshot of
+repository declarations, with exact source SHA and file hashes. It explains
+Terraform provisioning, Nextflow scheduling, IAM responsibilities, durable and
+working storage, image registry, logs and the separate Lightsail module. Every
+component is **declared**; no plan, apply receipt, live inventory, DNS state or
+public-hosting claim is inferred. The fixed `infrastructure/evidence.json` download
+contains the same public declaration snapshot. No Terraform state is loaded.
+
+
 ## Run locally
 
 From the repository root in a Python 3.12 or 3.13 virtual environment:
@@ -44,7 +86,7 @@ gunicorn pipeline_evidence_explorer.wsgi:server --bind 127.0.0.1:8050 --workers 
 
 Open `http://127.0.0.1:8050/giab-wes-nextflow/`.
 Direct dependencies are pinned to Dash 4.4.1, Plotly 7.0.0 and Gunicorn 26.2.0;
-transitive dependencies are not a reproducible deployment lock. A public image,
+the container installs the pinned transitive `requirements.lock`. A public image,
 reverse proxy, hosting qualification and deployment approval remain future work.
 
 The application factory supports a validated route prefix. Under that prefix,
@@ -78,13 +120,13 @@ scientific calculation in callbacks.
 python -I -m unittest discover -s explorer/tests -v
 ```
 
-Eight current tests cover bundled observations, source corruption, symlinks,
+Source tests cover bundled observations, source corruption, symlinks,
 HTTP/callback behavior, fixed downloads, readiness, prefix rejection and
 canonical unavailable/valid exports. Five pipeline model tests additionally
 cover schema, inventory, unsafe content, metric arithmetic and missingness.
 Current source tests passed locally with both package dependencies available.
 Earlier prototype browser checks covered its original three views at desktop
-and 390-pixel widths. The new canonical view has HTTP/callback coverage but
+and 390-pixel widths. The canonical, managed execution and infrastructure views have HTTP/callback coverage;
 current visual, responsive and accessibility browser qualification is pending;
 these earlier checks do not qualify the new view. Public hosting and an actual
 canonical bundle are still required for operational M8 completion.
