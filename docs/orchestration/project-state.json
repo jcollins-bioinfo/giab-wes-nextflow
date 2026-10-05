@@ -2,20 +2,20 @@
   "schema_version": "1.0.0",
   "record_type": "project_state",
   "milestone": "M9",
-  "phase": "Owner-authorized concurrent M6\u2013M9 implementation; M9 is the highest started workstream, while canonical Colab qualification and milestone completion remain pending",
+  "phase": "Managed nonhuman graph and reusable assets accepted; managed cache, real HG001 evidence and hosted Explorer acceptance pending",
   "state": "in_progress",
   "version": "0.5.0-dev.1",
   "repositories": {
     "pipeline": {
       "full_name": "jcollins-bioinfo/giab-wes-nextflow",
-      "branch": "codex/canonical-analysis-m6-m9",
-      "evidence_sha": "667d6e7b4637269667445e9c00bc04ab209d4a4c",
+      "branch": "main",
+      "evidence_sha": "2e3b522c25c08e9e67b3f49d0bdfe65f9dcc58ab",
       "evidence_scope": "observed_prior_commit"
     },
     "website": {
       "full_name": "jcollins-bioinfo/john-collins-bioinformatics",
-      "branch": "codex/giab-wes-showcase",
-      "evidence_sha": "d933578401d305bc8504e584f2aaa5f484085e18",
+      "branch": "main",
+      "evidence_sha": "b351a577191952540e084b191a8676a13c97d15c",
       "evidence_scope": "observed_prior_commit"
     }
   },
@@ -33,10 +33,22 @@
       "reason": "Owner-approved fixed chr20\u201322 coding/confidence intersection reproduced; execution still pending."
     },
     {
-      "id": "canonical-assets-runtime-results",
-      "status": "blocked",
+      "id": "managed-nonhuman-qualification-and-assets",
+      "status": "verified",
+      "sha256": "6b426a5321f8cf008eea72ce457bb7d6e5ac83ef6aec410803bc0b241c4b52c7",
+      "reason": "September15 accepted milestone summary binds the complete 28-task nonhuman graph, full reference/classic BWA index and independent Broad known-sites assets. Historical receipt scope; not a fresh provider inventory."
+    },
+    {
+      "id": "managed-cache-qualification",
+      "status": "missing",
       "sha256": null,
-      "reason": "Executable qualification and canonical workflow implemented; actual Colab runtime/reference/index/BQSR/source/output receipts are required."
+      "reason": "Managed first/unchanged and six negative invalidation cases remain required; local Docker cache tests do not establish managed reuse."
+    },
+    {
+      "id": "canonical-HG001-results",
+      "status": "missing",
+      "sha256": null,
+      "reason": "Real chr20-22 execution, original-quality proof, accepted provider/scientific lineage and externally pinned public bundle remain required."
     }
   ],
   "local_tests": [
@@ -66,23 +78,44 @@
       "job_urls": []
     }
   ],
-  "execution_environments": [],
+  "execution_environments": [
+    {
+      "id": "healthomics-nonhuman-26040-v2",
+      "status": "executed",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "canonical": false,
+      "run_id": "provider-receipt-sha256:eeeed172bdc6326105cfe2dba481dec5a6f08784ba259ec5cae5af94d584ad76",
+      "evidence_artifacts": [
+        "docs/orchestration/evidence/managed-qualification-20260915.json"
+      ]
+    }
+  ],
   "publication": {
     "drive": "not_published",
-    "public_evidence": "not_published",
+    "public_evidence": "partial",
     "deployment": "not_deployed",
     "release": "not_released",
-    "authorization_reference": "Owner request 2026-09-08 authorizes canonical Colab execution/public downloads and draft PRs; no final release/tag, spend or DNS change.",
-    "evidence_artifacts": []
+    "authorization_reference": "Scientific acceptance and deployment admission remain separate; DNS is owner-managed.",
+    "evidence_artifacts": [
+      "docs/orchestration/evidence/managed-qualification-20260915.json",
+      "docs/orchestration/checkpoints/pre-managed-project-state.json"
+    ]
   },
   "external_blockers": [
     {
-      "id": "canonical-Colab-execution",
-      "gate": "canonical HG001 results and M6\u2013M9 completion",
-      "reason": "Actual owner Colab execution and returned validated evidence are not yet observed. Scientific approval and public download authorization already exist.",
-      "owner_action": "Run the exact pinned canonical notebook with normal Drive authorization if browser execution requires owner interaction; return the public bundle and manifest pin."
+      "id": "managed-cache-and-human-acceptance",
+      "gate": "canonical HG001 results",
+      "reason": "Accepted uncached nonhuman execution does not establish managed cache validity or HG001 scientific acceptance. Current paid-run admission and independent supervision must pass before submission.",
+      "owner_action": "Review the concrete private admission checkpoint when a new paid phase is ready."
+    },
+    {
+      "id": "hosted-Explorer-acceptance",
+      "gate": "public app hosting",
+      "reason": "Exact final image/evidence, bounded memory qualification, current hosting admission and provider HTTPS verification remain required.",
+      "owner_action": "Enter generated DNS records manually only after provider verification supplies actual records."
     }
   ],
-  "next_safe_action": "Finish code validation, execute the pinned canonical Colab notebook, validate its returned evidence, and complete downstream publication without revisiting settled M5/domain decisions.",
-  "observed_at": "2026-09-08T21:08:00.666041+00:00"
+  "next_safe_action": "Qualify the managed cache cases against the exact production package/engine/parser, then admit the fixed HG001 run and validate the returned public evidence. Preserve missing human measurements while presenting accepted nonhuman metadata.",
+  "observed_at": "2026-10-05T03:50:53.226803+00:00"
 }

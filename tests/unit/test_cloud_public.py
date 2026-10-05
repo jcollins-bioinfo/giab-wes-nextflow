@@ -181,6 +181,15 @@ def test_pinned_projection_and_unknown_resources(tmp_path):
     lambda r: r['benchmark']['callers']['gatk']['counts']['SNP'].update(tp_truth=2),
     lambda r: r['scientific']['callers']['gatk']['metrics']['SNP'].update(precision=1.0),
     lambda r: r['resume']['invalidated'].update(domain=False),
+    lambda r: r['resume']['invalidated'].update(domain=1),
+    lambda r: r['resume'].update(status='failed'),
+    lambda r: r['resume'].update(kind='local_cache_probe'),
+    lambda r: r['resume'].update(run_id='another-run'),
+    lambda r: r['resume']['cases']['parameter'].update(
+        backend_run_id=r['resume']['cases']['first']['backend_run_id'],
+        task_identity=r['resume']['cases']['first']['task_identity']),
+    lambda r: r['resume']['cases']['parameter'].update(
+        backend_receipt_sha256=r['resume']['cases']['first']['backend_receipt_sha256']),
     lambda r: r['durable']['objects'][0].update(destination_sha256=h('foreign')),
     lambda r: r['preprocessing'].update(truth_access='isolated_by_IAM'),
 ])

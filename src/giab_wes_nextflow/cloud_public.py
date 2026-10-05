@@ -19,6 +19,7 @@ from jsonschema import Draft202012Validator
 from .canonical_asset_reference import digest_json, load_assets
 from .canonical_results import DOMAINS, REQUIRED_LIMITATIONS, _json, write_public_bundle
 from .cloud_contract import ASSETS, tool_images, validate_manifest
+from .cloud_cache import validate_resume
 from .coding_domain import EXPECTED
 from .m4_contracts import _model_inventory
 from .m5 import metrics, require
@@ -309,23 +310,7 @@ def derive(inventory: dict, receipts: dict) -> tuple[dict, dict]:
     model_before = _model_inventory(dv['model_before'], tools['deepvariant'])
     require(model_before == _model_inventory(dv['model_after'], tools['deepvariant']), 'DeepVariant model changed during execution')
     resume = receipts['resume']
-    require(resume['backend'] == execution['backend'] and resume['nextflow'] == execution['nextflow'] and resume['parser'] == execution['parser']
-            and resume['workflow_sha256'] == execution['workflow_sha256'] and resume['unchanged_reused'] is True
-            and resume['invalidated'] == {k: True for k in ('parameter', 'input_content', 'reference', 'domain', 'container', 'command')}, 'managed resume/cache qualification incomplete')
-    cases = resume['cases']
-    require(set(cases) == {'first', 'unchanged', *resume['invalidated']}, 'managed cache observation cases incomplete')
-    for name, case in cases.items():
-        require(set(case) == {'backend_run_id', 'task_identity', 'task_cache_key', 'input_identity_sha256', 'output_sha256', 'cache_hit', 'backend_receipt_sha256'},
-                'managed cache observation fields differ')
-        require(all(isinstance(case[k], str) and case[k] for k in ('backend_run_id', 'task_identity', 'task_cache_key')), 'native cache identity absent')
-        for key in ('input_identity_sha256', 'output_sha256', 'backend_receipt_sha256'):
-            sha(case[key])
-        require(case['cache_hit'] is (name == 'unchanged'), 'cache hit observation contradicts case')
-        if name == 'unchanged':
-            require(all(case[k] == cases['first'][k] for k in ('task_cache_key', 'input_identity_sha256', 'output_sha256')), 'unchanged task did not reuse the same evidence')
-        elif name != 'first':
-            require(case['task_cache_key'] != cases['first']['task_cache_key'] and case['input_identity_sha256'] != cases['first']['input_identity_sha256'],
-                    'changed dependency reused a stale cache identity')
+    cases = validate_resume(resume, execution)
     durable = receipts['durable']
     require(durable['verification'] == 'whole_object_sha256' and durable['completion_marker_written_last'] is True,
             'durable destination rehash/marker ordering missing')

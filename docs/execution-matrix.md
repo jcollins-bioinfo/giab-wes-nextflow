@@ -1,5 +1,9 @@
 # Tested versus configured execution matrix
 
+The managed rows below use the [accepted September 15 milestone summary](orchestration/evidence/managed-qualification-20260915.json).
+Earlier CI and Colab entries retain their original scope; their pending asset
+claims do not supersede later accepted managed assets.
+
 | Environment/capability | Recorded evidence | Scope and limitation |
 |---|---|---|
 | Linux CI Python 3.12/3.13 | M2.1.1 required CI 34094504379 at 22d01b202e15bb098e9d42d0ad4a98606e78c2c2 | 104-test recovery suites; no real genomic execution |
@@ -12,9 +16,11 @@
 | DeepVariant CPU Linux/amd64 | [Pinned M4 image/model declarations](orchestration/evidence/m4-container-declaration.json) | Actual pinned WES inference/native calls, independent/both equivalence and resume passed main CI34237377774; synthetic SNVs only |
 | DeepVariant GPU, native Apple Silicon, emulation | No immutable execution record | Not executed or qualified |
 | Colab capability | Owner-supplied 2026-09-08 report, 43-file code inventory consistency checked | Linux/x86_64, 8 CPUs, 50.99 GiB, no Docker; not remote attestation or canonical runtime qualification |
-| Colab real pipeline, Apptainer, SLURM, AWS, Seqera/Wave | None | Configured/planned only; paid infrastructure requires owner authorization |
+| Colab real pipeline, Apptainer, SLURM, AWS Batch, Seqera/Wave | No accepted canonical execution | Configured/planned only; distinct from the accepted HealthOmics nonhuman execution |
+| AWS HealthOmics, Nextflow 26.04.0/v2 | [Accepted managed graph](orchestration/evidence/managed-qualification-20260915.json) | 28 completed tasks/21 processes on invented nonhuman inputs; provider image/native observations, OQ and normalization/RTG lineage accepted. No HG001 metrics or managed-cache claim |
+| Complete reference/classic BWA index and Broad known sites | Same accepted summary: versioned registries, destination proofs and marker-last publication | 195-contig reference with nine index/reference payloads; three independent known-sites sources with six derivative/index payloads. These assets are not human analysis results |
 | M5 BCFtools 1.24 / RTG 3.13, Linux/x86_64 Docker | [Retained CI34270789172](orchestration/evidence/m5-verified-34270789172.json), identical-tree main CI34272289311 | Frozen SNP/indel representations, exact counts, isolation, independent/both/resume and typed raw-trace parsing; no HG001 or canonical cost |
-| Explorer/site deployment | Existing website baseline build metadata only | No GIAB Explorer or project result page deployed |
+| Explorer hosting | No verified provider URL in the accepted milestone summary | Application implementation and synthetic/managed metadata remain separate from hosted-service acceptance |
 
 A supporting platform declared by an image manifest does not establish execution.
 Canonical HG001, target-aware coverage and accuracy/cost claims require their own
@@ -31,6 +37,6 @@ relabeled Docker or x86_64 execution.
 | Apptainer/Singularity | Existing OCI pins through sole task mounts | Configured until representative callers execute |
 | Docker | Dedicated canonical runtime backend | Configured for canonical work; historical M3–M5 synthetic Docker evidence remains separate |
 | udocker/PRoot | Pinned no-daemon fallback with reduced isolation | Configured until actual Colab execution; technical P1/P2 qualification fallback only |
-| SLURM / AWS Batch / Seqera-Wave | Parsed profiles and unschedulable placeholders/cost guards | Configured only; no cloud job or spend |
+| SLURM / AWS Batch / Seqera-Wave | Parsed profiles and scheduling guards | Configured only; no execution evidence for these backends |
 | Dash canonical view | Trusted manifest, model validation, safe JSON/TSV, unavailable state | Consumer/callback tests; canonical data and public deployment pending |
 | Website showcase | Separate branch, pipeline-SHA/evidence binding | Canonical results unavailable until accepted bundle import |

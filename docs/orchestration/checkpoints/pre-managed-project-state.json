@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0.0",
+  "record_type": "project_state",
+  "milestone": "M9",
+  "phase": "Owner-authorized concurrent M6\u2013M9 implementation; M9 is the highest started workstream, while canonical Colab qualification and milestone completion remain pending",
+  "state": "in_progress",
+  "version": "0.5.0-dev.1",
+  "repositories": {
+    "pipeline": {
+      "full_name": "jcollins-bioinfo/giab-wes-nextflow",
+      "branch": "codex/canonical-analysis-m6-m9",
+      "evidence_sha": "667d6e7b4637269667445e9c00bc04ab209d4a4c",
+      "evidence_scope": "observed_prior_commit"
+    },
+    "website": {
+      "full_name": "jcollins-bioinfo/john-collins-bioinformatics",
+      "branch": "codex/giab-wes-showcase",
+      "evidence_sha": "d933578401d305bc8504e584f2aaa5f484085e18",
+      "evidence_scope": "observed_prior_commit"
+    }
+  },
+  "required_inputs": [
+    {
+      "id": "retained-M5-synthetic-proof",
+      "status": "verified",
+      "sha256": "cfda401c9504600d71f264452ad6b2f9cf858a6696a7636b6e22453283dd3533",
+      "reason": "Retained Actions archive rehashed; original counts, partitions, isolation and Nextflow equivalence/resume verified. No HG001 metric."
+    },
+    {
+      "id": "approved-coding-domain",
+      "status": "verified",
+      "sha256": "7730c4303e03fef74d2c22193102845e369e04ac81fabb7f41fae1374be65d00",
+      "reason": "Owner-approved fixed chr20\u201322 coding/confidence intersection reproduced; execution still pending."
+    },
+    {
+      "id": "canonical-assets-runtime-results",
+      "status": "blocked",
+      "sha256": null,
+      "reason": "Executable qualification and canonical workflow implemented; actual Colab runtime/reference/index/BQSR/source/output receipts are required."
+    }
+  ],
+  "local_tests": [
+    {
+      "name": "canonical-clean-clone-local-validation",
+      "status": "passed",
+      "evidence_sha": "2d89ecfc5f196c8d91960fcf4823dd90393b6be9",
+      "command": "Clean-clone Python3.12/3.13 matrix, installed wheel, Nextflow lint/nf-test, package/schema/hygiene checks; affected isolated-package tests rechecked after task-environment repair.",
+      "detail": "docs/orchestration/evidence/canonical-local-2d89ecf.json; initial failures preserved and explained. No canonical or browser execution."
+    },
+    {
+      "name": "canonical-corrective-tests",
+      "status": "passed",
+      "evidence_sha": "667d6e7b4637269667445e9c00bc04ab209d4a4c",
+      "command": "canonical unit subset on Python3.12/3.13; pyflakes canonical*.py; rebuilt wheel identity and distribution inventory",
+      "detail": "71 tests pass on each version; driver import and interruption recovery corrections; canonical execution still pending. See canonical-corrective-validation.json."
+    }
+  ],
+  "ci": [
+    {
+      "name": "initial-canonical-PR-CI",
+      "required": true,
+      "status": "success",
+      "repository": "jcollins-bioinfo/giab-wes-nextflow",
+      "evidence_sha": "2b35289db743c99a19f58e7b3d365297aa795584",
+      "run_url": "https://github.com/jcollins-bioinfo/giab-wes-nextflow/actions/runs/34278960439",
+      "job_urls": []
+    }
+  ],
+  "execution_environments": [],
+  "publication": {
+    "drive": "not_published",
+    "public_evidence": "not_published",
+    "deployment": "not_deployed",
+    "release": "not_released",
+    "authorization_reference": "Owner request 2026-09-08 authorizes canonical Colab execution/public downloads and draft PRs; no final release/tag, spend or DNS change.",
+    "evidence_artifacts": []
+  },
+  "external_blockers": [
+    {
+      "id": "canonical-Colab-execution",
+      "gate": "canonical HG001 results and M6\u2013M9 completion",
+      "reason": "Actual owner Colab execution and returned validated evidence are not yet observed. Scientific approval and public download authorization already exist.",
+      "owner_action": "Run the exact pinned canonical notebook with normal Drive authorization if browser execution requires owner interaction; return the public bundle and manifest pin."
+    }
+  ],
+  "next_safe_action": "Finish code validation, execute the pinned canonical Colab notebook, validate its returned evidence, and complete downstream publication without revisiting settled M5/domain decisions.",
+  "observed_at": "2026-09-08T21:08:00.666041+00:00"
+}
